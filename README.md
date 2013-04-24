@@ -9,6 +9,9 @@ youxin source code
 * Redis 2.6.11
 * MongoDB 2.4.2
 
+### Stacks
+
+* [genghisapp](https://github.com/bobthecow/genghis.git) MongoDB admin app
 
 ### Testing
 `bundle exec guard` to run autotest
