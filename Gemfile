@@ -1,5 +1,12 @@
 source 'http://ruby.taobao.org'
 
+def darwin_only(require_as)
+  RUBY_PLATFORM.include?('darwin') && require_as
+end
+def linux_only(require_as)
+  RUBY_PLATFORM.include?('linux') && require_as
+end
+
 gem 'rails', '3.2.13'
 
 group :assets do
@@ -21,6 +28,15 @@ group :development, :test do
   gem 'factory_girl_rails'
 
   gem 'mongoid_colored_logger'
+
+  gem 'guard-rspec', '~> 2.5.4'
+  # Notification
+  gem 'rb-fsevent', require: darwin_only('rb-fsevent')
+  gem 'growl',      require: darwin_only('growl')
+  gem 'rb-inotify', require: linux_only('rb-inotify')
+
+  # speed up test
+  gem 'guard-spork'
 end
 
 gem 'slim-rails' # html template
