@@ -1,0 +1,49 @@
+{
+	"folders":
+	[
+		{
+			"path": ".",
+      "file_exclude_patterns": ["*.sublime-workspace"]
+		}
+	],
+  "settings":
+  {
+    "use_simple_full_screen": false,
+
+    // calculates indentation automatically when pressing enter
+    "auto_indent": true,
+    
+    // useful to block endings and closing tags
+    "draw_indent_guides": true,
+    
+    // turning off Vintage (Vim-like) Mode
+    "ignored_packages":
+    [
+      "Vintage"
+    ],
+
+    // letting it breaaaathe!
+    "line_padding_bottom": 1,
+    "line_padding_top": 1,
+
+    // setting for the 'alignment' package
+    "mid_line_tabs": false,
+
+    // using two spaces
+    "tab_size": 2,
+
+    // inserts spaces when tab is pressed
+    "translate_tabs_to_spaces": true,
+
+    // if translate_tabs_to_spaces is true, use_tab_stops will make tab and 
+    // backspace insert/delete up to the next tabstop
+    "use_tab_stops": true,
+
+    // tired of trying to decipher whether something's a folder or a file?
+    "bold_folder_labels": true,
+
+    // creates useful wrapping guides to know when to end a line of code
+    "rulers": [70, 80]
+
+  }
+}
