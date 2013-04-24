@@ -10,3 +10,15 @@ group :assets do
 end
 
 gem 'jquery-rails', '~> 2.2.1'
+
+gem 'mongoid'
+
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'mongoid-rspec'
+  gem 'factory_girl_rails'
+
+  gem 'mongoid_colored_logger'
+end
