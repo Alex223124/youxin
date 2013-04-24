@@ -22,3 +22,8 @@ group :development, :test do
 
   gem 'mongoid_colored_logger'
 end
+
+gem 'slim-rails' # html template
+gem 'bootstrap-sass', '~> 2.3.1.0' # bootstrap
+gem 'angularjs-rails', '~> 1.0.6' # angularjs
+gem 'simple_form'
