@@ -15,3 +15,11 @@ youxin source code
 
 ### Testing
 `bundle exec guard` to run autotest
+
+### Install
+
+1. `git clone` clone to local
+2. `cd youxin` cd into directory
+3. `bundle install`
+4. `cp config/mongoid.yml config/mongoid.yml.default` and edit mongoid.yml
+5. `cp config/youxin.yml.default config/youxin.yml` and edit youxin.yml
