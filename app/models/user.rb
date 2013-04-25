@@ -41,4 +41,7 @@ class User
   field :name, type: String
 
   validates :name, presence: true
+
+  attr_accessible :email, :name, :password, :password_confirmation
+
 end
