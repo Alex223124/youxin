@@ -37,8 +37,9 @@ group :development, :test do
   gem 'growl',      require: darwin_only('growl')
   gem 'rb-inotify', require: linux_only('rb-inotify')
 
-  # speed up test
-  gem 'guard-spork'
+  gem 'guard-spork' # speed up test
+
+  gem 'quiet_assets', '~> 1.0.2' # disable assets log
 end
 
 gem 'slim-rails' # html template
