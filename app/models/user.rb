@@ -1,5 +1,8 @@
 class User
   include Mongoid::Document
+  include Mongoid::Paranoia # Soft delete
+  include Mongoid::Timestamps # Add created_at and updated_at fields
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
