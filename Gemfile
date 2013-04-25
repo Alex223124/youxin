@@ -46,3 +46,6 @@ gem 'simple_form'
 
 # Youxin settings
 gem 'settingslogic', '~> 2.0.9'
+
+# Authentication
+gem 'devise', '~> 2.2.3'

@@ -1,0 +1,11 @@
+= current_user.name if user_signed_in?
+table.table
+  thead
+    tr
+      th Name
+      th Email
+  tbody
+  - @users.each do |user|
+    tr
+      td #{user.name}
+      td #{user.email}

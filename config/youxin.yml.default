@@ -4,6 +4,8 @@
 
 defaults: &defaults
   app_name: youxin
+  admin_emails:
+    - admin@y.x
 
 development:
   <<: *defaults
