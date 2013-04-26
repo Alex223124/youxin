@@ -45,7 +45,9 @@ class User
 
   validates :name, presence: true
 
-  attr_accessible :email, :name, :password, :password_confirmation
+  mount_uploader :avatar, AvatarUploader
+
+  attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
 
   # 处理没有提供密码时修改个人信息
   def update_with_password(params={})
