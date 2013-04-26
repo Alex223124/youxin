@@ -11,4 +11,13 @@ class Organization
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true
+  validate :parent_exists, if: ->(organization) { organization.parent_id.present? }
+
+
+  def parent_exists
+    if Organization.where(id: self.parent_id).blank?
+      self.errors.add :parent_id, "not exist"
+    end
+  end
+
 end
