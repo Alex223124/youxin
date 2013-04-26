@@ -47,6 +47,10 @@ describe Organization do
 
     context "parent_id" do
       context "fails" do
+        describe "parent_id not exist" do
+          before { organization.parent_id = 123 }
+          its(:valid?) { should be_false }
+        end
       end
 
       context "successed" do
