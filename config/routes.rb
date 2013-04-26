@@ -5,4 +5,6 @@ Youxin::Application.routes.draw do
   namespace :admin do
     resources :users
   end
+
+  match '/uploads/*path' => 'gridfs#serve'
 end

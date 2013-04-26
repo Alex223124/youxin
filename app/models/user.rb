@@ -45,6 +45,8 @@ class User
 
   validates :name, presence: true
 
-  attr_accessible :email, :name, :password, :password_confirmation
+  mount_uploader :avatar, AvatarUploader
+
+  attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
 
 end
