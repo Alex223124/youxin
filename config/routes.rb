@@ -11,5 +11,5 @@ Youxin::Application.routes.draw do
     resources :organizations
   end
 
-  match '/uploads/*path' => 'gridfs#serve'
+  get '/uploads/avatar/*path' => 'gridfs#serve'
 end

@@ -1,5 +1,3 @@
-# encoding: utf-8
-require 'digest/md5'
 require 'carrierwave/mongoid'
 class AvatarUploader < CarrierWave::Uploader::Base
 
@@ -95,7 +93,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
     # "something.jpg" if original_filename
-    "#{model.id}.#{file.extension.downcase}" if original_filename
+    "#{model.id}.#{file.extension.downcase}" if super.present?
   end
 
 end
