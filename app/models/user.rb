@@ -47,6 +47,7 @@ class User
 
   attr_accessible :email, :name, :password, :password_confirmation
 
+  # 处理没有提供密码时修改个人信息
   def update_with_password(params={})
     if !params[:current_password].blank? or !params[:password].blank? or !params[:password_confirmation].blank?
       super
