@@ -20,5 +20,15 @@ describe User do
         its(:valid?) { should be_false }
       end
     end
+
+    context "avatar" do
+      it "return url of avatar" do
+        avatar_path = Rails.root.join("spec/factories/images/avatar.png")
+        user = create :user, avatar: Rack::Test::UploadedFile.new(avatar_path)
+        user.avatar.file.should_not be_blank
+        user.avatar.url.should_not be_blank
+        user.avatar.url.should == "/uploads/avatar/#{user.id}.png"
+      end
+    end
   end
 end
