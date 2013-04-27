@@ -31,4 +31,24 @@ describe User do
       end
     end
   end
+
+  describe "#update_with_password" do
+    context "without password" do
+      before do
+        user.save
+        user.update_with_password name: 'name-modify'
+        user.reload
+      end
+      its(:name) { should == 'name-modify' }
+    end
+
+    context "with password" do
+      before do
+        user.save
+        user.update_with_password name: 'name-modify', password: 'invalid_password'
+        user.reload
+      end
+      its(:name) { should_not == 'name-modify' }
+    end
+  end
 end

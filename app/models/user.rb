@@ -49,4 +49,13 @@ class User
 
   attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
 
+  # 处理没有提供密码时修改个人信息
+  def update_with_password(params={})
+    if !params[:current_password].blank? or !params[:password].blank? or !params[:password_confirmation].blank?
+      super
+    else
+      params.delete(:current_password)
+      self.update_without_password(params)
+    end
+  end
 end
