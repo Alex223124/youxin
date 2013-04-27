@@ -47,4 +47,12 @@ class User
 
   attr_accessible :email, :name, :password, :password_confirmation
 
+  def update_with_password(params={})
+    if !params[:current_password].blank? or !params[:password].blank? or !params[:password_confirmation].blank?
+      super
+    else
+      params.delete(:current_password)
+      self.update_without_password(params)
+    end
+  end
 end
