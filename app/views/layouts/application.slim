@@ -8,4 +8,11 @@ html
     = csrf_meta_tags
   body
     .container
+      .alert #{alert}
+      .info
+        p #{flash[:notice]}
+        - if flash[:unimported_users].present?
+          strong Unimported users
+          - flash[:unimported_users].each do |user|
+            p #{user.name}, #{user.email}, #{user.errors.messages}
       = yield

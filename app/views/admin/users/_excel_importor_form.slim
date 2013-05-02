@@ -1,0 +1,5 @@
+= form_tag(admin_users_excel_importor_path, class: 'form-horizontal', multipart: true) do
+  .control-group
+    = file_field_tag :excel
+  .control-group
+    = submit_tag 'Submit', class: 'btn btn-primary'
