@@ -1,29 +1,33 @@
 require 'spec_helper'
 
 describe Youxin::ExcelPraser do
-  let(:xlsx_file_path) {
-    Rails.root.join('spec/factories/data/list.xlsx')
+  let(:xlsx_file) {
+    Rack::Test::UploadedFile.new(
+      Rails.root.join('spec/factories/data/list.xlsx')
+    )
   }
-  let(:xls_file_path) {
-    Rails.root.join('spec/factories/data/list.xls')
+  let(:xls_file) {
+    Rack::Test::UploadedFile.new(
+      Rails.root.join('spec/factories/data/list.xls')
+    )
   }
 
   describe "initialize" do
     let(:excel_praser) {
-      Youxin::ExcelPraser.new(xls_file_path)
+      Youxin::ExcelPraser.new(xls_file)
     }
     it "should return an instance of ExcelPraser" do
       excel_praser.should be_kind_of Youxin::ExcelPraser
     end
 
     it "should be properly initialized" do
-      excel_praser.file_path.should == xls_file_path
+      excel_praser.file.should == xls_file
       excel_praser.user_array.should be_kind_of Array 
     end
 
     it "should respond to accessor" do
       excel_praser.should respond_to(:file)
-      excel_praser.should respond_to(:file_path)
+      excel_praser.should respond_to(:worksheets)
       excel_praser.should respond_to(:user_array)
     end
 
@@ -36,14 +40,14 @@ describe Youxin::ExcelPraser do
   describe "raise error" do
     it "file_type is not *.xls" do
       expect{
-        Youxin::ExcelPraser.new(xlsx_file_path)
+        Youxin::ExcelPraser.new(xlsx_file)
       }.to raise_error(Youxin::ExcelPraser::InvalidFileType)
     end
   end
 
   describe "#process" do
     let(:excel_praser) {
-      Youxin::ExcelPraser.new(xls_file_path)
+      Youxin::ExcelPraser.new(xls_file)
     }
     before do
       excel_praser.process
@@ -72,8 +76,8 @@ describe Youxin::ExcelPraser do
 
     it "should return correct user_hash" do
       user_array = [ { name: '张三', email: 'zhangsan@y.x', password: '123456'},
-                    { name: '李四', email: 'lisi@y.x', password: '123456'},
-                    { name: '王五', email: 'wangwu@y.x', password: '123456'} ]
+                     { name: '李四', email: 'lisi@y.x', password: '123456'},
+                     { name: '王五', email: 'wangwu@y.x', password: '123456'} ]
       excel_praser.user_array.should == user_array
     end
   end
