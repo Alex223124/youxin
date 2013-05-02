@@ -8,6 +8,7 @@ Youxin::Application.routes.draw do
 
   namespace :admin do
     resources :users
+    post 'users/excel_importor' => 'users#excel_importor'
     resources :organizations
   end
 
