@@ -1,15 +1,15 @@
 Youxin::Application.routes.draw do
-  get "organizations/new"
-
-  get "organizations/index"
-
   root to: 'admin/users#index'
   devise_for :users
 
   namespace :admin do
     resources :users
     post 'users/excel_importor' => 'users#excel_importor'
-    resources :organizations
+    resources :organizations do
+      get 'members' => 'members#index', on: :member
+      put 'members' => 'members#update', on: :member
+      delete 'members' => 'members#destroy', on: :member
+    end
   end
 
   get '/uploads/avatar/*path' => 'gridfs#serve'
