@@ -42,12 +42,20 @@ class User
   # field :authentication_token, type: String
 
   field :name, type: String
+  field :organization_ids, type: Array, default: []
 
   validates :name, presence: true
 
   mount_uploader :avatar, AvatarUploader
 
   attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
+
+  after_destroy do
+    organizations.each do |organization|
+      organization.pull(:member_ids, self.id)
+    end
+    self.pull_all(:organization_ids, self.organization_ids)
+  end
 
   # 处理没有提供密码时修改个人信息
   def update_with_password(params={})
@@ -58,4 +66,10 @@ class User
       self.update_without_password(params)
     end
   end
+
+  # Organizations
+  def organizations
+    Organization.where(:id.in => self.organization_ids)
+  end
+
 end
