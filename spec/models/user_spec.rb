@@ -7,10 +7,39 @@ describe User do
   describe "Respond to" do
     it { should respond_to(:name) }
     it { should respond_to(:email) }
+    it { should respond_to(:organization_ids) }
+    it { should respond_to(:organizations) }
   end
 
   it "should create a new instance given a valid attributes" do
     expect(build :user).to be_valid
+  end
+
+  describe "#organizations" do
+    before do
+      @organization = create :organization
+      @user = create :user
+    end
+    it "should return correctly" do
+      @organization.push_member(@user)
+      @user.organizations.include?(@organization).should be_true
+    end
+  end
+
+  describe "#destroy" do
+    before do
+      @organization = create :organization
+      @user = create :user
+      @organization.push_member(@user)
+    end
+    it "should remove organizations" do
+      @user.destroy
+      @user.organizations.should be_blank
+    end
+    it "should remove user from organization" do
+      @user.destroy
+      @organization.reload.member_ids.include?(@user.id).should be_false
+    end
   end
 
   describe "invalid attributes" do
