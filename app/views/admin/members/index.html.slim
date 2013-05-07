@@ -1,6 +1,4 @@
-- @organization.members.each do |member|
-  strong member.name
-
+h3 #{@organization.name}
 = form_tag(members_admin_organization_path(@organization), method: :put, class: 'form-horizontal') do
   .control-group
     - User.each do |user|
