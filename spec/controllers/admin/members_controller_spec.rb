@@ -5,7 +5,10 @@ describe Admin::MembersController do
     @organization = create :organization
     @user = create :user
     @another_user = create :user
-    request.env["HTTP_REFERER"] = admin_organizations_url
+    @request.env["HTTP_REFERER"] = admin_organizations_url
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    @current_user = create :user
+    login_user(@current_user)
   end
   describe "GET 'index'" do
     it "returns http success" do
@@ -16,6 +19,7 @@ describe Admin::MembersController do
 
   describe "DELETE 'destroy'" do
     it "returns http success" do
+      @organization.authorize(@current_user, [:remove_member])
       @organization.push_members([@user.id, @another_user.id])
       expect {
         delete 'destroy', {
@@ -28,6 +32,7 @@ describe Admin::MembersController do
 
   describe "PUT 'update'" do
     it "should add members to organization" do
+      @organization.authorize(@current_user, [:add_member])
       expect {
         put :update, {
           id: @organization.id,

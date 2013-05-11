@@ -6,6 +6,7 @@ describe User do
 
   describe "Association" do
     it { should have_many(:user_organization_position_relationships) }
+    it { should have_many(:user_actions_organization_relationships) }
   end
 
   describe "Respond to" do
@@ -15,6 +16,7 @@ describe User do
     it { should respond_to(:organizations) }
     it { should respond_to(:position_in_organization) }
     it { should respond_to(:human_position_in_organization) }
+    it { should respond_to(:authorized_organizations) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -31,7 +33,6 @@ describe User do
       @user.organizations.include?(@organization).should be_true
     end
   end
-
   describe "#position_in_organization" do
     before do
       @organization = create :organization
@@ -60,6 +61,16 @@ describe User do
     it "should return nil if not_set" do
       @organization.add_member(@user)
       @user.human_position_in_organization(@organization).should be_nil
+    end
+  end
+
+  describe "#authorized_organizations" do
+    it "should return the array of authorized organizations" do
+      @organization = create :organization
+      @user = create :user
+      actions = Action.options_array_for(:organization)
+      @organization.authorize(@user, actions)
+      @user.authorized_organizations.should include(@organization)
     end
   end
 

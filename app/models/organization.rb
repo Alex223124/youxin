@@ -10,6 +10,7 @@ class Organization
   belongs_to :parent, class_name: 'Organization'
   has_many :children, class_name: 'Organization', foreign_key: :parent_id
   has_many :user_organization_position_relationships, dependent: :destroy
+  has_many :user_actions_organization_relationships, dependent: :destroy
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true
@@ -64,5 +65,18 @@ class Organization
   alias_method :remove_member, :pull_member
   alias_method :remove_members, :pull_members
   # Members
+
+  # Authorize
+  # The new will overwrite the old actions
+  def authorize(user, actions)
+    user = User.find(user) unless user.is_a?(User)
+    autorization = user_actions_organization_relationships.first_or_initialize(user_id: user.id)
+    autorization.actions = actions
+    autorization.save
+  end
+  def authorized_users
+    user_actions_organization_relationships.map(&:user)
+  end
+  # Authorize
 
 end
