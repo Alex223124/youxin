@@ -1,6 +1,13 @@
 require 'spec_helper'
 
 describe Admin::OrganizationsController do
+  before(:each) do
+    @organization = create :organization
+    @request.env["devise.mapping"] = Devise.mappings[:user]
+    @current_user = create :user
+    login_user(@current_user)
+    @organization.authorize(@current_user, Action.options_array)
+  end
 
   describe "GET 'new'" do
     it "returns http success" do
@@ -26,9 +33,8 @@ describe Admin::OrganizationsController do
 
   describe "DELETE 'destroy'" do
     it "should delete an instance" do
-      organization = create :organization
       expect {
-        delete :destroy, id: organization.id
+        delete :destroy, id: @organization.id
       }.to change(Organization, :count).by(-1)
     end
 

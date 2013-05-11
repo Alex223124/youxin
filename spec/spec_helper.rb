@@ -96,8 +96,5 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
-  config.include Devise::TestHelpers, type: :controller
-  config.extend DeviseControllerMacros, type: :controller
-
   config.include FactoryGirl::Syntax::Methods
 end

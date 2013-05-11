@@ -193,6 +193,7 @@ GEM
     simple_form (2.1.0)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
+    six (0.2.0)
     slim (1.3.8)
       temple (~> 0.6.3)
       tilt (~> 1.3.3)
@@ -254,6 +255,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   settingslogic (~> 2.0.9)
   simple_form
+  six (~> 0.2.0)
   slim-rails
   spreadsheet
   uglifier (>= 1.0.3)

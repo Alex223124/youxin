@@ -6,6 +6,7 @@ describe Organization do
 
   describe "Association" do
     it { should have_many(:user_organization_position_relationships) }
+    it { should have_many(:user_actions_organization_relationships) }
   end
 
   describe "Respond to" do
@@ -21,6 +22,8 @@ describe Organization do
     it { should respond_to(:remove_member) }
     it { should respond_to(:add_members) }
     it { should respond_to(:remove_members) }
+    it { should respond_to(:authorize) }
+    it { should respond_to(:authorized_users) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -150,6 +153,26 @@ describe Organization do
         @organization.members.should_not include(@user)
         @organization.members.should_not include(@another_user)
       end
+    end
+  end
+
+  describe "#authorize" do
+    it "should authorize actions to user" do
+      organization.save
+      user = create :user
+      actions = Action.options_array_for(:organization)
+      organization.authorize(user, actions)
+      authorization = organization.user_actions_organization_relationships.where(user_id: user.id).first
+      authorization.actions.should == actions
+    end
+  end
+  describe "#authorized_users" do
+    it "should return the array of authorized users" do
+      organization.save
+      user = create :user
+      actions = Action.options_array_for(:organization)
+      organization.authorize(user, actions)
+      organization.authorized_users.should include(user)
     end
   end
 
