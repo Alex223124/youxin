@@ -9,7 +9,7 @@ table.table
   - @organizations.each do |organization|
     tr
       td 
-        = link_to organization.name, admin_organization_path(organization)
+        = link_to organization.name, members_admin_organization_path(organization)
       td #{organization.parent.nil? ? 'not_exists' : organization.parent.name}
       td
         = link_to 'delete', admin_organization_path(organization), method: :delete
