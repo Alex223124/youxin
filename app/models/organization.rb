@@ -9,6 +9,7 @@ class Organization
 
   belongs_to :parent, class_name: 'Organization'
   has_many :children, class_name: 'Organization', foreign_key: :parent_id
+  has_many :user_organization_position_relationships, dependent: :destroy
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true
@@ -31,11 +32,13 @@ class Organization
   def members
     User.where(:id.in => self.member_ids)
   end
-  def push_member(user)
+  def push_member(user, position = nil)
     user = User.where(id: user).first unless user.is_a?(User)
+    position = Position.where(id: position).first unless position.is_a?(Position)
     if user
       self.push(:member_ids, user.id)
       user.push(:organization_ids, self.id)
+      self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
     end
   end
   def pull_member(user)
@@ -43,11 +46,12 @@ class Organization
     if user
       self.pull(:member_ids, user.id)
       user.pull(:organization_ids, self.id)
+      self.user_organization_position_relationships.where(user_id: user.id).delete
     end
   end
-  def push_members(users)
+  def push_members(users, position = nil)
     users.each do |user|
-      self.push_member(user)
+      self.push_member(user, position)
     end
   end
   def pull_members(users)

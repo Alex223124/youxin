@@ -4,6 +4,10 @@ describe Organization do
   let(:organization) { build :organization }
   subject { organization }
 
+  describe "Association" do
+    it { should have_many(:user_organization_position_relationships) }
+  end
+
   describe "Respond to" do
     it { should respond_to(:name) }
     it { should respond_to(:parent) }
@@ -51,11 +55,12 @@ describe Organization do
       @organization = create :organization
       @user = create :user
       @another_user = create :user
+      @position = create :position
     end
     context "#push_member" do
       it "should add members to organization" do
         @organization.push_member(@user)
-        @organization.members.include?(@user).should be_true
+        @organization.members.should include(@user)
       end
       it "should not add member to organization if it exists in organization" do
         @organization.push_member(@user)
@@ -65,7 +70,7 @@ describe Organization do
       end
       it "should add with providing id" do
         @organization.push_member(@user.id)
-        @organization.members.include?(@user).should be_true
+        @organization.members.should include(@user)
       end
       it "should do nothing if member does not exists" do
         @organization.push_member('not_exist')
@@ -73,11 +78,22 @@ describe Organization do
       end
     end
 
+    context "#push_member with position" do
+      it "should add members to organization with position" do
+        @organization.push_member(@user, @position)
+        @user.position_in_organization(@organization).should == @position
+      end
+      it "should add members to organization with position_id" do
+        @organization.push_member(@user, @position.id)
+        @user.position_in_organization(@organization).should == @position
+      end
+    end
+
     context "#pull_member" do
       it "should remove members from organization" do
         @organization.push_member(@user)
         @organization.pull_member(@user)
-        @organization.members.include?(@user).should be_false
+        @organization.members.should_not include(@user)
       end
 
       it "should do nothing if it is not the member of organization" do
@@ -89,21 +105,33 @@ describe Organization do
       it "should remove with providing id" do
         @organization.push_member(@user)
         @organization.pull_member(@user.id)
-        @organization.members.include?(@user).should be_false
+        @organization.members.should_not include(@user)
       end
     end
 
     context "#push_members" do
       it "should add members" do
         @organization.push_members([@user, @another_user])
-        @organization.members.include?(@user).should be_true
-        @organization.members.include?(@another_user).should be_true
+        @organization.members.should include(@user)
+        @organization.members.should include(@another_user)
       end
 
       it "should add members with providing ids" do
         @organization.push_members([@user.id, @another_user.id])
-        @organization.members.include?(@user).should be_true
-        @organization.members.include?(@another_user).should be_true
+        @organization.members.should include(@user)
+        @organization.members.should include(@another_user)
+      end
+    end
+    context "#push_members with position" do
+      it "should add members with position" do
+        @organization.push_members([@user, @another_user], @position)
+        @user.position_in_organization(@organization).should == @position
+        @another_user.position_in_organization(@organization).should == @position
+      end
+      it "should add members with position_id" do
+        @organization.push_members([@user, @another_user], @position.id)
+        @user.position_in_organization(@organization).should == @position
+        @another_user.position_in_organization(@organization).should == @position
       end
     end
 
@@ -113,14 +141,49 @@ describe Organization do
       end
       it "should remove members" do
         @organization.pull_members([@user, @another_user])
-        @organization.members.include?(@user).should be_false
-        @organization.members.include?(@another_user).should be_false
+        @organization.members.should_not include(@user)
+        @organization.members.should_not include(@another_user)
       end
 
       it "should remove members with providing ids" do
         @organization.pull_members([@user.id, @another_user.id])
-        @organization.members.include?(@user).should be_false
-        @organization.members.include?(@another_user).should be_false
+        @organization.members.should_not include(@user)
+        @organization.members.should_not include(@another_user)
+      end
+    end
+  end
+
+  describe "#user_organization_position_relationships" do
+    before do
+      @organization = create :organization
+      @user = create :user
+      @another_user = create :user
+    end
+
+    context "add" do
+      it "should create a user_organization_position_relationship if not exists" do
+        @organization.push_member(@user)
+        @organization.user_organization_position_relationships.where(user_id: @user.id).count.should == 1
+      end
+      it "should do nothing if the user_organization_position_relationship exists" do
+        @organization.push_member(@user)
+        @organization.push_member(@user)
+        @organization.user_organization_position_relationships.where(user_id: @user.id).count.should == 1
+      end      
+    end
+
+    context "remove" do
+      before(:each) do
+        @organization.push_member(@user)
+      end
+      it "should remove the user_organization_position_relationship" do
+        @organization.pull_member(@user)
+        @organization.user_organization_position_relationships.where(user_id: @user.id).count.should == 0
+      end
+      it "should do nothing if the user_organization_position_relationship does not exist" do
+        @organization.pull_member(@user)
+        @organization.pull_member(@user)
+        @organization.user_organization_position_relationships.where(user_id: @user.id).count.should == 0
       end
     end
   end
@@ -139,7 +202,7 @@ describe Organization do
 
     it "should remove organization from user" do
       @organization.destroy
-      @user.reload.organization_ids.include?(@organization.id).should be_false
+      @user.reload.organization_ids.should_not include(@organization.id)
     end
   end
 
