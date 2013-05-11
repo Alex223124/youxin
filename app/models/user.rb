@@ -50,6 +50,8 @@ class User
 
   attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
 
+  has_many :user_organization_position_relationships, dependent: :destroy
+
   after_destroy do
     organizations.each do |organization|
       organization.pull(:member_ids, self.id)
@@ -70,6 +72,12 @@ class User
   # Organizations
   def organizations
     Organization.where(:id.in => self.organization_ids)
+  end
+  def position_in_organization(organization)
+    user_organization_position_relationships.where(organization_id: organization.id).first.try(:position)
+  end
+  def human_position_in_organization(organization)
+    position_in_organization(organization).try(:name)
   end
 
 end

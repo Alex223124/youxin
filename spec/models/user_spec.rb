@@ -4,11 +4,17 @@ describe User do
   let(:user) { build :user }
   subject { user }
 
+  describe "Association" do
+    it { should have_many(:user_organization_position_relationships) }
+  end
+
   describe "Respond to" do
     it { should respond_to(:name) }
     it { should respond_to(:email) }
     it { should respond_to(:organization_ids) }
     it { should respond_to(:organizations) }
+    it { should respond_to(:position_in_organization) }
+    it { should respond_to(:human_position_in_organization) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -23,6 +29,37 @@ describe User do
     it "should return correctly" do
       @organization.push_member(@user)
       @user.organizations.include?(@organization).should be_true
+    end
+  end
+
+  describe "#position_in_organization" do
+    before do
+      @organization = create :organization
+      @user = create :user
+      @position = create :position
+    end
+    it "should return a position if set" do
+      @organization.add_member(@user, @position)
+      @user.position_in_organization(@organization).should be_kind_of Position
+    end
+    it "should return nil if not_set" do
+      @organization.add_member(@user)
+      @user.position_in_organization(@organization).should be_nil
+    end
+  end
+  describe "#human_position_in_organization" do
+    before do
+      @organization = create :organization
+      @user = create :user
+      @position = create :position
+    end
+    it "should return human position if set" do
+      @organization.add_member(@user, @position)
+      @user.human_position_in_organization(@organization).should == @position.name
+    end
+    it "should return nil if not_set" do
+      @organization.add_member(@user)
+      @user.human_position_in_organization(@organization).should be_nil
     end
   end
 
