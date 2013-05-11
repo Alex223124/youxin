@@ -1,4 +1,9 @@
 class Admin::OrganizationsController < ApplicationController
+  before_filter :find_organization, only: [:destroy]
+  # TODO
+  # create children, require parent
+  # before_filter :authorize_create_organization!, only: [:new, :create]
+  before_filter :authorize_delete_organization!, only: [:destroy]
   def new
     @organization = Organization.new
   end
@@ -22,8 +27,18 @@ class Admin::OrganizationsController < ApplicationController
   end
 
   def destroy
-    @organization = Organization.find(params[:id])
     @organization.destroy if @organization.present?
     redirect_to admin_organizations_path
   end
+
+  private
+  def find_organization
+    @organization = Organization.find(params[:id])
+  end
+  %W{create delete}.each do |action|
+    define_method "authorize_#{action}_organization!" do
+      access_denied! unless can?(current_user, "#{action}_organization".to_sym, @organization)
+    end
+  end
+
 end

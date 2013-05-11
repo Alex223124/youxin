@@ -51,6 +51,7 @@ class User
   attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
 
   has_many :user_organization_position_relationships, dependent: :destroy
+  has_many :user_actions_organization_relationships, dependent: :destroy
 
   after_destroy do
     organizations.each do |organization|
@@ -78,6 +79,12 @@ class User
   end
   def human_position_in_organization(organization)
     position_in_organization(organization).try(:name)
+  end
+  # Organization
+
+  # Authorization
+  def authorized_organizations
+    user_actions_organization_relationships.map(&:organization)
   end
 
 end

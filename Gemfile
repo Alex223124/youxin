@@ -52,5 +52,7 @@ gem 'settingslogic', '~> 2.0.9'
 
 # Authentication
 gem 'devise', '~> 2.2.3'
+# Authorization
+gem 'six', '~> 0.2.0'
 
 gem 'spreadsheet' # parse Excel file
