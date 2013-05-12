@@ -13,6 +13,7 @@ describe Organization do
     it { should respond_to(:name) }
     it { should respond_to(:parent) }
     it { should respond_to(:children) }
+    it { should respond_to(:offspring) }
     it { should respond_to(:members) }
     it { should respond_to(:push_member) }
     it { should respond_to(:pull_member) }
@@ -23,7 +24,10 @@ describe Organization do
     it { should respond_to(:add_members) }
     it { should respond_to(:remove_members) }
     it { should respond_to(:authorize) }
+    it { should respond_to(:authorize_cover_offspring) }
     it { should respond_to(:authorized_users) }
+    it { should respond_to(:deauthorize) }
+    it { should respond_to(:deauthorize_cover_offspring) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -50,6 +54,16 @@ describe Organization do
       organization1 = create :organization, parent: parent 
       organization2 = create :organization, parent: parent 
       parent.child_ids.should == [organization1.id, organization2.id]
+    end
+  end
+
+  describe "#offspring" do
+    it "should return offspring" do
+      parent = create :organization
+      current = create :organization, parent: parent
+      child = create :organization, parent: current
+      feature = create :organization, parent: child
+      [current, child, feature].all? { |organization| parent.offspring.include?(organization) }.should be_true
     end
   end
 
@@ -157,13 +171,95 @@ describe Organization do
   end
 
   describe "#authorize" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @actions = Action.options_array_for(:organization)
+    end
     it "should authorize actions to user" do
-      organization.save
-      user = create :user
-      actions = Action.options_array_for(:organization)
-      organization.authorize(user, actions)
-      authorization = organization.user_actions_organization_relationships.where(user_id: user.id).first
-      authorization.actions.should == actions
+      @organization.authorize(@user, @actions)
+      authorization = @organization.user_actions_organization_relationships.where(user_id: @user.id).first
+      authorization.actions.should == @actions
+    end
+
+    it "should not authorize actions to user cover the offspring" do
+      parent = @organization
+      current = create :organization, parent: parent
+      child = create :organization, parent: current
+      feature = create :organization, parent: child
+      parent.authorize(@user, @actions)
+      [current, child, feature].any? { |organization| organization.authorized_users.include?(@user) }.should be_false
+      [current, child, feature].any? { |organization| @user.authorized_organizations.include?(organization) }.should be_false
+    end
+
+    it "should deauthorize uesr if actions are blank" do
+      @organization.authorize(@user, @actions)
+      @organization.authorize(@user, [])
+      @organization.authorized_users.should_not include(@user)
+    end
+  end
+  describe "#authorize_cover_offspring" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @actions = Action.options_array_for(:organization)
+    end
+    it "should authorize actions to user cover the offspring" do
+      parent = @organization
+      current = create :organization, parent: parent
+      child = create :organization, parent: current
+      feature = create :organization, parent: child
+
+      parent.authorize_cover_offspring(@user, @actions)
+      [parent, current, child, feature].all? { |organization| organization.reload.authorized_users.include?(@user) }.should be_true
+      [parent, current, child, feature].all? { |organization| @user.authorized_organizations.include?(organization) }.should be_true
+    end
+    it "should authorize actions to user for new organization" do
+      @organization.authorize(@user, @actions)
+      @child = create :organization, parent: @organization
+      @child.authorized_users.should include(@user)
+      authorization = @organization.user_actions_organization_relationships.where(user_id: @user.id).first
+      authorization.actions.should == @actions
+    end
+  end
+  describe "#deauthorize" do
+    before(:each) do
+      @user = create :user
+
+      @parent = create :organization
+      @current = create :organization, parent: @parent
+      @child = create :organization, parent: @current
+      @feature = create :organization, parent: @child
+
+      @actions = Action.options_array_for(:organization)
+      @parent.authorize_cover_offspring(@user, @actions)
+    end
+    it "should deauthorize user" do
+      @current.deauthorize(@user)
+      @current.authorized_users.should_not include(@user)
+    end
+    it "should not deauthorize user from offspring and parent" do
+      @current.deauthorize(@user)
+      @child.reload.authorized_users.should include(@user)
+      @parent.reload.authorized_users.should include(@user)
+    end
+  end
+  describe "#deauthorize_cover_offspring" do
+    it "should deauthorize user from offspring" do
+      @user = create :user
+
+      @parent = create :organization
+      @current = create :organization, parent: @parent
+      @child = create :organization, parent: @current
+      @feature = create :organization, parent: @child
+
+      @actions = Action.options_array_for(:organization)
+      @parent.authorize_cover_offspring(@user, @actions)
+
+      @current.deauthorize_cover_offspring(@user)
+      @child.reload.authorized_users.should_not include(@user)
+      @feature.reload.authorized_users.should_not include(@user)
+      @parent.reload.authorized_users.should include(@user)
     end
   end
   describe "#authorized_users" do
