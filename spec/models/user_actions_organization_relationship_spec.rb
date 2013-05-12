@@ -21,6 +21,16 @@ describe UserActionsOrganizationRelationship do
         user_actions_organization_relationship.valid?
         user_actions_organization_relationship.should have(1).error_on(:actions)
       end
+      it "user_id not present" do
+        user_actions_organization_relationship.user_id = nil
+        user_actions_organization_relationship.valid?
+        user_actions_organization_relationship.should have(1).error_on(:user_id)
+      end
+      it "organization_id not present" do
+        user_actions_organization_relationship.organization_id = nil
+        user_actions_organization_relationship.valid?
+        user_actions_organization_relationship.should have(1).error_on(:organization_id)
+      end
     end
 
     context "successed" do

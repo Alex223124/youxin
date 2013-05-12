@@ -181,6 +181,11 @@ describe Organization do
       authorization = @organization.user_actions_organization_relationships.where(user_id: @user.id).first
       authorization.actions.should == @actions
     end
+    it "should authorize actions to user with user_id" do
+      @organization.authorize(@user.id, @actions)
+      authorization = @organization.user_actions_organization_relationships.where(user_id: @user.id).first
+      authorization.actions.should == @actions
+    end
 
     it "should not authorize actions to user cover the offspring" do
       parent = @organization
@@ -196,6 +201,11 @@ describe Organization do
       @organization.authorize(@user, @actions)
       @organization.authorize(@user, [])
       @organization.authorized_users.should_not include(@user)
+    end
+
+    it "should do nothing if user not exist" do
+      @organization.authorize('not_exist', @actions)
+      @organization.authorized_users.should be_blank
     end
   end
   describe "#authorize_cover_offspring" do
@@ -238,10 +248,20 @@ describe Organization do
       @current.deauthorize(@user)
       @current.authorized_users.should_not include(@user)
     end
+    it "should deauthorize user with user_id" do
+      @current.deauthorize(@user.id)
+      @current.authorized_users.should_not include(@user)
+    end
+
     it "should not deauthorize user from offspring and parent" do
       @current.deauthorize(@user)
       @child.reload.authorized_users.should include(@user)
       @parent.reload.authorized_users.should include(@user)
+    end
+    it "should do nothing if user not exist" do
+      expect{
+        @current.deauthorize('not_exist')
+        }.to change(@current.authorized_users, :count).by(0)
     end
   end
   describe "#deauthorize_cover_offspring" do
