@@ -82,6 +82,7 @@ class Organization
   # The new will overwrite the old actions
   def authorize(user, actions)
     user = User.find(user) unless user.is_a?(User)
+    return unless user
     autorization = self.user_actions_organization_relationships.first_or_initialize(user_id: user.id)
     autorization.actions = actions
     autorization.save
@@ -96,6 +97,7 @@ class Organization
   end
   def deauthorize(user)
     user = User.find(user) unless user.is_a?(User)
+    return unless user
     self.user_actions_organization_relationships.where(user_id: user.id).try(:delete)
   end
   def deauthorize_cover_offspring(user)
