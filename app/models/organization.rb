@@ -23,10 +23,22 @@ class Organization
     self.pull_all(:member_ids, self.member_ids)
   end
 
-  def parent_exists
-    if Organization.where(id: self.parent_id).blank?
-      self.errors.add :parent_id, "not_exist"
+  after_create do
+    if self.parent
+      self.parent.user_actions_organization_relationships.each do |relationship|
+        authorization = relationship.clone
+        authorization.organization_id = self.id
+        authorization.save
+      end
     end
+  end
+
+  def offspring
+    organizations ||= self.children
+    self.children.each do |child|
+      organizations |= child.offspring
+    end
+    organizations
   end
   
   # Members
@@ -70,13 +82,33 @@ class Organization
   # The new will overwrite the old actions
   def authorize(user, actions)
     user = User.find(user) unless user.is_a?(User)
-    autorization = user_actions_organization_relationships.first_or_initialize(user_id: user.id)
+    autorization = self.user_actions_organization_relationships.first_or_initialize(user_id: user.id)
     autorization.actions = actions
     autorization.save
+  end
+  def authorize_cover_offspring(user, actions)
+    (self.offspring + [self]).each do |organization|
+      organization.authorize(user, actions)
+    end
   end
   def authorized_users
     user_actions_organization_relationships.map(&:user)
   end
+  def deauthorize(user)
+    user = User.find(user) unless user.is_a?(User)
+    self.user_actions_organization_relationships.where(user_id: user.id).try(:delete)
+  end
+  def deauthorize_cover_offspring(user)
+    (self.offspring + [self]).each do |organization|
+      organization.deauthorize(user)
+    end
+  end
   # Authorize
 
+  private
+  def parent_exists
+    if Organization.where(id: self.parent_id).blank?
+      self.errors.add :parent_id, "not_exist"
+    end
+  end
 end

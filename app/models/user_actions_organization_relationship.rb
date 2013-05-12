@@ -10,6 +10,12 @@ class UserActionsOrganizationRelationship
 
   validate :ensure_actions_inclusion
 
+  after_save do
+    # The same as self.organization.deauthorize(user)
+    # Deauthorize user from the organization
+    self.destroy if self.actions.blank?
+  end
+
   def self.allowed(object, subject)
     return [] unless object.instance_of?(User)
     return [] unless subject.instance_of?(Organization)
