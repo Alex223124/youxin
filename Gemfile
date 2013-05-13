@@ -54,5 +54,7 @@ gem 'settingslogic', '~> 2.0.9'
 gem 'devise', '~> 2.2.3'
 # Authorization
 gem 'six', '~> 0.2.0'
+# Finite state machine
+gem 'workflow_on_mongoid'
 
 gem 'spreadsheet' # parse Excel file

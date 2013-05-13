@@ -7,6 +7,7 @@ describe Organization do
   describe "Association" do
     it { should have_many(:user_organization_position_relationships) }
     it { should have_many(:user_actions_organization_relationships) }
+    it { should have_many(:applications) }
   end
 
   describe "Respond to" do

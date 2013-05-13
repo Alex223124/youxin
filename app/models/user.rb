@@ -52,6 +52,8 @@ class User
 
   has_many :user_organization_position_relationships, dependent: :destroy
   has_many :user_actions_organization_relationships, dependent: :destroy
+  has_many :applications, dependent: :destroy, foreign_key: 'applicant_id'
+  has_many :treated_applications, dependent: :destroy, class_name: 'Application', foreign_key: 'operator_id'
 
   after_destroy do
     organizations.each do |organization|
@@ -86,5 +88,37 @@ class User
   def authorized_organizations
     user_actions_organization_relationships.map(&:organization)
   end
+
+  # Apply for organization
+  def apply_for_organization(organization)
+    organization = Organization.find(organization) unless organization.is_a?(Organization)
+    return false unless organization
+    self.applications.create(organization_id: organization.id)
+  end
+  def applied_for_organization?(organization)
+    organization = Organization.find(organization) unless organization.is_a?(Organization)
+    return false unless organization
+    self.applications.where(organization_id: organization.id).exists?
+  end
+  def accepted_by_organization?(organization)
+    organization = Organization.find(organization) unless organization.is_a?(Organization)
+    return false unless organization
+    return false unless applied_for_organization?(organization)
+    self.applications.where(organization_id: organization.id, state: :accepted).exists?
+  end
+  def operate_application(application, result)
+    application = Application.find(application) unless application.is_a?(Application)
+    return false unless application
+    self.treated_applications << application
+    case result.to_sym
+    when :accepted
+      application.accept!
+    when :rejected
+      application.reject!
+    else
+      false
+    end
+  end
+  # Apply for organization
 
 end

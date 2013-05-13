@@ -11,6 +11,7 @@ class Organization
   has_many :children, class_name: 'Organization', foreign_key: :parent_id
   has_many :user_organization_position_relationships, dependent: :destroy
   has_many :user_actions_organization_relationships, dependent: :destroy
+  has_many :applications, dependent: :destroy
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true
