@@ -4,7 +4,7 @@ FactoryGirl.define do
   sample_name = %w{adele john lucy fah david}.sample
   sequence(:name) { |n| "#{sample_name}#{n}" }
   sequence(:email) { |n| "#{sample_name}#{n}@y.x" }
-  factory :user do
+  factory :user, aliases: [:applicant, :operator] do
     name
     email
     password '12345678'
