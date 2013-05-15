@@ -6,6 +6,12 @@ defaults: &defaults
   app_name: youxin
   admin_emails:
     - admin@y.x
+  smtp_settings:
+    address: smtp.gmail.com
+    port: 587
+    domain: u-xin.com
+    user_name: youxin.beta@gmail.com
+    password: 'hdtyzxyouxin#'
 
 development:
   <<: *defaults
