@@ -50,8 +50,8 @@ class Organization
     user = User.where(id: user).first unless user.is_a?(User)
     position = Position.where(id: position).first unless position.is_a?(Position)
     if user
-      self.push(:member_ids, user.id)
-      user.push(:organization_ids, self.id)
+      self.add_to_set(:member_ids, user.id)
+      user.add_to_set(:organization_ids, self.id)
       self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
     end
   end
