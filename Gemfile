@@ -58,3 +58,5 @@ gem 'six', '~> 0.2.0'
 gem 'workflow_on_mongoid'
 
 gem 'spreadsheet' # parse Excel file
+
+gem 'nokogiri', '~> 1.5.9' # parse HTML to Plain Text

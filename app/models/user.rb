@@ -54,6 +54,8 @@ class User
   has_many :user_actions_organization_relationships, dependent: :destroy
   has_many :applications, dependent: :destroy, foreign_key: 'applicant_id'
   has_many :treated_applications, dependent: :destroy, class_name: 'Application', foreign_key: 'operator_id'
+  has_many :posts, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
+  has_many :receipts, dependent: :destroy
 
   after_destroy do
     organizations.each do |organization|

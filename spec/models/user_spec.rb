@@ -9,6 +9,8 @@ describe User do
     it { should have_many(:user_actions_organization_relationships) }
     it { should have_many(:applications) }
     it { should have_many(:treated_applications) }
+    it { should have_many(:posts) }
+    it { should have_many(:receipts) }
   end
 
   describe "Respond to" do
@@ -253,6 +255,28 @@ describe User do
         user.reload
       end
       its(:name) { should_not == 'name-modify' }
+    end
+  end
+
+  describe "#receipts" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create(:post, author: @author,
+                           organization_ids: [@organization.id],
+                           body_html: '<div>test</div>')
+    end
+    context "read" do
+      it "should create" do
+        @author.receipts.read.first.post.should == @post
+      end
+    end
+    context "unread" do
+      it "should not create" do
+        @author.receipts.unread.should be_blank
+      end      
     end
   end
 end
