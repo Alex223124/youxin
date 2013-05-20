@@ -33,6 +33,7 @@ class Post
       where(read: false, origin: false)
     end
   end
+  has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
 
   def recipients
     User.where(:id.in => self.recipient_ids)

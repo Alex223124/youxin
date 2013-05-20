@@ -7,6 +7,7 @@ describe Post do
   describe "Association" do
     it { should belong_to(:author) }
     it { should have_many(:receipts) }
+    it { should have_many(:attachments) }
   end
 
   describe "Respond to" do

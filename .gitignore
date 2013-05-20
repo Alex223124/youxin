@@ -22,4 +22,4 @@ pickle-email-*.html
 /config/mongoid.yml
 /config/youxin.yml
 
-/public/uploads/*
+/public/*/*
