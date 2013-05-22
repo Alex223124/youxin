@@ -204,6 +204,37 @@ describe User do
     end
   end
 
+  describe "#position_in_organization" do
+    before do
+      @organization = create :organization
+      @user = create :user
+      @position = create :position
+    end
+    it "should return a position if set" do
+      @organization.add_member(@user, @position)
+      @user.position_in_organization(@organization).should be_kind_of Position
+    end
+    it "should return nil if not_set" do
+      @organization.add_member(@user)
+      @user.position_in_organization(@organization).should be_nil
+    end
+  end
+  describe "#human_position_in_organization" do
+    before do
+      @organization = create :organization
+      @user = create :user
+      @position = create :position
+    end
+    it "should return human position if set" do
+      @organization.add_member(@user, @position)
+      @user.human_position_in_organization(@organization).should == @position.name
+    end
+    it "should return nil if not_set" do
+      @organization.add_member(@user)
+      @user.human_position_in_organization(@organization).should be_nil
+    end
+  end
+
   describe "#destroy" do
     before do
       @organization = create :organization
