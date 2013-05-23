@@ -231,4 +231,30 @@ describe Post do
     end
   end
 
+  describe "attachments" do
+    before(:each) do
+      @organization = create :organization
+      @author = create :user
+      @user = create :user
+      @organization.push_member(@user)
+
+      @file_path = Rails.root.join("spec/factories/data/attachment_file.txt")
+      @file = Rack::Test::UploadedFile.new(@file_path)
+    end
+    it "should not append attachments" do
+      attachment_ids = [@user.file_attachments.create(storage: @file),
+                        @author.file_attachments.create(storage: @file)].map(&:id)
+      post = build :post, author: @author, organization_ids: [@organization.id], attachment_ids: attachment_ids
+      post.save
+      post.should have(1).error_on(:attachment_ids)
+    end
+    it "should append attachments" do
+      attachment_ids = [@author.file_attachments.create(storage: @file),
+                        @author.file_attachments.create(storage: @file)].map(&:id)
+      post = build :post, author: @author, organization_ids: [@organization.id], attachment_ids: attachment_ids
+      post.save
+      post.should be_valid
+    end
+  end
+
 end

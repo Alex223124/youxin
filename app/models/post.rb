@@ -14,8 +14,9 @@ class Post
   validates :author_id, presence: true
   validates :organization_ids, presence: true
   validates :body_html, presence: true
-
-  attr_accessible :title, :body_html
+  validate :ensure_attachment_ids
+  attr_accessible :title, :body, :body_html, :organization_ids,
+                  :attachment_ids, :author_id, :organization_ids
 
   before_create do
     parse_body
@@ -61,10 +62,10 @@ class Post
     until org_id.nil?
       organization = Organization.find(org_id)
       if organization.offspring.count != 0 && organization.offspring.map(&:id) - org_ids == []
-        self.organization_clan_ids += [org_id]
+        self.organization_clan_ids |= [org_id]
         org_ids -= organization.offspring.map(&:id)
       else
-        self.organization_ids += [org_id]
+        self.organization_ids |= [org_id]
       end
       org_id = org_ids.shift
     end
@@ -72,9 +73,9 @@ class Post
     self.organizations.each do |organization|
       (organization.members - [self.author]).each do |member|
         receipt = self.receipts.first_or_create(user: member)
-        receipt.organization_ids += [organization.id]
+        receipt.organization_ids |= [organization.id]
         receipt.save
-        self.recipient_ids += [member.id]
+        self.recipient_ids |= [member.id]
       end
     end
 
@@ -82,9 +83,9 @@ class Post
       members = ([organization_clans] + organization_clans.offspring).map(&:members).flatten.uniq - [self.author]
       members.each do |member|
         receipt = self.receipts.first_or_create(user: member)
-        receipt.organization_ids += [organization_clans.id]
+        receipt.organization_ids |= [organization_clans.id]
         receipt.save
-        self.recipient_ids += [member.id]
+        self.recipient_ids |= [member.id]
       end
     end
 
@@ -93,5 +94,14 @@ class Post
                          organization_ids: self.organization_ids + self.organization_clan_ids,
                          read: true,
                          origin: true)
+  end
+  def ensure_attachment_ids
+    self.attachments.each do |attachment|
+      attachment = attachment.reload
+
+      unless (attachment.user == self.author  && attachment.post_id == nil)
+        self.errors.add :attachment_ids, :inclusion
+      end
+    end
   end
 end

@@ -86,7 +86,7 @@ class Organization
   def authorize(user, actions)
     user = User.find(user) unless user.is_a?(User)
     return unless user
-    autorization = self.user_actions_organization_relationships.first_or_initialize(user_id: user.id)
+    autorization = self.user_actions_organization_relationships.where(user_id: user.id).first_or_initialize
     autorization.actions = actions
     autorization.save
   end

@@ -13,4 +13,8 @@ Youxin::Application.routes.draw do
   end
 
   get '/uploads/avatar/*path' => 'gridfs#serve'
+
+  require 'api'
+  mount Youxin::API => '/'
+
 end

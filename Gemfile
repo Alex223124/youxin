@@ -40,6 +40,7 @@ group :development, :test do
   gem 'guard-spork' # speed up test
 
   gem 'quiet_assets', '~> 1.0.2' # disable assets log
+  gem 'faker' # fake data
 end
 
 gem 'slim-rails' # html template
@@ -60,3 +61,6 @@ gem 'workflow_on_mongoid'
 gem 'spreadsheet' # parse Excel file
 
 gem 'nokogiri', '~> 1.5.9' # parse HTML to Plain Text
+
+gem 'grape', '~> 0.4.1' # API
+gem 'grape-entity', '~> 0.3.0'

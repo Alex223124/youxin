@@ -7,5 +7,6 @@ FactoryGirl.define do
     sequence(:body_html) { |n| "body_html-#{n}" }
     recipient_ids []
     organization_ids [1]
+    attachment_ids []
   end
 end

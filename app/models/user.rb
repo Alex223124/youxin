@@ -7,7 +7,8 @@ class User
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :token_authenticatable
 
   ## Database authenticatable
   field :email,              type: String, default: ""
@@ -39,7 +40,7 @@ class User
   # field :locked_at,       type: Time
 
   ## Token authenticatable
-  # field :authentication_token, type: String
+  field :authentication_token, type: String
 
   field :name, type: String
   field :organization_ids, type: Array, default: []
@@ -65,6 +66,11 @@ class User
       where(favoriteable_type: 'Receipt')
     end
   end
+  has_many :file_attachments, class_name: 'Attachment::File', dependent: :destroy
+  has_many :image_attachments, class_name: 'Attachment::Image', dependent: :destroy
+
+  before_save :ensure_authentication_token!
+  alias_attribute :private_token, :authentication_token
 
   after_destroy do
     organizations.each do |organization|
@@ -96,8 +102,17 @@ class User
   # Organization
 
   # Authorization
-  def authorized_organizations
-    user_actions_organization_relationships.map(&:organization)
+  def authorized_organizations(actions = nil)
+    if actions
+      actions.map(&:to_sym)
+      authorized_orgs = []
+      self.user_actions_organization_relationships.each do |relationship|
+        authorized_orgs << relationship.organization if actions - relationship.actions == []
+      end
+      authorized_orgs
+    else
+      self.user_actions_organization_relationships.map(&:organization)
+    end
   end
 
   # Apply for organization

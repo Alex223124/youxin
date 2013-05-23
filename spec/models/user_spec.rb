@@ -168,12 +168,28 @@ describe User do
   end
 
   describe "#authorized_organizations" do
-    it "should return the array of authorized organizations" do
-      @organization = create :organization
+    before(:each) do
+      @organization1 = create :organization
+      @organization2 = create :organization
+      @organization3 = create :organization
       @user = create :user
-      actions = Action.options_array_for(:organization)
-      @organization.authorize(@user, actions)
-      @user.authorized_organizations.should include(@organization)
+      @actions1 = Action.options_array_for(:organization)
+      @actions2 = Action.options_array_for(:youxin)
+      @organization1.authorize(@user, @actions1)
+      @organization2.authorize(@user, @actions2)
+      @organization3.authorize(@user, @actions1 + @actions2)
+    end
+    it "should return the array of authorized organizations" do
+      @user.authorized_organizations.should include(@organization1)
+      @user.authorized_organizations.should include(@organization2)
+      @user.authorized_organizations.should include(@organization3)
+    end
+    it "should return the array of authorized organizations with actions" do
+      @user.authorized_organizations([:create_organization]).should include(@organization1)
+      @user.authorized_organizations([:create_organization]).should include(@organization3)
+      @user.authorized_organizations([:create_youxin]).should include(@organization2)
+      @user.authorized_organizations([:create_youxin]).should include(@organization3)
+      @user.authorized_organizations([:create_youxin, :create_organization]).should include(@organization3)
     end
   end
 

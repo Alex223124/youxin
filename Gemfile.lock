@@ -30,6 +30,7 @@ GEM
       multi_json (~> 1.0)
     angularjs-rails (1.0.6)
     arel (3.0.2)
+    backports (2.6.7)
     bcrypt-ruby (3.0.1)
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
@@ -59,6 +60,7 @@ GEM
       execjs
     coffee-script-source (1.6.2)
     database_cleaner (0.9.1)
+    descendants_tracker (0.0.1)
     devise (2.2.3)
       bcrypt-ruby (~> 3.0)
       orm_adapter (~> 0.1)
@@ -73,8 +75,23 @@ GEM
     factory_girl_rails (4.2.1)
       factory_girl (~> 4.2.0)
       railties (>= 3.0.0)
+    faker (1.1.2)
+      i18n (~> 0.5)
     ffi (1.8.1)
     formatador (0.2.4)
+    grape (0.4.1)
+      activesupport
+      builder
+      hashie (>= 1.2.0)
+      multi_json (>= 1.3.2)
+      multi_xml (>= 0.5.2)
+      rack (>= 1.3.0)
+      rack-accept
+      rack-mount
+      virtus
+    grape-entity (0.3.0)
+      activesupport
+      multi_json (>= 1.3.2)
     growl (1.0.3)
     guard (1.8.0)
       formatador (>= 0.2.4)
@@ -89,6 +106,7 @@ GEM
       childprocess (>= 0.2.3)
       guard (>= 1.1)
       spork (>= 0.8.4)
+    hashie (2.0.5)
     hike (1.2.2)
     i18n (0.6.1)
     journey (1.0.4)
@@ -128,6 +146,7 @@ GEM
       mongoid
     moped (1.4.5)
     multi_json (1.7.2)
+    multi_xml (0.5.3)
     nokogiri (1.5.9)
     origin (1.0.11)
     orm_adapter (0.4.0)
@@ -139,8 +158,12 @@ GEM
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.4.5)
+    rack-accept (0.4.5)
+      rack (>= 0.4)
     rack-cache (1.2)
       rack (>= 0.4)
+    rack-mount (0.8.3)
+      rack (>= 1.0.0)
     rack-ssl (1.3.3)
       rack
     rack-test (0.6.2)
@@ -222,6 +245,9 @@ GEM
     uglifier (2.0.1)
       execjs (>= 0.3.0)
       multi_json (~> 1.0, >= 1.0.2)
+    virtus (0.5.4)
+      backports (~> 2.6.1)
+      descendants_tracker (~> 0.0.1)
     warden (1.2.1)
       rack (>= 1.0)
     workflow (1.0.0)
@@ -243,6 +269,9 @@ DEPENDENCIES
   database_cleaner
   devise (~> 2.2.3)
   factory_girl_rails
+  faker
+  grape (~> 0.4.1)
+  grape-entity (~> 0.3.0)
   growl
   guard-rspec (~> 2.5.4)
   guard-spork
