@@ -54,7 +54,7 @@ describe Organization do
       parent = organization
       organization1 = create :organization, parent: parent 
       organization2 = create :organization, parent: parent 
-      parent.child_ids.should == [organization1.id, organization2.id]
+      (parent.child_ids - [organization1.id, organization2.id]).should be_blank
     end
   end
 

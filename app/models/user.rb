@@ -57,6 +57,8 @@ class User
   has_many :posts, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :receipts, dependent: :destroy
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
+  has_many :forms, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
+  has_many :collections, dependent: :destroy
 
   after_destroy do
     organizations.each do |organization|

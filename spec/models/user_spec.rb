@@ -12,6 +12,8 @@ describe User do
     it { should have_many(:posts) }
     it { should have_many(:receipts) }
     it { should have_many(:attachments) }
+    it { should have_many(:forms) }
+    it { should have_many(:collections) }
   end
 
   describe "Respond to" do
