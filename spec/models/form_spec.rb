@@ -13,6 +13,7 @@ describe Form do
     it { should have_many(:radio_buttons) }
     it { should have_many(:check_boxes) }
     it { should have_many(:number_fields) }
+    it { should belong_to(:post) }
   end
 
   describe "Respond to" do

@@ -5,7 +5,7 @@ class Form
 
   field :title, type: String
 
-  attr_accessible :title, :text_fields_attributes, :text_areas_attributes,
+  attr_accessible :title, :post_id, :text_fields_attributes, :text_areas_attributes,
                   :radio_buttons_attributes, :check_boxes_attributes, :number_fields_attributes
 
   validates :title, presence: true

@@ -43,5 +43,21 @@ module Youxin
       expose :post, using: Entities::Post
     end
 
+    class Input < Grape::Entity
+      expose :id, :_type, :label, :help_text, :required, :identifier, :position
+      # text_field
+      # text_area
+      # number_field
+      expose :default_value
+      # radio_button
+      # check_box
+      expose :options
+    end
+
+    class Form < Grape::Entity
+      expose :id, :title, :created_at
+      expose :inputs, using: Entities::Input
+    end
+
   end
 end

@@ -57,6 +57,12 @@ module Youxin
       message << "\"" + attribute.to_s + "\" not given"
       render_api_error!(message.join(' '), 400)
     end
+    def not_found!(resource = nil)
+      message = ["404"]
+      message << resource if resource
+      message << "Not Found"
+      render_api_error!(message.join(' '), 404)
+    end
     def fail!(errors = nil)
       if errors
         messages = errors.messages
