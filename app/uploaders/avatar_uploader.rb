@@ -18,7 +18,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
     # "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
-    "/uploads/avatar"
+    "/uploads/avatar/#{model.class.to_s.underscore}"
   end
 
   # Provide a default URL as a default if there hasn't been a file uploaded:
@@ -27,7 +27,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
     # asset_path("avatar/" + [version_name, "default.png"].compact.join('_'))
   
     # "/images/fallback/" + [version_name, "default.png"].compact.join('_')
-    "/assets/avatar/" + [version_name, "default.png"].compact.join('_')
+    "/assets/avatar/#{model.class.to_s.underscore}/" + [version_name, "default.png"].compact.join('_')
   end
 
   # Process files as they are uploaded:

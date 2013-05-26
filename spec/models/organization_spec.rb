@@ -380,7 +380,17 @@ describe Organization do
           its(:valid?) { should be_true }
         end
       end
-
     end
+
+    context "avatar" do
+      it "return url of avatar" do
+        avatar_path = Rails.root.join("spec/factories/images/avatar.png")
+        organization = create :organization, avatar: Rack::Test::UploadedFile.new(avatar_path)
+        organization.avatar.file.should_not be_blank
+        organization.avatar.url.should_not be_blank
+        organization.avatar.url.should == "/uploads/avatar/organization/#{organization.id}.png"
+      end
+    end
+
   end
 end
