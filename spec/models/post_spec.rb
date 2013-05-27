@@ -8,6 +8,7 @@ describe Post do
     it { should belong_to(:author) }
     it { should have_many(:receipts) }
     it { should have_many(:attachments) }
+    it { should have_many(:comments) }
   end
 
   describe "Respond to" do
@@ -212,6 +213,22 @@ describe Post do
       post = create :post, author: @author, organization_ids: [@organization.id], body_html: body_html
       post.body.should == "Head twohello test!"
     end
+  end
+
+  describe "#comments" do
+    before(:each) do
+      @organization = create :organization
+      @author = create :user
+      @post = create :post, author: @author, organization_ids: [@organization.id]
+    end
+
+    it "should return the array of comments" do
+      @post.comments.should be_kind_of Array
+      @post.comments.each do |comment|
+        comment.should be_kind_of Comment
+      end
+    end
+
   end
 
 end
