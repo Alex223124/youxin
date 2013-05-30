@@ -1,0 +1,45 @@
+@import "bootstrap/mixins";
+
+.sidebar {
+  width: 200px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  .brand {
+    padding: 18px;
+  }
+}
+.main-container {
+  margin-left: 200px;
+  height: 100%;
+  position: relative;
+  .main-content {
+    .sub-nav {
+      margin: 0;
+      padding: 0 10px;
+      background: #BDC3C7;
+      @include border-top-left-radius(5px);
+    }
+    .posts {
+      position: absolute;
+      top: 80px;
+      right: 0;
+      bottom: 0;
+      background: #f3f3f3;
+      .unread-posts, .read-posts {
+        width: 50%;
+        background: whitesmoke;
+        overflow-y: scroll;
+        height: 100%;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+      .unread-posts {
+        background: #2ECC71;
+      }
+      .read-posts {
+      }
+    }
+  }
+}

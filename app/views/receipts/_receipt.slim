@@ -1,0 +1,203 @@
+.post
+  .content
+    .created_at.pull-right
+      small.timeago.muted datetime="#{receipt.created_at}"
+    .avatar
+      = image_tag receipt.author.avatar.url(:small), class: 'pull-left'
+    .name
+      = link_to receipt.author.name, '#'
+    .organizations
+      = receipt.organizations.map{ |organization| link_to organization.name, '#', class: 'organization' }.join(', ').html_safe
+    .details
+      span.title
+        = receipt.post.title
+      span.body
+        = receipt.post.body
+    .tools
+      a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="##{receipt.id}-comments" data-parent="##{receipt.id}-additions"
+        i.icon-comments
+        | 评论
+      a.favorite-btn.btn.btn-link.pull-right href='#'
+        i.icon-heart
+        | 收藏
+
+      a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="##{receipt.id}-attachments" data-parent="##{receipt.id}-additions"
+        i.icon-file-alt
+        | 附件
+      a.forms-btn.btn.btn-link data-toggle="collapse" data-target="##{receipt.id}-forms" data-parent="##{receipt.id}-additions"
+        i.icon-table
+        | 表格
+      a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="##{receipt.id}-recipients" data-parent="##{receipt.id}-additions"
+        i.icon-eye-open
+        | 未读名单
+  .additions id="#{receipt.id}-additions"
+    .accordion-group.attachments-box
+      .collapse id="#{receipt.id}-attachments"
+        .attachments
+          .attachment
+            = link_to image_tag('/attachments/thumb_fe304d799cceea0075c5b8c5a1251359', size: '48x66'), 'javascript:;', class: 'image pull-left popuper', "data-origin-dimension" => "903,523", "data-origin-src" => "/attachments/fe304d799cceea0075c5b8c5a1251359", "data-origin-name" => "screenshot.png", title: '点击预览'
+            .caption
+              = link_to 'logologologologologologologologologologologologologo.png', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+          .attachment
+            = link_to image_tag('file-extension/pdf.png', size: '48x66'), '#', class: 'image pull-left'
+            .caption
+              = link_to 'logo.pptx', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+          .attachment
+            = link_to image_tag('file-extension/pdf.png', size: '48x66'), '#', class: 'image pull-left'
+            .caption
+              = link_to 'logo.pptx', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+          .attachment
+            = link_to image_tag('file-extension/pdf.png', size: '48x66'), '#', class: 'image pull-left'
+            .caption
+              = link_to 'logo.pptx', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+          .attachment
+            = link_to image_tag('file-extension/pdf.png', size: '48x66'), '#', class: 'image pull-left'
+            .caption
+              = link_to 'logo.pptx', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+          .attachment
+            = link_to image_tag('file-extension/pdf.png', size: '48x66'), '#', class: 'image pull-left'
+            .caption
+              = link_to 'logo.pptx', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+          .attachment
+            = link_to image_tag('file-extension/pptx.png', size: '48x66'), '#', class: 'image pull-left'
+            .caption
+              = link_to 'logo.pptx', '#', class: 'name'
+              small.size.muted 110kb
+              p
+                = link_to '下载', '#'
+    .accordion-group.forms-box
+      .collapse id="#{receipt.id}-forms" forms
+    .accordion-group.recipients-box
+      .collapse.in id="#{receipt.id}-recipients"
+        .recipients
+          .recipient
+            .piece
+              span.name 张三
+              i.icon-envelope
+          .recipient
+            .piece
+              i.icon-ok.pull-right
+              span.name 张三三
+              i.icon-envelope
+          .recipient
+            .piece
+              i.icon-ok.pull-right
+              span.name 张三三
+          .recipient
+            .piece
+              span.name 张三三
+              i.icon-envelope
+          .recipient
+            .piece
+              i.icon-ok.pull-right
+              span.name 张三三
+              i.icon-envelope
+          .recipient
+            .piece
+              i.icon-ok.pull-right
+              span.name 张三三张三三
+          .recipient
+            .piece
+              i.icon-ok.pull-right
+              span.name 张三三
+          .recipient
+            .piece
+              span.name 张三三
+              i.icon-envelope
+          .recipient
+            .piece
+              i.icon-ok.pull-right
+              span.name 张三三
+              i.icon-envelope
+
+
+    .accordion-group.comments-box
+      .collapse id="#{receipt.id}-comments"
+        .reply-box
+          textarea.input-block-level placeholder="write something ..." rows="1"
+          .tools
+            a.btn.btn-link.btn-small.btn-cancel cancel
+            a.btn.btn-success.btn-small reply
+        .comment
+          .avatar
+            = image_tag receipt.author.avatar.url(:small), size: "32x32", class: 'pull-left'
+          .content
+            a.reply-btn.pull-right
+              | 回复
+              i.icon-reply
+            span.name
+              = link_to '张三', '#'
+            span.created_at
+              small.timeago.muted datetime="#{receipt.created_at}"
+            .body
+              | 【海鲜配啤酒 痛风跟着走】炎炎夏日，很多人喜欢冰凉的啤酒搭配美味的海鲜，但有种说法是"海鲜配啤酒，痛风跟着走。"专家表示，啤酒和海鲜都属于高嘌呤食品，大量地进食易形成痛风。除海鲜、啤酒之外，肉类、豆制品、动物内脏中也含有大量的嘌呤，不节制患上痛风的几率也会增加。吃货们要注意哦！！
+        .comment
+          .avatar
+            = image_tag receipt.author.avatar.url(:small), size: "32x32", class: 'pull-left'
+          .content
+            a.reply-btn.pull-right
+              | 回复
+              i.icon-reply
+            span.name
+              = link_to '张三', '#'
+            span.created_at
+              small.timeago.muted datetime="#{receipt.created_at}"
+            .body
+              | 管理员发优信时选择组织
+        .comment
+          .avatar
+            = image_tag receipt.author.avatar.url(:small), size: "32x32", class: 'pull-left'
+          .content
+            a.reply-btn.pull-right
+              | 回复
+              i.icon-reply
+            span.name
+              = link_to '张三', '#'
+            span.created_at
+              small.timeago.muted datetime="#{receipt.created_at}"
+            .body
+              | 【俞敏洪：未来网上教育将占到40%】近年来互联网教育火热，很多人在讨论互联网教育对传统线下培训模式造成的冲击和挑战，教育培训公司应该如何应对这种趋势、如何处理线上线下的关系？对此，新东方教育科技集团董事长兼首席执行官俞敏洪给出了自己对此的看法。
+        .comment
+          .avatar
+            = image_tag receipt.author.avatar.url(:small), size: "32x32", class: 'pull-left'
+          .content
+            a.reply-btn.pull-right
+              | 回复
+              i.icon-reply
+            span.name
+              = link_to '张三', '#'
+            span.created_at
+              small.timeago.muted datetime="#{receipt.created_at}"
+            .body
+              | #美空MOKO#昨晚几个哥们吃饭，其中一备考公务员的哥们说：“这尼玛公务员考试怎么什么题目都有啊……天文，地理，人文，历史都有。”另一个哥们悠悠的来了一句：“公务员上班都是聊天，知识面不广谁跟你聊啊……”
+        .comment
+          .avatar
+            = image_tag receipt.author.avatar.url(:small), size: "32x32", class: 'pull-left'
+          .content
+            a.reply-btn.pull-right
+              | 回复
+              i.icon-reply
+            span.name
+              = link_to '张三', '#'
+            span.created_at
+              small.timeago.muted datetime="#{receipt.created_at}"
+            .body
+              | 【在线教育机构的困境：缺乏互联网基因】互联网的本质是基于用户心理的服务，但至少到目前为止，互联网对教育机构的作用仅限于品牌和招生通路的工具，而远远不是教学服务通路。因此，传统教育机构能否扛起在线教育的大旗，其实已经不是教育问题，而是互联网基因的问题了。@张迪欧 http://t.cn/zHJCK7F

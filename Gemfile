@@ -41,6 +41,7 @@ group :test do
   gem 'guard-spork' # speed up test
 end
 group :development, :test do
+  gem 'thin'
   gem 'pry-rails'
   gem 'pry-remote'
   gem 'pry-nav'
@@ -56,6 +57,7 @@ gem 'slim-rails' # html template
 gem 'bootstrap-sass', '~> 2.3.1.0' # bootstrap
 gem 'angularjs-rails', '~> 1.0.6' # angularjs
 gem 'simple_form'
+gem 'font-awesome-sass-rails'
 
 # Youxin settings
 gem 'settingslogic', '~> 2.0.9'

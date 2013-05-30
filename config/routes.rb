@@ -1,5 +1,5 @@
 Youxin::Application.routes.draw do
-  root to: 'admin/users#index'
+  root to: 'receipts#index'
   devise_for :users
 
   namespace :admin do

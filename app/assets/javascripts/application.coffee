@@ -13,7 +13,25 @@
 #= require jquery
 #= require jquery_ujs
 #= require bootstrap
+#= require angularjs
+#= require timeago
+#= require locales/timeago.zh-cn
+#= require popuper
 #= require notifications
+#= require_self
 
-$(document).ready ->
+window.App =
+  enableTemeago : () ->
+    $('.timeago').timeago({selector: 'small.timeago'})
+  enableReplyBox : () ->
+    $('.main-content').on 'focus', 'textarea', ->
+      $(this).css('height', '60px')
+      $(this).closest('.reply-box').find('.tools').show()
+    $('.main-content').on 'click', 'a.btn-cancel', ->
+      $(this).closest('.reply-box').find('textarea').css('height', '20px').val('')
+      $(this).closest('.tools').hide()
+
+$ ->
+  App.enableTemeago()
+  App.enableReplyBox()
   Youxin.initNotificationSubscribe()
