@@ -16,7 +16,9 @@ describe Comment do
   describe "#create" do
     before(:each) do
       @organization = create :organization
+      @user = create :user
       @author = create :user
+      @organization.push_member(@user)
       @post = create :post, author: @author, organization_ids: [@organization.id]
     end
 
@@ -29,7 +31,7 @@ describe Comment do
 
       it "with commentable_id and commentable_type" do
         @comment = Comment.create attributes_for(:comment).merge({
-          commentable_id: @post.id, commentable_type: @post.class
+          commentable_id: @post.id, commentable_type: @post.class, user_id: @user.id
         })
         @comment.should be_valid
       end
@@ -42,6 +44,7 @@ describe Comment do
       end
       it "when not given commentable" do
         @comment = Comment.create attributes_for(:comment)
+        @comment.should have(1).error_on(:user_id)
         @comment.should have(1).error_on(:commentable_id)
         @comment.should have(1).error_on(:commentable_type)
       end

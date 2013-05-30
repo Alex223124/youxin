@@ -59,6 +59,7 @@ class User
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
   has_many :forms, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :collections, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy
 
   after_destroy do
     organizations.each do |organization|

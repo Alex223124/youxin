@@ -14,6 +14,7 @@ describe User do
     it { should have_many(:attachments) }
     it { should have_many(:forms) }
     it { should have_many(:collections) }
+    it { should have_many(:comments) }
   end
 
   describe "Respond to" do
@@ -311,6 +312,22 @@ describe User do
       it "should not create" do
         @author.receipts.unread.should be_blank
       end      
+    end
+  end
+
+  describe "#comments" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create(:post, author: @author,
+                           organization_ids: [@organization.id],
+                           body_html: '<div>test</div>')
+    end
+    it "should create comment" do
+      @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
+      @comment.should be_valid
     end
   end
 end
