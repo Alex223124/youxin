@@ -15,6 +15,7 @@ describe User do
     it { should have_many(:forms) }
     it { should have_many(:collections) }
     it { should have_many(:comments) }
+    it { should have_many(:favorites) }
   end
 
   describe "Respond to" do
@@ -328,6 +329,28 @@ describe User do
     it "should create comment" do
       @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
       @comment.should be_valid
+    end
+  end
+
+  describe "#favorites" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create(:post, author: @author,
+                           organization_ids: [@organization.id],
+                           body_html: '<div>test</div>')
+    end
+    it "should create comment" do
+      @comment = @post.favorites.create attributes_for(:comment).merge({ user_id: @user.id })
+      @comment.should be_valid
+    end
+    it "should return an array of comments" do
+      @comment = @post.favorites.create attributes_for(:comment).merge({ user_id: @user.id })
+      @user.favorites.each do |favorite|
+        favorite.should be_kind_of Favorite
+      end
     end
   end
 end
