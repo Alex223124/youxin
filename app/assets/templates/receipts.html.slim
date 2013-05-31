@@ -1,0 +1,107 @@
+.unread-posts.pull-left
+  .post ng-repeat="unread_receipt in unread_receipts.data"
+    .content
+      .created_at.pull-right
+        small.timeago.muted datetime="{{unread_receipt.created_at}}"
+      .avatar
+        img.pull-left ng-src="{{unread_receipt.author.avatar}}"
+      .name
+        a href="/users/{{unread_receipt.author.name}}" {{unread_receipt.author.avatar}}
+      .organizations
+        a href="#" class="organization" organization
+      .details
+        span.title receipt.post.title
+        span.body receipt.post.body
+      .tools
+        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="{{unread_receipt._id}}-comments" data-parent="{{unread_receipt._id}}-additions"
+          i.icon-comments
+          | 评论
+        a.favorite-btn.btn.btn-link.pull-right href='#'
+          i.icon-heart
+          | 收藏
+
+        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt._id}}-attachments" data-parent="{{unread_receipt._id}}-additions"
+          i.icon-file-alt
+          | 附件
+        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt._id}}-forms" data-parent="{{unread_receipt._id}}-additions"
+          i.icon-table
+          | 表格
+        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt._id}}-recipients" data-parent="{{unread_receipt._id}}-additions"
+          i.icon-eye-open
+          | 未读名单
+    .additions id="{{unread_receipt._id}}-additions"
+      .accordion-group.attachments-box
+        .collapse.in id="{{unread_receipt._id}}-attachments"
+          .attachments
+            .attachment
+              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="/attachments/fe304d799cceea0075c5b8c5a1251359" data-origin-name="screenshot.png" title='点击预览'
+                img src="/attachments/thumb_fe304d799cceea0075c5b8c5a1251359" width="48" height="66"
+              .caption
+                a.name href="#" logologologologologologologologologologologologologo.png
+                small.size.muted 110kb
+                p
+                  a href="#" 下载
+            .attachment
+              a.image.pull-left href="#"
+                img scr="file-extension/pdf.png" width="48" height="66"
+              .caption
+                a.name href="#" logo.pptx
+                small.size.muted 110kb
+                p
+                  a href="#" 下载
+      .accordion-group.forms-box
+        .collapse id="{{unread_receipt._id}}-forms" forms
+      .accordion-group.recipients-box
+        .collapse id="{{unread_receipt._id}}-recipients"
+          .recipients
+            .recipient
+              .piece
+                span.name 张三
+                i.icon-envelope
+            .recipient
+              .piece
+                i.icon-ok.pull-right
+                span.name 张三三
+                i.icon-envelope
+            .recipient
+              .piece
+                i.icon-ok.pull-right
+                span.name 张三三
+            .recipient
+              .piece
+                span.name 张三三
+                i.icon-envelope
+            .recipient
+              .piece
+                i.icon-ok.pull-right
+                span.name 张三三
+                i.icon-envelope
+            .recipient
+              .piece
+                i.icon-ok.pull-right
+                span.name 张三三张三三
+            .recipient
+              .piece
+                i.icon-ok.pull-right
+                span.name 张三三
+            .recipient
+              .piece
+                span.name 张三三
+                i.icon-envelope
+            .recipient
+              .piece
+                i.icon-ok.pull-right
+                span.name 张三三
+                i.icon-envelope
+
+
+      .accordion-group.comments-box
+        .collapse id="{{unread_receipt._id}}-comments"
+          .reply-box
+            textarea.input-block-level placeholder="write something ..." rows="1"
+            .tools
+              a.btn.btn-link.btn-small.btn-cancel cancel
+              a.btn.btn-success.btn-small reply
+
+/ .read-posts.pull-left
+/   = render partial: 'receipts/receipt', collection: @read_receipts
