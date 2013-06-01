@@ -34,6 +34,7 @@ class Post
     end
   end
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
+  has_many :forms, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :favorites, as: :favoriteable, dependent: :destroy
 

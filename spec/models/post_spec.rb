@@ -8,6 +8,7 @@ describe Post do
     it { should belong_to(:author) }
     it { should have_many(:receipts) }
     it { should have_many(:attachments) }
+    it { should have_many(:forms) }
     it { should have_many(:comments) }
     it { should have_many(:favorites) }
   end

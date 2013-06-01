@@ -11,6 +11,7 @@ class Form
   validates :title, presence: true
 
   belongs_to :author, class_name: 'User'
+  belongs_to :post
   has_many :inputs, class_name: 'Field::Base', dependent: :destroy, order: 'inputs.position asc'
   has_many :text_fields, class_name: 'Field::TextField', dependent: :destroy
   has_many :text_areas, class_name: 'Field::TextArea', dependent: :destroy

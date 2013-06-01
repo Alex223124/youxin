@@ -5,6 +5,7 @@ describe Form do
   subject { form }
   describe "Association" do
     it { should belong_to(:author) }
+    it { should belong_to(:post) }
     it { should have_many(:collections) }
     it { should have_many(:inputs) }
     it { should have_many(:text_fields) }
