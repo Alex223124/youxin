@@ -1,4 +1,4 @@
 @ReceiptsController = ($scope, $http) ->
   $http.get('/receipts.json').success((data) ->
-    $scope.unread_receipts = data
+    $scope.unread_receipts = data.receipts
   )

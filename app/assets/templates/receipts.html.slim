@@ -1,37 +1,39 @@
 .unread-posts.pull-left
-  .post ng-repeat="unread_receipt in unread_receipts.data"
+  .post ng-repeat="unread_receipt in unread_receipts"
     .content
       .created_at.pull-right
         small.timeago.muted datetime="{{unread_receipt.created_at}}"
       .avatar
-        img.pull-left ng-src="{{unread_receipt.author.avatar}}"
+        img.pull-left ng-src="{{unread_receipt.author.avatar.small}}"
       .name
-        a href="/users/{{unread_receipt.author.name}}" {{unread_receipt.author.avatar}}
+        a href="/users/{{unread_receipt.author.name}}" {{unread_receipt.author.name}}
       .organizations
         a href="#" class="organization" organization
       .details
-        span.title receipt.post.title
-        span.body receipt.post.body
+        span.title {{unread_receipt.post.title}}
+        span.body {{unread_receipt.post.body}}
       .tools
-        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="{{unread_receipt._id}}-comments" data-parent="{{unread_receipt._id}}-additions"
+        a.btn.btn-link
+          i.icon-expand-alt
+          | 展开
+        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt.id}}-attachments" data-parent="{{unread_receipt.id}}-additions" ng-show="unread_receipt.post.attachmentted"
+          i.icon-file-alt
+          | 附件
+        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt.id}}-forms" data-parent="{{unread_receipt.id}}-additions" ng-show="unread_receipt.post.formed"
+          i.icon-table
+          | 表格
+        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt.id}}-recipients" data-parent="{{unread_receipt.id}}-additions" ng-show="unread_receipt.origin"
+          i.icon-eye-open
+          | 未读名单
+        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="{{unread_receipt.id}}-comments" data-parent="{{unread_receipt.id}}-additions"
           i.icon-comments
           | 评论
         a.favorite-btn.btn.btn-link.pull-right href='#'
           i.icon-heart
           | 收藏
-
-        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt._id}}-attachments" data-parent="{{unread_receipt._id}}-additions"
-          i.icon-file-alt
-          | 附件
-        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt._id}}-forms" data-parent="{{unread_receipt._id}}-additions"
-          i.icon-table
-          | 表格
-        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt._id}}-recipients" data-parent="{{unread_receipt._id}}-additions"
-          i.icon-eye-open
-          | 未读名单
-    .additions id="{{unread_receipt._id}}-additions"
+    .additions id="{{unread_receipt.id}}-additions"
       .accordion-group.attachments-box
-        .collapse.in id="{{unread_receipt._id}}-attachments"
+        .collapse.in id="{{unread_receipt.id}}-attachments"
           .attachments
             .attachment
               a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="/attachments/fe304d799cceea0075c5b8c5a1251359" data-origin-name="screenshot.png" title='点击预览'
@@ -50,9 +52,9 @@
                 p
                   a href="#" 下载
       .accordion-group.forms-box
-        .collapse id="{{unread_receipt._id}}-forms" forms
+        .collapse id="{{unread_receipt.id}}-forms" forms
       .accordion-group.recipients-box
-        .collapse id="{{unread_receipt._id}}-recipients"
+        .collapse id="{{unread_receipt.id}}-recipients"
           .recipients
             .recipient
               .piece
@@ -96,7 +98,7 @@
 
 
       .accordion-group.comments-box
-        .collapse id="{{unread_receipt._id}}-comments"
+        .collapse id="{{unread_receipt.id}}-comments"
           .reply-box
             textarea.input-block-level placeholder="write something ..." rows="1"
             .tools

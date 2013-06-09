@@ -24,6 +24,8 @@ gem 'mini_magick', '~> 3.5.0'
 gem 'mime-types', '~> 1.23'
 gem 'kaminari'
 
+gem 'active_model_serializers', '~> 0.8.0'
+
 group :test do
   gem 'rspec-rails'
   gem 'capybara'
