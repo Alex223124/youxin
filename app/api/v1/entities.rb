@@ -36,6 +36,9 @@ module Youxin
 
     class OrganizationBasic < Grape::Entity
       expose :id, :name, :parent_id
+      expose :avatar do |organization|
+        organization.avatar.url
+      end
     end
 
     class Receipt < Grape::Entity

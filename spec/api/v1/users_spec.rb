@@ -38,12 +38,14 @@ describe Youxin::API, 'users' do
         {
           id: @organization.id,
           name: @organization.name,
-          parent_id: @organization.parent_id
+          parent_id: @organization.parent_id,
+          avatar: @organization.avatar.url
         },
         {
           id: @organization_another.id,
           name: @organization_another.name,
-          parent_id: @organization_another.parent_id
+          parent_id: @organization_another.parent_id,
+          avatar: @organization_another.avatar.url
         }
       ].to_json
     end
@@ -57,7 +59,8 @@ describe Youxin::API, 'users' do
           {
             id: @organization.id,
             name: @organization.name,
-            parent_id: @organization.parent_id
+            parent_id: @organization.parent_id,
+            avatar: @organization.avatar.url
           }
         ].to_json
       end
