@@ -352,5 +352,10 @@ describe User do
         favorite.should be_kind_of Favorite
       end
     end
+    it "should create favorite" do
+      @post.favorites.create user_id: @user.id
+      @user.favorites.count.should == 1
+      @user.favorites.posts.pluck(:favoriteable_id).should include(@post.id)
+    end
   end
 end

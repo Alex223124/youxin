@@ -60,7 +60,11 @@ class User
   has_many :forms, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :collections, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
-  has_many :favorites, as: :favoriteable, dependent: :destroy
+  has_many :favorites, dependent: :destroy do
+    def posts
+      where(favoriteable_type: 'Post')
+    end
+  end
 
   after_destroy do
     organizations.each do |organization|

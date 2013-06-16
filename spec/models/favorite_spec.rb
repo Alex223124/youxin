@@ -43,6 +43,11 @@ describe Favorite do
         @favorite.should have(1).error_on(:favoriteable_id)
         @favorite.should have(1).error_on(:favoriteable_type)
       end
+      it "when have benn favorited" do
+        @post.favorites.create user_id: @user.id
+        @favorite = @post.favorites.create user_id: @user.id
+        @favorite.should have(1).error_on(:favoriteable_id)
+      end
     end
   end
 

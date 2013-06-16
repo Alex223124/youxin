@@ -5,6 +5,7 @@ class Favorite
   validates :favoriteable_id, presence: true
   validates :favoriteable_type, presence: true
   validates :user_id, presence: true
+  validates_uniqueness_of :favoriteable_id, scope: [:user_id, :favoriteable_type], message: 'favorited'
 
   belongs_to :favoriteable, polymorphic: true
   belongs_to :user
