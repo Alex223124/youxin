@@ -341,21 +341,12 @@ describe User do
       @post = create(:post, author: @author,
                            organization_ids: [@organization.id],
                            body_html: '<div>test</div>')
-    end
-    it "should create comment" do
-      @comment = @post.favorites.create attributes_for(:comment).merge({ user_id: @user.id })
-      @comment.should be_valid
-    end
-    it "should return an array of comments" do
-      @comment = @post.favorites.create attributes_for(:comment).merge({ user_id: @user.id })
-      @user.favorites.each do |favorite|
-        favorite.should be_kind_of Favorite
-      end
+      @receipt = @user.receipts.first
     end
     it "should create favorite" do
-      @post.favorites.create user_id: @user.id
+      @receipt.favorites.create user_id: @user.id
       @user.favorites.count.should == 1
-      @user.favorites.posts.pluck(:favoriteable_id).should include(@post.id)
+      @user.favorites.receipts.pluck(:favoriteable_id).should include(@receipt.id)
     end
   end
 end

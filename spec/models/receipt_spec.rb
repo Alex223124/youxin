@@ -4,6 +4,7 @@ describe Receipt do
   describe "Association" do
     it { should belong_to(:user) }
     it { should belong_to(:post) }
+    it { should have_many(:favorites) }
   end
 
   describe "Respond to" do
@@ -43,4 +44,29 @@ describe Receipt do
       receipt.read_at.should_not be_nil
     end
   end
+
+  describe "#favorites" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create :post, author: @author, organization_ids: [@organization.id]
+      @receipt = @user.receipts.first
+    end
+
+    it "should create a favorite" do
+      @favorite = @receipt.favorites.create attributes_for(:favorite).merge({ user_id: @user.id })
+      @favorite.should be_valid
+    end
+
+    it "should return the array of favorites" do
+      @receipt.favorites.create attributes_for(:favorite), user_id: @user.id
+      @receipt.favorites.should be_kind_of Array
+      @receipt.favorites.each do |favorite|
+        favorite.should be_kind_of Favorite
+      end
+    end
+  end
+
 end

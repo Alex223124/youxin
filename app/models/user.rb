@@ -61,8 +61,8 @@ class User
   has_many :collections, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
   has_many :favorites, dependent: :destroy do
-    def posts
-      where(favoriteable_type: 'Post')
+    def receipts
+      where(favoriteable_type: 'Receipt')
     end
   end
 

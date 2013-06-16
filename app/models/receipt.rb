@@ -9,6 +9,7 @@ class Receipt
 
   belongs_to :user
   belongs_to :post
+  has_many :favorites, as: :favoriteable, dependent: :destroy
 
   delegate :author, to: :post, prefix: false
   scope :read, where(read: true)

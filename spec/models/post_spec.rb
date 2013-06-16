@@ -10,7 +10,6 @@ describe Post do
     it { should have_many(:attachments) }
     it { should have_many(:forms) }
     it { should have_many(:comments) }
-    it { should have_many(:favorites) }
   end
 
   describe "Respond to" do
@@ -232,26 +231,4 @@ describe Post do
     end
   end
 
-  describe "#favorites" do
-    before(:each) do
-      @organization = create :organization
-      @user = create :user
-      @author = create :user
-      @organization.push_member(@user)
-      @post = create :post, author: @author, organization_ids: [@organization.id]
-    end
-
-    it "should create a favorite" do
-      @favorite = @post.favorites.create attributes_for(:favorite).merge({ user_id: @user.id })
-      @favorite.should be_valid
-    end
-
-    it "should return the array of favorites" do
-      @post.favorites.create attributes_for(:favorite), user_id: @user.id
-      @post.favorites.should be_kind_of Array
-      @post.favorites.each do |favorite|
-        favorite.should be_kind_of Favorite
-      end
-    end
-  end
 end

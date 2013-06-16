@@ -19,18 +19,19 @@ describe Favorite do
       @author = create :user
       @organization.push_member(@user)
       @post = create :post, author: @author, organization_ids: [@organization.id]
+      @receipt = @post.receipts.first
     end
 
     context "successed" do
       it "with favoriteable" do
-        @favorite = @post.favorites.create attributes_for(:favorite), user_id: @user.id
-        @favorite.favoriteable.id.should == @post.id
-        @favorite.favoriteable.class.should == Post
+        @favorite = @receipt.favorites.create attributes_for(:favorite), user_id: @user.id
+        @favorite.favoriteable.id.should == @receipt.id
+        @favorite.favoriteable.class.should == Receipt
       end
 
       it "with favoriteable_id and favoriteable_type" do
         @favorite = Favorite.create attributes_for(:favorite).merge({
-          favoriteable_id: @post.id, favoriteable_type: @post.class, user_id: @user.id
+          favoriteable_id: @receipt.id, favoriteable_type: @receipt.class, user_id: @user.id
         })
         @favorite.should be_valid
       end
@@ -44,8 +45,8 @@ describe Favorite do
         @favorite.should have(1).error_on(:favoriteable_type)
       end
       it "when have benn favorited" do
-        @post.favorites.create user_id: @user.id
-        @favorite = @post.favorites.create user_id: @user.id
+        @receipt.favorites.create user_id: @user.id
+        @favorite = @receipt.favorites.create user_id: @user.id
         @favorite.should have(1).error_on(:favoriteable_id)
       end
     end
