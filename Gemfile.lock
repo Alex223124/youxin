@@ -114,6 +114,9 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.7.7)
+    kaminari (0.14.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     listen (1.0.2)
       rb-fsevent (>= 0.9.3)
       rb-inotify (>= 0.9)
@@ -276,6 +279,7 @@ DEPENDENCIES
   guard-rspec (~> 2.5.4)
   guard-spork
   jquery-rails (~> 2.2.1)
+  kaminari
   mini_magick (~> 3.5.0)
   mongoid
   mongoid-rspec

@@ -23,6 +23,15 @@ module Youxin
       end
     end
 
+    def paginate(objects)
+      per_page = params[:per_page].to_i
+      page = params[:page].to_i
+      since_id = params[:since_id]
+      max_id = params[:max_id]
+      objects = objects.where(:id.gte => since_id) if since_id
+      objects = objects.where(:id.lte => max_id) if max_id
+    end
+
     # Checks the occurrences of required attributes, each attribute must be present in the params hash
     # or a Bad Request error is invoked.
     #

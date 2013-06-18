@@ -21,16 +21,15 @@ gem 'jquery-rails', '~> 2.2.1'
 gem 'mongoid'
 gem 'carrierwave-mongoid', '~> 0.5.0'
 gem 'mini_magick', '~> 3.5.0'
+gem 'kaminari'
 
-group :development, :test do
+group :test do
   gem 'rspec-rails'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'mongoid-rspec'
   gem 'factory_girl_rails'
-
-  gem 'mongoid_colored_logger'
-
+  
   gem 'guard-rspec', '~> 2.5.4'
   # Notification
   gem 'rb-fsevent', require: darwin_only('rb-fsevent')
@@ -38,6 +37,9 @@ group :development, :test do
   gem 'rb-inotify', require: linux_only('rb-inotify')
 
   gem 'guard-spork' # speed up test
+end
+group :development, :test do
+  gem 'mongoid_colored_logger'
 
   gem 'quiet_assets', '~> 1.0.2' # disable assets log
   gem 'faker' # fake data
