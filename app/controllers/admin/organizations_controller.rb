@@ -20,7 +20,7 @@ class Admin::OrganizationsController < ApplicationController
         format.html { redirect_to admin_organizations_path, notice: 'Organization was successfully created.' }
         format.json { render json: @organization, status: :created, location: @organization }
       else
-        format.html { render action: "new" }
+        format.html { render 'new' }
         format.json { render json: @organization.errors, status: :unprocessable_entity }
       end
     end

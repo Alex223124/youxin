@@ -3,9 +3,9 @@ Youxin::Application.routes.draw do
   devise_for :users
 
   namespace :admin do
-    resources :users
+    resources :users, only: [:new, :create, :index]
     post 'users/excel_importor' => 'users#excel_importor'
-    resources :organizations do
+    resources :organizations, only: [:new, :create, :destroy, :index] do
       get 'members' => 'members#index', on: :member
       put 'members' => 'members#update', on: :member
       delete 'members' => 'members#destroy', on: :member
