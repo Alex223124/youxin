@@ -78,6 +78,7 @@ module Youxin
       @abilities ||= begin
                        abilities = Six.new
                        abilities << UserActionsOrganizationRelationship
+                       abilities << Post
                        abilities
                      end
     end

@@ -62,5 +62,5 @@ gem 'spreadsheet' # parse Excel file
 
 gem 'nokogiri', '~> 1.5.9' # parse HTML to Plain Text
 
-gem 'grape', '~> 0.4.1' # API
+gem 'grape', '~> 0.5.0' # API
 gem 'grape-entity', '~> 0.3.0'

@@ -8,9 +8,9 @@ module Youxin
     format :json
     default_error_formatter :json
 
-    # rescue_from :all do
-    #   rack_response({'message' => '404 Not found'}.to_json, 404)
-    # end
+    rescue_from :all do
+      rack_response({'message' => '404 Not found'}.to_json, 404)
+    end
 
     helpers Youxin::APIHelpers
 
@@ -19,6 +19,7 @@ module Youxin
     mount Posts
     mount Attachments
     mount Receipts
+    mount Organizations
 
   end
 end

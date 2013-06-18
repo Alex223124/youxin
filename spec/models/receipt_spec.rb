@@ -38,10 +38,15 @@ describe Receipt do
       @post = create :post, author: @author, organization_ids: [@organization].map(&:id)
       @receipt = create :receipt, post: @post, user: @user
     end
-    it "should update update_at" do
+    it "should update read_at" do
       receipt = @user.receipts.first
       receipt.read!
       receipt.read_at.should_not be_nil
+    end
+    it "should mark as read" do
+      receipt = @user.receipts.first
+      receipt.read!
+      receipt.read.should be_true
     end
   end
 

@@ -29,5 +29,48 @@ class Posts < Grape::API
       end
     end
 
+    route_param :id do
+      before do
+        @post = Post.find(params[:id])
+        not_found!("post") unless @post
+        authorize! :read, @post
+      end
+      get do
+        present @post, with: Youxin::Entities::Post
+      end
+      get 'receipts' do
+        authorize! :read_receipts, @post
+        receipts = @post.receipts.all
+        present receipts, with: Youxin::Entities::ReceiptAdmin
+      end
+      get 'unread_receipts' do
+        authorize! :read_receipts, @post
+        unread_receipts = @post.receipts.unread
+        present unread_receipts, with: Youxin::Entities::ReceiptAdmin
+      end
+      get 'read_receipts' do
+        authorize! :read_receipts, @post
+        read_receipts = @post.receipts.read
+        present read_receipts, with: Youxin::Entities::ReceiptAdmin
+      end
+      get 'comments' do
+        authorize! :read, @post
+        comments = @post.comments
+        present comments, with: Youxin::Entities::Comment
+      end
+      post 'comments' do
+        authorize! :read, @post
+        required_attributes! [:body]
+        attrs = attributes_for_keys [:body]
+        attrs.merge!({ user_id: current_user.id })
+        comment = @post.comments.new attrs
+        if comment.save
+          present comment, with: Youxin::Entities::Comment
+        else
+          fail!(comment.errors)
+        end
+      end
+    end
+
   end
 end

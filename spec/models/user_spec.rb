@@ -30,6 +30,8 @@ describe User do
     it { should respond_to(:applied_for_organization?) }
     it { should respond_to(:accepted_by_organization?) }
     it { should respond_to(:operate_application) }
+    it { should respond_to(:receipt_organizations) }
+    it { should respond_to(:receipt_users) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -313,12 +315,33 @@ describe User do
   describe "#receipts" do
     before(:each) do
       @organization = create :organization
+      @organization_another = create :organization
       @user = create :user
       @author = create :user
+      @author_another = create :user
       @organization.push_member(@user)
+      @organization_another.push_member(@user)
       @post = create(:post, author: @author,
-                           organization_ids: [@organization.id],
-                           body_html: '<div>test</div>')
+                            organization_ids: [@organization.id])
+      @post_another = create(:post, author: @author_another,
+                                    organization_ids: [@organization_another.id])
+    end
+    context "from_users(:user_id)" do
+      it "should return receipts which from single user" do
+        @user.receipts.from_users(@author.id).should include(@user.receipts.first)
+      end
+      it "should not include receipts which not from single user" do
+        @user.receipts.from_users(@author.id).should_not include(@user.receipts.last)
+        @user.receipts.from_users(@author_another.id).should_not include(@user.receipts.first)
+      end
+    end
+    context "from_organizations(:organization_id)" do
+      it "should return receipts from single organization" do
+        @user.receipts.from_organizations(@organization.id).should include(@user.receipts.first)
+      end
+      it "should not include receipts which not from single organization" do
+        @user.receipts.from_organizations(@organization.id).should_not include(@user.receipts.last)
+      end
     end
     context "read" do
       it "should create" do
@@ -347,6 +370,38 @@ describe User do
       @comment.should be_valid
     end
   end
+  describe "#receipt_organizations" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create(:post, author: @author,
+                           organization_ids: [@organization.id],
+                           body_html: '<div>test</div>')
+    end
+    it "should return the array of organizations which have send post to user" do
+      @post = create :post, author: @author, organization_ids: [@organization.id]
+      @user.reload
+      ([@organization] - @user.receipt_organizations).should be_blank
+    end
+  end
+  describe "#receipt_users" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create(:post, author: @author,
+                           organization_ids: [@organization.id],
+                           body_html: '<div>test</div>')
+    end
+    it "should return the array of users which have send post to user" do
+      @post = create :post, author: @author, organization_ids: [@organization.id]
+      @user.reload
+      ([@author] - @user.receipt_users).should be_blank
+    end
+  end
 
   describe "#favorites" do
     before(:each) do
@@ -365,4 +420,6 @@ describe User do
       @user.favorites.receipts.pluck(:favoriteable_id).should include(@receipt.id)
     end
   end
+
+
 end

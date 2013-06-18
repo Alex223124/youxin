@@ -44,6 +44,8 @@ class User
 
   field :name, type: String
   field :organization_ids, type: Array, default: []
+  field :receipt_organization_ids, type: Array, default: []
+  field :receipt_user_ids, type: Array, default: []
 
   validates :name, presence: true
 
@@ -56,7 +58,17 @@ class User
   has_many :applications, dependent: :destroy, foreign_key: 'applicant_id'
   has_many :treated_applications, dependent: :destroy, class_name: 'Application', foreign_key: 'operator_id'
   has_many :posts, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
-  has_many :receipts, dependent: :destroy
+  has_many :receipts, dependent: :destroy, inverse_of: :user do
+    def from_users(user_id)
+      user_id = user_id.id if user_id.is_a?(User)
+      where(author_id: user_id)
+    end
+    def from_organizations(organization_id)
+      organization_id = organization_id.id if organization_id.is_a?(Organization)
+      where(:organization_ids => organization_id)
+    end
+  end
+  has_many :created_receipts, dependent: :destroy, foreign_key: 'author_id', class_name: 'Receipt', inverse_of: :author
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
   has_many :forms, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :collections, dependent: :destroy
@@ -147,4 +159,12 @@ class User
   end
   # Apply for organization
 
+  # Receipt
+  def receipt_organizations
+    Organization.where(:id.in => self.receipt_organization_ids)
+  end
+  def receipt_users
+    User.where(:id.in => self.receipt_user_ids)
+  end
+  # Receipt
 end

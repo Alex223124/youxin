@@ -79,7 +79,7 @@ GEM
       i18n (~> 0.5)
     ffi (1.8.1)
     formatador (0.2.4)
-    grape (0.4.1)
+    grape (0.5.0)
       activesupport
       builder
       hashie (>= 1.2.0)
@@ -270,7 +270,7 @@ DEPENDENCIES
   devise (~> 2.2.3)
   factory_girl_rails
   faker
-  grape (~> 0.4.1)
+  grape (~> 0.5.0)
   grape-entity (~> 0.3.0)
   growl
   guard-rspec (~> 2.5.4)

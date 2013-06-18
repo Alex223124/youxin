@@ -16,7 +16,7 @@ class Post
   validates :body_html, presence: true
   validate :ensure_attachment_ids
   attr_accessible :title, :body, :body_html, :organization_ids,
-                  :attachment_ids, :author_id, :organization_ids
+                  :attachment_ids, :author_id, :organization_clan_ids
 
   before_create do
     parse_body
@@ -27,6 +27,9 @@ class Post
 
   belongs_to :author, class_name: 'User'
   has_many :receipts, dependent: :destroy do
+    def all
+      where(origin: false)
+    end
     def read
       where(read: true, origin: false)
     end
@@ -37,6 +40,15 @@ class Post
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
   has_many :forms, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
+
+  def self.allowed(object, subject)
+    return [] unless object.instance_of?(User)
+    return [] unless subject.instance_of?(Post)
+    abilities = []
+    abilities |= [:read] if subject.recipient_ids.include?(object.id)
+    abilities |= [:read, :read_receipts] if subject.author_id == object.id
+    abilities
+  end
 
   def recipients
     User.where(:id.in => self.recipient_ids)
@@ -72,19 +84,23 @@ class Post
 
     self.organizations.each do |organization|
       (organization.members - [self.author]).each do |member|
-        receipt = self.receipts.first_or_create(user: member)
+        receipt = self.receipts.where(user: member).first_or_create
         receipt.organization_ids |= [organization.id]
         receipt.save
+        member.add_to_set(:receipt_organization_ids, organization.id)
+        member.add_to_set(:receipt_user_ids, self.author_id)
         self.recipient_ids |= [member.id]
       end
     end
 
-    self.organization_clans.each do |organization_clans|
-      members = ([organization_clans] + organization_clans.offspring).map(&:members).flatten.uniq - [self.author]
+    self.organization_clans.each do |organization_clan|
+      members = ([organization_clan] + organization_clan.offspring).map(&:members).flatten.uniq - [self.author]
       members.each do |member|
-        receipt = self.receipts.first_or_create(user: member)
-        receipt.organization_ids |= [organization_clans.id]
+        receipt = self.receipts.where(user: member).first_or_create
+        receipt.organization_ids |= [organization_clan.id]
         receipt.save
+        member.add_to_set(:receipt_organization_ids, organization_clan.id)
+        member.add_to_set(:receipt_user_ids, self.author_id)
         self.recipient_ids |= [member.id]
       end
     end
@@ -94,6 +110,7 @@ class Post
                          organization_ids: self.organization_ids + self.organization_clan_ids,
                          read: true,
                          origin: true)
+    self.save
   end
   def ensure_attachment_ids
     self.attachments.each do |attachment|

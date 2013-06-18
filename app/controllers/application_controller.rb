@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   end
   def add_abilities
     abilities << UserActionsOrganizationRelationship
+    abilities << Post
+    abilities
   end
 
   def access_denied!

@@ -6,12 +6,17 @@ class Receipt
   field :organization_ids, type: Array, default: []
   field :read_at, type: DateTime
   field :origin, type: Boolean, default: false
+  field :author_id
 
-  belongs_to :user
+  before_save do
+    self.author = self.post.author
+  end
+
+  belongs_to :user, inverse_of: :receipts
+  belongs_to :author, class_name: 'User', inverse_of: :created_receipts
   belongs_to :post
   has_many :favorites, as: :favoriteable, dependent: :destroy
 
-  delegate :author, to: :post, prefix: false
   scope :read, where(read: true)
   scope :unread, where(read: false)
 
@@ -21,6 +26,7 @@ class Receipt
 
   def read!
     self.read_at = Time.now
+    self.read = true
     self.save
   end
 
