@@ -43,7 +43,7 @@ class Organization
     end
     organizations
   end
-  
+
   # Members
   def members
     User.where(:id.in => self.member_ids)

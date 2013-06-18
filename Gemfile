@@ -29,7 +29,7 @@ group :test do
   gem 'database_cleaner'
   gem 'mongoid-rspec'
   gem 'factory_girl_rails'
-  
+
   gem 'guard-rspec', '~> 2.5.4'
   # Notification
   gem 'rb-fsevent', require: darwin_only('rb-fsevent')

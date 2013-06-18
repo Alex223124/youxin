@@ -25,7 +25,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   def default_url
     # For Rails 3.1+ asset pipeline compatibility:
     # asset_path("avatar/" + [version_name, "default.png"].compact.join('_'))
-  
+
     # "/images/fallback/" + [version_name, "default.png"].compact.join('_')
     "/assets/avatar/#{model.class.to_s.underscore}/" + [version_name, "default.png"].compact.join('_')
   end
@@ -45,18 +45,18 @@ class AvatarUploader < CarrierWave::Uploader::Base
   version :small do
     process resize_to_fill: [50, 50]
   end
-  
+
   version :normal do
     process resize_to_fill: [80, 80]
-  end 
+  end
 
   version :big do
     process resize_to_fill: [130, 130]
-  end 
+  end
 
   version :huge do
     process resize_to_fill: [200, 200]
-  end 
+  end
 
   version :mobile do
     process resize_to_fill: [130, 130]

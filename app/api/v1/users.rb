@@ -33,7 +33,7 @@ class Users < Grape::API
     desc 'Get recent contacts who have sent post to user'
     get 'receipt_users' do
       receipt_users = current_user.receipt_users
-      present receipt_users, with: Youxin::Entities::UserBasic      
+      present receipt_users, with: Youxin::Entities::UserBasic
     end
 
     desc 'Get all the receipts.'
