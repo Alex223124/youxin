@@ -23,13 +23,23 @@ describe Youxin::API, 'receipts' do
         {
           id: @receipt.id,
           read: @receipt.read,
-          organization_ids: @receipt.organization_ids,
+          favorited: false,
           origin: @receipt.origin,
+          organizations: [
+            {
+              id: @organization.id,
+              name: @organization.name,
+              parent_id: @organization.parent_id,
+              created_at: @organization.created_at,
+              avatar: @organization.avatar.url
+            }
+          ],
           post: {
             id: @receipt.post.id,
             title: @receipt.post.title,
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
+            created_at: @receipt.post.created_at,
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
@@ -52,13 +62,23 @@ describe Youxin::API, 'receipts' do
       json_response.should == {
         id: @receipt.id,
         read: @receipt.read,
-        organization_ids: @receipt.organization_ids,
+        favorited: false,
         origin: @receipt.origin,
+        organizations: [
+          {
+            id: @organization.id,
+            name: @organization.name,
+            parent_id: @organization.parent_id,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          }
+        ],
         post: {
           id: @receipt.post.id,
           title: @receipt.post.title,
           body: @receipt.post.body,
           body_html: @receipt.post.body_html,
+          created_at: @receipt.post.created_at,
           author: {
             id: @receipt.author.id,
             email: @receipt.author.email,
@@ -90,13 +110,23 @@ describe Youxin::API, 'receipts' do
       json_response.should == {
         id: @receipt.id,
         read: @receipt.read,
-        organization_ids: @receipt.organization_ids,
+        favorited: true,
         origin: @receipt.origin,
+        organizations: [
+          {
+            id: @organization.id,
+            name: @organization.name,
+            parent_id: @organization.parent_id,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          }
+        ],
         post: {
           id: @receipt.post.id,
           title: @receipt.post.title,
           body: @receipt.post.body,
           body_html: @receipt.post.body_html,
+          created_at: @receipt.post.created_at,
           author: {
             id: @receipt.author.id,
             email: @receipt.author.email,

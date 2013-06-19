@@ -34,20 +34,22 @@ describe Youxin::API, 'users' do
       get api('/user/authorized_organizations', @admin)
       response.status.should == 200
       json_response.should be_an Array
-      json_response.to_json.should == [
+      json_response.should == [
         {
           id: @organization.id,
           name: @organization.name,
           parent_id: @organization.parent_id,
+          created_at: @organization.created_at,
           avatar: @organization.avatar.url
         },
         {
           id: @organization_another.id,
           name: @organization_another.name,
           parent_id: @organization_another.parent_id,
+          created_at: @organization.created_at,
           avatar: @organization_another.avatar.url
         }
-      ].to_json
+      ].as_json
     end
 
     context "params[:actions]" do
@@ -55,20 +57,21 @@ describe Youxin::API, 'users' do
         get api('/user/authorized_organizations', @admin), actions: [:create_youxin]
         response.status.should == 200
         json_response.should be_an Array
-        json_response.to_json.should == [
+        json_response.should == [
           {
             id: @organization.id,
             name: @organization.name,
             parent_id: @organization.parent_id,
+            created_at: @organization.created_at,
             avatar: @organization.avatar.url
           }
-        ].to_json
+        ].as_json
       end
       it "should return authorized actions organizations when multi params[:actions]" do
         get api('/user/authorized_organizations', @admin), actions: [:create_youxin, :create_organization]
         response.status.should == 200
         json_response.should be_an Array
-        json_response.to_json.should == [].to_json
+        json_response.should == [].as_json
       end
     end
   end
@@ -100,6 +103,7 @@ describe Youxin::API, 'users' do
           id: @organization_1.id,
           name: @organization_1.name,
           parent_id: @organization_1.parent_id,
+          created_at: @organization_1.created_at,
           avatar: @organization_1.avatar.url
         }
       ].as_json
@@ -113,6 +117,7 @@ describe Youxin::API, 'users' do
         {
           id: @organization_1.id,
           name: @organization_1.name,
+          created_at: @organization_1.created_at,
           parent_id: @organization_1.parent_id,
           avatar: @organization_1.avatar.url
         },
@@ -120,12 +125,14 @@ describe Youxin::API, 'users' do
           id: @organization_3.id,
           name: @organization_3.name,
           parent_id: @organization_3.parent_id,
+          created_at: @organization_3.created_at,
           avatar: @organization_3.avatar.url
         },
         {
           id: @organization_4.id,
           name: @organization_4.name,
           parent_id: @organization_4.parent_id,
+          created_at: @organization_4.created_at,
           avatar: @organization_4.avatar.url
         }
       ].as_json
@@ -187,18 +194,29 @@ describe Youxin::API, 'users' do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_2, @organization_3, @organization_4].map(&:id)
       get api('/user/receipts', @user)
       @receipt = @user.receipts.first
+      @organization = @receipt.organizations.first
       response.status.should == 200
       json_response.should == [
         {
           id: @receipt.id,
           read: @receipt.read,
-          organization_ids: @receipt.organization_ids,
+          favorited: false,
           origin: @receipt.origin,
+          organizations: [
+            {
+              id: @organization.id,
+              name: @organization.name,
+              parent_id: @organization.parent_id,
+              created_at: @organization.created_at,
+              avatar: @organization.avatar.url
+            }
+          ],
           post: {
             id: @receipt.post.id,
             title: @receipt.post.title,
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
+            created_at: @receipt.post.created_at,
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
@@ -233,18 +251,29 @@ describe Youxin::API, 'users' do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_2, @organization_3, @organization_4].map(&:id)
       get api('/user/unread_receipts', @user)
       @receipt = @user.receipts.first
+      @organization = @receipt.organizations.first
       response.status.should == 200
       json_response.should == [
         {
           id: @receipt.id,
           read: @receipt.read,
-          organization_ids: @receipt.organization_ids,
+          favorited: false,
           origin: @receipt.origin,
+          organizations: [
+            {
+              id: @organization.id,
+              name: @organization.name,
+              parent_id: @organization.parent_id,
+              created_at: @organization.created_at,
+              avatar: @organization.avatar.url
+            }
+          ],
           post: {
             id: @receipt.post.id,
             title: @receipt.post.title,
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
+            created_at: @receipt.post.created_at,
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
@@ -279,19 +308,30 @@ describe Youxin::API, 'users' do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_2, @organization_3, @organization_4].map(&:id)
       @receipt = @user.receipts.first
       @receipt.favorites.create user_id: @user.id
+      @organization = @receipt.organizations.first
       get api('/user/favorite_receipts', @user)
       response.status.should == 200
       json_response.should == [
         {
           id: @receipt.id,
           read: @receipt.read,
-          organization_ids: @receipt.organization_ids,
+          favorited: true,
           origin: @receipt.origin,
+          organizations: [
+            {
+              id: @organization.id,
+              name: @organization.name,
+              parent_id: @organization.parent_id,
+              created_at: @organization.created_at,
+              avatar: @organization.avatar.url
+            }
+          ],
           post: {
             id: @receipt.post.id,
             title: @receipt.post.title,
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
+            created_at: @receipt.post.created_at,
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
@@ -338,6 +378,7 @@ describe Youxin::API, 'users' do
             id: @organization.id,
             name: @organization.name,
             parent_id: @organization.parent_id,
+            created_at: @organization.created_at,
             avatar: @organization.avatar.url
           }
         ].as_json
@@ -359,18 +400,29 @@ describe Youxin::API, 'users' do
         @post = create :post, author: @admin, organization_ids: [@organization].map(&:id)
         get api("/users/#{@admin.id}/receipts", @user)
         @receipt = @user.receipts.first
+        @organization = @receipt.organizations.first
         response.status.should == 200
         json_response.should == [
           {
             id: @receipt.id,
             read: @receipt.read,
-            organization_ids: @receipt.organization_ids,
+            favorited: false,
             origin: @receipt.origin,
+            organizations: [
+              {
+                id: @organization.id,
+                name: @organization.name,
+                parent_id: @organization.parent_id,
+                created_at: @organization.created_at,
+                avatar: @organization.avatar.url
+              }
+            ],
             post: {
               id: @receipt.post.id,
               title: @receipt.post.title,
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
+              created_at: @receipt.post.created_at,
               author: {
                 id: @receipt.author.id,
                 email: @receipt.author.email,
@@ -400,18 +452,29 @@ describe Youxin::API, 'users' do
         @post = create :post, author: @admin, organization_ids: [@organization].map(&:id)
         get api("/users/#{@admin.id}/unread_receipts", @user)
         @receipt = @user.receipts.unread.first
+        @organization = @receipt.organizations.first
         response.status.should == 200
         json_response.should == [
           {
             id: @receipt.id,
             read: @receipt.read,
-            organization_ids: @receipt.organization_ids,
+            favorited: false,
             origin: @receipt.origin,
+            organizations: [
+              {
+                id: @organization.id,
+                name: @organization.name,
+                parent_id: @organization.parent_id,
+                created_at: @organization.created_at,
+                avatar: @organization.avatar.url
+              }
+            ],
             post: {
               id: @receipt.post.id,
               title: @receipt.post.title,
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
+              created_at: @receipt.post.created_at,
               author: {
                 id: @receipt.author.id,
                 email: @receipt.author.email,

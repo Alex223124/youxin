@@ -1,18 +1,17 @@
 module Youxin
   module Entities
-    class User < Grape::Entity
-      expose :id, :name, :email, :created_at
-    end
-
-    class UserSafe < Grape::Entity
-      expose :name
-    end
-
     class UserBasic < Grape::Entity
       expose :id, :email, :name, :created_at
       expose :avatar do |user|
         user.avatar.url
       end
+    end
+
+    class User < UserBasic
+    end
+
+    class UserSafe < Grape::Entity
+      expose :name
     end
 
     class UserLogin < UserBasic
@@ -29,13 +28,13 @@ module Youxin
     end
 
     class Post < Grape::Entity
-      expose :id, :title, :body, :body_html
+      expose :id, :title, :body, :body_html, :created_at
       expose :author, using: Entities::UserBasic
       expose :attachments, using: Entities::Attachment
     end
 
     class OrganizationBasic < Grape::Entity
-      expose :id, :name, :parent_id
+      expose :id, :name, :parent_id, :created_at
       expose :avatar do |organization|
         organization.avatar.url
       end
@@ -43,13 +42,18 @@ module Youxin
 
     class ReceiptBasic < Grape::Entity
       expose :id, :read
+      expose :favorited do |receipt, options|
+        receipt.user.favorites.where(favoriteable_type: 'Receipt',
+                                     favoriteable_id: receipt.id).exists? ? true : false
+      end
     end
     class ReceiptAdmin < ReceiptBasic
       expose :read_at
       expose :user, using: Entities::UserBasic
     end
     class Receipt < ReceiptBasic
-      expose :organization_ids, :origin
+      expose :origin
+      expose :organizations, using: Entities::OrganizationBasic 
       expose :post, using: Entities::Post
     end
 

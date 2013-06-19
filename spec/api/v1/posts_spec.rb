@@ -193,7 +193,11 @@ describe Youxin::API, 'posts' do
       get api("/posts/#{@post.id}", @user)
       response.status.should == 200
       json_response.should == {
-        attachments: [],
+        id: @post.id,
+        title: @post.title,
+        body: @post.body,
+        body_html: @post.body_html,
+        created_at: @post.created_at,
         author: {
           id: @post.author.id,
           email: @post.author.email,
@@ -201,10 +205,7 @@ describe Youxin::API, 'posts' do
           created_at: @post.author.created_at,
           avatar: @post.author.avatar.url
         },
-        body: @post.body,
-        body_html: @post.body_html,
-        id: @post.id,
-        title: @post.title
+        attachments: []
       }.as_json
     end
     it "should return 404 if single post not exists" do
@@ -245,6 +246,7 @@ describe Youxin::API, 'posts' do
           {
             id: receipt_1.id,
             read: receipt_1.read,
+            favorited: false,
             read_at: receipt_1.read_at,
             user: {
               id: receipt_1.user.id,
@@ -257,6 +259,7 @@ describe Youxin::API, 'posts' do
           {
             id: receipt_2.id,
             read: receipt_2.read,
+            favorited: false,
             read_at: receipt_2.read_at,
             user: {
               id: receipt_2.user.id,
@@ -284,6 +287,7 @@ describe Youxin::API, 'posts' do
           {
             id: receipt_2.id,
             read: receipt_2.read,
+            favorited: false,
             read_at: receipt_2.read_at,
             user: {
               id: receipt_2.user.id,
@@ -311,6 +315,7 @@ describe Youxin::API, 'posts' do
           {
             id: receipt_1.id,
             read: receipt_1.read,
+            favorited: false,
             read_at: receipt_1.read_at,
             user: {
               id: receipt_1.user.id,

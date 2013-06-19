@@ -60,7 +60,7 @@ class Users < Grape::API
         @user = User.find(params[:id])
       end
       get do
-        present @user, with: Youxin::Entities::UserBasic
+        present @user, with: Youxin::Entities::User
       end
       get 'organizations' do
         organizations = @user.organizations
