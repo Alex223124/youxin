@@ -53,12 +53,12 @@ module Youxin
     end
     class Receipt < ReceiptBasic
       expose :origin
-      expose :organizations, using: Entities::OrganizationBasic 
+      expose :organizations, using: Entities::OrganizationBasic
       expose :post, using: Entities::Post
     end
 
     class Comment < Grape::Entity
-      expose :body, :created_at
+      expose :id, :body, :created_at
       expose :user, using: Entities::UserBasic
     end
 

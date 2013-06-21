@@ -24,12 +24,13 @@ module Youxin
     end
 
     def paginate(objects)
-      per_page = params[:per_page].to_i
-      page = params[:page].to_i
+      per_page = (params[:per_page] || Kaminari.config.default_per_page).to_i
+      page = (params[:page] || 1).to_i
       since_id = params[:since_id]
       max_id = params[:max_id]
-      objects = objects.where(:id.gte => since_id) if since_id
-      objects = objects.where(:id.lte => max_id) if max_id
+      objects = objects.gt(_id: since_id) if since_id
+      objects = objects.lt(_id: max_id) if max_id
+      objects.page(page).per(per_page)
     end
 
     # Checks the occurrences of required attributes, each attribute must be present in the params hash

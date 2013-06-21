@@ -328,19 +328,19 @@ describe User do
     end
     context "from_users(:user_id)" do
       it "should return receipts which from single user" do
-        @user.receipts.from_users(@author.id).should include(@user.receipts.first)
+        @user.receipts.from_users(@author.id).map(&:id).should include(@user.receipts.last.id)
       end
       it "should not include receipts which not from single user" do
-        @user.receipts.from_users(@author.id).should_not include(@user.receipts.last)
-        @user.receipts.from_users(@author_another.id).should_not include(@user.receipts.first)
+        @user.receipts.from_users(@author.id).map(&:id).should_not include(@user.receipts.first.id)
+        @user.receipts.from_users(@author_another.id).map(&:id).should_not include(@user.receipts.last.id)
       end
     end
     context "from_organizations(:organization_id)" do
       it "should return receipts from single organization" do
-        @user.receipts.from_organizations(@organization.id).should include(@user.receipts.first)
+        @user.receipts.from_organizations(@organization.id).map(&:id).should include(@user.receipts.last.id)
       end
       it "should not include receipts which not from single organization" do
-        @user.receipts.from_organizations(@organization.id).should_not include(@user.receipts.last)
+        @user.receipts.from_organizations(@organization.id).map(&:id).should_not include(@user.receipts.first.id)
       end
     end
     context "read" do

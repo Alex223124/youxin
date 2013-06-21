@@ -3,7 +3,8 @@ class Receipts < Grape::API
 
   resource :receipts do
     get do
-      present current_user.receipts, with: Youxin::Entities::Receipt
+      receipts = paginate current_user.receipts
+      present receipts, with: Youxin::Entities::Receipt
     end
     route_param :id do
       before do

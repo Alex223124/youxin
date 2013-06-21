@@ -13,4 +13,6 @@ class Comment
   belongs_to :commentable, polymorphic: true
   belongs_to :user
 
+  default_scope desc(:_id)
+
 end

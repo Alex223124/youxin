@@ -52,5 +52,6 @@ class FileUploader < CarrierWave::Uploader::Base
       Digest::MD5.hexdigest(File.dirname(current_path))
     end
   end
+  CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
 
 end

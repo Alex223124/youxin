@@ -22,15 +22,19 @@ orgnization9 = Organization.create name: 'ewta', parent: orgnization6
 orgnization10 = Organization.create name: 'ict', parent: orgnization6
 
 password = '12345678'
+10.times do |n|
+  name = "#{n}"
+  User.create name: name, email: "#{name}@a.a", password: password, password_confirmation: password
+end
 Organization.all.each do |orgnization|
-  10.times do |n|
-    user = User.create name: Faker::Name.name, email: Faker::Internet.email, password: password, password_confirmation: password
-    orgnization.add_member(user)
+  times = rand(10)
+  times.times do
+    orgnization.add_member(User.all[rand(10)])
   end
 end
 
 admin1 = User.first
-admin2 = User.all[rand(100)]
+admin2 = User.last
 actions = Action.options_array
 orgnization1.authorize_cover_offspring(admin1, actions)
 orgnization2.authorize_cover_offspring(admin2, actions)
@@ -45,6 +49,10 @@ posts << %{How do you land an engineering job? "ABC: Always Be Coding" by @guita
 admins = [admin1, admin2]
 
 10.times do |n|
-  post = admins.sample.posts.new organization_ids: [orgnization2.id], body_html: posts.sample
+  orgnizations = []
+  7.times do
+    orgnizations |= [Organization.all.sample]
+  end
+  post = admins.sample.posts.new organization_ids: orgnizations.map(&:id), body_html: posts.sample
   post.save
 end

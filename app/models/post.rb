@@ -41,6 +41,8 @@ class Post
   has_many :forms, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy
 
+  default_scope desc(:_id)
+
   def self.allowed(object, subject)
     return [] unless object.instance_of?(User)
     return [] unless subject.instance_of?(Post)

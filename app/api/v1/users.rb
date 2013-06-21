@@ -38,18 +38,18 @@ class Users < Grape::API
 
     desc 'Get all the receipts.'
     get 'receipts' do
-      receipts = current_user.receipts
+      receipts = paginate current_user.receipts
       present receipts, with: Youxin::Entities::Receipt
     end
     desc 'Get all the unread receipts.'
     get 'unread_receipts' do
-      receipts = current_user.receipts.unread
+      receipts = paginate current_user.receipts.unread
       present receipts, with: Youxin::Entities::Receipt
     end
 
     desc 'Get all the favorite receipts'
     get 'favorite_receipts' do
-      receipts = current_user.favorites.receipts.map(&:favoriteable)
+      receipts = paginate(current_user.favorites.receipts).map(&:favoriteable)
       present receipts, with: Youxin::Entities::Receipt
     end
   end
@@ -67,11 +67,11 @@ class Users < Grape::API
         present organizations, with: Youxin::Entities::OrganizationBasic
       end
       get 'receipts' do
-        receipts = current_user.receipts.from_users(@user.id)
+        receipts = paginate current_user.receipts.from_users(@user.id)
         present receipts, with: Youxin::Entities::Receipt
       end
       get 'unread_receipts' do
-        unread_receipts = current_user.receipts.from_users(@user.id).unread
+        unread_receipts = paginate current_user.receipts.from_users(@user.id).unread
         present unread_receipts, with: Youxin::Entities::Receipt
       end
     end

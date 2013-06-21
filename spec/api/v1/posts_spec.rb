@@ -46,8 +46,8 @@ describe Youxin::API, 'posts' do
         })
         post api('/posts', @admin), attrs
         json_response['attachments'].should be_kind_of Array
-        json_response['attachments'].first['id'].should == attachment_ids.first
-        json_response['attachments'].last['id'].should == attachment_ids.last
+        json_response['attachments'].first['id'].should == attachment_ids.last
+        json_response['attachments'].last['id'].should == attachment_ids.first
       end
 
       it "should not append attachments if attachments does not belong to user" do
@@ -244,19 +244,6 @@ describe Youxin::API, 'posts' do
         receipt_2 = @user_another.receipts.first
         json_response.should == [
           {
-            id: receipt_1.id,
-            read: receipt_1.read,
-            favorited: false,
-            read_at: receipt_1.read_at,
-            user: {
-              id: receipt_1.user.id,
-              email: receipt_1.user.email,
-              name: receipt_1.user.name,
-              created_at: receipt_1.user.created_at,
-              avatar: receipt_1.user.avatar.url
-            }
-          },
-          {
             id: receipt_2.id,
             read: receipt_2.read,
             favorited: false,
@@ -267,6 +254,19 @@ describe Youxin::API, 'posts' do
               name: receipt_2.user.name,
               created_at: receipt_2.user.created_at,
               avatar: receipt_2.user.avatar.url
+            }
+          },
+          {
+            id: receipt_1.id,
+            read: receipt_1.read,
+            favorited: false,
+            read_at: receipt_1.read_at,
+            user: {
+              id: receipt_1.user.id,
+              email: receipt_1.user.email,
+              name: receipt_1.user.name,
+              created_at: receipt_1.user.created_at,
+              avatar: receipt_1.user.avatar.url
             }
           }
         ].as_json
@@ -342,6 +342,7 @@ describe Youxin::API, 'posts' do
         response.status.should == 200
         json_response.should == [
           {
+            id: @comment.id,
             body: @comment.body,
             created_at: @comment.created_at,
             user: {
@@ -359,6 +360,7 @@ describe Youxin::API, 'posts' do
         response.status.should == 200
         json_response.should == [
           {
+            id: @comment.id,
             body: @comment.body,
             created_at: @comment.created_at,
             user: {

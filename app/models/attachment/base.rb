@@ -9,4 +9,6 @@ class Attachment::Base
   belongs_to :user
   belongs_to :post
 
+  default_scope desc(:_id)
+
 end

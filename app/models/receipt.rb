@@ -19,6 +19,7 @@ class Receipt
 
   scope :read, where(read: true)
   scope :unread, where(read: false)
+  default_scope desc(:_id)
 
   def organizations
     Organization.where(:id.in => self.organization_ids)

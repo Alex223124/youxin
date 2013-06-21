@@ -9,4 +9,7 @@ class Favorite
 
   belongs_to :favoriteable, polymorphic: true
   belongs_to :user
+
+  default_scope desc(:_id)
+
 end
