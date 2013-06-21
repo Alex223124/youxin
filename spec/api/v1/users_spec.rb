@@ -95,6 +95,7 @@ describe Youxin::API, 'users' do
     end
     it "should return the array of organizations which have sent a post to uesr (nested)" do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_2, @organization_3, @organization_4].map(&:id)
+      @receipt = @user.receipts.first
       get api('/user/receipt_organizations', @user)
       response.status.should == 200
       json_response.should be_an Array
@@ -104,13 +105,32 @@ describe Youxin::API, 'users' do
           name: @organization_1.name,
           parent_id: @organization_1.parent_id,
           created_at: @organization_1.created_at,
-          avatar: @organization_1.avatar.url
+          avatar: @organization_1.avatar.url,
+          receipts: 1,
+          unread_receipts: 1,
+          last_receipt: {
+            id: @receipt.id,
+            read: @receipt.read,
+            favorited: false,
+            origin: @receipt.origin,
+            post: {
+              id: @receipt.post.id,
+              title: @receipt.post.title,
+              body: @receipt.post.body,
+              body_html: @receipt.post.body_html,
+              created_at: @receipt.post.created_at,
+              attachments: []
+            }
+          }
         }
       ].as_json
     end
     it "should return the array of organizations which have sent a post to uesr" do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_3, @organization_4].map(&:id)
       get api('/user/receipt_organizations', @user)
+      @receipt_1 = @user.receipts.from_organizations(@organization_1).first
+      @receipt_2 = @user.receipts.from_organizations(@organization_3).first
+      @receipt_3 = @user.receipts.from_organizations(@organization_4).first
       response.status.should == 200
       json_response.should be_an Array
       json_response.should == [
@@ -119,21 +139,69 @@ describe Youxin::API, 'users' do
           name: @organization_1.name,
           created_at: @organization_1.created_at,
           parent_id: @organization_1.parent_id,
-          avatar: @organization_1.avatar.url
+          avatar: @organization_1.avatar.url,
+          receipts: 1,
+          unread_receipts: 1,
+          last_receipt: {
+            id: @receipt_1.id,
+            read: @receipt_1.read,
+            favorited: false,
+            origin: @receipt_1.origin,
+            post: {
+              id: @receipt_1.post.id,
+              title: @receipt_1.post.title,
+              body: @receipt_1.post.body,
+              body_html: @receipt_1.post.body_html,
+              created_at: @receipt_1.post.created_at,
+              attachments: []
+            }
+          }
         },
         {
           id: @organization_3.id,
           name: @organization_3.name,
           parent_id: @organization_3.parent_id,
           created_at: @organization_3.created_at,
-          avatar: @organization_3.avatar.url
+          avatar: @organization_3.avatar.url,
+          receipts: 1,
+          unread_receipts: 1,
+          last_receipt: {
+            id: @receipt_2.id,
+            read: @receipt_2.read,
+            favorited: false,
+            origin: @receipt_2.origin,
+            post: {
+              id: @receipt_2.post.id,
+              title: @receipt_2.post.title,
+              body: @receipt_2.post.body,
+              body_html: @receipt_2.post.body_html,
+              created_at: @receipt_2.post.created_at,
+              attachments: []
+            }
+          }
         },
         {
           id: @organization_4.id,
           name: @organization_4.name,
           parent_id: @organization_4.parent_id,
           created_at: @organization_4.created_at,
-          avatar: @organization_4.avatar.url
+          avatar: @organization_4.avatar.url,
+          receipts: 1,
+          unread_receipts: 1,
+          last_receipt: {
+            id: @receipt_3.id,
+            read: @receipt_3.read,
+            favorited: false,
+            origin: @receipt_3.origin,
+            post: {
+              id: @receipt_3.post.id,
+              title: @receipt_3.post.title,
+              body: @receipt_3.post.body,
+              body_html: @receipt_3.post.body_html,
+              created_at: @receipt_3.post.created_at,
+              attachments: []
+            }
+          }
         }
       ].as_json
     end
@@ -158,6 +226,7 @@ describe Youxin::API, 'users' do
     end
     it "should return the array of users who have sent a post to user" do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_2, @organization_3, @organization_4].map(&:id)
+      @receipt = @user.receipts.first
       get api('/user/receipt_users', @user)
       response.status.should == 200
       json_response.should be_an Array
@@ -167,7 +236,23 @@ describe Youxin::API, 'users' do
           email: @admin.email,
           name: @admin.name,
           created_at: @admin.created_at,
-          avatar: @admin.avatar.url
+          avatar: @admin.avatar.url,
+          receipts: 1,
+          unread_receipts: 1,
+          last_receipt: {
+            id: @receipt.id,
+            read: @receipt.read,
+            favorited: false,
+            origin: @receipt.origin,
+            post: {
+              id: @receipt.post.id,
+              title: @receipt.post.title,
+              body: @receipt.post.body,
+              body_html: @receipt.post.body_html,
+              created_at: @receipt.post.created_at,
+              attachments: []
+            }
+          }
         }
       ].as_json
     end

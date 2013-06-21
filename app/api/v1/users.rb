@@ -27,13 +27,13 @@ class Users < Grape::API
     desc 'Get recent organizations who have sent post to user'
     get 'receipt_organizations' do
       receipt_organizations = current_user.receipt_organizations
-      present receipt_organizations, with: Youxin::Entities::OrganizationBasic
+      present receipt_organizations, with: Youxin::Entities::ReceiptOrganization, current_user: current_user
     end
 
     desc 'Get recent contacts who have sent post to user'
     get 'receipt_users' do
       receipt_users = current_user.receipt_users
-      present receipt_users, with: Youxin::Entities::UserBasic
+      present receipt_users, with: Youxin::Entities::ReceiptUser, current_user: current_user
     end
 
     desc 'Get all the receipts.'

@@ -10,10 +10,6 @@ module Youxin
     class User < UserBasic
     end
 
-    class UserSafe < Grape::Entity
-      expose :name
-    end
-
     class UserLogin < UserBasic
       expose :private_token
     end
@@ -27,10 +23,12 @@ module Youxin
       end
     end
 
-    class Post < Grape::Entity
+    class PostBasic < Grape::Entity
       expose :id, :title, :body, :body_html, :created_at
-      expose :author, using: Entities::UserBasic
       expose :attachments, using: Entities::Attachment
+    end
+    class Post < PostBasic
+      expose :author, using: Entities::UserBasic
     end
 
     class OrganizationBasic < Grape::Entity
@@ -55,6 +53,34 @@ module Youxin
       expose :origin
       expose :organizations, using: Entities::OrganizationBasic
       expose :post, using: Entities::Post
+    end
+    class ReceiptSimple < ReceiptBasic
+      expose :origin
+      expose :post, using: Entities::PostBasic
+    end
+
+    class ReceiptUser < UserBasic
+      expose :receipts do |user, options|
+        options[:current_user].receipts.from_users(user.id).count
+      end
+      expose :unread_receipts do |user, options|
+        options[:current_user].receipts.from_users(user.id).unread.count
+      end
+      expose :last_receipt, using: Entities::ReceiptSimple do |user, options|
+        options[:current_user].receipts.from_users(user.id).first
+      end
+    end
+
+    class ReceiptOrganization < OrganizationBasic
+      expose :receipts do |organization, options|
+        options[:current_user].receipts.from_organizations(organization.id).count
+      end
+      expose :unread_receipts do |organization, options|
+        options[:current_user].receipts.from_organizations(organization.id).unread.count
+      end
+      expose :last_receipt, using: Entities::ReceiptSimple do |organization, options|
+        options[:current_user].receipts.from_organizations(organization.id).first
+      end
     end
 
     class Comment < Grape::Entity
