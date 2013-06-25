@@ -119,7 +119,8 @@ describe Youxin::API, 'users' do
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
               created_at: @receipt.post.created_at,
-              attachments: []
+              attachments: [],
+              forms: []
             }
           }
         }
@@ -153,7 +154,8 @@ describe Youxin::API, 'users' do
               body: @receipt_1.post.body,
               body_html: @receipt_1.post.body_html,
               created_at: @receipt_1.post.created_at,
-              attachments: []
+              attachments: [],
+              forms: []
             }
           }
         },
@@ -176,7 +178,8 @@ describe Youxin::API, 'users' do
               body: @receipt_2.post.body,
               body_html: @receipt_2.post.body_html,
               created_at: @receipt_2.post.created_at,
-              attachments: []
+              attachments: [],
+              forms: []
             }
           }
         },
@@ -199,7 +202,8 @@ describe Youxin::API, 'users' do
               body: @receipt_3.post.body,
               body_html: @receipt_3.post.body_html,
               created_at: @receipt_3.post.created_at,
-              attachments: []
+              attachments: [],
+              forms: []
             }
           }
         }
@@ -250,7 +254,8 @@ describe Youxin::API, 'users' do
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
               created_at: @receipt.post.created_at,
-              attachments: []
+              attachments: [],
+              forms: [],
             }
           }
         }
@@ -309,7 +314,8 @@ describe Youxin::API, 'users' do
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
             },
-            attachments: []
+            attachments: [],
+            forms: []
           }
         }
       ].as_json
@@ -366,7 +372,8 @@ describe Youxin::API, 'users' do
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
             },
-            attachments: []
+            attachments: [],
+            forms: []
           }
         }
       ].as_json
@@ -424,7 +431,8 @@ describe Youxin::API, 'users' do
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
             },
-            attachments: []
+            attachments: [],
+            forms: []
           }
         }
       ].as_json
@@ -515,7 +523,8 @@ describe Youxin::API, 'users' do
                 created_at: @receipt.author.created_at,
                 avatar: @receipt.author.avatar.url
               },
-              attachments: []
+              attachments: [],
+              forms: []
             }
           }
         ].as_json
@@ -567,7 +576,8 @@ describe Youxin::API, 'users' do
                 created_at: @receipt.author.created_at,
                 avatar: @receipt.author.avatar.url
               },
-              attachments: []
+              attachments: [],
+              forms: []
             }
           }
         ].as_json

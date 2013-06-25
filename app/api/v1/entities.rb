@@ -18,9 +18,28 @@ module Youxin
       expose :id, :file_name, :file_size, :file_type, :image, :url
     end
 
+    class Input < Grape::Entity
+      expose :id, :_type, :label, :help_text, :required, :identifier, :position
+      # text_field
+      # text_area
+      # number_field
+      expose :default_value
+      # radio_button
+      # check_box
+      expose :options
+    end
+
+    class FormBasic < Grape::Entity
+      expose :id, :title, :created_at
+    end
+    class Form < Grape::Entity
+      expose :inputs, using: Entities::Input
+    end
+
     class PostBasic < Grape::Entity
       expose :id, :title, :body, :body_html, :created_at
       expose :attachments, using: Entities::Attachment
+      expose :forms, using: Entities::FormBasic
     end
     class Post < PostBasic
       expose :author, using: Entities::UserBasic
@@ -86,22 +105,6 @@ module Youxin
     class Favorite < Grape::Entity
       expose :id, :created_at, :favoriteable_type, :favoriteable_id
       expose :user, using: Entities::UserBasic
-    end
-
-    class Input < Grape::Entity
-      expose :id, :_type, :label, :help_text, :required, :identifier, :position
-      # text_field
-      # text_area
-      # number_field
-      expose :default_value
-      # radio_button
-      # check_box
-      expose :options
-    end
-
-    class Form < Grape::Entity
-      expose :id, :title, :created_at
-      expose :inputs, using: Entities::Input
     end
 
   end

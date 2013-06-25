@@ -223,7 +223,8 @@ describe Youxin::API, 'posts' do
           created_at: @post.author.created_at,
           avatar: @post.author.avatar.url
         },
-        attachments: []
+        attachments: [],
+        forms: []
       }.as_json
     end
     it "should return 404 if single post not exists" do

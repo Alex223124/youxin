@@ -47,7 +47,8 @@ describe Youxin::API, 'receipts' do
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
             },
-            attachments: []
+            attachments: [],
+            forms: []
           }
         }
       ].as_json
@@ -86,7 +87,8 @@ describe Youxin::API, 'receipts' do
             created_at: @receipt.author.created_at,
             avatar: @receipt.author.avatar.url
           },
-          attachments: []
+          attachments: [],
+          forms: []
         }
       }.as_json
     end
@@ -134,7 +136,8 @@ describe Youxin::API, 'receipts' do
             created_at: @receipt.author.created_at,
             avatar: @receipt.author.avatar.url
           },
-          attachments: []
+          attachments: [],
+          forms: []
         }
       }.as_json
     end
