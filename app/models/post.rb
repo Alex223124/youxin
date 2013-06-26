@@ -14,10 +14,10 @@ class Post
   validates :author_id, presence: true
   validates :organization_ids, presence: true
   validates :body_html, presence: true
-  validate :ensure_attachment_ids
-  attr_accessible :title, :body, :body_html, :organization_ids,
-                  :attachment_ids, :author_id, :organization_clan_ids
 
+  attr_accessible :title, :body, :body_html, :organization_ids,
+                  :author_id, :organization_clan_ids
+  attr_accessor :attachment_ids
   before_create do
     parse_body
   end
@@ -114,13 +114,5 @@ class Post
                          origin: true)
     self.save
   end
-  def ensure_attachment_ids
-    self.attachments.each do |attachment|
-      attachment = attachment.reload
 
-      unless (attachment.user == self.author  && attachment.post_id == nil)
-        self.errors.add :attachment_ids, :inclusion
-      end
-    end
-  end
 end

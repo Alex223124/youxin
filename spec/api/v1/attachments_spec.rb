@@ -5,9 +5,9 @@ describe Youxin::API, 'attachments' do
 
   before(:each) do
     @file_path = Rails.root.join("spec/factories/data/attachment_file.txt")
-    @file = Rack::Test::UploadedFile.new(@file_path)
+    @file = Rack::Test::UploadedFile.new(@file_path, 'text/plain')
     @image_path = Rails.root.join("spec/factories/data/attachment_image.png")
-    @image = Rack::Test::UploadedFile.new(@image_path)
+    @image = Rack::Test::UploadedFile.new(@image_path, 'image/png')
     @admin = create :user
     @organization = create :organization
     @actions = Action.options_array_for(:youxin)
@@ -26,8 +26,8 @@ describe Youxin::API, 'attachments' do
       json_response['id'].should_not be_nil
       json_response['file_name'].should == 'attachment_file.txt'
       json_response['file_size'].to_i.should == @file.size
+      json_response['file_type'].should == 'text/plain'
       json_response['image'].should be_false
-      json_response['url'].should_not be_nil
     end
 
     it "should create image attachment" do
@@ -39,8 +39,9 @@ describe Youxin::API, 'attachments' do
       post api('/attachments', @admin), { file: @image }
       json_response['id'].should_not be_nil
       json_response['file_name'].should == 'attachment_image.png'
+      json_response['file_type'].should == 'image/png'
       json_response['image'].should be_true
-      json_response['url'].should_not be_nil
     end
   end
+
 end

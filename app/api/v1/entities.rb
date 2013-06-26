@@ -15,12 +15,7 @@ module Youxin
     end
 
     class Attachment < Grape::Entity
-      expose :id, :file_name
-      expose :file_size
-      expose :image
-      expose :url do |attachment|
-        attachment.storage.url
-      end
+      expose :id, :file_name, :file_size, :file_type, :image, :url
     end
 
     class PostBasic < Grape::Entity

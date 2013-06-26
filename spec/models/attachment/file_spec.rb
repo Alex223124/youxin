@@ -14,7 +14,7 @@ describe Attachment::File do
   describe "attributes" do
     before(:each) do
       @file_path = Rails.root.join("spec/factories/data/attachment_file.txt")
-      @file = Rack::Test::UploadedFile.new(@file_path)
+      @file = Rack::Test::UploadedFile.new(@file_path, 'text/plain')
       @attachment = create :attachment_file, storage: @file
     end
     it "should create an attachment" do
@@ -35,15 +35,17 @@ describe Attachment::File do
   describe "#details" do
     before(:each) do
       @file_path = Rails.root.join("spec/factories/data/attachment_file.txt")
-      @file = Rack::Test::UploadedFile.new(@file_path)
+      @file = Rack::Test::UploadedFile.new(@file_path, 'text/plain')
       @attachment = create :attachment_file, storage: @file
     end
     it "should return details hash" do
       size = File.size(@file_path)
       @attachment.details.should == {
+                                      id: @attachment.id,
                                       file_name: 'attachment_file.txt',
                                       file_size: size.to_s,
-                                      url: @attachment.storage.url
+                                      file_type: 'text/plain',
+                                      url: "/attachments/#{@attachment.id}"
                                     }
     end
   end

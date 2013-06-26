@@ -13,7 +13,7 @@ describe Attachment::Image do
   describe "attributes" do
     before(:each) do
       @image_path = Rails.root.join("spec/factories/data/attachment_image.png")
-      @image = Rack::Test::UploadedFile.new(@image_path)
+      @image = Rack::Test::UploadedFile.new(@image_path, 'image/png')
       @attachment = create :attachment_image, storage: @image
     end
     it "should create an attachment" do
@@ -30,19 +30,20 @@ describe Attachment::Image do
   describe "#details" do
     before(:each) do
       @file_path = Rails.root.join("spec/factories/data/attachment_image.png")
-      @file = Rack::Test::UploadedFile.new(@file_path)
+      @file = Rack::Test::UploadedFile.new(@file_path, 'image/png')
       @attachment = create :attachment_image, storage: @file
     end
     it "should return details hash" do
       size = File.size(@file_path)
       @attachment.details.should == {
+                                      id: @attachment.id,
                                       file_name: 'attachment_image.png',
-                                      versions: [
-                                        {
-                                          thumb: @attachment.storage.url(:thumb)
-                                        }
-                                      ],
-                                      url: @attachment.storage.url
+                                      file_type: 'image/png',
+                                      url: "/attachments/#{@attachment.id}",
+                                      versions: {
+                                        thumb: @attachment.storage.url(:thumb),
+                                        mobile: @attachment.storage.url(:mobile)
+                                      }
                                     }
     end
   end

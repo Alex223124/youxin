@@ -8,8 +8,24 @@ class Posts < Grape::API
       required_attributes! [:body_html, :organization_ids]
 
       attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids]
+      attachment_ids = attrs.delete(:attachment_ids)
       post = current_user.posts.new attrs
+
+      attachments = []
+      attachment_ids.each do |attachment_id|
+        attachment = Attachment::Base.find(attachment_id)
+
+        not_found!("attachment") unless attachment
+        authorize! :manage, attachment
+
+        if attachment.post_id.present?
+          post.errors.add :attachment_ids, :inclusion
+          fail!(post.errors)
+        end
+        attachments |= [attachment]
+      end if attachment_ids
       if post.save
+        attachments.map { |attachment| post.attachments << attachment } if attachments.present?
         present post, with: Youxin::Entities::Post
       else
         fail!(post.errors)

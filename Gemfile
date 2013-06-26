@@ -21,6 +21,7 @@ gem 'jquery-rails', '~> 2.2.1'
 gem 'mongoid'
 gem 'carrierwave-mongoid', '~> 0.5.0'
 gem 'mini_magick', '~> 3.5.0'
+gem 'mime-types', '~> 1.23'
 gem 'kaminari'
 
 group :test do
@@ -39,6 +40,11 @@ group :test do
   gem 'guard-spork' # speed up test
 end
 group :development, :test do
+  gem 'pry-rails'
+  gem 'pry-remote'
+  gem 'pry-nav'
+  gem 'better_errors'
+  gem 'binding_of_caller'
   gem 'mongoid_colored_logger'
 
   gem 'quiet_assets', '~> 1.0.2' # disable assets log

@@ -15,6 +15,7 @@ class ApplicationController < ActionController::Base
   def add_abilities
     abilities << UserActionsOrganizationRelationship
     abilities << Post
+    abilities << Attachment::Base
     abilities
   end
 

@@ -89,6 +89,7 @@ module Youxin
                        abilities = Six.new
                        abilities << UserActionsOrganizationRelationship
                        abilities << Post
+                       abilities << Attachment::Base
                        abilities
                      end
     end

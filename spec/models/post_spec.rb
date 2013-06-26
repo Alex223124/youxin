@@ -239,21 +239,19 @@ describe Post do
       @organization.push_member(@user)
 
       @file_path = Rails.root.join("spec/factories/data/attachment_file.txt")
-      @file = Rack::Test::UploadedFile.new(@file_path)
-    end
-    it "should not append attachments" do
-      attachment_ids = [@user.file_attachments.create(storage: @file),
-                        @author.file_attachments.create(storage: @file)].map(&:id)
-      post = build :post, author: @author, organization_ids: [@organization.id], attachment_ids: attachment_ids
-      post.save
-      post.should have(1).error_on(:attachment_ids)
+      @file = Rack::Test::UploadedFile.new(@file_path, 'text/plain')
     end
     it "should append attachments" do
-      attachment_ids = [@author.file_attachments.create(storage: @file),
-                        @author.file_attachments.create(storage: @file)].map(&:id)
-      post = build :post, author: @author, organization_ids: [@organization.id], attachment_ids: attachment_ids
-      post.save
-      post.should be_valid
+      attachments = [@author.file_attachments.create(storage: @file),
+                     @author.file_attachments.create(storage: @file)]
+      post = create :post, author: @author, organization_ids: [@organization.id]
+      post.attachments += attachments
+      post.attachments.count.should == 2
+    end
+    it "should append attachments" do
+      post = create :post, author: @author, organization_ids: [@organization.id]
+      post.attachments << @author.file_attachments.create(storage: @file)
+      post.attachments.count.should == 1
     end
   end
 

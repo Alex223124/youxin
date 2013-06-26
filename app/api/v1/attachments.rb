@@ -17,5 +17,6 @@ class Attachments < Grape::API
         fail!(attachment.errors)
       end
     end
+
   end
 end

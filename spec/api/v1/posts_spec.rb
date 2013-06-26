@@ -15,9 +15,9 @@ describe Youxin::API, 'posts' do
     @organization.authorize_cover_offspring(@user, @actions)
 
     @file_path = Rails.root.join("spec/factories/data/attachment_file.txt")
-    @file = Rack::Test::UploadedFile.new(@file_path)
+    @file = Rack::Test::UploadedFile.new(@file_path, 'text/plain')
     @image_path = Rails.root.join("spec/factories/data/attachment_image.png")
-    @image = Rack::Test::UploadedFile.new(@image_path)
+    @image = Rack::Test::UploadedFile.new(@image_path, 'image/png')
   end
 
   describe "POST /post" do
@@ -50,6 +50,25 @@ describe Youxin::API, 'posts' do
         json_response['attachments'].last['id'].should == attachment_ids.first
       end
 
+      it "should not append attachments if attachments belongs to another post" do
+        attrs = attributes_for(:post).merge!({
+          organization_ids: [@organization].map(&:id)
+        })
+        attachment_ids = []
+        post api('/attachments', @admin), { file: @file }
+        attachment_ids << json_response['id']
+        post api('/attachments', @admin), { file: @image }
+        attachment_ids << json_response['id']
+
+        attrs = attrs.merge({
+          attachment_ids: attachment_ids
+        })
+        post api('/posts', @admin), attrs
+        response.status.should == 201
+        post api('/posts', @admin), attrs
+        response.status.should == 400
+        json_response['attachment_ids'].should_not be_nil
+      end
       it "should not append attachments if attachments does not belong to user" do
         attrs = attributes_for(:post).merge!({
           organization_ids: [@organization].map(&:id)
@@ -64,8 +83,7 @@ describe Youxin::API, 'posts' do
           attachment_ids: attachment_ids
         })
         post api('/posts', @admin), attrs
-        response.status.should == 400
-        json_response['attachment_ids'].should_not be_nil
+        response.status.should == 403
       end
     end
     context "when unauthorized organization" do

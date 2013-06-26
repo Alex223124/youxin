@@ -1,6 +1,7 @@
 class Attachment::Image < Attachment::Base
   field :file_name, type: String
   field :image, type: Boolean, default: true
+  field :file_type, type: String
 
   validates :file_name, presence: true
 
@@ -8,15 +9,21 @@ class Attachment::Image < Attachment::Base
 
   before_validation :set_attachment_attributes, on: :create
 
+  def url
+    "/attachments/#{self.id}"
+  end
+
   def details
-    versions = []
+    versions = {}
     self.storage.versions.each_key do |version|
-      versions << { version => self.storage.url(version) }
+      versions[version.to_sym] = self.storage.url(version)
     end
     {
+      id: self.id,
       file_name: self.file_name,
+      file_type: self.file_type,
       versions: versions,
-      url: self.storage.url
+      url: "/attachments/#{self.id}"
     }
   end
 
@@ -24,6 +31,7 @@ class Attachment::Image < Attachment::Base
   def set_attachment_attributes
     if storage.present?
       self.file_name = self.storage.file.original_filename
+      self.file_type = self.storage.file.content_type
     end
   end
 
