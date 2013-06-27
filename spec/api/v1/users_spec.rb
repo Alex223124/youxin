@@ -38,16 +38,16 @@ describe Youxin::API, 'users' do
         {
           id: @organization.id,
           name: @organization.name,
-          parent_id: @organization.parent_id,
           created_at: @organization.created_at,
-          avatar: @organization.avatar.url
+          avatar: @organization.avatar.url,
+          parent: nil
         },
         {
           id: @organization_another.id,
           name: @organization_another.name,
-          parent_id: @organization_another.parent_id,
           created_at: @organization.created_at,
-          avatar: @organization_another.avatar.url
+          avatar: @organization_another.avatar.url,
+          parent: nil
         }
       ].as_json
     end
@@ -61,9 +61,9 @@ describe Youxin::API, 'users' do
           {
             id: @organization.id,
             name: @organization.name,
-            parent_id: @organization.parent_id,
             created_at: @organization.created_at,
-            avatar: @organization.avatar.url
+            avatar: @organization.avatar.url,
+            parent: nil
           }
         ].as_json
       end
@@ -103,7 +103,6 @@ describe Youxin::API, 'users' do
         {
           id: @organization_1.id,
           name: @organization_1.name,
-          parent_id: @organization_1.parent_id,
           created_at: @organization_1.created_at,
           avatar: @organization_1.avatar.url,
           receipts: 1,
@@ -139,7 +138,6 @@ describe Youxin::API, 'users' do
           id: @organization_1.id,
           name: @organization_1.name,
           created_at: @organization_1.created_at,
-          parent_id: @organization_1.parent_id,
           avatar: @organization_1.avatar.url,
           receipts: 1,
           unread_receipts: 1,
@@ -162,7 +160,6 @@ describe Youxin::API, 'users' do
         {
           id: @organization_3.id,
           name: @organization_3.name,
-          parent_id: @organization_3.parent_id,
           created_at: @organization_3.created_at,
           avatar: @organization_3.avatar.url,
           receipts: 1,
@@ -186,7 +183,6 @@ describe Youxin::API, 'users' do
         {
           id: @organization_4.id,
           name: @organization_4.name,
-          parent_id: @organization_4.parent_id,
           created_at: @organization_4.created_at,
           avatar: @organization_4.avatar.url,
           receipts: 1,
@@ -296,7 +292,6 @@ describe Youxin::API, 'users' do
             {
               id: @organization.id,
               name: @organization.name,
-              parent_id: @organization.parent_id,
               created_at: @organization.created_at,
               avatar: @organization.avatar.url
             }
@@ -307,15 +302,15 @@ describe Youxin::API, 'users' do
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
             created_at: @receipt.post.created_at,
+            attachments: [],
+            forms: [],
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
-            },
-            attachments: [],
-            forms: []
+            }
           }
         }
       ].as_json
@@ -354,7 +349,6 @@ describe Youxin::API, 'users' do
             {
               id: @organization.id,
               name: @organization.name,
-              parent_id: @organization.parent_id,
               created_at: @organization.created_at,
               avatar: @organization.avatar.url
             }
@@ -365,15 +359,15 @@ describe Youxin::API, 'users' do
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
             created_at: @receipt.post.created_at,
+            attachments: [],
+            forms: [],
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
-            },
-            attachments: [],
-            forms: []
+            }
           }
         }
       ].as_json
@@ -413,7 +407,6 @@ describe Youxin::API, 'users' do
             {
               id: @organization.id,
               name: @organization.name,
-              parent_id: @organization.parent_id,
               created_at: @organization.created_at,
               avatar: @organization.avatar.url
             }
@@ -424,15 +417,15 @@ describe Youxin::API, 'users' do
             body: @receipt.post.body,
             body_html: @receipt.post.body_html,
             created_at: @receipt.post.created_at,
+            attachments: [],
+            forms: [],
             author: {
               id: @receipt.author.id,
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
               avatar: @receipt.author.avatar.url
-            },
-            attachments: [],
-            forms: []
+            }
           }
         }
       ].as_json
@@ -470,7 +463,6 @@ describe Youxin::API, 'users' do
           {
             id: @organization.id,
             name: @organization.name,
-            parent_id: @organization.parent_id,
             created_at: @organization.created_at,
             avatar: @organization.avatar.url
           }
@@ -505,7 +497,6 @@ describe Youxin::API, 'users' do
               {
                 id: @organization.id,
                 name: @organization.name,
-                parent_id: @organization.parent_id,
                 created_at: @organization.created_at,
                 avatar: @organization.avatar.url
               }
@@ -516,15 +507,15 @@ describe Youxin::API, 'users' do
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
               created_at: @receipt.post.created_at,
+              attachments: [],
+              forms: [],
               author: {
                 id: @receipt.author.id,
                 email: @receipt.author.email,
                 name: @receipt.author.name,
                 created_at: @receipt.author.created_at,
                 avatar: @receipt.author.avatar.url
-              },
-              attachments: [],
-              forms: []
+              }
             }
           }
         ].as_json
@@ -558,7 +549,6 @@ describe Youxin::API, 'users' do
               {
                 id: @organization.id,
                 name: @organization.name,
-                parent_id: @organization.parent_id,
                 created_at: @organization.created_at,
                 avatar: @organization.avatar.url
               }
@@ -569,15 +559,15 @@ describe Youxin::API, 'users' do
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
               created_at: @receipt.post.created_at,
+              attachments: [],
+              forms: [],
               author: {
                 id: @receipt.author.id,
                 email: @receipt.author.email,
                 name: @receipt.author.name,
                 created_at: @receipt.author.created_at,
                 avatar: @receipt.author.avatar.url
-              },
-              attachments: [],
-              forms: []
+              }
             }
           }
         ].as_json

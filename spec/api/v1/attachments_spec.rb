@@ -28,6 +28,7 @@ describe Youxin::API, 'attachments' do
       json_response['file_size'].to_i.should == @file.size
       json_response['file_type'].should == 'text/plain'
       json_response['image'].should be_false
+      json_response['url'].should == "/attachments/#{json_response['id']}"
     end
 
     it "should create image attachment" do
@@ -41,6 +42,7 @@ describe Youxin::API, 'attachments' do
       json_response['file_name'].should == 'attachment_image.png'
       json_response['file_type'].should == 'image/png'
       json_response['image'].should be_true
+      json_response['url'].should == "/attachments/#{json_response['id']}"
     end
   end
 

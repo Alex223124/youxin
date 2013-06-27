@@ -46,7 +46,7 @@ module Youxin
     end
 
     class OrganizationBasic < Grape::Entity
-      expose :id, :name, :parent_id, :created_at
+      expose :id, :name, :created_at
       expose :avatar do |organization|
         organization.avatar.url
       end
@@ -83,6 +83,10 @@ module Youxin
       expose :last_receipt, using: Entities::ReceiptSimple do |user, options|
         options[:current_user].receipts.from_users(user.id).first
       end
+    end
+
+    class AuthorizedOrganization < OrganizationBasic
+      expose :parent, using: Entities::OrganizationBasic
     end
 
     class ReceiptOrganization < OrganizationBasic

@@ -17,7 +17,6 @@ describe Youxin::API, 'organizations' do
         json_response.should == {
           id: @organization.id,
           name: @organization.name,
-          parent_id: @organization.parent_id,
           created_at: @organization.created_at,
           avatar: @organization.avatar.url
         }.as_json
@@ -65,7 +64,6 @@ describe Youxin::API, 'organizations' do
               {
                 id: @organization.id,
                 name: @organization.name,
-                parent_id: @organization.parent_id,
                 created_at: @organization.created_at,
                 avatar: @organization.avatar.url
               }
@@ -76,15 +74,15 @@ describe Youxin::API, 'organizations' do
               body: @receipt.post.body,
               body_html: @receipt.post.body_html,
               created_at: @receipt.post.created_at,
+              attachments: [],
+              forms: [],
               author: {
                 id: @receipt.author.id,
                 email: @receipt.author.email,
                 name: @receipt.author.name,
                 created_at: @receipt.author.created_at,
                 avatar: @receipt.author.avatar.url
-              },
-              attachments: [],
-              forms: []
+              }
             }
           }
         ].as_json
@@ -109,7 +107,6 @@ describe Youxin::API, 'organizations' do
             {
               id: @organization.id,
               name: @organization.name,
-              parent_id: @organization.parent_id,
               created_at: @organization.created_at,
               avatar: @organization.avatar.url
             }
@@ -120,15 +117,15 @@ describe Youxin::API, 'organizations' do
             body: @receipt_2.post.body,
             body_html: @receipt_2.post.body_html,
             created_at: @receipt_2.post.created_at,
+            attachments: [],
+            forms: [],
             author: {
               id: @receipt_2.author.id,
               email: @receipt_2.author.email,
               name: @receipt_2.author.name,
               created_at: @receipt_2.author.created_at,
               avatar: @receipt_2.author.avatar.url
-            },
-            attachments: [],
-            forms: []
+            }
           }
         ].as_json
       end

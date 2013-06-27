@@ -21,7 +21,7 @@ class Users < Grape::API
         authorized_organizations = current_user.authorized_organizations
       end
 
-      present authorized_organizations, with: Youxin::Entities::OrganizationBasic
+      present authorized_organizations, with: Youxin::Entities::AuthorizedOrganization
     end
 
     desc 'Get recent organizations who have sent post to user'
