@@ -15,7 +15,7 @@ class Receipt
   belongs_to :user, inverse_of: :receipts
   belongs_to :author, class_name: 'User', inverse_of: :created_receipts
   belongs_to :post
-  has_many :favorites, as: :favoriteable, dependent: :destroy
+  has_many :favorites, as: :favoriteable, dependent: :destroy, after_add: :mark_self_read
 
   scope :read, where(read: true)
   scope :unread, where(read: false)
@@ -29,6 +29,11 @@ class Receipt
     self.read_at = Time.now
     self.read = true
     self.save
+  end
+
+  private
+  def mark_self_read(favorite)
+    favorite.favoriteable.read!
   end
 
 end

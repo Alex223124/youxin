@@ -109,7 +109,7 @@ describe Youxin::API, 'receipts' do
       response.status.should == 201
       json_response.should == {
         id: @receipt.id,
-        read: @receipt.read,
+        read: true,
         favorited: true,
         origin: @receipt.origin,
         organizations: [
