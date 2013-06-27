@@ -32,7 +32,7 @@ module Youxin
     class FormBasic < Grape::Entity
       expose :id, :title, :created_at
     end
-    class Form < Grape::Entity
+    class Form < FormBasic
       expose :inputs, using: Entities::Input
     end
 

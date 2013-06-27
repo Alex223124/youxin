@@ -32,19 +32,6 @@ class Posts < Grape::API
       end
     end
 
-    segment '/:id' do
-      resource :forms do
-        get do
-          post = current_user.receipts.find_by(post_id: params[:id]).try(:post)
-          if post
-            present post.forms, with: Youxin::Entities::Form
-          else
-            not_found!
-          end
-        end
-      end
-    end
-
     route_param :id do
       before do
         @post = Post.find(params[:id])
@@ -54,18 +41,22 @@ class Posts < Grape::API
       get do
         present @post, with: Youxin::Entities::Post
       end
+      get 'forms' do
+        @forms = @post.forms
+        present @forms, with: Youxin::Entities::Form
+      end
       get 'receipts' do
-        authorize! :read_receipts, @post
+        authorize! :manage, @post
         receipts = paginate @post.receipts.all
         present receipts, with: Youxin::Entities::ReceiptAdmin
       end
       get 'unread_receipts' do
-        authorize! :read_receipts, @post
+        authorize! :manage, @post
         unread_receipts = paginate @post.receipts.unread
         present unread_receipts, with: Youxin::Entities::ReceiptAdmin
       end
       get 'read_receipts' do
-        authorize! :read_receipts, @post
+        authorize! :manage, @post
         read_receipts = paginate @post.receipts.read
         present read_receipts, with: Youxin::Entities::ReceiptAdmin
       end

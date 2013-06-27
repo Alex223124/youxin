@@ -20,6 +20,6 @@ module Youxin
     mount Attachments
     mount Receipts
     mount Organizations
-
+    mount Forms
   end
 end

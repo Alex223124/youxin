@@ -48,7 +48,7 @@ class Post
     return [] unless subject.instance_of?(Post)
     abilities = []
     abilities |= [:read] if subject.recipient_ids.include?(object.id)
-    abilities |= [:read, :read_receipts] if subject.author_id == object.id
+    abilities |= [:read, :manage] if subject.author_id == object.id
     abilities
   end
 
