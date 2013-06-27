@@ -28,8 +28,8 @@ describe Field::RadioButton do
       end
       it "fail multi selected" do
         @radio_button = build :radio_button
-        @option_1 = build :option, selected: true
-        @option_2 = build :option, selected: true
+        @option_1 = build :option, default_selected: true
+        @option_2 = build :option, default_selected: true
         @option_3 = build :option
         @radio_button.options = [@option_1, @option_2, @option_3]
         @radio_button.save

@@ -50,17 +50,17 @@ describe Form do
             options: [
               {
                 _type: 'Field::Option',
-                selected: true,
+                default_selected: true,
                 value: 'radio_button option one'
               },
               {
                 _type: 'Field::Option',
-                selected: false,
+                default_selected: false,
                 value: 'radio_button option two'
               },
               {
                 _type: 'Field::Option',
-                selected: false,
+                default_selected: false,
                 value: 'radio_button option three'
               }
             ]
@@ -74,17 +74,17 @@ describe Form do
             options: [
               {
                 _type: 'Field::Option',
-                selected: true,
+                default_selected: true,
                 value: 'check_box option one'
               },
               {
                 _type: 'Field::Option',
-                selected: true,
+                default_selected: true,
                 value: 'check_box option two'
               },
               {
                 _type: 'Field::Option',
-                selected: false,
+                default_selected: false,
                 value: 'check_box option three'
               }
             ]
@@ -189,17 +189,17 @@ describe Form do
               options: [
                 {
                   _type: 'Field::Option',
-                  selected: true,
+                  default_selected: true,
                   value: 'radio_button_1 option one'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: false,
+                  default_selected: false,
                   value: 'radio_button_1 option two'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: false,
+                  default_selected: false,
                   value: 'radio_button_1 option three'
                 }
               ]
@@ -213,17 +213,17 @@ describe Form do
               options: [
                 {
                   _type: 'Field::Option',
-                  selected: true,
+                  default_selected: true,
                   value: 'radio_button_2 option one'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: false,
+                  default_selected: false,
                   value: 'radio_button_2 option two'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: false,
+                  default_selected: false,
                   value: 'radio_button_2 option three'
                 }
               ]
@@ -247,17 +247,17 @@ describe Form do
           options: [
             {
               _type: 'Field::Option',
-              selected: true,
+              default_selected: true,
               value: 'radio_button_3 option one'
             },
             {
               _type: 'Field::Option',
-              selected: true,
+              default_selected: true,
               value: 'radio_button_3 option two'
             },
             {
               _type: 'Field::Option',
-              selected: false,
+              default_selected: false,
               value: 'radio_button_3 option three'
             }
           ]
@@ -283,17 +283,17 @@ describe Form do
               options: [
                 {
                   _type: 'Field::Option',
-                  selected: true,
+                  default_selected: true,
                   value: 'check_box option one'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: true,
+                  default_selected: true,
                   value: 'check_box option two'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: false,
+                  default_selected: false,
                   value: 'check_box option three'
                 }
               ]
@@ -307,17 +307,17 @@ describe Form do
               options: [
                 {
                   _type: 'Field::Option',
-                  selected: true,
+                  default_selected: true,
                   value: 'check_box option one'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: true,
+                  default_selected: true,
                   value: 'check_box option two'
                 },
                 {
                   _type: 'Field::Option',
-                  selected: false,
+                  default_selected: false,
                   value: 'check_box option three'
                 }
               ]
@@ -341,17 +341,17 @@ describe Form do
           options: [
             {
               _type: 'Field::Option',
-              selected: true,
+              default_selected: true,
               value: 'check_box option one'
             },
             {
               _type: 'Field::Option',
-              selected: true,
+              default_selected: true,
               value: 'check_box option two'
             },
             {
               _type: 'Field::Option',
-              selected: false,
+              default_selected: false,
               value: 'check_box option three'
             }
           ]

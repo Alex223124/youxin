@@ -9,7 +9,7 @@ describe Field::Option do
   end
 
   describe "Respond to" do
-    it { should respond_to(:selected) }
+    it { should respond_to(:default_selected) }
     it { should respond_to(:value) }
   end
 

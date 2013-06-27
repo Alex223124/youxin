@@ -19,6 +19,8 @@ class Organization
   validates :parent_id, presence: true, allow_nil: true
   validate :parent_exists, if: ->(organization) { organization.parent_id.present? }
 
+  default_scope asc(:_id)
+
   after_destroy do
     self.members.each do |member|
       member.pull(:organization_ids, self.id)

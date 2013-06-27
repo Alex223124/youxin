@@ -34,22 +34,8 @@ describe Youxin::API, 'users' do
       get api('/user/authorized_organizations', @admin)
       response.status.should == 200
       json_response.should be_an Array
-      json_response.should == [
-        {
-          id: @organization.id,
-          name: @organization.name,
-          created_at: @organization.created_at,
-          avatar: @organization.avatar.url,
-          parent: nil
-        },
-        {
-          id: @organization_another.id,
-          name: @organization_another.name,
-          created_at: @organization.created_at,
-          avatar: @organization_another.avatar.url,
-          parent: nil
-        }
-      ].as_json
+      json_response.map { |org| org['id'] }.should include(@organization.id.as_json)
+      json_response.map { |org| org['id'] }.should include(@organization_another.id.as_json)
     end
 
     context "params[:actions]" do

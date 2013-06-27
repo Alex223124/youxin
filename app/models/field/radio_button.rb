@@ -9,7 +9,7 @@ class Field::RadioButton < Field::Base
 
   private
   def ensure_option_selected
-    if self.options.where(selected: true).count > 1
+    if self.options.where(default_selected: true).count > 1
       self.errors.add :options, :too_many_selected
     end
   end

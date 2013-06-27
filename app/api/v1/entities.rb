@@ -18,6 +18,10 @@ module Youxin
       expose :id, :file_name, :file_size, :file_type, :image, :url
     end
 
+    class Option < Grape::Entity
+      expose :id, :default_selected, :value
+    end
+
     class Input < Grape::Entity
       expose :id, :_type, :label, :help_text, :required, :identifier, :position
       # text_field
@@ -26,7 +30,17 @@ module Youxin
       expose :default_value
       # radio_button
       # check_box
-      expose :options
+      expose :options, using: Entities::Option
+      # all
+    end
+
+    class Entity < Grape::Entity
+      expose :key, :value
+    end
+
+    class Collection < Grape::Entity
+      expose :created_at
+      expose :entities, using: Entities::Entity
     end
 
     class FormBasic < Grape::Entity
