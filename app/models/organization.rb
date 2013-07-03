@@ -14,6 +14,7 @@ class Organization
   has_many :user_organization_position_relationships, dependent: :destroy
   has_many :user_actions_organization_relationships, dependent: :destroy
   has_many :applications, dependent: :destroy
+  has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true
@@ -56,7 +57,10 @@ class Organization
     if user
       self.add_to_set(:member_ids, user.id)
       user.add_to_set(:organization_ids, self.id)
-      self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
+      relation = self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
+      unless relation.new_record?
+        self.organization_notifications._in.create(user_id: user.id)
+      end
     end
   end
   def pull_member(user)
@@ -64,7 +68,11 @@ class Organization
     if user
       self.pull(:member_ids, user.id)
       user.pull(:organization_ids, self.id)
-      self.user_organization_position_relationships.where(user_id: user.id).delete
+      relation = self.user_organization_position_relationships.where(user_id: user.id).first
+      if relation
+        relation.destroy
+        self.organization_notifications._out.create(user_id: user.id)
+      end
     end
   end
   def push_members(users, position = nil)

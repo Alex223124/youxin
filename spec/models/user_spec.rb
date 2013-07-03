@@ -16,6 +16,9 @@ describe User do
     it { should have_many(:collections) }
     it { should have_many(:comments) }
     it { should have_many(:favorites) }
+    it { should have_many(:notifications) }
+    it { should have_many(:comment_notifications) }
+    it { should have_many(:organization_notifications) }
   end
 
   describe "Respond to" do

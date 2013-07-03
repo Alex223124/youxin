@@ -7,6 +7,7 @@ describe Comment do
   describe "Association" do
     it { should belong_to(:commentable) }
     it { should belong_to(:user) }
+    it { should have_many(:comment_notifications) }
   end
 
   describe "Respond to" do

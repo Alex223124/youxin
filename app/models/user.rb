@@ -80,6 +80,9 @@ class User
   end
   has_many :file_attachments, class_name: 'Attachment::File', dependent: :destroy
   has_many :image_attachments, class_name: 'Attachment::Image', dependent: :destroy
+  has_many :notifications, class_name: 'Notification::Base', dependent: :destroy
+  has_many :comment_notifications, class_name: 'Notification::Comment', dependent: :destroy
+  has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
 
   before_save :ensure_authentication_token!
   alias_attribute :private_token, :authentication_token
