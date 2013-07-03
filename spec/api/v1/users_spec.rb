@@ -40,6 +40,7 @@ describe Youxin::API, 'users' do
 
     context "params[:actions]" do
       it "should return authorized actions organizations when single params[:actions]" do
+        @organization.push_member(@admin)
         get api('/user/authorized_organizations', @admin), actions: [:create_youxin]
         response.status.should == 200
         json_response.should be_an Array
@@ -49,7 +50,8 @@ describe Youxin::API, 'users' do
             name: @organization.name,
             created_at: @organization.created_at,
             avatar: @organization.avatar.url,
-            parent: nil
+            parent_id: nil,
+            members: 1
           }
         ].as_json
       end

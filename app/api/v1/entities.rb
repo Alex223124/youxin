@@ -100,7 +100,10 @@ module Youxin
     end
 
     class AuthorizedOrganization < OrganizationBasic
-      expose :parent, using: Entities::OrganizationBasic
+      expose :parent_id
+      expose :members do |organization, options|
+        organization.members.count
+      end
     end
 
     class ReceiptOrganization < OrganizationBasic
