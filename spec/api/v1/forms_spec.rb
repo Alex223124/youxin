@@ -114,7 +114,7 @@ describe Youxin::API, 'forms' do
 
   end
 
-  describe "POST /forms/:id/collections" do
+  describe "POST /forms/:id/collection" do
     before(:each) do
       @entities = {
         field_1: 'text_field test',
@@ -125,22 +125,50 @@ describe Youxin::API, 'forms' do
       }
     end
     it "should successed" do
-      post api("/forms/#{@form.id}/collections", @user), entities: @entities
+      post api("/forms/#{@form.id}/collection", @user), entities: @entities
       @collection = @form.collections.first
       response.status.should == 201
       json_response['created_at'].should == @collection.created_at.as_json
       json_response['entities'].size.should == 5
     end
     it "should return 403" do
-      post api("/forms/#{@form.id}/collections", @user_another), entities: @entities
+      post api("/forms/#{@form.id}/collection", @user_another), entities: @entities
       response.status.should == 403
     end
     it "should return 400 when duplicated" do
-      post api("/forms/#{@form.id}/collections", @user), entities: @entities
-      post api("/forms/#{@form.id}/collections", @user), entities: @entities
+      post api("/forms/#{@form.id}/collection", @user), entities: @entities
+      post api("/forms/#{@form.id}/collection", @user), entities: @entities
       response.status.should == 400
     end
 
+  end
+
+  describe "GET /forms/:id/collection" do
+    before(:each) do
+      @entities = {
+        field_1: 'text_field test',
+        field_2: 'text_area test',
+        field_3: @form.radio_buttons.first.options.first.id,
+        field_4: [@form.check_boxes.first.options[0], @form.check_boxes.first.options[1]].map(&:id),
+        field_5: 123
+      }
+      post api("/forms/#{@form.id}/collection", @user), entities: @entities
+    end
+    it "should return 200" do
+      get api("/forms/#{@form.id}/collection", @user)
+      collection = @user.collections.where(form_id: @form.id).first
+      response.status.should == 200
+      json_response['entities'].size.should == 5
+      json_response['created_at'].should_not be_blank
+    end
+    it "should return 204" do
+      get api("/forms/#{@form.id}/collection", @user_one)
+      response.status.should == 204
+    end
+    it "should return 403" do
+      get api("/forms/#{@form.id}/collection", @user_another), entities: @entities
+      response.status.should == 403
+    end
   end
 
   describe "GET /forms/:id/collections" do
@@ -152,8 +180,8 @@ describe Youxin::API, 'forms' do
         field_4: [@form.check_boxes.first.options[0], @form.check_boxes.first.options[1]].map(&:id),
         field_5: 123
       }
-      post api("/forms/#{@form.id}/collections", @user), entities: @entities
-      post api("/forms/#{@form.id}/collections", @user_one), entities: @entities
+      post api("/forms/#{@form.id}/collection", @user), entities: @entities
+      post api("/forms/#{@form.id}/collection", @user_one), entities: @entities
     end
     it "should successed" do
       get api("/forms/#{@form.id}/collections", @author)
@@ -161,7 +189,7 @@ describe Youxin::API, 'forms' do
       json_response.size.should == 2
     end
     it "should return 403" do
-      post api("/forms/#{@form.id}/collections", @user_another), entities: @entities
+      get api("/forms/#{@form.id}/collections", @user_another)
       response.status.should == 403
     end
   end
