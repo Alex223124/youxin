@@ -59,13 +59,13 @@ class User
   has_many :treated_applications, dependent: :destroy, class_name: 'Application', foreign_key: 'operator_id'
   has_many :posts, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :receipts, dependent: :destroy, inverse_of: :user do
-    def from_users(user_id)
-      user_id = user_id.id if user_id.is_a?(User)
-      where(author_id: user_id)
+    def from_user(user)
+      user = User.find(user) unless user.is_a?(User)
+      where(author_id: user.id)
     end
-    def from_organizations(organization_id)
-      organization_id = organization_id.id if organization_id.is_a?(Organization)
-      where(:organization_ids => organization_id)
+    def from_organization(organization)
+      organization = Organization.find(organization) unless organization.is_a?(Organization)
+      where(:organization_ids => organization.id)
     end
   end
   has_many :created_receipts, dependent: :destroy, foreign_key: 'author_id', class_name: 'Receipt', inverse_of: :author

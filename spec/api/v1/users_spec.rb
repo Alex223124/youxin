@@ -116,9 +116,9 @@ describe Youxin::API, 'users' do
     it "should return the array of organizations which have sent a post to uesr" do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_3, @organization_4].map(&:id)
       get api('/user/receipt_organizations', @user)
-      @receipt_1 = @user.receipts.from_organizations(@organization_1).first
-      @receipt_2 = @user.receipts.from_organizations(@organization_3).first
-      @receipt_3 = @user.receipts.from_organizations(@organization_4).first
+      @receipt_1 = @user.receipts.from_organization(@organization_1).first
+      @receipt_2 = @user.receipts.from_organization(@organization_3).first
+      @receipt_3 = @user.receipts.from_organization(@organization_4).first
       response.status.should == 200
       json_response.should be_an Array
       json_response.should == [

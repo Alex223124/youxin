@@ -14,11 +14,11 @@ class Organizations < Grape::API
         present members, with: Youxin::Entities::UserBasic
       end
       get 'receipts' do
-        receipts = paginate current_user.receipts.from_organizations(@organization.id)
+        receipts = paginate current_user.receipts.from_organization(@organization)
         present receipts, with: Youxin::Entities::Receipt
       end
       get 'unread_receipts' do
-        unread_receipts = paginate current_user.receipts.from_organizations(@organization.id).unread
+        unread_receipts = paginate current_user.receipts.from_organization(@organization).unread
         present unread_receipts, with: Youxin::Entities::Receipt
       end
     end

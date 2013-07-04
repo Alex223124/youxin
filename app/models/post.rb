@@ -70,6 +70,7 @@ class Post
     org_ids = self.organization_ids.uniq.sort_by do |organization_id|
                 Organization.find(organization_id).offspring.size
               end.reverse
+    org_ids = org_ids.map { |org_id| Moped::BSON::ObjectId.from_string(org_id) }
     self.organization_ids = []
     self.organization_clan_ids = []
     org_id = org_ids.shift

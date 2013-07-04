@@ -89,13 +89,13 @@ module Youxin
 
     class ReceiptUser < UserBasic
       expose :receipts do |user, options|
-        options[:current_user].receipts.from_users(user.id).count
+        options[:current_user].receipts.from_user(user).count
       end
       expose :unread_receipts do |user, options|
-        options[:current_user].receipts.from_users(user.id).unread.count
+        options[:current_user].receipts.from_user(user).unread.count
       end
       expose :last_receipt, using: Entities::ReceiptSimple do |user, options|
-        options[:current_user].receipts.from_users(user.id).first
+        options[:current_user].receipts.from_user(user).first
       end
     end
 
@@ -108,13 +108,13 @@ module Youxin
 
     class ReceiptOrganization < OrganizationBasic
       expose :receipts do |organization, options|
-        options[:current_user].receipts.from_organizations(organization.id).count
+        options[:current_user].receipts.from_organization(organization).count
       end
       expose :unread_receipts do |organization, options|
-        options[:current_user].receipts.from_organizations(organization.id).unread.count
+        options[:current_user].receipts.from_organization(organization).unread.count
       end
       expose :last_receipt, using: Entities::ReceiptSimple do |organization, options|
-        options[:current_user].receipts.from_organizations(organization.id).first
+        options[:current_user].receipts.from_organization(organization).first
       end
     end
 
