@@ -39,7 +39,7 @@ class Post
   end
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
   has_many :forms, dependent: :destroy
-  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :comments, as: :commentable, dependent: :destroy, after_add: :mark_receipt_read
 
   default_scope desc(:_id)
 
@@ -114,6 +114,10 @@ class Post
                          read: true,
                          origin: true)
     self.save
+  end
+
+  def mark_receipt_read(comment)
+    comment.user.receipts.where(post_id: self.id).map(&:read!)
   end
 
 end

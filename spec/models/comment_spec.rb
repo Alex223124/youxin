@@ -25,7 +25,7 @@ describe Comment do
 
     context "successed" do
       it "with commentable" do
-        @comment = @post.comments.create attributes_for(:comment)
+        @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
         @comment.commentable.id.should == @post.id
         @comment.commentable.class.should == Post
       end
@@ -40,7 +40,7 @@ describe Comment do
 
     context "fail" do
       it "when blank body" do
-        @comment = @post.comments.create body: '  '
+        @comment = @post.comments.create body: '  ', user_id: @user.id
         @comment.should have(1).error_on(:body)
       end
       it "when not given commentable" do
@@ -55,12 +55,14 @@ describe Comment do
   describe "#commentable" do
     before(:each) do
       @organization = create :organization
+      @user = create :user
+      @organization.push_member(@user)
       @author = create :user
       @post = create :post, author: @author, organization_ids: [@organization.id]
     end
 
     it "should return correct commentable" do
-      @comment = @post.comments.create attributes_for(:comment)
+      @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
       @comment.commentable.should == @post
     end
 

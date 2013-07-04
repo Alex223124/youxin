@@ -410,6 +410,13 @@ describe Youxin::API, 'posts' do
           post api("/posts/#{@post.id}/comments", @admin), attrs
         }.to change { @post.comments.count }.by(1)
       end
+      it "should read the receipt of the post when user received" do
+        @receipt = @user.receipts.where(post_id: @post.id).first
+        @receipt.read.should be_false
+        attrs = attributes_for(:comment)
+        post api("/posts/#{@post.id}/comments", @user), attrs
+        @receipt.reload.read.should be_true
+      end
       it "should return 403 when user not authorize" do
         attrs = attributes_for(:comment)
         post api("/posts/#{@post.id}/comments", @user_unauthoried), attrs
