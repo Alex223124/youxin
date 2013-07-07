@@ -1,43 +1,43 @@
 .unread-posts.pull-left
-  .post ng-repeat="unread_receipt in unread_receipts"
+  .post ng-repeat="receipt in receipts"
     .content
       .created_at.pull-right
-        small.timeago.muted datetime="{{unread_receipt.created_at}}"
+        small.timeago.muted datetime="{{receipt.created_at}}"
       .avatar
-        img.pull-left ng-src="{{unread_receipt.author.avatar.small}}"
+        img.pull-left ng-src="{{receipt.author.avatar.small}}"
       .name
-        a href="/users/{{unread_receipt.author.name}}" {{unread_receipt.author.name}}
+        a href="/users/{{receipt.author.name}}" {{receipt.author.name}}
       .organizations
         a href="#" class="organization" organization
       .details
-        span.title {{unread_receipt.post.title}}
-        span.body {{unread_receipt.post.body}}
+        span.title {{receipt.post.title}}
+        span.body {{receipt.post.body}}
       .tools
         a.btn.btn-link
           i.icon-expand-alt
           | 展开
-        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt.id}}-attachments" data-parent="{{unread_receipt.id}}-additions" ng-show="unread_receipt.post.attachmentted"
+        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="{{receipt.id}}-attachments" data-parent="{{receipt.id}}-additions" ng-show="receipt.post.attachmentted"
           i.icon-file-alt
           | 附件
-        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt.id}}-forms" data-parent="{{unread_receipt.id}}-additions" ng-show="unread_receipt.post.formed"
+        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="{{receipt.id}}-forms" data-parent="{{receipt.id}}-additions" ng-show="receipt.post.formed"
           i.icon-table
           | 表格
-        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="{{unread_receipt.id}}-recipients" data-parent="{{unread_receipt.id}}-additions" ng-show="unread_receipt.origin"
+        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="{{receipt.id}}-recipients" data-parent="{{receipt.id}}-additions" ng-show="receipt.origin"
           i.icon-eye-open
           | 未读名单
-        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="{{unread_receipt.id}}-comments" data-parent="{{unread_receipt.id}}-additions"
+        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="{{receipt.id}}-comments" data-parent="{{receipt.id}}-additions"
           i.icon-comments
           | 评论
         a.favorite-btn.btn.btn-link.pull-right href='#'
           i.icon-heart
           | 收藏
-    .additions id="{{unread_receipt.id}}-additions"
+    .additions id="{{receipt.id}}-additions"
       .accordion-group.attachments-box
-        .collapse.in id="{{unread_receipt.id}}-attachments"
+        .collapse.in id="{{receipt.id}}-attachments"
           .attachments
             .attachment
-              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="/attachments/fe304d799cceea0075c5b8c5a1251359" data-origin-name="screenshot.png" title='点击预览'
-                img src="/attachments/thumb_fe304d799cceea0075c5b8c5a1251359" width="48" height="66"
+              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="/attachments/51d63ef873457649bf000001" data-origin-name="screenshot.png" title='点击预览'
+                img src="/attachments/51d63ef873457649bf000001?version=thumb" width="48" height="66"
               .caption
                 a.name href="#" logologologologologologologologologologologologologo.png
                 small.size.muted 110kb
@@ -52,9 +52,9 @@
                 p
                   a href="#" 下载
       .accordion-group.forms-box
-        .collapse id="{{unread_receipt.id}}-forms" forms
+        .collapse id="{{receipt.id}}-forms" forms
       .accordion-group.recipients-box
-        .collapse id="{{unread_receipt.id}}-recipients"
+        .collapse id="{{receipt.id}}-recipients"
           .recipients
             .recipient
               .piece
@@ -98,7 +98,7 @@
 
 
       .accordion-group.comments-box
-        .collapse id="{{unread_receipt.id}}-comments"
+        .collapse id="{{receipt.id}}-comments"
           .reply-box
             textarea.input-block-level placeholder="write something ..." rows="1"
             .tools

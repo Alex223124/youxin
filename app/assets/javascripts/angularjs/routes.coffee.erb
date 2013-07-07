@@ -1,7 +1,7 @@
 @app.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
 
   $routeProvider
-  .when '/',
+  .when '/receipts',
     templateUrl: "<%= asset_path('receipts.html') %>",
     controller: ReceiptsController
 
