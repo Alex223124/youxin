@@ -3,6 +3,7 @@ class ImageUploader < CarrierWave::Uploader::Base
   include CarrierWave::MimeTypes
 
   process :set_content_type
+  process :set_dimension
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
@@ -60,6 +61,14 @@ class ImageUploader < CarrierWave::Uploader::Base
       Digest::MD5.hexdigest(File.dirname(current_path))
     end
   end
+
+  def set_dimension
+    image = MiniMagick::Image.open(file.path)
+    if model
+      model.dimension = "#{image[:width]},#{image[:height]}"
+    end
+  end
+
   CarrierWave::SanitizedFile.sanitize_regexp = /[^[:word:]\.\-\+]/
 
 end

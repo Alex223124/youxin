@@ -6,6 +6,9 @@ describe Attachment::Image do
   end
   describe "Respond to" do
     it { should respond_to(:file_name) }
+    it { should respond_to(:file_type) }
+    it { should respond_to(:file_size) }
+    it { should respond_to(:dimension) }
     it { should respond_to(:image) }
     it { should respond_to(:details) }
   end
@@ -25,6 +28,10 @@ describe Attachment::Image do
     it "should change file_path" do
       @attachment.storage.file.path.should_not == Rails.root.join('public/attachments/attachment_image.png')
     end
+    it "should set dimension" do
+      image = MiniMagick::Image.open(@image_path)
+      @attachment.dimension.should == "#{image[:width]},#{image[:height]}"
+    end
   end
 
   describe "#details" do
@@ -39,6 +46,7 @@ describe Attachment::Image do
                                       id: @attachment.id,
                                       file_name: 'attachment_image.png',
                                       file_type: 'image/png',
+                                      file_size: size.to_s,
                                       url: "/attachments/#{@attachment.id}",
                                       versions: {
                                         thumb: @attachment.storage.url(:thumb),
