@@ -16,16 +16,16 @@
         a.btn.btn-link
           i.icon-expand-alt
           | 展开
-        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="{{receipt.id}}-attachments" data-parent="{{receipt.id}}-additions" ng-show="receipt.post.attachmentted"
+        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-attachments" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.attachmentted" ng-click="fetch_attachments(receipt.post);"
           i.icon-file-alt
           | 附件
-        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="{{receipt.id}}-forms" data-parent="{{receipt.id}}-additions" ng-show="receipt.post.formed"
+        a.forms-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-forms" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.formed"
           i.icon-table
           | 表格
-        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="{{receipt.id}}-recipients" data-parent="{{receipt.id}}-additions" ng-show="receipt.origin"
+        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-recipients" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.origin"
           i.icon-eye-open
           | 未读名单
-        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="{{receipt.id}}-comments" data-parent="{{receipt.id}}-additions"
+        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="\#{{receipt.id}}-comments" data-parent="\#{{receipt.id}}-additions"
           i.icon-comments
           | 评论
         a.favorite-btn.btn.btn-link.pull-right href='#'
@@ -33,11 +33,20 @@
           | 收藏
     .additions id="{{receipt.id}}-additions"
       .accordion-group.attachments-box
-        .collapse.in id="{{receipt.id}}-attachments"
+        .collapse id="{{receipt.id}}-attachments"
           .attachments
+            .attachment ng-repeat="attachment in receipt.post.attachments"
+              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="{{attachment.src}}" data-origin-name="{{attachment.origin_name}}" title='点击预览'
+                img ng-src="{{attachment.src}}?version=thumb" width="48px" height="66px"
+              .caption
+                a.name href="{{attachment.src}}" title="{{attachment.file_name}}" {{attachment.file_name}}
+                small.size.muted {{attachment.file_size}}
+                p
+                  a href="{{attachment.src}}" 下载
+
             .attachment
               a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="/attachments/51d63ef873457649bf000001" data-origin-name="screenshot.png" title='点击预览'
-                img src="/attachments/51d63ef873457649bf000001?version=thumb" width="48" height="66"
+                img src="/attachments/51d63ef873457649bf000001?version=thumb" width="48px" height="66px"
               .caption
                 a.name href="#" logologologologologologologologologologologologologo.png
                 small.size.muted 110kb

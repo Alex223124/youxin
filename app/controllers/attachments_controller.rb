@@ -1,5 +1,17 @@
 class AttachmentsController < ApplicationController
-  before_filter do
+  before_filter :prepare_attachment, only: [:show]
+  before_filter :prepare_post, only: [:index]
+
+  def index
+    render json: @post.attachments, each_serializer: AttachmentSerializer
+  end
+
+  def show
+    send_file @path, filename: @file_name, type: @file_type, disposition: 'attachment'
+  end
+
+  private
+  def prepare_attachment
     @attachment = Attachment::Base.find(params[:id])
     unless @attachment && can?(current_user, :download, @attachment)
       access_denied!
@@ -20,8 +32,11 @@ class AttachmentsController < ApplicationController
     @file_type = @attachment.file_type
   end
 
-  def show
-    send_file @path, filename: @file_name, type: @file_type, disposition: 'attachment'
+  def prepare_post
+    @post = Post.find(params[:post_id])
+    unless @post && can?(current_user, :read, @post)
+      access_denied!
+      return false
+    end
   end
 end
-
