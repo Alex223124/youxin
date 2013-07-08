@@ -34,5 +34,4 @@ class Attachment::File < Attachment::Base
     end
   end
 
-
 end

@@ -51,6 +51,9 @@
     .attachments-box {
       .attachments {
         padding: 5px;
+        .loading {
+          text-align: center;
+        }
       }
       .attachment {
         &:last-child {

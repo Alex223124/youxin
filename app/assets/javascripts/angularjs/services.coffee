@@ -1,4 +1,6 @@
-@app.factory 'Receipt', ($resource) ->
-  $resource 'receipts/:id.json', {}, {
-    query: { method: 'GET', params: { id: 'index' }, isArray: true }
+@app.factory 'Receipt', ['railsResourceFactory', (railsResourceFactory) ->
+  resource = railsResourceFactory {
+    url: '/receipts'
+    name: 'receipt'
   }
+]

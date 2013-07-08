@@ -16,7 +16,7 @@
         a.btn.btn-link
           i.icon-expand-alt
           | 展开
-        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-attachments" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.attachmentted" ng-click="fetch_attachments(receipt.post);"
+        a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-attachments" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.attachmentted" ng-click="fetch_attachments(receipt);"
           i.icon-file-alt
           | 附件
         a.forms-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-forms" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.formed"
@@ -35,31 +35,15 @@
       .accordion-group.attachments-box
         .collapse id="{{receipt.id}}-attachments"
           .attachments
+            .loading ng-show="receipt.attachments_loading" loading
             .attachment ng-repeat="attachment in receipt.post.attachments"
-              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="{{attachment.src}}" data-origin-name="{{attachment.origin_name}}" title='点击预览'
-                img ng-src="{{attachment.src}}?version=thumb" width="48px" height="66px"
+              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="{{attachment.dimension}}" data-origin-preview="{{attachment | attachment_preview}}" data-origin-src="{{attachment.src}}" data-origin-name="{{attachment.file_name}}" title='点击预览'
+                img ng-src="{{attachment | attachment_preview | attachment_thumb}}" width="48px" height="66px"
               .caption
                 a.name href="{{attachment.src}}" title="{{attachment.file_name}}" {{attachment.file_name}}
-                small.size.muted {{attachment.file_size}}
+                small.size.muted {{attachment.file_size | file_size}}
                 p
-                  a href="{{attachment.src}}" 下载
-
-            .attachment
-              a.image.pull-left.popuper href="javascript:;" data-origin-dimension="903,523" data-origin-src="/attachments/51d63ef873457649bf000001" data-origin-name="screenshot.png" title='点击预览'
-                img src="/attachments/51d63ef873457649bf000001?version=thumb" width="48px" height="66px"
-              .caption
-                a.name href="#" logologologologologologologologologologologologologo.png
-                small.size.muted 110kb
-                p
-                  a href="#" 下载
-            .attachment
-              a.image.pull-left href="#"
-                img scr="file-extension/pdf.png" width="48" height="66"
-              .caption
-                a.name href="#" logo.pptx
-                small.size.muted 110kb
-                p
-                  a href="#" 下载
+                  a href="{{attachment.src}}" target='_blank' 下载
       .accordion-group.forms-box
         .collapse id="{{receipt.id}}-forms" forms
       .accordion-group.recipients-box

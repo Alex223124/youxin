@@ -3,17 +3,14 @@ class AttachmentSerializer < ActiveModel::Serializer
              :file_name,
              :file_size,
              :file_type,
-             :src
+             :image,
+             :src,
+             :dimension
 
   def src
     "/attachments/#{object.id}"
   end
-  def file_size
-    if object.image?
-      nil
-    else
-      object.file_size
-    end
+  def include_dimension?
+    object.image?
   end
- 
 end

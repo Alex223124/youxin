@@ -15,8 +15,8 @@ class Popuper
     @popuper_container.css(@start_state)
     @popuper_container.animate(@end_state, 300)
     @popuper_backdrop.fadeIn(300)
-    $.ajax(self.origin_src).done( ->
-      self.popuper_container.find('img').attr('src', self.origin_src)
+    $.ajax(self.preview_src).done( ->
+      self.popuper_container.find('img').attr('src', self.preview_src)
     ).fail( ->
       alert('error')
     )
@@ -36,6 +36,7 @@ class Popuper
     @img = @element.find('img')
     @src = @img.attr('src')
     @origin_dimension = @element.attr('data-origin-dimension')
+    @preview_src = @element.attr('data-origin-preview')
     @origin_src = @element.attr('data-origin-src')
     @origin_name = @element.attr('data-origin-name')
 
@@ -45,7 +46,7 @@ class Popuper
     @popuper_backdrop = $("<div class='popuper-backdrop' style='cursor: pointer; display: none; position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1040; background-color: #000; opacity: 0.7; filter: alpha(opacity=70);'></div>")
     @popuper_container = $("<div class='popuper-container' style='text-align: center; position: absolute; z-index: 1050;'></div>").css(@pre_state)
     @popuper_container.append($("<img src='#{@src}' style='cursor: pointer; max-width: 10000px; width: #{@origin_dimension.width}px; height: #{@origin_dimension.height}px;' />"))
-    popuper_optain = $("<div class='optain' style='color: whitesmoke; position: absolute; left: 50%; width: #{@window_dimension.width - @padding}px; margin-left: -#{(@window_dimension.width - @padding)/2}px;'><span class='name'>#{@origin_name}</span> [<a href='#{@origin_src}' target='_blank'>查看原图</a>]</div>")
+    popuper_optain = $("<div class='optain' style='color: whitesmoke; position: absolute; left: 50%; width: #{@window_dimension.width - @padding}px; margin-left: -#{(@window_dimension.width - @padding)/2}px;'><span class='name'>#{@origin_name}</span> [<a href='#{@origin_src}' target='_blank'>查看详情</a>]</div>")
     @popuper_container.append(popuper_optain)
     self = @
     $('body').on 'click', '.popuper-backdrop, .popuper-container img', ->
