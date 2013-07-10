@@ -24,6 +24,9 @@
       .organizations {
         display: inline-block;
         margin: 0 7px;
+        .organization {
+          padding: 0 3px;
+        }
       }
   
       .details {

@@ -8,12 +8,14 @@
       .name
         a href="/users/{{receipt.author.name}}" {{receipt.author.name}}
       .organizations
-        a href="#" class="organization" organization
+        a href="#" class="organization" ng-repeat="organization in receipt.organizations" {{organization.name}}
+        a href="#" class="organization" ng-repeat="organization_clan in receipt.organization_clans" {{organization_clan.name}}及以下组织
       .details
         span.title {{receipt.post.title}}
-        span.body {{receipt.post.body}}
+        span.body ng-show="!!receipt.expanded" {{receipt.post.bodyHtml}}
+        span.body ng-show="!receipt.expanded" {{receipt.post.body}}
       .tools
-        a.btn.btn-link
+        a.btn.btn-link ng-click="expandable(receipt);"
           i.icon-expand-alt
           | 展开
         a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-attachments" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.attachmentted" ng-click="fetch_attachments(receipt);"
@@ -22,21 +24,24 @@
         a.forms-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-forms" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.post.formed"
           i.icon-table
           | 表格
-        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-recipients" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.origin"
+        a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-recipients" data-parent="\#{{receipt.id}}-additions" ng-show="receipt.origin" ng-click="fetch_unread_receipts(receipt);"
           i.icon-eye-open
           | 未读名单
-        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="\#{{receipt.id}}-comments" data-parent="\#{{receipt.id}}-additions"
+        a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="\#{{receipt.id}}-comments" data-parent="\#{{receipt.id}}-additions" ng-click="fetch_comments(receipt);"
           i.icon-comments
           | 评论
-        a.favorite-btn.btn.btn-link.pull-right href='#'
-          i.icon-heart
+        a.favorite-btn.btn.btn-link.pull-right href='javascript:;' ng-click="favoriteable(receipt);" ng-show="receipt.favorited"
+          i.icon-bookmark
+          | 取消收藏
+        a.favorite-btn.btn.btn-link.pull-right href='javascript:;' ng-click="favoriteable(receipt);" ng-show="!receipt.favorited"
+          i.icon-bookmark-empty
           | 收藏
     .additions id="{{receipt.id}}-additions"
       .accordion-group.attachments-box
         .collapse id="{{receipt.id}}-attachments"
           .attachments
             .loading ng-show="receipt.attachments_loading" loading
-            .attachment ng-repeat="attachment in receipt.post.attachments"
+            .attachment ng-repeat="attachment in receipt.post.attachments" ng-animate=" 'animate' "
               a.image.pull-left.popuper href="javascript:;" data-origin-dimension="{{attachment.dimension}}" data-origin-preview="{{attachment | attachment_preview}}" data-origin-src="{{attachment.src}}" data-origin-name="{{attachment.file_name}}" title='点击预览'
                 img ng-src="{{attachment | attachment_preview | attachment_thumb}}" width="48px" height="66px"
               .caption
@@ -49,54 +54,31 @@
       .accordion-group.recipients-box
         .collapse id="{{receipt.id}}-recipients"
           .recipients
-            .recipient
+            .recipient ng-repeat="unread_receipt in receipt.post.unread_receipts" ng-animate=" 'animate' "
               .piece
-                span.name 张三
+                i.icon-ok.pull-right ng-show="unread_receipt.read"
+                span.name {{unread_receipt.user.name}}
                 i.icon-envelope
-            .recipient
-              .piece
-                i.icon-ok.pull-right
-                span.name 张三三
-                i.icon-envelope
-            .recipient
-              .piece
-                i.icon-ok.pull-right
-                span.name 张三三
-            .recipient
-              .piece
-                span.name 张三三
-                i.icon-envelope
-            .recipient
-              .piece
-                i.icon-ok.pull-right
-                span.name 张三三
-                i.icon-envelope
-            .recipient
-              .piece
-                i.icon-ok.pull-right
-                span.name 张三三张三三
-            .recipient
-              .piece
-                i.icon-ok.pull-right
-                span.name 张三三
-            .recipient
-              .piece
-                span.name 张三三
-                i.icon-envelope
-            .recipient
-              .piece
-                i.icon-ok.pull-right
-                span.name 张三三
-                i.icon-envelope
-
 
       .accordion-group.comments-box
         .collapse id="{{receipt.id}}-comments"
           .reply-box
             textarea.input-block-level placeholder="write something ..." rows="1"
             .tools
-              a.btn.btn-link.btn-small.btn-cancel cancel
-              a.btn.btn-success.btn-small reply
+              a.btn.btn-link.btn-small.btn-cancel 取消
+              a.btn.btn-success.btn-small 回复
+          .comment ng-repeat="comment in receipt.post.comments" ng-animate=" 'animate' "
+            .avatar
+              img.pull-left height="32px" width="32px" ng-src="{{comment.user.avatar.small}}"
+            .content
+              a.reply-btn.pull-right
+                | 回复
+                i.icon-reply
+              span.name
+                a href="/users/{{comment.user.name}}" {{comment.user.name}}
+              span.created_at
+                small.timeago.muted datetime="{{comment.created_at}}"
+              .body {{comment.body}}
 
 / .read-posts.pull-left
 /   = render partial: 'receipts/receipt', collection: @read_receipts

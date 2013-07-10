@@ -1,7 +1,8 @@
 class ReceiptSerializer < ActiveModel::Serializer
   attributes :id,
              :read,
-             :origin
+             :origin,
+             :favorited
  
   has_one :post, serializer: BasicPostSerializer
   has_one :author, serializer: BasicUserSerializer
@@ -20,6 +21,10 @@ class ReceiptSerializer < ActiveModel::Serializer
   end
   def include_organization_clans?
     object.origin?
+  end
+  def favorited
+    object.user.favorites.where(favoriteable_type: 'Receipt',
+                                 favoriteable_id: object.id).exists? ? true : false
   end
 
 end

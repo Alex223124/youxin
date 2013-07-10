@@ -1,14 +1,24 @@
 class ReceiptsController < ApplicationController
+  before_filter :ensure_receipt, only: [:favorite, :unfavorite]
   # GET /receipts
   # GET /receipts.json
   def index
-    @unread_receipts = Receipt.all
-    @read_receipts = Receipt.all
+    @unread_receipts = current_user.receipts
+    @read_receipts = current_user.receipts
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @unread_receipts }
     end
+  end
+
+  def favorite
+    favorite = @receipt.favorites.first_or_create user_id: current_user.id
+    render nothing: true
+  end
+  def unfavorite
+    favorite = @receipt.favorites.where(user_id: current_user.id).destroy_all
+    render nothing: true
   end
 
   # GET /receipts/1
@@ -80,5 +90,11 @@ class ReceiptsController < ApplicationController
       format.html { redirect_to receipts_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def ensure_receipt
+    @receipt = current_user.receipts.where(id: params[:id]).first
+    access_denied! unless @receipt
   end
 end

@@ -19,7 +19,7 @@
             when "zip"
               file_type = "zip"
             else
-              file_type = "unkonwn"
+              file_type = "unknown"
           file_type
         obj.dimension = '72,91'
         "/assets/file-extension/#{_getType(file_name)}.png"

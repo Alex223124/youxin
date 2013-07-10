@@ -3,6 +3,8 @@ class Post
   include Mongoid::Paranoia # Soft delete
   include Mongoid::Timestamps # Add created_at and updated_at fields
 
+  include ActionView::Helpers::TextHelper
+
   field :title, type: String
   field :body, type: String
   field :body_html, type: String
@@ -66,7 +68,7 @@ class Post
 
   private
   def parse_body
-    self.body = Nokogiri::HTML(body_html).text
+    self.body = truncate(Nokogiri::HTML(body_html).text, length: 50)
   end
   def create_receipts
     org_ids = self.organization_ids.uniq.sort_by do |organization_id|

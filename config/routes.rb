@@ -1,5 +1,8 @@
 Youxin::Application.routes.draw do
-  resources :receipts
+  resources :receipts do
+    post 'favorite' =>  'receipts#favorite', on: :member
+    delete 'favorite' => 'receipts#unfavorite', on: :member
+  end
   root to: 'receipts#index'
   devise_for :users
 
@@ -15,6 +18,10 @@ Youxin::Application.routes.draw do
 
   resources :attachments, only: [:show]
   resources :posts, only: [] do
+    member do
+      get 'unread_receipts' => 'posts#unread_receipts'
+      get 'comments' => 'posts#comments'
+    end
     resources :attachments, only: [:index]
   end
 

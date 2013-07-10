@@ -1,4 +1,4 @@
-#= require angular
+#= require unstable/angular
 #= require angularjs/rails/resource
 #= require_self
 #= require_tree ./angularjs
