@@ -12,6 +12,12 @@ defaults: &defaults
     domain: u-xin.com
     user_name: youxin.beta@gmail.com
     password: 'hdtyzxyouxin#'
+    authentication: :plain
+    enable_starttls_auto: true
+  faye:
+    subscription_prefix: subscription
+    token: 123456
+    server: 'http://localhost:9292/faye'
 
 development:
   <<: *defaults
@@ -21,3 +27,6 @@ test:
 
 production:
   <<: *defaults
+  faye:
+    token: secret
+    server: 'http://u-xin.com:9292/faye'

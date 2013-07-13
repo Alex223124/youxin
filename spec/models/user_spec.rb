@@ -35,6 +35,8 @@ describe User do
     it { should respond_to(:operate_application) }
     it { should respond_to(:receipt_organizations) }
     it { should respond_to(:receipt_users) }
+    it { should respond_to(:notification_channel) }
+    it { should respond_to(:ensure_notification_channel!) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -424,5 +426,13 @@ describe User do
     end
   end
 
+  describe "#ensure_notification_channel!" do
+    before(:each) do
+      @user = create :user
+    end
+    it "should generate notification_channel to user" do
+      @user.notification_channel.should_not be_blank
+    end
+  end
 
 end

@@ -46,6 +46,7 @@ class User
   field :organization_ids, type: Array, default: []
   field :receipt_organization_ids, type: Array, default: []
   field :receipt_user_ids, type: Array, default: []
+  field :notification_channel, type: String
 
   validates :name, presence: true
 
@@ -85,6 +86,7 @@ class User
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
 
   before_save :ensure_authentication_token!
+  before_save :ensure_notification_channel!
   alias_attribute :private_token, :authentication_token
 
   after_destroy do
@@ -170,4 +172,12 @@ class User
     User.where(:id.in => self.receipt_user_ids)
   end
   # Receipt
+
+  def ensure_notification_channel!
+    if self.notification_channel.blank?
+      self.notification_channel = self.class.send(:generate_token, :notification_channel)
+      self.save(validate: false)
+    end
+  end
+
 end

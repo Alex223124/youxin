@@ -13,3 +13,7 @@
 #= require jquery
 #= require jquery_ujs
 #= require bootstrap
+#= require notifications
+
+$(document).ready ->
+  Youxin.initNotificationSubscribe()
