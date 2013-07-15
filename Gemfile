@@ -72,3 +72,5 @@ gem 'nokogiri', '~> 1.5.9' # parse HTML to Plain Text
 
 gem 'grape', '~> 0.5.0' # API
 gem 'grape-entity', github: 'fahchen/grape-entity', branch: :master
+
+gem 'grocer'

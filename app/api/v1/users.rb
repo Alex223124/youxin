@@ -52,6 +52,20 @@ class Users < Grape::API
       receipts = paginate(current_user.favorites.receipts).map(&:favoriteable)
       present receipts, with: Youxin::Entities::Receipt
     end
+
+    desc 'Create ios_device_token to user'
+    post 'ios_device_token' do
+      current_user.ios_device_token = params[:device_token]
+      current_user.save(validate: false)
+      status(204)
+    end
+
+    desc 'Delete ios_device_token of user'
+    delete 'ios_device_token' do
+      current_user.ios_device_token = nil
+      current_user.save(validate: false)
+      status(204)
+    end
   end
 
   resource :users do

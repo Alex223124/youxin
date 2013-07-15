@@ -47,6 +47,7 @@ class User
   field :receipt_organization_ids, type: Array, default: []
   field :receipt_user_ids, type: Array, default: []
   field :notification_channel, type: String
+  field :ios_device_token, type: String
 
   validates :name, presence: true
 

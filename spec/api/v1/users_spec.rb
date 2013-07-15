@@ -81,7 +81,7 @@ describe Youxin::API, 'users' do
       @organization_3.push_member(@user)
       @organization_4.push_member(@user)
     end
-    it "should return the array of organizations which have sent a post to uesr (nested)" do
+    it "should return the array of organizations which have sent a post to user (nested)" do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_2, @organization_3, @organization_4].map(&:id)
       @receipt = @user.receipts.first
       get api('/user/receipt_organizations', @user)
@@ -113,7 +113,7 @@ describe Youxin::API, 'users' do
         }
       ].as_json
     end
-    it "should return the array of organizations which have sent a post to uesr" do
+    it "should return the array of organizations which have sent a post to user" do
       @post = create :post, author: @admin, organization_ids: [@organization_1, @organization_3, @organization_4].map(&:id)
       get api('/user/receipt_organizations', @user)
       @receipt_1 = @user.receipts.from_organization(@organization_1).first
@@ -417,6 +417,28 @@ describe Youxin::API, 'users' do
           }
         }
       ].as_json
+    end
+  end
+
+  describe "POST /user/ios_device_token" do
+    before(:each) do
+      @user = create :user
+    end
+    it "should create ios_device_token" do
+      ios_device_token = 'ios_device_token_string'
+      post api('/user/ios_device_token', @user), device_token: ios_device_token
+      @user.reload.ios_device_token.should == ios_device_token
+    end
+  end
+  describe "DELETE /user/ios_device_token" do
+    before(:each) do
+      @user = create :user
+    end
+    it "should remove ios_device_token of user" do
+      ios_device_token = 'ios_device_token_string'
+      post api('/user/ios_device_token', @user), device_token: ios_device_token
+      delete api('/user/ios_device_token', @user)
+      @user.reload.ios_device_token.should be_blank
     end
   end
 

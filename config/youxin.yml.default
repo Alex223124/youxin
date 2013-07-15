@@ -18,15 +18,25 @@ defaults: &defaults
     subscription_prefix: subscription
     token: 123456
     server: 'http://localhost:9292/faye'
+  apn:
+    passphrase: hdtyzx
+    cert_file: development.pem
 
 development:
   <<: *defaults
 
 test:
   <<: *defaults
+  apn:
+    passphrase: hdtyzx
+    cert_file: development.pem
 
 production:
   <<: *defaults
   faye:
+    subscription_prefix: subscription
     token: secret
     server: 'http://u-xin.com:9292/faye'
+  apn:
+    passphrase: hdtyzx
+    cert_file: production.pem

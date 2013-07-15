@@ -37,6 +37,7 @@ describe User do
     it { should respond_to(:receipt_users) }
     it { should respond_to(:notification_channel) }
     it { should respond_to(:ensure_notification_channel!) }
+    it { should respond_to(:ios_device_token) }
   end
 
   it "should create a new instance given a valid attributes" do
