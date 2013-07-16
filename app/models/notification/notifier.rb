@@ -24,6 +24,15 @@ class Notification::Notifier
       end
     end
 
+    def publish_to_phone(user, receipt)
+      user = User.find(user) unless user.is_a? User
+      receipt = Receipt.find(receipt) unless receipt.is_a? Receipt
+      if user && user.phone? && receipt
+        content = receipt.post.body
+        ChinaSMS.to(user.phone, content)
+      end
+    end
+
     private
     def pusher
       certificate_file = File.join(Rails.root, 'push_server', 'grocer', 'certs', Youxin.config.apn.cert_file)

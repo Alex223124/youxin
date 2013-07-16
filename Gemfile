@@ -74,3 +74,5 @@ gem 'grape', '~> 0.5.0' # API
 gem 'grape-entity', github: 'fahchen/grape-entity', branch: :master
 
 gem 'grocer'
+
+gem 'china_sms'

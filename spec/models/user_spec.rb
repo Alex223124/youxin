@@ -38,6 +38,7 @@ describe User do
     it { should respond_to(:notification_channel) }
     it { should respond_to(:ensure_notification_channel!) }
     it { should respond_to(:ios_device_token) }
+    it { should respond_to(:phone) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -294,6 +295,32 @@ describe User do
         user.avatar.file.should_not be_blank
         user.avatar.url.should_not be_blank
         user.avatar.url.should == "/uploads/avatar/user/#{user.id}.png"
+      end
+    end
+
+    context "phone" do
+      it "should create with blank phone" do
+        user.save.should be_true
+      end
+      it "should have error on blank" do
+        user.phone = ''
+        user.save
+        user.should have(1).error_on(:phone)
+      end
+      it "should have error on format" do
+        user.phone = '123456789'
+        user.save
+        user.should have(1).error_on(:phone)
+      end
+      it "should have error on format" do
+        user.phone = '28600000000'
+        user.save
+        user.should have(1).error_on(:phone)
+      end
+      it "should have no error on format" do
+        user.phone = '18600000000'
+        user.save
+        user.should have(0).error_on(:phone)
       end
     end
   end

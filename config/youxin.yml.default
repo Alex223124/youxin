@@ -21,6 +21,9 @@ defaults: &defaults
   apn:
     passphrase: hdtyzx
     cert_file: development.pem
+  smsbao:
+    user_name: youxin
+    password: 'combee&smsbao#'
 
 development:
   <<: *defaults

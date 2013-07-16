@@ -48,8 +48,10 @@ class User
   field :receipt_user_ids, type: Array, default: []
   field :notification_channel, type: String
   field :ios_device_token, type: String
+  field :phone, type: String
 
   validates :name, presence: true
+  validates :phone, format: { with: /1\d{10}/ }, allow_nil: true
 
   mount_uploader :avatar, AvatarUploader
 
