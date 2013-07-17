@@ -29,7 +29,8 @@ class Notification::Notifier
       receipt = Receipt.find(receipt) unless receipt.is_a? Receipt
       if user && user.phone? && receipt
         content = receipt.post.body
-        ChinaSMS.to(user.phone, content)
+        res = ChinaSMS.to(user.phone, content)
+        CommunicationRecord::Sms.create receipt: receipt, status: res['code']
       end
     end
 

@@ -87,6 +87,7 @@ class User
   has_many :notifications, class_name: 'Notification::Base', dependent: :destroy
   has_many :comment_notifications, class_name: 'Notification::Comment', dependent: :destroy
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
+  has_many :sms_communication_records, class_name: 'CommunicationRecord::Sms'
 
   before_save :ensure_authentication_token!
   before_save :ensure_notification_channel!

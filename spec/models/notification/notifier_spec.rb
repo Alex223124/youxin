@@ -3,14 +3,14 @@ require 'timeout'
 
 describe Notification::Notifier do
   before(:each) do
-    @user = create :user, ios_device_token: 'ios_device_token_string', phone: '18683255107'
+    @user = create :user, ios_device_token: 'ios_device_token_string', phone: '18600000000'
     @faye_data = { avatar: 'avatar.png', title: 'title', body: 'body' }
     @ios_data = { alert: 'alert', badge: 12 }
 
-    author = create :user
+    @author = create :user
     organization = create :organization
     organization.add_member(@user)
-    post = create :post, author: author, organization_ids: [organization].map(&:id)
+    post = create :post, author: @author, organization_ids: [organization].map(&:id)
     @receipt = create :receipt, post: post, user: @user
   end
   describe ".publish_to_ios_device" do
@@ -38,8 +38,14 @@ describe Notification::Notifier do
     end
   end
   describe ".publish_to_phone" do
+    before(:each) do
+      stub_request(:any, 'http://api.smsbao.com/sms').to_return(body: '0')
+    end
+
     it "should send notification to user" do
-      Notification::Notifier.publish_to_phone(@user, @receipt)
+      expect {
+        Notification::Notifier.publish_to_phone(@user, @receipt)
+      }.to change(@author.sms_communication_records, :count).by(1)
     end
   end
 

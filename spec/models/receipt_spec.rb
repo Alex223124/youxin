@@ -5,6 +5,7 @@ describe Receipt do
     it { should belong_to(:user) }
     it { should belong_to(:post) }
     it { should have_many(:favorites) }
+    it { should have_many(:sms_communication_records) }
   end
 
   describe "Respond to" do

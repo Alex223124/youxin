@@ -19,6 +19,7 @@ describe User do
     it { should have_many(:notifications) }
     it { should have_many(:comment_notifications) }
     it { should have_many(:organization_notifications) }
+    it { should have_many(:sms_communication_records) }
   end
 
   describe "Respond to" do
