@@ -18,4 +18,16 @@ class Conversation
   def last_message
     Message.where(id: self.last_message_id).first
   end
+
+  def remove_user(user)
+    user = User.where(id: user).first unless user.is_a? User
+    return false unless user
+    user.pull(:conversation_ids, self.id)
+    self.pull(:participant_ids, user.id)
+  end
+  def add_user(user)
+    user = User.where(id: user).first unless user.is_a? User
+    return false unless user
+    self.participants.push(user)
+  end
 end
