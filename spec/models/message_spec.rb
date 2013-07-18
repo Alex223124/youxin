@@ -23,13 +23,13 @@ describe Message do
         @message.save
         @message.should have(1).error_on(:body)
       end
-      it "blank user" do
+      it "blank user_id" do
         @message.save
-        @message.should have(1).error_on(:user)
+        @message.should have(1).error_on(:user_id)
       end
       it "blank conversation" do
         @message.save
-        @message.should have(1).error_on(:conversation)
+        @message.should have(1).error_on(:conversation_id)
       end
     end
     it "should valid" do

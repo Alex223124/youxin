@@ -6,7 +6,7 @@ class CommunicationRecord::Sms
 
   field :status, type: String
 
-  validate :receipt, presence: true
+  validate :receipt_id, presence: true
 
   belongs_to :user
   belongs_to :receipt

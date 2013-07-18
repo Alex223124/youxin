@@ -8,7 +8,7 @@ describe Notification::Organization do
   end
   describe "Validations" do
     it { should validate_inclusion_of(:status).to_allow('in', 'out') }
-    it { should validate_presence_of(:organization) }
+    it { should validate_presence_of(:organization_id) }
   end
 
   before do

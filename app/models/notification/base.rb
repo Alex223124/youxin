@@ -6,7 +6,7 @@ class Notification::Base
 
   field :read, type: Boolean, default: false
 
-  validates :user, presence: true
+  validates :user_id, presence: true
 
   belongs_to :user
 

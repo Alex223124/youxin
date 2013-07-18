@@ -4,7 +4,7 @@ class Notification::Organization < Notification::Base
   field :status, type: String
 
   validates :status, inclusion: %w( in out )
-  validates :organization, presence: true
+  validates :organization_id, presence: true
 
   scope :_in, ->{ where(status: 'in') }
   scope :_out, ->{ where(status: 'out') }
