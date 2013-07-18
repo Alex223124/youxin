@@ -4,6 +4,7 @@ describe Message do
   describe "Association" do
     it { should belong_to(:user) }
     it { should belong_to(:conversation) }
+    it { should have_many(:message_notifications) }
   end
 
   describe "Respond to" do

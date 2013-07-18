@@ -87,6 +87,7 @@ class User
   has_many :notifications, class_name: 'Notification::Base', dependent: :destroy
   has_many :comment_notifications, class_name: 'Notification::Comment', dependent: :destroy
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
+  has_many :message_notifications, class_name: 'Notification::Message', dependent: :destroy
   has_many :sms_communication_records, class_name: 'CommunicationRecord::Sms'
   has_and_belongs_to_many :conversations, inverse_of: :participant, dependent: :destroy
   has_many :messages, dependent: :destroy
@@ -211,9 +212,6 @@ class User
       return false
     end
     message = self.messages.create(conversation: conversation, body: body)
-    conversation.last_message_id = message.id
-    conversation.updated_at = message.created_at
-    conversation.save
   end
   # Message
 
