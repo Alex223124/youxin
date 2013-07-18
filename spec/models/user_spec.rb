@@ -20,6 +20,8 @@ describe User do
     it { should have_many(:comment_notifications) }
     it { should have_many(:organization_notifications) }
     it { should have_many(:sms_communication_records) }
+    it { should have_and_belong_to_many(:conversations) }
+    it { should have_many(:messages) }
   end
 
   describe "Respond to" do
@@ -40,6 +42,7 @@ describe User do
     it { should respond_to(:ensure_notification_channel!) }
     it { should respond_to(:ios_device_token) }
     it { should respond_to(:phone) }
+    it { should respond_to(:send_message_to) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -464,4 +467,136 @@ describe User do
     end
   end
 
+  describe "#send_message_to" do
+    context "direct message" do
+      before(:each) do
+        @user_one = create :user
+        @user_another = create :user
+        @body = 'body'
+      end
+      it "should make a conversation to author" do
+        @user_one.send_message_to(@user_another, @body)
+        @user_one.conversations.count.should == 1
+      end
+      it "should make a conversation to recipant" do
+        @user_one.send_message_to(@user_another, @body)
+        @user_another.conversations.count.should == 1
+      end
+      it "should append author as originator to conversation" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        conversation.originator.should == @user_one
+      end
+      it "should append participants to conversation" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        conversation.participants.should include(@user_one)
+        conversation.participants.should include(@user_another)
+      end
+      it "should not create a new conversation if conversation exists" do
+        @user_one.send_message_to(@user_another, @body)
+        expect do
+          @user_one.send_message_to(@user_another, @body)
+        end.to change { Conversation.count }.by(0)
+      end
+      it "should not create a new conversation if conversation exists but not create by user" do
+        @user_one.send_message_to(@user_another, @body)
+        expect do
+          @user_another.send_message_to(@user_one, @body)
+        end.to change { Conversation.count }.by(0)
+      end
+      it "should not create a new conversation if participant is user" do
+        expect do
+          @user_one.send_message_to(@user_one, @body)
+        end.to change { Conversation.count }.by(0)
+      end
+
+      it "should create a new message" do
+        expect do
+          @user_one.send_message_to(@user_another, @body)
+        end.to change { @user_one.messages.count }.by(1)
+      end
+      it "should also create a new messages if conversation exists" do
+        @user_one.send_message_to(@user_another, @body)
+        expect do
+          @user_one.send_message_to(@user_another, @body)
+        end.to change { @user_one.messages.count }.by(1)
+      end
+
+      it "should update the update_at of conversation" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        expect do
+          @user_one.send_message_to(@user_another, @body)
+          conversation.reload
+        end.to change { conversation.updated_at }
+      end
+      it "should create last_message" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        conversation.last_message.should == @user_one.messages.first
+      end
+      it "should update last_message" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        expect do
+          @user_one.send_message_to(@user_another, @body)
+          conversation.reload
+        end.to change { conversation.last_message }
+      end
+    end
+
+    context "obj is_a Conversation" do
+      before(:each) do
+        @user_one = create :user
+        @user_another = create :user
+        @body = 'body'
+      end
+      it "should create a new message" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        expect do
+          @user_one.send_message_to(conversation, @body)
+        end.to change { @user_one.messages.count }.by(1)
+      end
+      it "should update the update_at of conversation" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        expect do
+          @user_one.send_message_to(conversation, @body)
+        end.to change { conversation.updated_at }
+      end
+      it "should create last_message" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        conversation.last_message.should_not be_blank
+      end
+      it "should update last_message" do
+        @user_one.send_message_to(@user_another, @body)
+        conversation = Conversation.first
+        expect do
+          @user_one.send_message_to(conversation, @body)
+        end.to change { conversation.last_message }
+      end
+    end
+
+    context "group chat(obj is_a Array)" do
+      before(:each) do
+        @user = create :user
+        @user_one = create :user
+        @user_another = create :user
+        @body = 'body'
+      end
+      it "should create a conversation" do
+        @user.send_message_to([@user_one, @user_another], @body)
+        @user.conversations.count.should == 1
+        @user_one.conversations.count.should == 1
+        @user_another.conversations.count.should == 1
+      end
+      it "should create a conversation with uniq participants" do
+        @user.send_message_to([@user_one, @user_another, @user_one], @body)
+        Conversation.first.participants.count.should == 3
+      end
+    end
+  end
 end
