@@ -192,7 +192,7 @@ class User
     # Direct Message
     if obj.is_a? User
       return false if obj == self
-      conversation = self.conversations.in(participant_ids: [obj.id, self.id]).with_size(participant_ids: 2).first
+      conversation = self.conversations.all(participant_ids: [obj.id, self.id]).with_size(participant_ids: 2).first
       unless conversation
         conversation = Conversation.create(originator_id: self.id) unless conversation
         [self, obj].each do |participant|
@@ -212,6 +212,7 @@ class User
       return false
     end
     message = self.messages.create(conversation: conversation, body: body)
+    conversation
   end
   # Message
 

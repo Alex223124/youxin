@@ -469,6 +469,14 @@ describe User do
   end
 
   describe "#send_message_to" do
+    it "should return a conversation" do
+      user = create :user
+      user_another = create :user
+      body = 'body'
+      conversation = user.send_message_to(user_another, body)
+      conversation.should be_a_kind_of Conversation
+      
+    end
     context "direct message" do
       before(:each) do
         @user_one = create :user
@@ -484,13 +492,11 @@ describe User do
         @user_another.conversations.count.should == 1
       end
       it "should append author as originator to conversation" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         conversation.originator.should == @user_one
       end
       it "should append participants to conversation" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         conversation.participants.should include(@user_one)
         conversation.participants.should include(@user_another)
       end
@@ -525,21 +531,18 @@ describe User do
       end
 
       it "should update the update_at of conversation" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         expect do
           @user_one.send_message_to(@user_another, @body)
           conversation.reload
         end.to change { conversation.updated_at }
       end
       it "should create last_message" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         conversation.last_message.should == @user_one.messages.first
       end
       it "should update last_message" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         expect do
           @user_one.send_message_to(@user_another, @body)
           conversation.reload
@@ -554,27 +557,23 @@ describe User do
         @body = 'body'
       end
       it "should create a new message" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         expect do
           @user_one.send_message_to(conversation, @body)
         end.to change { @user_one.messages.count }.by(1)
       end
       it "should update the update_at of conversation" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         expect do
           @user_one.send_message_to(conversation, @body)
         end.to change { conversation.updated_at }
       end
       it "should create last_message" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         conversation.last_message.should_not be_blank
       end
       it "should update last_message" do
-        @user_one.send_message_to(@user_another, @body)
-        conversation = Conversation.first
+        conversation = @user_one.send_message_to(@user_another, @body)
         expect do
           @user_one.send_message_to(conversation, @body)
         end.to change { conversation.last_message }
@@ -597,6 +596,12 @@ describe User do
       it "should create a conversation with uniq participants" do
         @user.send_message_to([@user_one, @user_another, @user_one], @body)
         Conversation.first.participants.count.should == 3
+      end
+      it "should create another conversation" do
+        @user.send_message_to([@user_one, @user_another], @body)
+        expect do
+          @user.send_message_to(@user_one, @body)
+        end.to change { Conversation.count }.by(1)
       end
     end
   end
