@@ -12,6 +12,15 @@ class Conversation
 
   default_scope desc(:updated_at)
 
+  def self.allowed(object, subject)
+    return [] unless object.instance_of?(User)
+    return [] unless subject.instance_of?(Conversation)
+    abilities = []
+    abilities |= [:read] if subject.participant_ids.include?(object.id)
+    abilities |= [:read, :manage] if subject.originator_id == object.id
+    abilities
+  end
+
   def originator
     User.where(id: self.originator_id).first
   end

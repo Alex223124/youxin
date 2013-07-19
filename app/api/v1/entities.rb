@@ -128,5 +128,16 @@ module Youxin
       expose :user, using: Entities::UserBasic
     end
 
+    class Message <  Grape::Entity
+      expose :id, :created_at, :body, :conversation_id
+      expose :user, using: Entities::UserBasic
+    end
+
+    class Conversation < Grape::Entity
+      expose :id, :created_at, :updated_at
+      expose :last_message, using: Entities::Message
+      expose :originator, using: Entities::UserBasic
+      expose :participants, using: Entities::UserBasic
+    end
   end
 end

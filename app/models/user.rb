@@ -188,7 +188,7 @@ class User
   end
 
   # Message
-  def send_message_to(obj, body)
+  def send_message_to(obj, body = nil)
     # Direct Message
     if obj.is_a? User
       return false if obj == self
@@ -211,7 +211,7 @@ class User
     else
       return false
     end
-    message = self.messages.create(conversation: conversation, body: body)
+    self.messages.create(conversation: conversation, body: body) if body
     conversation
   end
   # Message

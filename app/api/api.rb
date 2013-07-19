@@ -21,5 +21,6 @@ module Youxin
     mount Receipts
     mount Organizations
     mount Forms
+    mount Conversations
   end
 end

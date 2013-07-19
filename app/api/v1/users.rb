@@ -66,6 +66,10 @@ class Users < Grape::API
       current_user.save(validate: false)
       status(204)
     end
+
+    get 'conversations' do
+      present current_user.conversations, with: Youxin::Entities::Conversation
+    end
   end
 
   resource :users do

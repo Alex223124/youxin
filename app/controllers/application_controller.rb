@@ -16,6 +16,7 @@ class ApplicationController < ActionController::Base
     abilities << UserActionsOrganizationRelationship
     abilities << Post
     abilities << Attachment::Base
+    abilities << Conversation
     abilities
   end
 

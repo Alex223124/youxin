@@ -442,7 +442,7 @@ describe Youxin::API, 'users' do
     end
   end
 
-  describe "GET /user/:id" do
+  describe "GET /users/:id" do
     context "/" do
       before(:each) do
         @user = create :user
@@ -583,6 +583,21 @@ describe Youxin::API, 'users' do
         ].as_json
       end
     end
+  end
 
+  describe "GET /user/conversations" do
+    before(:each) do
+      @user = create :user
+      @user_one = create :user
+      @user_another = create :user
+      @body = 'body'
+    end
+    it "should return conversations of current user" do
+      conversation_one = @user.send_message_to([@user_one, @user_another], @body)
+      conversation_two = @user.send_message_to(@user_one, @body)
+      conversation_three = @user.send_message_to(@user_another, @body)
+      get api('/user/conversations', @user)
+      json_response.size.should == 3
+    end
   end
 end

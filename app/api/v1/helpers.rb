@@ -90,6 +90,7 @@ module Youxin
                        abilities << UserActionsOrganizationRelationship
                        abilities << Post
                        abilities << Attachment::Base
+                       abilities << Conversation
                        abilities
                      end
     end
