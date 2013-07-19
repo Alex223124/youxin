@@ -28,6 +28,12 @@ class Conversations < Grape::API
         present @conversation, with: Youxin::Entities::Conversation
       end
 
+      delete do
+        authorize! :manage, @conversation
+        @conversation.destroy
+        status(204)
+      end
+
       get :messages do
         messages = paginate @conversation.messages
         present messages, with: Youxin::Entities::Message
@@ -41,6 +47,32 @@ class Conversations < Grape::API
         else
           fail!(message.errors)
         end
+      end
+
+      post :participants do
+        authorize! :manage, @conversation
+        required_attributes! [:participant_ids]
+        participants = Array.new
+        params[:participant_ids].each do |participant_id|
+          participant = User.find(participant_id)
+          not_found!("participant with id #{participant_id}") unless participant
+          participants << participant
+        end
+        participants.map { |participant| @conversation.add_user(participant) }
+        present @conversation.participants, with: Youxin::Entities::UserBasic
+      end
+
+      delete :participants do
+        authorize! :manage, @conversation
+        required_attributes! [:participant_ids]
+        participants = Array.new
+        params[:participant_ids].each do |participant_id|
+          participant = @conversation.participants.where(id: participant_id).first
+          not_found!("participant with id #{participant_id}") unless participant
+          participants << participant
+        end
+        participants.map { |participant| @conversation.remove_user(participant) }
+        status(204)
       end
     end
   end

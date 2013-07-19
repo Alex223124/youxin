@@ -171,4 +171,89 @@ describe Youxin::API, 'conversations' do
       response.status.should == 404
     end
   end
+  describe "POST /conversations/:id/participants" do
+    before(:each) do
+      @user = create :user
+      @user_one = create :user
+      @user_another = create :user
+      body = 'body'
+      @conversation = @user.send_message_to(@user_one, body)
+    end
+    it "should add user to conversations" do
+      post api("/conversations/#{@conversation.id}/participants", @user), participant_ids: [@user_another].map(&:id)
+      @conversation.participants.should include(@user_another)
+      json_response.should == [
+        {
+          id: @user.id,
+          name: @user.name,
+          email: @user.email,
+          created_at: @user.created_at,
+          avatar: @user.avatar.url
+        },
+        {
+          id: @user_one.id,
+          name: @user_one.name,
+          email: @user_one.email,
+          created_at: @user_one.created_at,
+          avatar: @user_one.avatar.url
+        },
+        {
+          id: @user_another.id,
+          name: @user_another.name,
+          email: @user_another.email,
+          created_at: @user_another.created_at,
+          avatar: @user_another.avatar.url
+        }
+      ].as_json
+    end
+    it "should return 403 if user is not the originator" do
+      post api("/conversations/#{@conversation.id}/participants", @user_one), participant_ids: [@user_another].map(&:id)
+      response.status.should == 403
+    end
+    it "should return 404" do
+      post api("/conversations/#{@conversation.id}/participants", @user), participant_ids: 'not_exist'
+      response.status.should == 404
+    end
+  end
+  describe "DELETE /conversations/:id/participants" do
+    before(:each) do
+      @user = create :user
+      @user_one = create :user
+      @user_another = create :user
+      body = 'body'
+      @conversation = @user.send_message_to([@user_one, @user_another], body)
+    end
+    it "should delete the participant" do
+      delete api("/conversations/#{@conversation.id}/participants", @user), participant_ids: [@user_one].map(&:id)
+      @conversation.reload
+      @conversation.participants.should_not include(@user_one)
+    end
+    it "should return 403" do
+      delete api("/conversations/#{@conversation.id}/participants", @user_one), participant_ids: [@user_another].map(&:id)
+      response.status.should == 403
+    end
+    it "should return 404" do
+      delete api("/conversations/#{@conversation.id}/participants", @user), participant_ids: ['not_exist']
+      response.status.should == 404
+    end
+  end
+  describe "DELETE /conversations/:id" do
+    before(:each) do
+      @user = create :user
+      @user_one = create :user
+      @user_another = create :user
+      body = 'body'
+      @conversation = @user.send_message_to([@user_one, @user_another], body)
+    end
+    it "should delete the conversation" do
+      delete api("/conversations/#{@conversation.id}", @user)
+      @user.conversations.count.should == 0
+      @user_one.conversations.count.should == 0
+      @user_another.conversations.count.should == 0
+    end
+    it "should return 403" do
+      delete api("/conversations/#{@conversation.id}", @user_one)
+      response.status.should == 403
+    end
+  end
 end
