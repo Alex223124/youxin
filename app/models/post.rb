@@ -40,6 +40,8 @@ class Post
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
   has_many :forms, dependent: :destroy
   has_many :comments, as: :commentable, dependent: :destroy, after_add: :mark_receipt_read
+  has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
+  has_many :sms_schedulers, class_name: 'Scheduler::Sms', dependent: :destroy
 
   default_scope desc(:_id)
 

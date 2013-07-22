@@ -10,6 +10,8 @@ describe Post do
     it { should have_many(:attachments) }
     it { should have_many(:forms) }
     it { should have_many(:comments) }
+    it { should have_many(:schedulers) }
+    it { should have_many(:sms_schedulers) }
   end
 
   describe "Respond to" do

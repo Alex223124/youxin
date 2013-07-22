@@ -23,6 +23,7 @@ describe User do
     it { should have_and_belong_to_many(:conversations) }
     it { should have_many(:messages) }
     it { should have_many(:message_notifications) }
+    it { should have_many(:schedulers) }
   end
 
   describe "Respond to" do

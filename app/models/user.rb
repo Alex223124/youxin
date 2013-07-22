@@ -91,6 +91,7 @@ class User
   has_many :sms_communication_records, class_name: 'CommunicationRecord::Sms'
   has_and_belongs_to_many :conversations, inverse_of: :participant, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
 
   before_save :ensure_authentication_token!
   before_save :ensure_notification_channel!
