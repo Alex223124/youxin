@@ -47,6 +47,11 @@ describe Notification::Notifier do
         Notification::Notifier.publish_to_phone(@receipt)
       }.to change(@author.sms_communication_records, :count).by(1)
     end
+    it "should update status" do
+      Notification::Notifier.publish_to_phone(@receipt)
+      @author.sms_communication_records.last.status.should == '0'
+      
+    end
   end
 
 end
