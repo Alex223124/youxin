@@ -44,7 +44,7 @@ describe Notification::Notifier do
 
     it "should send notification to user" do
       expect {
-        Notification::Notifier.publish_to_phone(@user, @receipt)
+        Notification::Notifier.publish_to_phone(@receipt)
       }.to change(@author.sms_communication_records, :count).by(1)
     end
   end
