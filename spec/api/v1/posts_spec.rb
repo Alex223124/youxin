@@ -95,6 +95,18 @@ describe Youxin::API, 'posts' do
         response.status.should == 403
       end
     end
+    context "delayed_sms_at" do
+      it "should enqueue scheduler" do
+        attrs = attributes_for(:post).merge!({
+          organization_ids: [@organization].map(&:id),
+          delayed_sms_at: Time.now.to_i
+        })
+        Resque.should_receive(:enqueue_at)
+        expect do
+          post api('/posts', @admin), attrs
+        end.to change { Post.count }.by(1)
+      end
+    end
   end
 
   describe "GET /posts/:id/forms" do

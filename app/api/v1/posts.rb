@@ -7,8 +7,9 @@ class Posts < Grape::API
       bulk_authorize! :create_youxin, Organization.where(:id.in => params[:organization_ids])
       required_attributes! [:body_html, :organization_ids]
 
-      attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids]
+      attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at]
       attachment_ids = attrs.delete(:attachment_ids)
+      delayed_at = Time.at(attrs.delete(:delayed_sms_at).to_i)
       post = current_user.posts.new attrs
 
       attachments = []
@@ -26,6 +27,7 @@ class Posts < Grape::API
       end if attachment_ids
       if post.save
         attachments.map { |attachment| post.attachments << attachment } if attachments.present?
+        post.sms_schedulers.create delayed_at: delayed_at
         present post, with: Youxin::Entities::Post
       else
         fail!(post.errors)
