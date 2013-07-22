@@ -24,6 +24,7 @@ describe User do
     it { should have_many(:messages) }
     it { should have_many(:message_notifications) }
     it { should have_many(:schedulers) }
+    it { should have_one(:user_role_organization_relationship) }
   end
 
   describe "Respond to" do

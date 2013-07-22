@@ -15,6 +15,7 @@ class Organization
   has_many :user_actions_organization_relationships, dependent: :destroy
   has_many :applications, dependent: :destroy
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
+  has_many :user_role_organization_relationships, dependent: :destroy
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true

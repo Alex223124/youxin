@@ -92,6 +92,7 @@ class User
   has_and_belongs_to_many :conversations, inverse_of: :participant, dependent: :destroy
   has_many :messages, dependent: :destroy
   has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
+  has_one :user_role_organization_relationship, dependent: :destroy
 
   before_save :ensure_authentication_token!
   before_save :ensure_notification_channel!
