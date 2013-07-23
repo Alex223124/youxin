@@ -1,6 +1,7 @@
 class Field::Option
   include Mongoid::Document
 
+  # TODO: fix test about default_selected
   field :default_selected, type: Boolean, default: false
   field :value
 
