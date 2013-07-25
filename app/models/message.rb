@@ -26,8 +26,33 @@ class Message
     self.conversation.save
   end
   def send_message_notifications
-    (self.conversation.participants - [self.user]).each do |participant|
+    other_participants = self.conversation.participants - [self.user]
+    Notification::Notifier.publish_to_faye_client(other_participants, message_hash)
+    other_participants.each do |participant|
       participant.message_notifications.create(message_id: self.id)
     end
+  end
+  def message_hash
+    # Issue _id and id in Mongoid
+    # self.as_json(only: [:_id, :created_at, :body],
+    #                 include: {
+    #                   user: { only: [:_id, :name] },
+    #                   conversation: { only: [:_id, :created_at, :updated_at] }
+    #                 })
+    hash = {
+      id: self.id,
+      created_at: self.created_at,
+      body: self.body,
+      user: {
+        id: self.user.id,
+        name: self.user.name,
+        avatar: self.user.avatar
+      },
+      conversation: {
+        id: self.conversation.id,
+        created_at: self.conversation.created_at,
+        updated_at: self.conversation.updated_at
+      }
+    }
   end
 end

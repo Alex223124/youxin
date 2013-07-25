@@ -4,6 +4,9 @@ describe Notification::Message do
   describe "Association" do
     it { should belong_to(:message) }
   end
+  describe "Validation" do
+    it { should validate_presence_of(:message_id) }
+  end
   describe "Respond to" do
     # it { should respond_to(:) }
   end

@@ -442,6 +442,140 @@ describe Youxin::API, 'users' do
     end
   end
 
+  describe "GET /user/notifications" do
+    before(:each) do
+      @user = create :user
+    end
+    it "should return the correct notification_channel and notification counters" do
+      get api('/user/notifications', @user)
+      json_response.should == {
+        notification_channel: @user.notification_channel,
+        notifications: {
+          comment_notifications: 0,
+          organization_notifications: 0,
+          message_notifications: 0
+        }
+      }.as_json
+    end
+  end
+  describe "GET /user/comment_notifications" do
+    before(:each) do
+      @user = create :user
+      @admin = create :user
+      organization = create :organization
+      organization.push_member(@user)
+      actions_youxin = Action.options_array_for(:youxin)
+      organization.authorize_cover_offspring(@admin, actions_youxin)
+      @post = create :post, author: @admin, organization_ids: [organization].map(&:id)
+      @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
+    end
+    it "should return comment_notifications" do
+      notification = @admin.notifications.first
+      get api('/user/comment_notifications', @admin)
+      json_response.should == [
+        {
+          id: notification.id,
+          created_at: notification.created_at,
+          read: false,
+          notificationable_type: notification._type,
+          notificationable: {
+            id: @comment.id,
+            body: @comment.body,
+            created_at: @comment.created_at,
+            user: {
+              id: @user.id,
+              email: @user.email,
+              name: @user.name,
+              created_at: @user.created_at,
+              avatar: @user.avatar.url
+            },
+            commentable_type: @comment.commentable_type,
+            commentable: {
+              id: @post.id,
+              title: @post.title,
+              body: @post.body,
+              body_html: @post.body_html,
+              created_at: @post.created_at
+            }
+          }
+        }
+      ].as_json
+    end
+  end
+  describe "GET /user/organization_notifications" do
+    before(:each) do
+      @user = create :user
+      admin = create :user
+      @organization = create :organization
+      @organization.add_member(@user)
+      @add_notification = @user.notifications.first
+      @organization.remove_member(@user)
+      @remove_notification = @user.notifications.first
+    end
+    it "should return organization notifications" do
+      get api('/user/organization_notifications', @user)
+      json_response.should == [
+        {
+          id: @remove_notification.id,
+          created_at: @remove_notification.created_at,
+          read: false,
+          notificationable_type: @remove_notification._type,
+          notificationable: {
+            id: @organization.id,
+            name: @organization.name,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          },
+          status: @remove_notification.status
+        },
+        {
+          id: @add_notification.id,
+          created_at: @add_notification.created_at,
+          read: false,
+          notificationable_type: @add_notification._type,
+          notificationable: {
+            id: @organization.id,
+            name: @organization.name,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          },
+          status: @add_notification.status
+        }
+      ].as_json
+    end
+  end
+  describe "GET /user/message_notifications" do
+    before(:each) do
+      @user_one = create :user
+      @user_another = create :user
+      body = 'body'
+      @conversation = @user_one.send_message_to([@user_another], body)
+      @message = @conversation.messages.first
+    end
+    it "should return message notifications" do
+      notification = @user_another.notifications.first
+      get api('/user/message_notifications', @user_another)
+      json_response.should == [
+        {
+          id: notification.id,
+          created_at: notification.created_at,
+          read: notification.read,
+          notificationable_type: notification._type,
+          notificationable: {
+            id: @message.id,
+            created_at: @message.created_at,
+            body: @message.body,
+            conversation: {
+              id: @conversation.id,
+              created_at: @conversation.created_at,
+              updated_at: @conversation.updated_at
+            }
+          }
+        }
+      ].as_json
+    end
+  end
+
   describe "GET /users/:id" do
     context "/" do
       before(:each) do

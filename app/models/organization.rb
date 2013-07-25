@@ -58,10 +58,7 @@ class Organization
     if user
       self.add_to_set(:member_ids, user.id)
       user.add_to_set(:organization_ids, self.id)
-      relation = self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
-      unless relation.new_record?
-        self.organization_notifications._in.create(user_id: user.id)
-      end
+      self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
     end
   end
   def pull_member(user)
@@ -70,10 +67,7 @@ class Organization
       self.pull(:member_ids, user.id)
       user.pull(:organization_ids, self.id)
       relation = self.user_organization_position_relationships.where(user_id: user.id).first
-      if relation
-        relation.destroy
-        self.organization_notifications._out.create(user_id: user.id)
-      end
+      relation.destroy if relation
     end
   end
   def push_members(users, position = nil)

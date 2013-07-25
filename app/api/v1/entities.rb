@@ -10,6 +10,17 @@ module Youxin
     class User < UserBasic
     end
 
+    class UserWithNotifications < Grape::Entity
+      expose :notification_channel
+      expose :notifications do |user|
+        {
+          comment_notifications: user.comment_notifications.unread.count,
+          organization_notifications: user.organization_notifications.unread.count,
+          message_notifications: user.message_notifications.unread.count
+        }
+      end
+    end
+
     class UserLogin < UserBasic
       expose :private_token
     end
@@ -50,8 +61,10 @@ module Youxin
       expose :inputs, using: Entities::Input
     end
 
-    class PostBasic < Grape::Entity
-      expose :id, :title, :body, :body_html, :created_at
+    class PostSimple < Grape::Entity
+      expose :id, :title, :body, :body_html, :created_at    
+    end
+    class PostBasic < PostSimple
       expose :attachments, using: Entities::Attachment
       expose :forms, using: Entities::FormBasic
     end
@@ -118,9 +131,16 @@ module Youxin
       end
     end
 
+    class Commentable < Grape::Entity
+      expose :id, :title, :body, :body_html, :created_at    
+    end
     class Comment < Grape::Entity
       expose :id, :body, :created_at
       expose :user, using: Entities::UserBasic
+    end
+    class CommentWithCommentable < Comment
+      expose :commentable_type
+      expose :commentable, using: Entities::Commentable
     end
 
     class Favorite < Grape::Entity
@@ -133,11 +153,33 @@ module Youxin
       expose :user, using: Entities::UserBasic
     end
 
+    class ConversationBasic < Grape::Entity
+      expose :id, :created_at, :updated_at
+    end
+
+    class MessageWithConversation < Grape::Entity
+      expose :id, :created_at, :body
+      expose :conversation, using: Entities::ConversationBasic
+    end
+
     class Conversation < Grape::Entity
       expose :id, :created_at, :updated_at
       expose :last_message, using: Entities::Message
       expose :originator, using: Entities::UserBasic
       expose :participants, using: Entities::UserBasic
+    end
+
+    class Notification < Grape::Entity
+      # common
+      expose :id, :created_at, :read
+      expose :_type, as: :notificationable_type
+      # comment
+      expose :comment, as: :notificationable, using: Entities::CommentWithCommentable
+      # message
+      expose :message, as: :notificationable, using: Entities::MessageWithConversation
+      # organization
+      expose :organization, as: :notificationable, using: Entities::OrganizationBasic
+      expose :status
     end
   end
 end

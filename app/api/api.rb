@@ -22,5 +22,6 @@ module Youxin
     mount Organizations
     mount Forms
     mount Conversations
+    mount Notifications
   end
 end

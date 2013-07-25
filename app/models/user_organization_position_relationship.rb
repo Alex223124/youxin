@@ -13,4 +13,12 @@ class UserOrganizationPositionRelationship
   belongs_to :user
   belongs_to :organization
   belongs_to :position
+
+  after_create do
+    self.user.organization_notifications._in.create(organization_id: self.organization_id)
+  end
+  after_destroy do
+    self.user.organization_notifications._out.create(organization_id: self.organization_id)
+  end
+
 end
