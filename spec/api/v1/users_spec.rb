@@ -569,6 +569,13 @@ describe Youxin::API, 'users' do
               id: @conversation.id,
               created_at: @conversation.created_at,
               updated_at: @conversation.updated_at
+            },
+            user: {
+              id: @user_one.id,
+              email: @user_one.email,
+              name: @user_one.name,
+              created_at: @user_one.created_at,
+              avatar: @user_one.avatar.url
             }
           }
         }

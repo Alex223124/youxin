@@ -160,6 +160,7 @@ module Youxin
     class MessageWithConversation < Grape::Entity
       expose :id, :created_at, :body
       expose :conversation, using: Entities::ConversationBasic
+      expose :user, using: Entities::UserBasic
     end
 
     class Conversation < Grape::Entity
