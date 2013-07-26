@@ -89,7 +89,7 @@ class User
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
   has_many :message_notifications, class_name: 'Notification::Message', dependent: :destroy
   has_many :sms_communication_records, class_name: 'CommunicationRecord::Sms'
-  has_and_belongs_to_many :conversations, inverse_of: :participant, dependent: :destroy
+  has_and_belongs_to_many :conversations, inverse_of: :participant
   has_many :messages, dependent: :destroy
   has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
   has_one :user_role_organization_relationship, dependent: :destroy

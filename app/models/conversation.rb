@@ -7,7 +7,7 @@ class Conversation
 
   validates :originator_id, presence: true
 
-  has_and_belongs_to_many :participants, class_name: 'User', dependent: :destroy
+  has_and_belongs_to_many :participants, class_name: 'User'
   has_many :messages, dependent: :destroy
 
   default_scope desc(:updated_at)

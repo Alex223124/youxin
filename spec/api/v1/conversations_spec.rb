@@ -72,10 +72,10 @@ describe Youxin::API, 'conversations' do
       get api("/conversations/#{@conversation.id}")
       response.status.should == 401
     end
-    it "should return 403" do
+    it "should return 404" do
       user_three = create :user
       get api("/conversations/#{@conversation.id}", user_three)
-      response.status.should == 403
+      response.status.should == 404
     end
     it "should return 404" do
       get api("/conversations/not_exist", @user)
@@ -109,10 +109,10 @@ describe Youxin::API, 'conversations' do
         }
       ].as_json
     end
-    it "should return 403" do
+    it "should return 404" do
       user_three = create :user
       get api("/conversations/#{@conversation.id}/messages", user_three)
-      response.status.should == 403
+      response.status.should == 404
     end
   end
   describe "POST /conversation/:id/messages" do
@@ -145,10 +145,10 @@ describe Youxin::API, 'conversations' do
       post api("/conversations/#{@conversation.id}/messages", @user), body: ''
       response.status.should == 400
     end
-    it "should return 403" do
+    it "should return 404" do
       user_three = create :user
       post api("/conversations/#{@conversation.id}/messages", user_three), body: @body
-      response.status.should == 403
+      response.status.should == 404
     end
   end
   describe "POST /conversations" do
@@ -181,7 +181,10 @@ describe Youxin::API, 'conversations' do
     end
     it "should add user to conversations" do
       post api("/conversations/#{@conversation.id}/participants", @user), participant_ids: [@user_another].map(&:id)
+      @conversation.reload
+      @user_another.reload
       @conversation.participants.should include(@user_another)
+      @user_another.conversations.should include(@conversation)
       json_response.should == [
         {
           id: @user.id,
@@ -211,7 +214,7 @@ describe Youxin::API, 'conversations' do
       response.status.should == 403
     end
     it "should return 404" do
-      post api("/conversations/#{@conversation.id}/participants", @user), participant_ids: 'not_exist'
+      post api("/conversations/#{@conversation.id}/participants", @user), participant_ids: ['not_exist']
       response.status.should == 404
     end
   end
@@ -247,13 +250,21 @@ describe Youxin::API, 'conversations' do
     end
     it "should delete the conversation" do
       delete api("/conversations/#{@conversation.id}", @user)
+      response.status.should == 204
       @user.conversations.count.should == 0
       @user_one.conversations.count.should == 0
       @user_another.conversations.count.should == 0
     end
-    it "should return 403" do
-      delete api("/conversations/#{@conversation.id}", @user_one)
-      response.status.should == 403
+    it "should return 404" do
+      user_three = create :user
+      delete api("/conversations/#{@conversation.id}", user_three)
+      response.status.should == 404
+    end
+    it "should quit current_user" do
+      delete api("/conversations/#{@conversation.id}", @user_another)
+      response.status.should == 204
+      @conversation.reload
+      @conversation.participants.should_not include(@user_another)
     end
   end
 end

@@ -19,9 +19,8 @@ class Conversations < Grape::API
     end
     route_param :id do
       before do
-        @conversation = Conversation.find(params[:id])
+        @conversation = current_user.conversations.where(id: params[:id]).first
         not_found!("conversation") unless @conversation
-        authorize! :read, @conversation
       end
 
       get do
@@ -29,8 +28,12 @@ class Conversations < Grape::API
       end
 
       delete do
-        authorize! :manage, @conversation
-        @conversation.destroy
+        if current_user == @conversation.originator
+          authorize! :manage, @conversation
+          @conversation.destroy
+        else
+          @conversation.remove_user(current_user)
+        end
         status(204)
       end
 
