@@ -1,13 +1,14 @@
 module Youxin
   module Entities
-    class UserBasic < Grape::Entity
-      expose :id, :email, :name, :created_at
+    class UserSimple < Grape::Entity
+      expose :id, :name
       expose :avatar do |user|
         user.avatar.url
       end
     end
 
-    class User < UserBasic
+    class UserBasic < UserSimple
+      expose :email, :created_at
     end
 
     class UserWithNotifications < Grape::Entity
@@ -23,6 +24,12 @@ module Youxin
 
     class UserLogin < UserBasic
       expose :private_token
+    end
+
+    class AuthorizedUser < UserSimple
+      expose :actions do |user, options|
+        options[:organization].user_actions_organization_relationships.where(user_id: user.id).first.try(:actions)
+      end
     end
 
     class Attachment < Grape::Entity
@@ -77,6 +84,10 @@ module Youxin
       expose :avatar do |organization|
         organization.avatar.url
       end
+    end
+
+    class OrganizationWithAuthorizedUsers < OrganizationBasic
+      expose :authorized_users, using: Entities::UserSimple
     end
 
     class ReceiptBasic < Grape::Entity

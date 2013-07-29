@@ -12,13 +12,22 @@ describe Youxin::API, 'organizations' do
     end
     context "/" do
       it "should return single organization" do
+        actions = Action.options_array
+        @organization.authorize(@user, actions)
         get api("/organizations/#{@organization.id}", @user)
         response.status.should == 200
         json_response.should == {
           id: @organization.id,
           name: @organization.name,
           created_at: @organization.created_at,
-          avatar: @organization.avatar.url
+          avatar: @organization.avatar.url,
+          authorized_users: [
+            {
+              id: @user.id,
+              name: @user.name,
+              avatar: @user.avatar.url
+            }
+          ]
         }.as_json
       end
     end
@@ -126,6 +135,64 @@ describe Youxin::API, 'organizations' do
               created_at: @receipt_2.author.created_at,
               avatar: @receipt_2.author.avatar.url
             }
+          }
+        ].as_json
+      end
+    end
+
+    context "/children" do
+      before(:each) do
+        @organization_one = create :organization, parent: @organization
+        @organization_another = create :organization, parent: @organization
+      end
+      it "should return children of the organization" do
+        get api("/organizations/#{@organization.id}/children", @user)
+        json_response.should == [
+          {
+            id: @organization_one.id,
+            name: @organization_one.name,
+            created_at: @organization_one.created_at,
+            avatar: @organization_one.avatar.url,
+            authorized_users: []
+          },
+          {
+            id: @organization_another.id,
+            name: @organization_another.name,
+            created_at: @organization_another.created_at,
+            avatar: @organization_another.avatar.url,
+            authorized_users: []
+          }
+        ].as_json
+      end
+    end
+
+    context "/authorized_users" do
+      before(:each) do
+        @actions = Action.options_array
+        @organization_one = create :organization, parent: @organization
+        @organization.authorize_cover_offspring(@user, @actions)
+        @organization.reload
+        @organization_one.reload
+      end
+      it "should return authorized_users" do
+        get api("/organizations/#{@organization.id}/authorized_users", @user)
+        json_response.should == [
+          {
+            id: @user.id,
+            name: @user.name,
+            avatar: @user.avatar.url,
+            actions: @actions
+          }
+        ].as_json
+      end
+      it "should return authorized_users when authorize_cover_offspring" do
+        get api("/organizations/#{@organization_one.id}/authorized_users", @user)
+        json_response.should == [
+          {
+            id: @user.id,
+            name: @user.name,
+            avatar: @user.avatar.url,
+            actions: @actions
           }
         ].as_json
       end
