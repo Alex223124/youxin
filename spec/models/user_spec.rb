@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe User do
@@ -323,10 +325,50 @@ describe User do
         user.save
         user.should have(1).error_on(:phone)
       end
+      it "should have one error on format" do
+        user.phone = '186000000000'
+        user.save
+        user.should have(1).error_on(:phone)
+      end
       it "should have no error on format" do
         user.phone = '18600000000'
         user.save
         user.should have(0).error_on(:phone)
+      end
+    end
+
+    context "qq" do
+      it "should have an error on format" do
+        user.qq = 'abcdefg'
+        user.save
+        user.should have(1).error_on(:qq)
+      end
+      it "should have an error on format when length less than 5" do
+        user.qq = '1234'
+        user.save
+        user.should have(1).error_on(:qq)
+      end
+      it "should have an error on format when length more than 11" do
+        user.qq = '012345678901'
+        user.save
+        user.should have(1).error_on(:qq)
+      end
+      it "should have no error on format" do
+        user.qq = '123456789'
+        user.save
+        user.should have(0).error_on(:qq)
+      end
+    end
+    context "gender" do
+      it "should have an error when gender not inclusion" do
+        user.gender = 'male'
+        user.save
+        user.should have(1).error_on(:gender)
+      end
+      it "should have no error on gender" do
+        user.gender = '男'
+        user.save
+        user.should have(0).error_on(:gender)
       end
     end
   end

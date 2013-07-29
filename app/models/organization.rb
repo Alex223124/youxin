@@ -7,6 +7,8 @@ class Organization
   field :parent_id
   field :member_ids, type: Array, default: []
 
+  field :bio, type: String
+
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
 
