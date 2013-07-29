@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class User
   include Mongoid::Document
   include Mongoid::Paranoia # Soft delete
@@ -50,8 +52,16 @@ class User
   field :ios_device_token, type: String
   field :phone, type: String
 
+  field :bio, type: String
+  field :gender, type: String
+  field :qq, type: String
+  field :blog, type: String
+  field :uid, type: String
+
   validates :name, presence: true
-  validates :phone, format: { with: /1\d{10}/ }, allow_nil: true
+  validates :phone, format: { with: /\A1\d{10}\Z/ }, allow_nil: true
+  validates :gender, inclusion: %w(男 女), allow_nil: true
+  validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_nil: true
 
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
