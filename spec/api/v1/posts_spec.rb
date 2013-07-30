@@ -233,7 +233,8 @@ describe Youxin::API, 'posts' do
           email: @post.author.email,
           name: @post.author.name,
           created_at: @post.author.created_at,
-          avatar: @post.author.avatar.url
+          avatar: @post.author.avatar.url,
+          phone: @post.author.phone
         },
         attachments: [],
         forms: []
@@ -284,7 +285,8 @@ describe Youxin::API, 'posts' do
               email: receipt_2.user.email,
               name: receipt_2.user.name,
               created_at: receipt_2.user.created_at,
-              avatar: receipt_2.user.avatar.url
+              avatar: receipt_2.user.avatar.url,
+              phone: receipt_2.user.phone
             }
           },
           {
@@ -297,7 +299,8 @@ describe Youxin::API, 'posts' do
               email: receipt_1.user.email,
               name: receipt_1.user.name,
               created_at: receipt_1.user.created_at,
-              avatar: receipt_1.user.avatar.url
+              avatar: receipt_1.user.avatar.url,
+              phone: receipt_1.user.phone
             }
           }
         ].as_json
@@ -325,7 +328,8 @@ describe Youxin::API, 'posts' do
               email: receipt_2.user.email,
               name: receipt_2.user.name,
               created_at: receipt_2.user.created_at,
-              avatar: receipt_2.user.avatar.url
+              avatar: receipt_2.user.avatar.url,
+              phone: receipt_2.user.phone
             }
           }
         ].as_json
@@ -353,7 +357,8 @@ describe Youxin::API, 'posts' do
               email: receipt_1.user.email,
               name: receipt_1.user.name,
               created_at: receipt_1.user.created_at,
-              avatar: receipt_1.user.avatar.url
+              avatar: receipt_1.user.avatar.url,
+              phone: receipt_1.user.phone
             }
           }
         ].as_json
@@ -381,7 +386,8 @@ describe Youxin::API, 'posts' do
               email: @comment.user.email,
               name: @comment.user.name,
               created_at: @comment.user.created_at,
-              avatar: @comment.user.avatar.url
+              avatar: @comment.user.avatar.url,
+              phone: @comment.user.phone
             }
           }
         ].as_json
@@ -399,7 +405,8 @@ describe Youxin::API, 'posts' do
               email: @comment.user.email,
               name: @comment.user.name,
               created_at: @comment.user.created_at,
-              avatar: @comment.user.avatar.url
+              avatar: @comment.user.avatar.url,
+              phone: @comment.user.phone
             }
           }
         ].as_json
@@ -444,7 +451,8 @@ describe Youxin::API, 'posts' do
           email: @admin.email,
           name: @admin.name,
           created_at: @admin.created_at,
-          avatar: @admin.avatar.url
+          avatar: @admin.avatar.url,
+          phone: @admin.phone
         }.as_json
       end
       it "should return 400 when bad attributes" do
