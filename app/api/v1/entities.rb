@@ -8,7 +8,7 @@ module Youxin
     end
 
     class UserBasic < UserSimple
-      expose :email, :created_at
+      expose :email, :created_at, :phone
     end
 
     class UserProfile < UserBasic

@@ -46,7 +46,8 @@ describe Youxin::API, 'receipts' do
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
-              avatar: @receipt.author.avatar.url
+              avatar: @receipt.author.avatar.url,
+              phone: @receipt.author.phone
             }
           }
         }
@@ -85,7 +86,8 @@ describe Youxin::API, 'receipts' do
             email: @receipt.author.email,
             name: @receipt.author.name,
             created_at: @receipt.author.created_at,
-            avatar: @receipt.author.avatar.url
+            avatar: @receipt.author.avatar.url,
+            phone: @receipt.author.phone
           }
         }
       }.as_json
@@ -133,7 +135,8 @@ describe Youxin::API, 'receipts' do
             email: @receipt.author.email,
             name: @receipt.author.name,
             created_at: @receipt.author.created_at,
-            avatar: @receipt.author.avatar.url
+            avatar: @receipt.author.avatar.url,
+            phone: @receipt.author.phone
           }
         }
       }.as_json

@@ -116,14 +116,16 @@ describe Youxin::API, 'organizations' do
             email: @user.email,
             name: @user.name,
             created_at: @user.created_at,
-            avatar: @user.avatar.url
+            avatar: @user.avatar.url,
+            phone: @user.phone
           },
           {
             id: @user_another.id,
             email: @user_another.email,
             name: @user_another.name,
             created_at: @user_another.created_at,
-            avatar: @user_another.avatar.url
+            avatar: @user_another.avatar.url,
+            phone: @user_another.phone
           }
         ].as_json
       end
@@ -162,7 +164,8 @@ describe Youxin::API, 'organizations' do
                 email: @receipt.author.email,
                 name: @receipt.author.name,
                 created_at: @receipt.author.created_at,
-                avatar: @receipt.author.avatar.url
+                avatar: @receipt.author.avatar.url,
+                phone: @receipt.author.phone
               }
             }
           }
@@ -205,7 +208,8 @@ describe Youxin::API, 'organizations' do
               email: @receipt_2.author.email,
               name: @receipt_2.author.name,
               created_at: @receipt_2.author.created_at,
-              avatar: @receipt_2.author.avatar.url
+              avatar: @receipt_2.author.avatar.url,
+              phone: @receipt_2.author.phone
             }
           }
         ].as_json
