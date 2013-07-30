@@ -82,6 +82,10 @@ class Users < Grape::API
         notifications = paginate current_user.send notificationables
         present notifications, with: Youxin::Entities::Notification
       end
+      get "#{notificationables}/unread" do
+        notifications = paginate current_user.send(notificationables).unread
+        present notifications, with: Youxin::Entities::Notification
+      end
     end
   end
 

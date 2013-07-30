@@ -583,6 +583,144 @@ describe Youxin::API, 'users' do
     end
   end
 
+  describe "GET /user/comment_notifications/unread" do
+    before(:each) do
+      @user = create :user
+      @admin = create :user
+      organization = create :organization
+      organization.push_member(@user)
+      actions_youxin = Action.options_array_for(:youxin)
+      organization.authorize_cover_offspring(@admin, actions_youxin)
+      @post = create :post, author: @admin, organization_ids: [organization].map(&:id)
+      @comment_one = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
+      @notification_one = @admin.notifications.first
+      @comment_another = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
+      @notification_another = @admin.notifications.first
+    end
+    it "should return unread comment_notifications" do
+      @notification_one.read!
+      get api('/user/comment_notifications/unread', @admin)
+      json_response.should == [
+        {
+          id: @notification_another.id,
+          created_at: @notification_another.created_at,
+          read: false,
+          notificationable_type: @notification_another._type,
+          notificationable: {
+            id: @comment_another.id,
+            body: @comment_another.body,
+            created_at: @comment_another.created_at,
+            user: {
+              id: @user.id,
+              email: @user.email,
+              name: @user.name,
+              created_at: @user.created_at,
+              avatar: @user.avatar.url
+            },
+            commentable_type: @comment_another.commentable_type,
+            commentable: {
+              id: @post.id,
+              title: @post.title,
+              body: @post.body,
+              body_html: @post.body_html,
+              created_at: @post.created_at
+            }
+          }
+        }
+      ].as_json
+    end
+    it "should return blank array of unread comment_notifications" do
+      @notification_one.read!
+      @notification_another.read!
+      get api('/user/comment_notifications/unread', @admin)
+      json_response.should == [].as_json
+    end
+  end
+  describe "GET /user/organization_notifications/unread" do
+    before(:each) do
+      @user = create :user
+      admin = create :user
+      @organization = create :organization
+      @organization.add_member(@user)
+      @add_notification = @user.notifications.first
+      @organization.remove_member(@user)
+      @remove_notification = @user.notifications.first
+    end
+    it "should return unread organization notifications" do
+      @add_notification.read!
+      get api('/user/organization_notifications/unread', @user)
+      json_response.should == [
+        {
+          id: @remove_notification.id,
+          created_at: @remove_notification.created_at,
+          read: false,
+          notificationable_type: @remove_notification._type,
+          notificationable: {
+            id: @organization.id,
+            name: @organization.name,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          },
+          status: @remove_notification.status
+        }
+      ].as_json
+    end
+    it "should return blank array of unread organization_notifications" do
+      @add_notification.read!
+      @remove_notification.read!
+      get api('/user/organization_notifications/unread', @user)
+      json_response.should == [].as_json
+    end
+  end
+  describe "GET /user/message_notifications/unread" do
+    before(:each) do
+      @user_one = create :user
+      @user_another = create :user
+      body = 'body'
+      @conversation = @user_one.send_message_to([@user_another], body)
+      @message_one = @conversation.messages.first
+      @notification_one = @user_another.notifications.first
+      @user_one.send_message_to(@user_another, body)
+      @message_another = @conversation.messages.first
+      @notification_another = @user_another.notifications.first
+    end
+    it "should return message notifications" do
+      @notification_one.read!
+      get api('/user/message_notifications/unread', @user_another)
+      json_response.should == [
+        {
+          id: @notification_another.id,
+          created_at: @notification_another.created_at,
+          read: @notification_another.read,
+          notificationable_type: @notification_another._type,
+          notificationable: {
+            id: @message_another.id,
+            created_at: @message_another.created_at,
+            body: @message_another.body,
+            conversation: {
+              id: @conversation.id,
+              created_at: @conversation.created_at,
+              updated_at: @conversation.updated_at
+            },
+            user: {
+              id: @user_one.id,
+              email: @user_one.email,
+              name: @user_one.name,
+              created_at: @user_one.created_at,
+              avatar: @user_one.avatar.url
+            }
+          }
+        }
+      ].as_json
+    end
+    it "should return blank array of unread message_notifications" do
+      @notification_one.read!
+      @notification_another.read!
+      get api('/user/message_notifications/unread', @user_another)
+      json_response.should == [].as_json
+    end
+  end
+
   describe "GET /users/:id" do
     context "/" do
       before(:each) do
