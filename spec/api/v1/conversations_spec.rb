@@ -29,7 +29,8 @@ describe Youxin::API, 'conversations' do
             email: @message.user.email,
             name: @message.user.name,
             created_at: @message.user.created_at,
-            avatar: @message.user.avatar.url
+            avatar: @message.user.avatar.url,
+            phone: @message.user.phone
           }
         },
         originator: {
@@ -37,7 +38,8 @@ describe Youxin::API, 'conversations' do
           email: @conversation.originator.email,
           name: @conversation.originator.name,
           created_at: @conversation.originator.created_at,
-          avatar: @conversation.originator.avatar.url
+          avatar: @conversation.originator.avatar.url,
+          phone: @conversation.originator.phone
         },
         participants: [
           {
@@ -45,21 +47,24 @@ describe Youxin::API, 'conversations' do
             email: @user_one.email,
             name: @user_one.name,
             created_at: @user_one.created_at,
-            avatar: @user_one.avatar.url
+            avatar: @user_one.avatar.url,
+            phone: @user_one.phone
           },
           {
             id: @user_another.id,
             email: @user_another.email,
             name: @user_another.name,
             created_at: @user_another.created_at,
-            avatar: @user_another.avatar.url
+            avatar: @user_another.avatar.url,
+            phone: @user_another.phone
           },
           {
             id: @user.id,
             email: @user.email,
             name: @user.name,
             created_at: @user.created_at,
-            avatar: @user.avatar.url
+            avatar: @user.avatar.url,
+            phone: @user.phone
           }
         ]
       }.as_json
@@ -104,7 +109,8 @@ describe Youxin::API, 'conversations' do
             email: @message.user.email,
             name: @message.user.name,
             created_at: @message.user.created_at,
-            avatar: @message.user.avatar.url
+            avatar: @message.user.avatar.url,
+            phone: @message.user.phone
           }
         }
       ].as_json
@@ -137,7 +143,8 @@ describe Youxin::API, 'conversations' do
           name: new_message.user.name,
           email: new_message.user.email,
           created_at: new_message.user.created_at,
-          avatar: new_message.user.avatar.url
+          avatar: new_message.user.avatar.url,
+          phone: new_message.user.phone
         }
       }.as_json
     end
@@ -191,21 +198,24 @@ describe Youxin::API, 'conversations' do
           name: @user.name,
           email: @user.email,
           created_at: @user.created_at,
-          avatar: @user.avatar.url
+          avatar: @user.avatar.url,
+          phone: @user.phone
         },
         {
           id: @user_one.id,
           name: @user_one.name,
           email: @user_one.email,
           created_at: @user_one.created_at,
-          avatar: @user_one.avatar.url
+          avatar: @user_one.avatar.url,
+          phone: @user_one.phone
         },
         {
           id: @user_another.id,
           name: @user_another.name,
           email: @user_another.email,
           created_at: @user_another.created_at,
-          avatar: @user_another.avatar.url
+          avatar: @user_another.avatar.url,
+          phone: @user_another.phone
         }
       ].as_json
     end

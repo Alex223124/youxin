@@ -297,6 +297,7 @@ describe Youxin::API, 'users' do
           name: @admin.name,
           created_at: @admin.created_at,
           avatar: @admin.avatar.url,
+          phone: @admin.phone,
           receipts: 1,
           unread_receipts: 1,
           last_receipt: {
@@ -369,7 +370,8 @@ describe Youxin::API, 'users' do
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
-              avatar: @receipt.author.avatar.url
+              avatar: @receipt.author.avatar.url,
+              phone: @receipt.author.phone
             }
           }
         }
@@ -426,7 +428,8 @@ describe Youxin::API, 'users' do
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
-              avatar: @receipt.author.avatar.url
+              avatar: @receipt.author.avatar.url,
+              phone: @receipt.author.phone
             }
           }
         }
@@ -484,7 +487,8 @@ describe Youxin::API, 'users' do
               email: @receipt.author.email,
               name: @receipt.author.name,
               created_at: @receipt.author.created_at,
-              avatar: @receipt.author.avatar.url
+              avatar: @receipt.author.avatar.url,
+              phone: @receipt.author.phone
             }
           }
         }
@@ -559,7 +563,8 @@ describe Youxin::API, 'users' do
               email: @user.email,
               name: @user.name,
               created_at: @user.created_at,
-              avatar: @user.avatar.url
+              avatar: @user.avatar.url,
+              phone: @user.phone
             },
             commentable_type: @comment.commentable_type,
             commentable: {
@@ -647,7 +652,8 @@ describe Youxin::API, 'users' do
               email: @user_one.email,
               name: @user_one.name,
               created_at: @user_one.created_at,
-              avatar: @user_one.avatar.url
+              avatar: @user_one.avatar.url,
+              phone: @user_one.phone
             }
           }
         }
@@ -687,7 +693,8 @@ describe Youxin::API, 'users' do
               email: @user.email,
               name: @user.name,
               created_at: @user.created_at,
-              avatar: @user.avatar.url
+              avatar: @user.avatar.url,
+              phone: @user.phone
             },
             commentable_type: @comment_another.commentable_type,
             commentable: {
@@ -779,7 +786,8 @@ describe Youxin::API, 'users' do
               email: @user_one.email,
               name: @user_one.name,
               created_at: @user_one.created_at,
-              avatar: @user_one.avatar.url
+              avatar: @user_one.avatar.url,
+              phone: @user_one.phone
             }
           }
         }
@@ -808,6 +816,7 @@ describe Youxin::API, 'users' do
           created_at: @user.created_at,
           avatar: @user.avatar.url,
           header: @user.header.url,
+          phone: @user.phone,
           bio: @user.bio,
           gender: @user.gender,
           qq: @user.qq,
@@ -881,7 +890,8 @@ describe Youxin::API, 'users' do
                 email: @receipt.author.email,
                 name: @receipt.author.name,
                 created_at: @receipt.author.created_at,
-                avatar: @receipt.author.avatar.url
+                avatar: @receipt.author.avatar.url,
+                phone: @receipt.author.phone
               }
             }
           }
@@ -933,7 +943,8 @@ describe Youxin::API, 'users' do
                 email: @receipt.author.email,
                 name: @receipt.author.name,
                 created_at: @receipt.author.created_at,
-                avatar: @receipt.author.avatar.url
+                avatar: @receipt.author.avatar.url,
+                phone: @receipt.author.phone
               }
             }
           }
