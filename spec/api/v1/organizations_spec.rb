@@ -92,6 +92,7 @@ describe Youxin::API, 'organizations' do
           created_at: @organization.created_at,
           avatar: @organization.avatar.url,
           header: @organization.header.url,
+          bio: @organization.bio,
           authorized_users: [
             {
               id: @user.id,
@@ -224,6 +225,7 @@ describe Youxin::API, 'organizations' do
             name: @organization_one.name,
             created_at: @organization_one.created_at,
             avatar: @organization_one.avatar.url,
+            bio: nil,
             authorized_users: []
           },
           {
@@ -231,6 +233,7 @@ describe Youxin::API, 'organizations' do
             name: @organization_another.name,
             created_at: @organization_another.created_at,
             avatar: @organization_another.avatar.url,
+            bio: nil,
             authorized_users: []
           }
         ].as_json

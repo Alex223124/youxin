@@ -807,7 +807,12 @@ describe Youxin::API, 'users' do
           name: @user.name,
           created_at: @user.created_at,
           avatar: @user.avatar.url,
-          header: @user.header.url
+          header: @user.header.url,
+          bio: @user.bio,
+          gender: @user.gender,
+          qq: @user.qq,
+          blog: @user.blog,
+          uid: @user.uid
         }.as_json
       end
     end

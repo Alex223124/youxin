@@ -12,6 +12,7 @@ module Youxin
     end
 
     class UserProfile < UserBasic
+      expose :bio, :gender, :qq, :blog, :uid
       expose :header do |user|
         user.header.url
       end
@@ -93,6 +94,7 @@ module Youxin
     end
 
     class OrganizationWithAuthorizedUsers < OrganizationBasic
+      expose :bio
       expose :authorized_users, using: Entities::UserSimple
     end
     class OrganizationWithAuthorizedUsersAndProfile < OrganizationWithAuthorizedUsers
