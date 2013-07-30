@@ -98,6 +98,7 @@ describe Youxin::API, 'organizations' do
           avatar: @organization.avatar.url,
           header: @organization.header.url,
           bio: @organization.bio,
+          bio: nil,
           authorized_users: [
             {
               id: @user.id,

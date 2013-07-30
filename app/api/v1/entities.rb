@@ -18,6 +18,10 @@ module Youxin
       end
     end
 
+    class User < UserBasic
+      expose :bio, :gender, :qq, :blog, :uid
+    end
+
     class UserWithNotifications < Grape::Entity
       expose :notification_channel
       expose :notifications do |user|
