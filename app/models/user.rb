@@ -56,7 +56,7 @@ class User
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
 
-  attr_accessible :name, :email, :password, :password_confirmation,
+  attr_accessible :phone, :name, :email, :password, :password_confirmation,
                   :avatar, :avatar_cache, :remove_avatar,
                   :header, :header_cache, :remove_header
 

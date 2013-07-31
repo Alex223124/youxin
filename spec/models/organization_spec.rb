@@ -390,7 +390,6 @@ describe Organization do
         organization = create :organization, avatar: Rack::Test::UploadedFile.new(avatar_path)
         organization.avatar.file.should_not be_blank
         organization.avatar.url.should_not be_blank
-        organization.avatar.url.should == "/uploads/avatar/organization/#{organization.id}.png"
       end
     end
 

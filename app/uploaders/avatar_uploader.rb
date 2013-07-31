@@ -58,7 +58,7 @@ class AvatarUploader < CarrierWave::Uploader::Base
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   def filename
     # "something.jpg" if original_filename
-    "#{model.id}.#{file.extension.downcase}" if super.present?
+    "#{model.id}_#{Digest::MD5.hexdigest(File.dirname(current_path))}.#{file.extension.downcase}" if super.present?
   end
 
 end

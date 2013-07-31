@@ -3,6 +3,28 @@ require 'spec_helper'
 describe Youxin::API, 'organizations' do
   include ApiHelpers
 
+  describe "PUT /organizations/:id" do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+    end
+    context "success" do
+      before(:each) do
+        actions = Action.options_array
+        @organization.authorize(@user, actions)
+      end
+      it "should update name" do
+        expect do
+          put api("/organizations/#{@organization.id}", @user), { name: 'new-name' }
+        end.to change { @organization.name }
+      end
+    end
+    it "should return 403" do
+      put api("/organizations/#{@organization.id}", @user), { name: 'new-name' }
+      response.status.should == 403
+    end
+  end
+
   describe "GET /organizations/:id" do
     before(:each) do
       @user = create :user

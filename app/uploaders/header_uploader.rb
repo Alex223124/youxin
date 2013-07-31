@@ -43,7 +43,7 @@ class HeaderUploader < CarrierWave::Uploader::Base
   end
 
   def filename
-    "#{model.id}.#{file.extension.downcase}" if super.present?
+    "#{model.id}_#{Digest::MD5.hexdigest(File.dirname(current_path))}.#{file.extension.downcase}" if super.present?
   end
 
 end

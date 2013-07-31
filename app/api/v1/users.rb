@@ -7,6 +7,15 @@ class Users < Grape::API
       present current_user, with: Youxin::Entities::UserProfile
     end
 
+    put do
+      attrs = attributes_for_keys [:avatar, :header, :phone, :name]
+      if current_user.update_attributes attrs
+        status(204)
+      else
+        fail!(current_user.errors)
+      end
+    end
+
     desc 'Get organizations which the user have the authorization in.'
     get 'authorized_organizations' do
       actions = attributes_for_keys([:actions])[:actions]

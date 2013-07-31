@@ -9,6 +9,15 @@ class Organizations < Grape::API
       get do
         present @organization, with: Youxin::Entities::OrganizationWithAuthorizedUsersAndProfile
       end
+      put do
+        authorize! :edit_organization, @organization
+        attrs = attributes_for_keys [:avatar, :header, :name]
+        if @organization.update_attributes attrs
+          status(204)
+        else
+          fail!(@organization.errors)
+        end
+      end
       get 'members' do
         members = paginate @organization.members
         present members, with: Youxin::Entities::UserBasic

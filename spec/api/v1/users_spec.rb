@@ -19,6 +19,78 @@ describe Youxin::API, 'users' do
     end
   end
 
+  describe "PUT /user" do
+    before(:each) do
+      @user = create :user
+    end
+    context "header" do
+      before(:each) do
+        header_path1 = Rails.root.join("spec/factories/images/header/header1.png")
+        @header1 = Rack::Test::UploadedFile.new(header_path1, 'image/png')
+        header_path2 = Rails.root.join("spec/factories/images/header/header2.png")
+        @header2 = Rack::Test::UploadedFile.new(header_path2, 'image/png')
+      end
+      it "should update header of current user" do
+        expect do
+          put api('/user', @user), { header: @header1 }
+          @user.reload
+        end.to change { @user.header.url }
+        response.status.should == 204
+      end
+      it "should update header" do
+        pending 'should change header again'
+        @user.update_attributes header: @header1
+        @user.reload
+        expect do
+          put api('/user', @user), { header: @header2 }
+          @user.reload
+        end.to change { @user.header.url }
+        response.status.should == 204        
+      end
+    end
+    context "avatar" do
+      before(:each) do
+        avatar_path1 = Rails.root.join("spec/factories/images/avatar/avatar1.jpg")
+        @avatar1 = Rack::Test::UploadedFile.new(avatar_path1, 'image/jpg')
+        avatar_path2 = Rails.root.join("spec/factories/images/avatar/avatar2.jpg")
+        @avatar2 = Rack::Test::UploadedFile.new(avatar_path2, 'image/jpg')
+      end
+      it "should update avatar of current user" do
+        expect do
+          put api('/user', @user), { avatar: @avatar1 }
+          @user.reload
+        end.to change { @user.avatar.url }
+        response.status.should == 204
+      end      
+      it "should update avatar" do
+        pending 'should change avatar again'
+        @user.update_attributes avatar: @avatar1
+        @user.reload
+        expect do
+          put api('/user', @user), { avatar: @avatar2 }
+          @user.reload
+        end.to change { @user.avatar.url }
+        response.status.should == 204
+      end      
+    end
+    context "name" do
+      it "should update name" do
+        expect do
+          put api('/user', @user), { name: 'new-name' }
+          @user.reload
+        end.to change { @user.name }
+      end
+    end
+    context "phone" do
+      it "should update phone" do
+        expect do
+          put api('/user', @user), { phone: '18700000000' }
+          @user.reload
+        end.to change { @user.phone }
+      end
+    end
+  end
+
   describe "GET /user/authorized_organizations" do
     before(:each) do
       @admin = create :user

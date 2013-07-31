@@ -301,7 +301,6 @@ describe User do
         user = create :user, avatar: Rack::Test::UploadedFile.new(avatar_path)
         user.avatar.file.should_not be_blank
         user.avatar.url.should_not be_blank
-        user.avatar.url.should == "/uploads/avatar/user/#{user.id}.png"
       end
     end
 
