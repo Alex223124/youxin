@@ -7,7 +7,7 @@ class Organizations < Grape::API
         @organization = Organization.find(params[:id])
       end
       get do
-        present @organization, with: Youxin::Entities::OrganizationWithAuthorizedUsers
+        present @organization, with: Youxin::Entities::OrganizationWithAuthorizedUsersAndProfile
       end
       get 'members' do
         members = paginate @organization.members

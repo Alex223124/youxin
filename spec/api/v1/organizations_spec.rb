@@ -21,6 +21,7 @@ describe Youxin::API, 'organizations' do
           name: @organization.name,
           created_at: @organization.created_at,
           avatar: @organization.avatar.url,
+          header: @organization.header.url,
           authorized_users: [
             {
               id: @user.id,

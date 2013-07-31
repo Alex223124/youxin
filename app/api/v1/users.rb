@@ -4,7 +4,7 @@ class Users < Grape::API
   resource :user do
     desc 'Get the info of current user.'
     get do
-      present current_user, with: Youxin::Entities::UserBasic
+      present current_user, with: Youxin::Entities::UserProfile
     end
 
     desc 'Get organizations which the user have the authorization in.'
@@ -95,7 +95,7 @@ class Users < Grape::API
         @user = User.find(params[:id])
       end
       get do
-        present @user, with: Youxin::Entities::UserBasic
+        present @user, with: Youxin::Entities::UserProfile
       end
       get 'organizations' do
         organizations = @user.organizations

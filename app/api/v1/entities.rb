@@ -11,6 +11,12 @@ module Youxin
       expose :email, :created_at
     end
 
+    class UserProfile < UserBasic
+      expose :header do |user|
+        user.header.url
+      end
+    end
+
     class UserWithNotifications < Grape::Entity
       expose :notification_channel
       expose :notifications do |user|
@@ -88,6 +94,11 @@ module Youxin
 
     class OrganizationWithAuthorizedUsers < OrganizationBasic
       expose :authorized_users, using: Entities::UserSimple
+    end
+    class OrganizationWithAuthorizedUsersAndProfile < OrganizationWithAuthorizedUsers
+      expose :header do |organization|
+        organization.header.url
+      end
     end
 
     class ReceiptBasic < Grape::Entity

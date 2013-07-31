@@ -42,41 +42,10 @@ class AvatarUploader < CarrierWave::Uploader::Base
   #   process :scale => [50, 50]
   # end
 
-  version :mobile do
-    process resize_to_fill: [150, 150]
-  end
-
-  version :small do
-    process resize_to_fill: [50, 50]
-  end
-
-  version :normal do
-    process resize_to_fill: [80, 80]
-  end
-
-  version :big do
-    process resize_to_fill: [130, 130]
-  end
-
-  version :huge do
-    process resize_to_fill: [200, 200]
-  end
-
-  # For retina
-  version :retina_small do
-    process resize_to_fill: [100, 100]
-  end
-
-  version :retina_normal do
-    process resize_to_fill: [160, 160]
-  end
-
-  version :retina_big do
-    process resize_to_fill: [260, 260]
-  end
-
-  version :retina_huge do
-    process resize_to_fill: [400, 400]
+  Version.avatars.each do |v|
+    version v[:name] do
+      process v[:process] => v[:dimension]
+    end
   end
 
   # Add a white list of extensions which are allowed to be uploaded.

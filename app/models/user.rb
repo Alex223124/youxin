@@ -54,8 +54,11 @@ class User
   validates :phone, format: { with: /1\d{10}/ }, allow_nil: true
 
   mount_uploader :avatar, AvatarUploader
+  mount_uploader :header, HeaderUploader
 
-  attr_accessible :name, :email, :password, :password_confirmation, :avatar, :avatar_cache, :remove_avatar
+  attr_accessible :name, :email, :password, :password_confirmation,
+                  :avatar, :avatar_cache, :remove_avatar,
+                  :header, :header_cache, :remove_header
 
   has_many :user_organization_position_relationships, dependent: :destroy
   has_many :user_actions_organization_relationships, dependent: :destroy

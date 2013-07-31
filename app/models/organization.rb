@@ -8,6 +8,7 @@ class Organization
   field :member_ids, type: Array, default: []
 
   mount_uploader :avatar, AvatarUploader
+  mount_uploader :header, HeaderUploader
 
   belongs_to :parent, class_name: 'Organization'
   has_many :children, class_name: 'Organization', foreign_key: :parent_id

@@ -734,7 +734,8 @@ describe Youxin::API, 'users' do
           email: @user.email,
           name: @user.name,
           created_at: @user.created_at,
-          avatar: @user.avatar.url
+          avatar: @user.avatar.url,
+          header: @user.header.url
         }.as_json
       end
     end
