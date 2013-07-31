@@ -24,6 +24,10 @@ defaults: &defaults
   smsbao:
     user_name: youxin
     password: 'combee&smsbao#'
+  help:
+    tos: tos_text
+    privacy: privacy_text
+    contact_email: youxin.beta@gmail.com
 
 development:
   <<: *defaults
