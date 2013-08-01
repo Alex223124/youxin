@@ -3,6 +3,36 @@ require 'spec_helper'
 describe Youxin::API, 'organizations' do
   include ApiHelpers
 
+  describe "GET /organizations" do
+    before(:each) do
+      @organization_one = create :organization
+      @organization_another = create :organization, parent: @organization_one
+      @user = create :user
+    end
+    it "should return the array of organizations" do
+      get api('/organizations', @user)
+      response.status.should == 200
+      json_response.should == [
+        {
+          id: @organization_one.id,
+          name: @organization_one.name,
+          created_at: @organization_one.created_at,
+          avatar: @organization_one.avatar.url,
+          parent_id: @organization_one.parent_id,
+          members: @organization_one.members.count
+        },
+        {
+          id: @organization_another.id,
+          name: @organization_another.name,
+          created_at: @organization_another.created_at,
+          avatar: @organization_another.avatar.url,
+          parent_id: @organization_another.parent_id,
+          members: @organization_another.members.count
+        }
+      ].as_json
+    end
+  end
+
   describe "PUT /organizations/:id" do
     before(:each) do
       @organization = create :organization

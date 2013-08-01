@@ -2,6 +2,10 @@ class Organizations < Grape::API
   before { authenticate! }
 
   resource :organizations do
+    get do
+      organizations = Organization.all
+      present organizations, with: Youxin::Entities::AuthorizedOrganization
+    end
     route_param :id do
       before do
         @organization = Organization.find(params[:id])
