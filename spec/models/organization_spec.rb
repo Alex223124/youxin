@@ -76,6 +76,7 @@ describe Organization do
       @user = create :user
       @another_user = create :user
       @position = create :position
+      @position_another = create :position
     end
     context "#push_member" do
       it "should add members to organization" do
@@ -140,6 +141,17 @@ describe Organization do
         @organization.push_members([@user.id, @another_user.id])
         @organization.members.should include(@user)
         @organization.members.should include(@another_user)
+      end
+      it "should update position of user in organization" do
+        @organization.push_member(@user, @position)
+        @user.position_in_organization(@organization).should == @position
+        @organization.push_member(@user, @position_another)
+        @user.position_in_organization(@organization).should == @position_another
+      end
+      it "should also update position of user in organization" do
+        @organization.push_member(@user)
+        @organization.push_member(@user, @position_another)
+        @user.position_in_organization(@organization).should == @position_another
       end
     end
     context "#push_members with position" do

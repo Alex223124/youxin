@@ -62,7 +62,8 @@ class Organization
     if user
       self.add_to_set(:member_ids, user.id)
       user.add_to_set(:organization_ids, self.id)
-      self.user_organization_position_relationships.create(user_id: user.id, position_id: position.try(:id))
+      relation = self.user_organization_position_relationships.where(user_id: user.id).first_or_create
+      relation.update_attributes(position_id: position.id) if position
     end
   end
   def pull_member(user)
