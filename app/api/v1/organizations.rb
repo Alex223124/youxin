@@ -15,7 +15,7 @@ class Organizations < Grape::API
       end
       put do
         authorize! :edit_organization, @organization
-        attrs = attributes_for_keys [:avatar, :header, :name]
+        attrs = attributes_for_keys [:avatar, :bio, :header, :name]
         if @organization.update_attributes attrs
           status(204)
         else

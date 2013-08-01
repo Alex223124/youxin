@@ -67,6 +67,7 @@ class User
   mount_uploader :header, HeaderUploader
 
   attr_accessible :phone, :name, :email, :password, :password_confirmation,
+                  :bio, :gender, :qq, :blog,:uid,
                   :avatar, :avatar_cache, :remove_avatar,
                   :header, :header_cache, :remove_header
 
