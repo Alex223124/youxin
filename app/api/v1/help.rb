@@ -1,4 +1,4 @@
-class Attachments < Grape::API
+class Help < Grape::API
   namespace :help do
     get :avatar_versions do
       Version.avatars
