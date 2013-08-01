@@ -66,6 +66,11 @@ describe Youxin::API, 'organizations' do
         end.to change { @organization.avatar.url }
         response.status.should == 204
       end
+      it "should update bio" do
+        expect do
+          put api("/organizations/#{@organization.id}", @user), { bio: 'new-bio' }
+        end.to change { @organization.bio }
+      end
     end
     it "should return 403" do
       put api("/organizations/#{@organization.id}", @user), { name: 'new-name' }
