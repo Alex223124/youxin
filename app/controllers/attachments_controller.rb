@@ -1,6 +1,7 @@
 class AttachmentsController < ApplicationController
   before_filter :prepare_attachment, only: [:show]
   before_filter :prepare_post, only: [:index]
+  before_filter :authenticated_as_attachmentable, only: [:create]
 
   def index
     render json: @post.attachments, each_serializer: AttachmentSerializer
@@ -8,6 +9,17 @@ class AttachmentsController < ApplicationController
 
   def show
     send_file @path, filename: @file_name, type: @file_type, disposition: 'attachment'
+  end
+
+  def create
+    attachment = current_user.image_attachments.new storage: file
+    attachment = current_user.file_attachments.new storage: file unless attachment.valid?
+
+    if attachment.save
+      render json: attachment, status: :created, location: attachment
+    else
+      render json: attachment.errors, status: :unprocessable_entity
+    end
   end
 
   private

@@ -48,5 +48,62 @@
         "#{_MB}MB"
     else
       "#{_KB}KB"
+)
 
+@app.filter('format_form_json', ->
+  (form_json) ->
+    type_lists =
+      text: 'Field::TextField'
+      textarea: 'Field::TextArea'
+      radio: 'Field::RadioButton'
+      checkbox: 'Field::CheckBox'
+      number: 'Field::NumberField'
+      option: 'Field::Option'
+    form_inputs = []
+    for field in form_json.fieldlist
+      input =
+        _type: type_lists[field._type]
+        label: field.label
+        help_text: field.help_text
+        required: field.required
+
+      switch field._type
+        when 'radio'
+          input.options = []
+          for option in field.options
+            _option = {}
+            if option.value is field.default_value
+              _option.default_selected = true
+            else
+              _option.default_selected = false
+            _option._type = type_lists[option._type]
+            _option.value = option.value
+            input.options.push _option
+
+        when 'checkbox'
+          input.options = []
+          for option in field.options
+            _option = {}
+            _option._type = type_lists[option._type]
+            _option.value = option.value
+            _option.default_selected = option.selected
+            input.options.push _option
+
+        when 'number'
+          input.default_value = parseFloat(field.default_value) || 0
+        else
+          input.default_value = field.default_value        
+      
+      form_inputs.push input
+
+    data = 
+      title: form_json.title
+      inputs: form_inputs
+)
+
+@app.filter('avatar_version', ->
+  (url, version) ->
+    array = url.split('/')
+    array[array.length - 1] = "#{version}_#{array.last()}"
+    array.join('/')
 )

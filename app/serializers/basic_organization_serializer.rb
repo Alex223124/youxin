@@ -4,11 +4,6 @@ class BasicOrganizationSerializer < ActiveModel::Serializer
              :avatar
 
   def avatar
-    hash = {}
-    object.avatar.versions.each do |k, v|
-      hash[k] = v.url
-    end
-    hash[:default] = object.avatar.url
-    hash
+    object.avatar.url
   end
 end

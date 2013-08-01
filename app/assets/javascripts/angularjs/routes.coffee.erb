@@ -1,9 +1,21 @@
 @app.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
 
   $routeProvider
+  .when '/',
+    templateUrl: "<%= asset_path('receipts.html') %>",
+    controller: ReceiptsController
   .when '/receipts',
     templateUrl: "<%= asset_path('receipts.html') %>",
     controller: ReceiptsController
+  .when '/posts/new',
+    templateUrl: "<%= asset_path('new_posts.html') %>",
+    controller: NewPostsController
+  .when '/organizations',
+    templateUrl: "<%= asset_path('organizations.html') %>",
+    controller: OrganizationsController
+  .when '/organizations/:id/members',
+    templateUrl: "<%= asset_path('members.html') %>",
+    controller: MembersController
 
   $locationProvider.html5Mode(true)
 ])

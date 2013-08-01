@@ -2,7 +2,8 @@ class ReceiptSerializer < ActiveModel::Serializer
   attributes :id,
              :read,
              :origin,
-             :favorited
+             :favorited,
+             :created_at
  
   has_one :post, serializer: BasicPostSerializer
   has_one :author, serializer: BasicUserSerializer
@@ -24,7 +25,7 @@ class ReceiptSerializer < ActiveModel::Serializer
   end
   def favorited
     object.user.favorites.where(favoriteable_type: 'Receipt',
-                                 favoriteable_id: object.id).exists? ? true : false
+                                favoriteable_id: object.id).exists? ? true : false
   end
 
 end

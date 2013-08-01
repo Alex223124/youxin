@@ -1,0 +1,231 @@
+<div id="send-msg" ng-controller="NewPostsController" style="display: inline-block;">
+  <div class="write-steps pull-left">
+    <label>
+      <i class="icon icon-write"></i>发优信
+      <span scope="#send-msg" class="close open" data-open="#news-container">
+        <a ng-href="/receipts">×</a>
+      </span>
+    </label>
+    <div class="first-step js-steps" ng-controller="firststepCtrl" ng-mousemove="valid()">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label">标题</label>
+          <div class="controls">
+            <input type="text" class="input-xlarge" ng-model="msgtitle" placeholder='title'>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label"><span class="red">*</span>正文</label>
+          <div class="controls">
+            <div class="hero-unit">
+              <textarea id="wysihtml5-textarea" class="input-xlarge"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <div class="controls">
+            <i class="icon icon-table" style="cursor: pointer;" ng-click="toggleTableEdit()"></i>
+            <div class="form" ng-hide="formData.id.length == 0">
+              <span>{{formData.name}}</span>
+              <i class="icon-remove" ng-click="remove_form()"></i>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="control">
+        <div class="nextStep btn btn-small pull-right" ng-disabled="form_valid" ng-click="collectData()">下一步</div>
+      </div>
+    </div>
+
+
+
+    
+    <div class="second-step js-steps" ng-controller="secondstepCtrl">
+      <div class="content">
+        <label>选择发送到的组织:</label>
+        <div id="select-org-container">
+          <div class="selected-org" ng-click="toggleOrgList($event)">
+            <div ng-repeat="organization in present_organizations" class="selected-org-item">
+              <span>{{organization.name}}</span>
+              (<span>{{organization.members_count}}</span>)
+              <i class="icon-remove" ng-click="authorized_organizations.changeSelectFlag(organization,$event)"></i>
+            </div>
+          </div>
+          <div class="pr">
+            <div class="tree-container">
+              <angulartree data-datas="authorized_organizations" data-options="options" data-selectresult="selectresult" data-activeele="activeele"></angulartree>
+            </div>
+          </div>
+        </div>
+        <label>最近联系组织</label>
+        <ul class="js-useful">
+          <li ng-repeat="organization in present_commonly_used_organizations track by $index" ng-click="authorized_organizations.changeSelectFlag(organization,$event)">
+            <span>
+              <span class="name">{{organization.name}}</span>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <div class="control">
+        <div class="prevStep btn btn-small pull-left" ng-click="goto('prev','.second-step','.first-step')">上一步</div>
+        <div class="nextStep btn btn-small pull-right" ng-disabled="selectresult.length == 0" ng-click="collectData()">下一步</div>
+      </div>
+    </div>
+    <div class="third-step js-steps" ng-controller="thirdstepCtrl">
+      <div id="push-methods">
+        <label>选择推送方式:</label>
+        <div>
+          <span class="push-method">
+            <input type="checkbox" ng-model="msg_push.active"><i class="icon-envelope{{icon_map1[msg_push.active]}}" ng-click="msg_push.active=!msg_push.active"></i>
+          </span>
+          <div class="inline-block pull-right msg-push active-{{msg_push.active}}">
+            <span>
+              优信将在消息发出
+              <span class="timeSet" ng-model="msg_push.date" contenteditable="true">
+                2
+              </span>小时后向仍未确认已阅的用户发送短信提醒
+            </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+      </div>
+      <div class="control">
+        <div class="prevStep btn btn-small pull-left" ng-click="goto('prev','.third-step','.second-step')">上一步</div>
+        <div class="btn btn-small pull-right" ng-click="collectData()">发&nbsp;&nbsp;布</div>
+      </div>
+    </div>
+  </div>
+  <div id="table-edit" class="table-edit pull-left" ng-controller="formcreateCtrl">
+    <label>
+      <i class="icon icon-write"></i>编辑表格
+      <span scope="#table-edit" class="close">×</span>
+    </label>
+    <ul class="table-edit-scope" scroll-with-scroll-bar>
+      <li ng-repeat="field in form_json.fieldlist" ng-click="setEditField(field)">
+        <label>
+          {{field.label}}
+          <span ng-show="field.help_text != ''">(<span>{{field.help_text}}</span>)</span>
+          <span class="red" ng-show="field.required">*</span>
+        </label>
+        <div class="{{field._type}}" ng-click="setPosition(field.index)">
+          <div ng-hide="hasOptions(field)">{{field.default_value}}</div>
+          <div ng-show="hasOptions(field)">
+            <ul ng-show="isRadio(field)">
+              <label class="radio" ng-repeat="option in field.options">
+                <input type="radio" name="radio_{{field.index}}" ng-model="field.default_value" value="{{option.value}}" disabled>{{option.value}}
+              </label>
+            </ul>
+            <ul ng-show="isCheckbox(field)">
+              <label class="checkbox" ng-repeat="option in field.options">
+                <input type="checkbox" ng-checked="option.selected" disabled>
+                {{option.value}}
+              </label>
+            </ul>
+          </div>
+        </div>
+      </li>
+      <form id="form-edit" ng-hide="isnull()">
+        <label>
+          字段设置
+          <span ng-click="setEditField()" class="close">×</span></label>
+          <ul>
+            <li>
+              <label data-title>标题</label>
+              <input type="text" ng-model="editfield.label" class="input-medium" required ng-keyup="check_title()">
+            </li>
+            <li ng-hide="hasOptions(editfield)">
+              <label data-default>默认值</label>
+              <input ng-hide="isTextarea(editfield)" type="text" ng-model="editfield.default_value" class="input-medium">
+              <textarea ng-show="isTextarea(editfield)" ng-model="editfield.default_value" class="input-medium"></textarea>
+            </li>
+            <li ng-show="hasOptions(editfield)">
+              <label>
+                选项
+                <i class="icon icon-plus" title="添加选项" ng-click="addNewOption(editfield)"></i>
+              </label>
+              <div ng-show="isCheckbox(editfield)">
+                <div class="options" ng-repeat="option in editfield.options">
+                  <input type="checkbox" ng-model="option.selected">
+                  <input class="input-small" type="text" ng-model="option.value" ng-keyup="check_uniq(option.value);">
+                  <i class="icon icon-remove" ng-click="removeOption(option)"></i>
+                </div>
+              </div>
+              <div ng-show="isRadio(editfield)">
+                <div class="options" ng-repeat="option in editfield.options">
+                  <input type="radio" name="editRadio_{{editfield.index}}" ng-model="editfield.default_value" value="{{option.value}}">
+                  <input class="input-small" type="text" ng-model="option.value" ng-keyup="check_uniq(option.value);">
+                  <i class="icon icon-remove" ng-click="removeOption(option)"></i>
+                </div>
+              </div>
+            </li>
+            <li>
+              <label data-warning>提示</label>
+              <input ng-model="editfield.help_text" class="input-medium" type='text'>
+              <div ng-show="error_flag">{{error_type}}</div>
+            </li>
+            <li>
+              <label data-isMust class="checkbox">
+                <input type="checkbox" ng-model="editfield.required">必填
+              </label>
+            </li>
+
+            <li class="tar">
+              <button ng-click="setEditField()" class="btn btn-mini btn-primary">保存</button>
+              <button class="btn btn-mini btn-danger" ng-click="removeField()">删除字段</button>
+            </li>
+          </ul>
+        </form>
+      </ul>
+      <div class="form-ini">
+        <div class="pr">
+          <label>表单标题</label>
+          <ul>
+            <input type="text" class="input-medium" ng-model="form_json.title">
+          </ul>
+          <label>字段类型</label>
+          <ul>
+            <li ng-click="addNewFiled('text')">
+              <a href="#">
+                <i class="icon icon-email"></i>
+                单行文本
+              </a>
+            </li>
+            <li ng-click="addNewFiled('textarea')">
+              <a href="#">
+                <i class="icon icon-email"></i>
+                多行文本
+              </a>
+            </li>
+            <li ng-click="addNewFiled('radio')">
+              <a href="#">
+                <i class="icon icon-email"></i>
+                单项选择
+              </a>
+            </li>
+            <li ng-click="addNewFiled('checkbox')">
+              <a href="#">
+                <i class="icon icon-email"></i>
+                多项选择
+              </a>
+            </li>
+            <li ng-click="addNewFiled('number')">
+              <a href="#">
+                <i class="icon icon-email"></i>
+                数字
+              </a>
+            </li>
+          </ul>
+
+          <div class="save-module">
+            <a href="#" ng-click="saveForm()" class="btn btn-small">确定</a>
+            <a href="#" class="btn btn-small">确定并保存模板</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+<script type="text/javascript">
+  App.richText();
+</script>

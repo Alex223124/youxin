@@ -1,0 +1,449 @@
+/*组织信息展示*/
+#orgInfoManager{
+  height: 100%;
+  #create-org{
+    height: 100%;
+    #org_list{
+      ul{
+        padding: 10px;
+      }
+      border-right: 1px solid #e5e5e5;
+      background-color: #f5f5f5;
+      height: 100%;
+      li{
+        display: inline-block;
+        margin: 10px 5px; 
+        text-shadow: none;
+        a{
+          @include border-radius(4px);
+          text-decoration: none;
+          padding: 5px 8px;
+        }
+        &.active a{
+          background-color: #3E5771;
+          text-shadow: none;
+          color: white;
+          &:hover{
+            text-shadow: none;
+          }
+        }
+      }
+      .insert,.remove{
+        float: right;
+        display: none;
+      }
+      angulartree{
+        .active{
+          background-color: #e0e0e0;
+          cursor: default;
+        }
+        &>div{
+          padding-left: 15px;
+          &:hover{
+            background-color: #e6e6e6;
+            .insert,.remove{
+              display: inline-block;
+            }
+          }
+        }
+      }
+      #organizations-self-in{
+        div{
+          padding: 5px 10px;
+          padding-left: 20px;
+          cursor: pointer;
+          &:hover{
+            background-color: #e6e6e6;
+          }
+        }
+        .active{
+          background-color: #e0e0e0;
+        }
+      }
+    }
+    .org-info-show{
+      .base-info{ 
+        margin: 20px 0 20px 0; 
+        img{
+          margin-right: 10px;
+          width: 150px;
+          height: 150px;
+        }
+        li{
+          display: inline;
+        }
+        label{
+          cursor: default;
+        }
+        .manager{
+          margin: auto 5px;
+        }
+        .name{
+          font-weight: 600;
+          margin: 15px 0 15px 160px;
+          line-height: 24px;
+        }
+        .parentorg{
+          min-height: 20px;
+        }
+      }
+      textarea{
+        width: 98%;
+        min-height: 160px;
+        resize: none;
+      }
+    }
+  }
+}
+
+
+
+/*组织信息管理*/
+.orglist{
+  height: 100%;
+  background-color: #f5f5f5;
+  &>li{
+    position: relative;
+    &:first-child{
+      border-top: none;
+    }
+    padding: 10px;
+    border-top: 1px solid #f9f9f9;
+    border-bottom: 1px solid #efefef;
+    *{
+      vertical-align: middle;
+      margin-left: 3px;
+    }
+    span{
+      margin-left: 3%;
+    }
+    &:last-child{
+      border-bottom: none;
+      text-align: right;
+    }
+    .position{
+      display: inline-block;
+      width: 100px;
+      cursor: pointer;
+      background-color: #1abc9c;
+      @include border-radius(4px);
+    }
+    .user-name{
+      display: inline-block;
+      width: 80px;
+      overflow-x: hidden;
+      -ms-text-overflow: ellipsis;
+      text-overflow: ellipsis;;
+    }
+    .remove{
+      cursor: pointer;
+      display: none;
+      position: absolute;
+      z-index: 10;
+      top: 19px;
+      right: 10px;
+    }
+    &.remove-all{
+      display: none;
+      span{
+        cursor: pointer;
+      }
+      .remove{
+        margin-top: 2px;
+        position: relative;
+        top: 0;
+        right: 0;
+        display: inline-block;
+      }
+    }
+    .user-tel{
+      width: 90px;
+      cursor: pointer;
+    }
+    &:hover .remove{
+      display: inline-block;
+    }
+  }
+  &:hover{
+    li.remove-all{
+      display: block;
+    }
+  }
+}
+.add-org-user{
+  .nav.nav-tab{
+    li{
+      display: inline-block;
+      a{
+        padding: 3px 6px;
+        @include border-radius(4px);
+      }
+      &.active a{
+        background-color: #3E5771;
+        text-shadow: none;
+        color: white;
+        &:hover{
+          text-shadow: none;
+        }
+      }
+    }
+  }
+  #create_org_user{
+    p{
+      padding-left: 20px;
+    }
+    li{
+      margin: 15px 0;
+      color: #1abc9c;
+      *{
+        color: #333333;
+      }
+      span{
+        padding: 5px;
+        cursor: pointer;
+      }
+      input{
+        margin-bottom: 0;
+      }
+    }      
+  }
+  #import_org_user{
+    .org-list{
+      .active{
+        color: darken(#333333,10%);
+        font-weight: bold;
+        background-color: #dadada;
+      }
+      angulartree div:hover{
+        background-color: #e6e6e6;
+      }
+    }
+    .member-list{
+      height: 100%;
+      margin-left: 0;
+      border-left: 1px solid #e5e5e5;
+      input{
+        margin-bottom: 0;
+      }
+      .add{
+        margin-top: 7px;
+      }
+      ul{
+        padding: 10px;
+        padding-top: 0;
+        li{
+          padding: 5px;
+          margin: 5px 10px;
+          cursor: pointer;
+          .name{
+            width: 70px;
+            display: inline-block;
+            overflow-x: hidden;
+            -ms-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+}
+
+#addOrgMember{
+  height: 100%;
+  min-width: 980px;
+  .row-fluid{
+    height: 100%;
+  }
+}
+
+
+/*组织管理*/
+#org-manager{
+  height: 100%;
+  ul{
+    background-color: #f5f5f5;
+    border-right: 1px solid #e5e5e5;
+    height: 100%;  
+    a{
+      text-align: right;
+      display: block;
+      span{
+        margin: 2px 20px;
+      }
+    }
+    li{
+      margin: 5px 0;
+      padding: 5px 20px;
+      cursor: pointer;
+      &.active{
+        background-color: #e5e5e5;
+        cursor: default;
+      }
+    }
+  }
+  .base-info{ 
+    margin: 20px 0 20px 0; 
+    img{
+      margin-right: 10px;
+      width: 150px;
+      height: 150px;
+    }
+    li{
+      display: inline;
+    }
+    .name{
+      font-weight: 600;
+      margin: 15px 0;
+    }
+    label{
+      a.pull-right{
+        margin-right: 20px;
+      }
+    }
+  }
+  .other-info{
+    .member-list{
+      li{
+        img{
+          padding: 5px 10px 5px 0; 
+        }
+        height: 90px;
+        p{
+          border-top: 1px solid #e5e5e5;
+        }
+      }
+    }
+    .suborg-list{
+      .base-info{
+        padding-top: 10px;
+        border-top: 1px solid #e5e5e5;
+      }
+    }
+  }
+}
+
+angulartree{
+  &>div{  
+    height: 20px;
+    padding: 5px;
+    cursor: pointer;
+  }
+  *{
+    line-height: 20px;
+  }
+  .visible-false{
+    visibility: hidden;
+  }
+  .visible-true{
+    visibility: visible; 
+  }
+  i{
+    cursor: pointer;
+  }
+  .expand-true{
+    width: 0;
+    height: 0;
+    border-top: 8px solid #b2b2b2;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: none;
+    padding: 0;
+    margin: 6px 4px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .expand-false{
+    width: 0;
+    height: 0;
+    border-left: 8px solid #b2b2b2;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: none;
+    padding: 0;
+    margin: 4px 6px;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .insert{
+    width: 14px;
+    height: 14px;
+    padding: 3px;
+    display: inline-block;
+    vertical-align: top;
+    background-image: url(../image/icon.png);
+    background-repeat: no-repeat;
+    background-position: -527px -104px;
+  }
+  .remove{
+    width: 14px;
+    height: 14px;
+    padding: 3px;
+    display: inline-block;
+    vertical-align: top;
+    background-image: url(../image/icon.png);
+    background-repeat: no-repeat;
+    background-position: -435px -105px;    
+  }
+  input{
+    padding: 1px 2px;
+    height: 16px;
+    line-height: 14px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    &:focus{
+      outline: none;
+    }
+  }
+}
+
+
+
+[idcard]{
+  position: relative;
+  padding: 4px 2px 0 0;
+  &:hover{
+    .id-card{
+      display: block;
+    }
+  }
+  .id-card{
+    position: absolute;
+    background-color: #ffffff;
+    width: 240px;
+    display: none;
+    box-shadow: 0 0 5px #e0e0e0;
+    &:hover{
+      display: block;
+    }
+    &>div{
+      padding: 5px;
+    }
+    padding: 10px 15px;
+    bottom: 100%;
+    left: -110px;
+    z-index: 30;
+    color: #808080;
+    border: 1px solid #e5e5e5;
+    @include border-radius(4px);
+    li{
+      list-style-type: none;
+    }
+    .card-down{
+      position: relative;
+    }
+    i.border{
+      border-top: 10px solid #e5e5e5;
+      border-left-width: 7px;
+      border-right-width: 7px;
+      position: absolute;
+      bottom: -26px;
+      left: 113px;
+    }
+    i.background{
+      border-top-color: #ffffff;
+      position: absolute;
+      bottom: -24px;
+      left: 114px;
+    }
+  }
+}

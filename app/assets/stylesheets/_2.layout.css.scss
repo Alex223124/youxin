@@ -14,6 +14,12 @@
   height: 100%;
   position: relative;
   .main-content {
+    background-color: #f3f3f3;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    top: 40px;
     .sub-nav {
       margin: 0;
       padding: 0 10px;
@@ -22,9 +28,12 @@
     }
     .posts {
       position: absolute;
-      top: 80px;
+      top: 34px;
       right: 0;
       bottom: 0;
+      &>div{
+        height: 100%;
+      }
       background: #f3f3f3;
       .unread-posts, .read-posts {
         width: 50%;

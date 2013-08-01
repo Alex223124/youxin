@@ -9,6 +9,7 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require bootstrap-wysihtml5
  */
 @import '0.variables';
 @import 'bootstrap';
@@ -17,3 +18,5 @@
 @import '2.layout';
 @import 'receipts';
 @import 'animate';
+@import 'new_post';
+@import 'organizations';

@@ -1,15 +1,26 @@
 class ReceiptsController < ApplicationController
   before_filter :ensure_receipt, only: [:favorite, :unfavorite]
-  # GET /receipts
-  # GET /receipts.json
   def index
-    @unread_receipts = current_user.receipts
-    @read_receipts = current_user.receipts
+    @receipts = current_user.receipts
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @unread_receipts }
+      format.json { render json: @receipts }
     end
+  end
+  def read
+    @receipts = current_user.receipts.read
+    render json: @receipts
+  end
+  def unread
+    @receipts = current_user.receipts.unread
+    render json: @receipts
+  end
+
+  def mark_as_read
+    @receipt = current_user.receipts.where(id: params[:id]).first
+    @receipt.read!
+    render json: @receipt
   end
 
   def favorite
@@ -21,8 +32,6 @@ class ReceiptsController < ApplicationController
     render nothing: true
   end
 
-  # GET /receipts/1
-  # GET /receipts/1.json
   def show
     @receipt = Receipt.find(params[:id])
 
@@ -32,8 +41,6 @@ class ReceiptsController < ApplicationController
     end
   end
 
-  # GET /receipts/new
-  # GET /receipts/new.json
   def new
     @receipt = Receipt.new
 
@@ -43,13 +50,10 @@ class ReceiptsController < ApplicationController
     end
   end
 
-  # GET /receipts/1/edit
   def edit
     @receipt = Receipt.find(params[:id])
   end
 
-  # POST /receipts
-  # POST /receipts.json
   def create
     @receipt = Receipt.new(params[:receipt])
 
@@ -64,8 +68,6 @@ class ReceiptsController < ApplicationController
     end
   end
 
-  # PUT /receipts/1
-  # PUT /receipts/1.json
   def update
     @receipt = Receipt.find(params[:id])
 
@@ -80,8 +82,6 @@ class ReceiptsController < ApplicationController
     end
   end
 
-  # DELETE /receipts/1
-  # DELETE /receipts/1.json
   def destroy
     @receipt = Receipt.find(params[:id])
     @receipt.destroy
