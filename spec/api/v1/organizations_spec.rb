@@ -48,6 +48,24 @@ describe Youxin::API, 'organizations' do
           put api("/organizations/#{@organization.id}", @user), { name: 'new-name' }
         end.to change { @organization.name }
       end
+      it "should update header" do
+        header_path = Rails.root.join("spec/factories/images/header/header1.png")
+        header = Rack::Test::UploadedFile.new(header_path, 'image/png')
+        expect do
+          put api("/organizations/#{@organization.id}", @user), { header: header }
+          @organization.reload
+        end.to change { @organization.header.url }
+        response.status.should == 204
+      end
+      it "should update avatar" do
+        avatar_path = Rails.root.join("spec/factories/images/avatar/avatar1.jpg")
+        avatar = Rack::Test::UploadedFile.new(avatar_path, 'image/jpg')
+        expect do
+          put api("/organizations/#{@organization.id}", @user), { avatar: avatar }
+          @organization.reload
+        end.to change { @organization.avatar.url }
+        response.status.should == 204
+      end
     end
     it "should return 403" do
       put api("/organizations/#{@organization.id}", @user), { name: 'new-name' }
