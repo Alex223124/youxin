@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe Youxin::API, 'users' do
@@ -73,21 +75,47 @@ describe Youxin::API, 'users' do
         response.status.should == 204
       end
     end
-    context "name" do
-      it "should update name" do
-        expect do
-          put api('/user', @user), { name: 'new-name' }
-          @user.reload
-        end.to change { @user.name }
-      end
+    it "should update name" do
+      expect do
+        put api('/user', @user), { name: 'new-name' }
+        @user.reload
+      end.to change { @user.name }
     end
-    context "phone" do
-      it "should update phone" do
-        expect do
-          put api('/user', @user), { phone: '18700000000' }
-          @user.reload
-        end.to change { @user.phone }
-      end
+    it "should update phone" do
+      expect do
+        put api('/user', @user), { phone: '18700000000' }
+        @user.reload
+      end.to change { @user.phone }
+    end
+    it "should update bio" do
+      expect do
+        put api('/user', @user), { bio: 'new-bio' }
+        @user.reload
+      end.to change { @user.bio }
+    end
+    it "should update gender" do
+      expect do
+        put api('/user', @user), { gender: '男' }
+        @user.reload
+      end.to change { @user.gender }
+    end
+    it "should update qq" do
+      expect do
+        put api('/user', @user), { qq: '12345' }
+        @user.reload
+      end.to change { @user.qq }
+    end
+    it "should update blog" do
+      expect do
+        put api('/user', @user), { blog: 'new-blog' }
+        @user.reload
+      end.to change { @user.blog }
+    end
+    it "should update uid" do
+      expect do
+        put api('/user', @user), { uid: 'new-uid' }
+        @user.reload
+      end.to change { @user.uid }
     end
   end
 
