@@ -1,0 +1,27 @@
+<!-- uploader.html template -->
+<div class="uploader">
+
+  <!-- the real input[type=file] is hidden -->
+  <input type="file" name="file" style="display:none;"
+     onchange="angular.element(this).scope().sendFile(this);"/>
+
+  <!-- input field, used to open the real input[type=file]  -->
+  <div class="controllers" ng-transclude>
+    
+  </div>
+
+  <!-- progress bar -->
+  <div class="progress" ng-show="progress!=0">
+    <div class="bar" style="width:{{progress}}%;"></div>
+  </div>
+</div>
+<!-- preview -->
+<div class="preview">
+  <div class="preview-item" ng-repeat="attachment in attachments">
+    <img ng-src="{{attachment | attachment_preview | attachment_thumb}}"/>
+    <div class="wrap">
+      <div class="mask"></div>
+      <span ng-click="delete(attachment, $index)">点击删除</span>
+    </div>
+  </div>
+</div>

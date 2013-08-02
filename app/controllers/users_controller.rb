@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :find_user, only: [:update]
   def authorized_organizations
     actions = params[:actions]
     if actions
@@ -22,5 +23,31 @@ class UsersController < ApplicationController
     }
     render json: data
   end
+
+  def update
+    if @user.update_attributes params[:user]
+      head :no_content
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
+  end
+
+  def create
+    attrs = attributes_for_keys [:name, :phone]
+    password = Devise.friendly_token.first(8)
+    email = "#{phone}@combee.com"
+    attrs.merge!({ password: password, password_confirmation: password })
+    user = User.new attrs
+    if user.save
+      render json: user, status: :created
+    else
+      render json: user.errors, status: :unprocessable_entity 
+    end
+  end
   
+  private
+  def find_user
+    @user = User.where(id: params[:id]).first
+    return not_found! unless @user
+  end
 end

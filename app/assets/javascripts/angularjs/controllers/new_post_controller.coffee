@@ -171,6 +171,12 @@
     organization_ids: []
     delayed_sms_at: ''
     form_ids: []
+    attachment_ids: []
+
+  $scope.$on "attachment_change", (event)->
+    $scope.youxindata.attachment_ids = []
+    for _i in event.targetScope.attachments
+      $scope.youxindata.attachment_ids.push _i.id 
 
   $scope.formData =
     name: ""
@@ -185,7 +191,6 @@
       targetele = self.closest(".write-steps").find(str2)
       self.closest(".js-steps").hide()
       targetele.fadeIn(200)
-  
   
   #$scope.$on "formReady",()->
   $scope.submit = ()->
@@ -213,6 +218,7 @@
     $scope.youxindata.title = this.msgtitle
     $scope.youxindata.body_html = $("#wysihtml5-textarea").val()
     self = $("#send-msg").find(".first-step")
+    console.log $scope.youxindata 
     window.setTimeout(()->
       if (self.find(".nextStep").attr("disabled") is undefined)
         targetele = self.closest(".write-steps").find(".second-step")

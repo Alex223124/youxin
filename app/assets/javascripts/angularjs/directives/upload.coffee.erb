@@ -1,0 +1,48 @@
+@app.directive "uploader", [->
+  restrict: "E"
+  transclude: true
+  scope:
+    action: "@"
+
+  controller: ["$scope", ($scope) ->
+    $scope.progress = 0
+    $scope.attachments = []
+    $scope.delete = (attachment, $index)->
+      $scope.attachments.splice($index,1)
+      $scope.$emit "attachment_change",{
+        attachments: $scope.attachments
+      }
+    $scope.sendFile = (el) ->
+      $form = $(el).parents("form")
+      return false  if $(el).val() is ""
+      $form.attr "action", $scope.action
+      $scope.$apply ->
+        $scope.progress = 0
+
+      $form.ajaxSubmit
+        type: "POST"
+        uploadProgress: (event, position, total, percentComplete) ->
+          $scope.$apply ->
+            $scope.progress = percentComplete
+
+        error: (event, statusText, responseText, form) ->
+          $form.removeAttr "action"
+          $scope.progress = 0
+
+        success: (responseText, statusText, xhr, form) ->
+          attachment = responseText.attachment
+          $form.removeAttr "action"
+          $scope.$apply ->
+            $scope.attachments.push attachment
+            $scope.progress = 0
+            $scope.$emit "attachment_change",{
+              attachments: $scope.attachments
+            }    
+  ]
+  link: (scope, elem, attrs, ctrl) ->
+    elem.find(".controllers label").click ->
+      elem.find("input[type=\"file\"]").click()
+
+  replace: false
+  templateUrl: "<%= asset_path('uploader.html') %>"
+]

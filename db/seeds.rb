@@ -8,28 +8,50 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-orgnization1 = Organization.create name: 'uestc'
+orgnization1 = Organization.create name: 'uestc', bio: 'bio-usetc'
 
-orgnization2 = Organization.create name: 'scie', parent: orgnization1
-orgnization3 = Organization.create name: 'networking', parent: orgnization2
-orgnization4 = Organization.create name: 'information', parent: orgnization2
-orgnization5 = Organization.create name: 'communication', parent: orgnization2
+orgnization2 = Organization.create name: 'scie', parent_id: orgnization1.id, bio: 'bio-scie'
+orgnization3 = Organization.create name: 'networking', parent_id: orgnization2.id, bio: 'bio-networking'
+orgnization4 = Organization.create name: 'information', parent_id: orgnization2.id, bio: 'bio-information'
+orgnization5 = Organization.create name: 'communication', parent_id: orgnization2.id, bio: 'bio-communication'
 
-orgnization6 = Organization.create name: 'see', parent: orgnization1
-orgnization7 = Organization.create name: 'eie', parent: orgnization6
-orgnization8 = Organization.create name: 'efrt', parent: orgnization6
-orgnization9 = Organization.create name: 'ewta', parent: orgnization6
-orgnization10 = Organization.create name: 'ict', parent: orgnization6
+orgnization6 = Organization.create name: 'see', parent_id: orgnization1.id, bio: 'bio-see'
+orgnization7 = Organization.create name: 'eie', parent_id: orgnization6.id, bio: 'bio-eie'
+orgnization8 = Organization.create name: 'efrt', parent_id: orgnization6.id, bio: 'bio-efrt'
+orgnization9 = Organization.create name: 'ewta', parent_id: orgnization6.id, bio: 'bio-ewta'
+orgnization10 = Organization.create name: 'ict', parent_id: orgnization6.id, bio: 'bio-ict'
 
 password = '12345678'
+
 10.times do |n|
   name = "#{n}"
-  User.create name: name, email: "#{name}@a.a", password: password, password_confirmation: password
+  phone = 18600000000 + n
+  bio = "bio-#{n}"
+  gender = %w(男 女).sample
+  qq = 10000 + n
+  blog = "blog-#{n}"
+  uid = 123456 + n
+  User.create name: name,
+              email: "#{name}@a.a",
+              password: password,
+              password_confirmation: password,
+              phone: phone,
+              bio: bio,
+              gender: gender,
+              qq: qq,
+              blog: blog,
+              uid: uid
 end
+Position.create name: "学生"
+Position.create name: "老师"
+Position.create name: "教授"
+Position.create name: "院长"
+Position.create name: "辅导员"
+
 Organization.all.each do |orgnization|
   times = rand(10)
   times.times do
-    orgnization.add_member(User.all[rand(10)])
+    orgnization.add_member(User.all[rand(10)], Position.all[rand(5)])
   end
 end
 

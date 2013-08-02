@@ -12,7 +12,7 @@ class Organization
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
 
-  attr_accessible :name, :bio,
+  attr_accessible :name, :bio, :parent_id,
                   :avatar, :header
 
   belongs_to :parent, class_name: 'Organization'

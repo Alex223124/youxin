@@ -3,7 +3,8 @@
     self = $(this)
     self.parent()
     self.parent().addClass("active").siblings().removeClass()
-    $(self.attr("data-target")).addClass("active").siblings().removeClass("active")    
+    $(self.attr("data-target")).addClass("active").siblings().removeClass("active")
+   
   Organization.all = []
   $http.get('/organizations.json').success (data) ->
     for organization in data.organizations

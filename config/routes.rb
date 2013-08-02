@@ -13,15 +13,15 @@ Youxin::Application.routes.draw do
   end
   root to: 'receipts#index'
   devise_for :users
-  namespace :users do
-    get 'authorized_organizations' => 'users#authorized_organizations'
-    get 'recent_authorized_organizations' => 'users#recent_authorized_organizations'
+  resources :users, only: [:update] do
+    get 'authorized_organizations' => 'users#authorized_organizations', on: :collection
+    get 'recent_authorized_organizations' => 'users#recent_authorized_organizations', on: :collection
   end
 
   resources :organizations, only: [:destroy, :index, :update] do
     get 'members' => 'members#index', on: :member
+    post 'members' => 'members#create', on: :member
     put 'members' => 'members#update', on: :member
-    delete 'members' => 'members#destroy', on: :member
     get 'authorized_users' => 'organizations#authorized_users', on: :member
     post 'children' => 'organizations#create', on: :member
   end
@@ -40,7 +40,10 @@ Youxin::Application.routes.draw do
     end
   end
 
-  resources :attachments, only: [:show]
+  # help
+  get 'help/positions' => 'help#positions'
+
+  resources :attachments, only: [:show, :create]
   resources :posts, only: [:create] do
     member do
       get 'unread_receipts' => 'posts#unread_receipts'

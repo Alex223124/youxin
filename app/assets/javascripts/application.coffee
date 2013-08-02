@@ -21,6 +21,7 @@
 #= require tool
 #= require bootstrap-wysihtml5
 #= require bootstrap-wysihtml5/locales/zh-CN
+#= require jquery.form
 #= require_self
 
 window.App =

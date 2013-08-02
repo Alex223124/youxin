@@ -26,10 +26,11 @@
       options: "=options"
       callback: "&"
       model: "=ngModel"
+      member: "=member"
     template: """
       <div ng-transclude></div>
       <div class="options-container">
-        <div ng-repeat="option in options" ng-click="setValue(option,$index)"><a href="javascript: void();">{{option}}</a></div>
+        <div ng-repeat="option in options" ng-click="setValue(option,$index)"><a href="javascript: void();">{{option.name}}</a></div>
         <span class="caret-up"></span>
       </div>
     """
@@ -69,17 +70,23 @@
         $document.unbind "click", hideContainer
       initialize = ()->
         value = scope.model
-        index = 0
-        for _option,_i in scope.options
-          if _option is value
-            index = _i
-            break
-        scope.setValue(value,index)
-        element.unbind "click",initialize
-      scope.setValue = (option,index)->
-        scope.model = option
+        if value is undefined or value is null
+          index = 0
+        else
+          index = scope.options.indexOfProperty("id",value.id)
+        scope.model = value
         optionsContainer.children(".active").removeClass("active")
-        optionsContainer.children("div").eq(index).addClass("active") 
+        optionsContainer.children("div").eq(index).addClass("active")
+        element.unbind "click",initialize
+
+      scope.setValue = (option,index)->
+        success = true
+        if scope.callback isnt undefined
+          success = scope.callback({newOption: option, member: scope.member,oldOption: scope.model})
+        if success
+          scope.model = option
+          optionsContainer.children(".active").removeClass("active")
+          optionsContainer.children("div").eq(index).addClass("active")
       element.bind "click", ($event)->
         $event.stopPropagation()
         if optionsContainer.css("z-index") is "-1"

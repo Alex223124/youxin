@@ -13,7 +13,7 @@ Array.prototype.objOfProperty = (_property,_value,_hasChildren)->
   _result
 
 Array.prototype.indexOfProperty = (_property,_value)->
-  _result = undefined
+  _result = -1
   for _item,_i in this
     if _item[_property] is _value
       _result = _i

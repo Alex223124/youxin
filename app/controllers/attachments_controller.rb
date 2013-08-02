@@ -2,6 +2,7 @@ class AttachmentsController < ApplicationController
   before_filter :prepare_attachment, only: [:show]
   before_filter :prepare_post, only: [:index]
   before_filter :authenticated_as_attachmentable, only: [:create]
+  before_filter :require_attributes, only: [:create]
 
   def index
     render json: @post.attachments, each_serializer: AttachmentSerializer
@@ -12,17 +13,21 @@ class AttachmentsController < ApplicationController
   end
 
   def create
-    attachment = current_user.image_attachments.new storage: file
-    attachment = current_user.file_attachments.new storage: file unless attachment.valid?
+    attachment = current_user.image_attachments.new storage: @file
+    attachment = current_user.file_attachments.new storage: @file unless attachment.valid?
 
     if attachment.save
-      render json: attachment, status: :created, location: attachment
+      render json: attachment, status: :created, serializer: AttachmentSerializer
     else
       render json: attachment.errors, status: :unprocessable_entity
     end
   end
 
   private
+  def require_attributes
+    @file = params[:file]
+    return not_found! unless @file
+  end
   def prepare_attachment
     @attachment = Attachment::Base.find(params[:id])
     unless @attachment && can?(current_user, :download, @attachment)

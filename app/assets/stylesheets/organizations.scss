@@ -114,6 +114,10 @@
       vertical-align: middle;
       margin-left: 3px;
     }
+    img{
+      max-width: 40px;
+      max-height: 40px;
+    }
     span{
       margin-left: 3%;
     }
@@ -124,6 +128,7 @@
     .position{
       display: inline-block;
       width: 100px;
+      height: 20px;
       cursor: pointer;
       background-color: #1abc9c;
       @include border-radius(4px);
@@ -232,6 +237,10 @@
         padding: 10px;
         padding-top: 0;
         li{
+          img{
+            max-width: 40px;
+            max-height: 40px;
+          }
           padding: 5px;
           margin: 5px 10px;
           cursor: pointer;

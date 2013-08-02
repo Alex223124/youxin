@@ -6,29 +6,6 @@
     $scope.members = data.members
   .error (data) ->
     fixed_alert("数据加载失败")
-    # $scope.members = [
-    #   {
-    #     id: "78756"
-    #     name: "laoguanjie"
-    #     phone: "13673416911"
-    #     position: "student"
-    #     userPic: "image/user-pic.png"
-    #   }
-    #   {
-    #     id: "78734"
-    #     name: "zhulin"
-    #     phone: "13673416911"
-    #     position: "student"
-    #     userPic: "image/user-pic.png"
-    #   }
-    #   {
-    #     id: "7876"
-    #     name: "haolo"
-    #     phone: "13673416911"
-    #     position: "student"
-    #     userPic: "image/user-pic.png"
-    #   }
-    # ]
 
   $http.get('/organizations.json').success (data)->
     for organization in data.organizations
@@ -38,6 +15,7 @@
     for _i in $scope.organizations
       _i.expandFlag = true
     $scope.activeElement = $scope.organizations.first()
+    $scope.current_organization = $scope.organizations.objOfProperty("id", organization_id)
     $http.get("/organizations/#{$scope.activeElement.id}/members.json").success (data)->
       $scope.activeElementMembers = data.members
     .error (_data, _status)->
@@ -53,16 +31,23 @@
       else
         fixed_alert("获取组织失败,请重新操作！")   
 
-  $scope.position_options = [
-    "学生"
-    "老师"
-    "教授"
-    "院长"
-    "辅导员"
-  ]
-  
+  $http.get("/help/positions").success (data)->
+    $scope.position_options = data.positions
+  .error (_data,_status)->
+    $scope.position_options = []
 
-  $scope.options = 
+  $scope.callback = (newOption, member, oldOption)->
+    if oldOption is null or (newOption.id isnt oldOption.id)
+      data = getData(member.id, newOption.id)
+      $http.put("/organizations/#{organization_id}/members", data).success ()->
+        return true
+      .error ()->
+        fixed_alert("由于网络原因，您需要重新操作！")
+        return false
+    else
+      return true
+
+  $scope.org_tree_options = 
     expand: true
     insert: false
     remove: false
@@ -71,61 +56,54 @@
   $scope.activeFn = (org)->
     $("#org-tree-container").children(".active").removeClass("active")
     $("#org-tree-container").children().eq(org.index).addClass("active")
-    $http.get("/organizations/#{org.id}/authorized_users").success (data) ->
+    $http.get("/organizations/#{org.id}/members.json").success (data) ->
       $scope.activeElementMembers = data.members
     .error (data)->
       fixed_alert("获取组织成员失败,请重新操作！")
 
-
-
-  ###$scope.importOrgList = [
-    {
-      id: 4657
-      name: "liuxinntasuha"
-      phone: 13946575645
-      position: "student"
-      userPic: "image/user-pic.png"
-    }
-    {
-      id: 4563
-      name: "liuxin"
-      phone: 13965575745
-      position: "student"
-      userPic: "image/user-pic.png"
-    }
-    {
-      id: 676546
-      name: "liuxin"
-      phone: 13946575984
-      position: "student"
-      userPic: "image/user-pic.png"
-    }
-  ]###
+  getData = (_id1,_id2)->
+    _result = {}
+    _result.member_ids = []
+    _result.member_ids.push(_id1)
+    if _id2 isnt undefined
+      _result.position_id = _id2
+    _result
 
   $scope.removeMember = (_id)->
-    thisIndex = $scope.members.indexOfProperty("id",parseInt(_id))
-    $scope.members.splice(thisIndex,1)
-    if $scope.members.length is 0
-      $scope.hasOrgMember = false
+    data = getData(_id)
+    data.method = 'delete'
+    $http.put("/organizations/#{organization_id}/members", data).success ()->
+      thisIndex = $scope.members.indexOfProperty("id",_id)
+      $scope.members.splice(thisIndex,1)
+      if $scope.members.length is 0
+        $scope.hasOrgMember = false
+    .error ()->
+      fixed_alert("删除失败!")  
 
   $scope.hasOrgMember = true
+
+  $scope.updatePhone = (member)->
+    data = {}
+    data.user = 
+      phone: member.phone
+    $http.put("/users/#{member.id}", data).success ()->
+      fixed_alert("修改成功!")
+    .error (_data)->
+      fixed_alert("修改失败!")
 
   $scope.removeAll = ()->
     $scope.members = []
     $scope.hasOrgMember = false
 
-  $scope.addNewOrgMember = ($http)->
-    objCache = 
-      name: $scope.user_name
-      phone: $scope.user_tel
-      position: "student"
-      userPic: "image/user-pic.png"
-      studentNumber: $scope.user_studentNumber
-    $http.post("url",objCache).success (data)->
-      $scope.members.push(data)
+  $scope.addNewOrgMember = ()->
+    objCache =
+      user:
+        name: $scope.user_name
+        phone: $scope.user_tel
+    $http.post("/organizations/#{organization_id}/members", objCache).success (data)->
+      $scope.members.push(data.member)
     $scope.user_name = ""
     $scope.user_tel = ""
-    $scope.user_studentNumber = ""
     $scope.hasOrgMember = true
 
   $scope.addToCurrentOrg = (_id)->
@@ -133,7 +111,17 @@
       _obj = $scope.activeElementMembers.objOfProperty("id",_id)
       fixed_alert("#{_obj.name} 已经在组织中了！")
     else
-      $scope.members.push($scope.activeElementMembers.objOfProperty("id",_id))
-      $scope.hasOrgMember = true
-
+      data = getData(_id)
+      data.method = "put"
+      $http.put("/organizations/#{organization_id}/members", data).success ()->
+        $scope.members.push($scope.activeElementMembers.objOfProperty("id",_id))
+        $scope.hasOrgMember = true
+      .error ()->
+        fixed_alert("#{$scope.members.last().name} 添加失败!")
 ]
+
+
+###data =
+  user:
+    phone: 'phone'
+"/users/#{id}", data###

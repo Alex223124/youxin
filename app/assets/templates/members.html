@@ -2,14 +2,16 @@
   <div class="row-fluid">
     <ul class="span5 orglist">
       <li class="org-name">
-        互动体验中心
+        {{current_organization.name}}
       </li>
       <li ng-repeat="member in members" member-id="{{member.id}}">
-        <img ng-src="{{member.userPic}}" alt="pic">
+        <img ng-src="{{member.avatar}}" alt="pic">
         <span class="user-name">{{member.name}}</span>
-        <span contenteditable="true" ng-model="member.phone" class="user-tel">{{member.phone}}</span>
+        <span contenteditable="true" ng-model="member.phone" ng-blur="updatePhone(member)" class="user-tel">{{member.phone}}</span>
 
-        <span radioselect="true" class="position" ng-model="member.position" options="position_options"></span>
+        <span radioselect="true" class="position" ng-model="member.position" member="member" callback="callback(newOption, member, oldOption)" options="position_options">
+          {{member.position.name == null ? "暂无身份" : member.position.name}}
+        </span>
         <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
         <li class="remove-all" ng-show="hasOrgMember">
           <span ng-click="removeAll()">删除全部</span>
@@ -18,9 +20,9 @@
       </ul>
       <div class="span7 add-org-user">
         <div class="tabbable">
-          <ul class="nav nav-tab">
-            <li class="active"><a href="#import_org_user" data-toggle="tab">移入用户</a></li>
-            <li><a href="#create_org_user" data-toggle="tab">新建用户</a></li>
+          <ul class="nav nav-tab" id="add-user-tab">
+            <li class="active"><a href="#" data-target="#import_org_user" data-toggle="tab">移入用户</a></li>
+            <li><a href="#" data-target="#create_org_user" data-toggle="tab">新建用户</a></li>
           </ul>
           <div class="tab-content">
             <div class="tab-pane active" id="import_org_user">
@@ -28,7 +30,7 @@
                 <ul class="org-list top span6">
                   <label>从组织中选择</label>
                   <div>
-                    <angulartree id="org-tree-container" datas="organizations" options="options" activeele="activeElement" active-fn="activeFn(org)">
+                    <angulartree id="org-tree-container" datas="organizations" options="org_tree_options" activeele="activeElement" active-fn="activeFn(org)">
                     </angulartree>
                   </div>
                 </ul>
@@ -38,7 +40,7 @@
                       <input type="text" ng-model="searchInput" placeholder="姓名,电话或学号">
                     </li>
                     <li ng-repeat="member in activeElementMembers | filter:searchInput" ng-click="addToCurrentOrg(member.id)">
-                      <img ng-src="{{member.userPic}}">
+                      <img ng-src="{{member.avatar}}">
                       <span>
                         <span class="name">{{member.name}}</span>
                       </span>
@@ -56,12 +58,10 @@
                   <input class="input-small" type="text" ng-model="user_name" placeholder="姓名">
                   <input class="input-medium" type="text" ng-model="user_tel" placeholder="电话号码">
                   <span ng-click="addNewOrgMember()">
-                    <i class="icon icon-add-light"></i>
+                    <i class="icon icon-plus-sign"></i>
                   </span>
-                  <label class="checkbox">
-                    <input type="checkbox">
-                    <i class="icon icon-uncheck"></i>
-                    短信通知该用户加入该组织
+                  <label>
+                    系统将会短信通知该用户加入该组织
                   </label>
                 </p>
               </li>
