@@ -1,0 +1,27 @@
+zh-CN:
+  mongoid:
+    models:
+      user: 用户
+      section: 板块
+      node: 节点
+      topic: 主题
+      reply: 回复
+      postscript: 附言
+    attributes:
+      user:
+        name: 名字
+        email: Email
+        password: 密码
+        password_confirmation: 确认密码
+        current_password: 旧密码
+        remember_me: 记住登陆状态
+      section:
+        name: 名称
+      node:
+        name: 名称
+        summary: 简介
+      topic:
+        title: 标题
+        body: 正文
+      postscript:
+        body: 正文

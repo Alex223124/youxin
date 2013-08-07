@@ -16,6 +16,11 @@ class UsersController < ApplicationController
     render json: authorized_organizations, each_serializer: AuthorizedOrganizationSerializer, root: :authorized_organizations
   end
 
+  def organizations
+    organizations = current_user.organizations
+    render json: organizations, each_serializer: AuthorizedOrganizationSerializer, root: :organizations
+  end
+
   def recent_authorized_organizations
     data = {
       organization_ids: current_user.authorized_organizations.map(&:id),

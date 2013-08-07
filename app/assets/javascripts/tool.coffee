@@ -136,6 +136,10 @@ class Organization
       ancestors.push organization unless organization.parent
     ancestors
 
+  @setExpandFlag : (_value)->
+    for organization in @all
+      organization.expandFlag = _value
+
   @setIndex : (createAdditionalNodes) ->
     if createAdditionalNodes
       @createAdditionalNodes()
@@ -153,7 +157,10 @@ class Organization
 
         i.index = index
         index += 1
-        arguments.callee(i.children.reverse())
+        if createAdditionalNodes
+          arguments.callee(i.children.reverse())
+        else
+          arguments.callee(i.children)
     )(@getAncestors())
 
 window.Organization = Organization

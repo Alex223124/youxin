@@ -16,6 +16,7 @@ Youxin::Application.routes.draw do
   resources :users, only: [:update] do
     get 'authorized_organizations' => 'users#authorized_organizations', on: :collection
     get 'recent_authorized_organizations' => 'users#recent_authorized_organizations', on: :collection
+    get 'organizations' => 'users#organizations', on: :member
   end
 
   resources :organizations, only: [:destroy, :index, :update] do
@@ -27,7 +28,11 @@ Youxin::Application.routes.draw do
   end
 
   resource :user, only: [] do
+    put '' => 'user#update'
+    get '' => 'user#show'
     get 'organizations' => 'user#organizations'
+    get 'created_receipts' => 'user#created_receipts'
+    get 'favorited_receipts' => 'user#favorited_receipts'
   end
 
   namespace :admin do
@@ -50,6 +55,7 @@ Youxin::Application.routes.draw do
       get 'comments' => 'posts#get_comments'
       post 'comments' => 'posts#create_comments'
       get 'forms' => 'posts#forms'
+      post 'sms_notifications' => 'posts#sms_notifications'
     end
     resources :attachments, only: [:index]
   end

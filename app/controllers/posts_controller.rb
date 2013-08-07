@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :ensure_post, only: [:unread_receipts, :get_comments, :create_comments, :forms]
+  before_filter :ensure_post, only: [:unread_receipts, :get_comments, :create_comments, :forms, :sms_notifications]
   before_filter :required_attributes, only: [:create]
   before_filter :authorized_create_post, only: [:create]
   before_filter :ensure_post_attributes, only: [:create]
@@ -40,6 +40,15 @@ class PostsController < ApplicationController
       fail!(@post.errors)
     end
 
+  end
+  def sms_notifications
+    scheduler = @post.sms_schedulers.where(ran_at: nil).first
+    if scheduler
+      scheduler.run_now!
+    else
+      @post.sms_schedulers.create delayed_at: Time.now
+    end
+    head :no_content
   end
 
   private

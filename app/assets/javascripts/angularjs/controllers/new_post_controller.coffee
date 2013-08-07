@@ -173,9 +173,9 @@
     form_ids: []
     attachment_ids: []
 
-  $scope.$on "attachment_change", (event)->
+  $scope.$on "attachment_change", (event,data)->
     $scope.youxindata.attachment_ids = []
-    for _i in event.targetScope.attachments
+    for _i in data.attachments
       $scope.youxindata.attachment_ids.push _i.id 
 
   $scope.formData =

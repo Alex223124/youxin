@@ -17,8 +17,8 @@ class FormsController < ApplicationController
     end
   end
   def collections
-    @collections = @form.collections.map { |collection| collection.entities.as_json(only: [:key, :value]) }
-    render json: { collections: @collections }
+    collections = @form.collections
+    render json: collections, each_serializer: CollectionSerializer, root: :collections
   end
   def create_collection
     @entities = params[:entities]

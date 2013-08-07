@@ -159,6 +159,7 @@
                           input type="checkbox" ng-model="option.default_selected"
                           span {{option.value}}
                 li
+                  .btn ng-click="set_form_collections(receipt)" 查看填写情况
                   .btn.btn-disabled ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="form.collectioned" 已填写
                   .btn.btn-primary ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="!form.collectioned" 提交
 
@@ -169,7 +170,8 @@
                 .piece
                   i.icon-ok.pull-right ng-show="unread_receipt.read"
                   span.name {{unread_receipt.user.name}}
-                  i.icon-envelope
+                  / i.icon-envelope
+            .btn.btn-primary.pull-right ng-click="send_sms_notifications(receipt,$event)" 立即短信通知
 
         .accordion-group.comments-box
           .collapse id="{{receipt.id}}-comments"
@@ -191,5 +193,18 @@
                   small.timeago.muted datetime="{{comment.created_at}}"
                 .body {{comment.body}}
 
+#form_collections
+  .wrap
+    .content
+      table.formdata.table.table-striped
+        tr
+          th 姓名
+          th ng-repeat="input in form.inputs" {{input.label}}
+        tr ng-repeat="collection in form.collections"
+          td {{collection.user.name}}
+          td ng-repeat="input in form.inputs" {{getValueInObj(input,collection.entities)}}
+      .cancel.btn onclick="$('#form_collections').hide()" 关闭
+      .submit.btn.btn-primary ng-click="" 导出成Excel表格
 / .read-posts.pull-left
+/ collection = {key: "eu",value: ""}
 /   = render partial: 'receipts/receipt', collection: @read_receipts

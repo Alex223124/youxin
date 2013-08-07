@@ -68,59 +68,150 @@
             i += 1
             )() while i < scope.datas.length
           currentEle.nextUntil(element.children().eq(index + subnodeLength + 1)).hide()
-        
+      
+      # TODO :待处理  
       scope.bindInsert = (data, $event)->
         $event.stopPropagation()
         if not scope.options.insert
           return false
-        _index = data.index
-        level = data.level
-        currentEle = element.children().eq(_index)
-        newData = 
-          expandFlag: false
-          index: _index+1
-          isLeafNode: true
-          level: level+1
-          selectFlag: false 
-          name: "undefined"
-          id: undefined
-          members_count: 0
-        data.isLeafNode = false
-        scope.datas.splice(_index+1,0,newData)
-        i = _index+2
-        (()->
-          scope.datas[i].index += 1
-          i += 1
-          )() while i < scope.datas.length
-        if not data.expandFlag
-          window.setTimeout ()->
-            currentEle.children().eq(1).click()
-          ,20
-        window.setTimeout ()->
-          insertEle = element.children().eq(_index+1)
-          insertSpan = insertEle.find("span")
-          insertSpan.html("<input value='"+newData.name+"' onfocus='this.select()' />")
-          insertSpan.find("input").focus()
-          insertSpan.find("input").bind("blur",()->
-            scope.datas[_index+1].name = insertSpan.find("input").val()
-            insertSpan.html(insertSpan.find("input").val())
-            $http.post("#{scope.insertUrl}#{data.id}/children",scope.datas[_index+1]).
-              success((dat)->
-                scope.datas[_index+1].id = dat.id
-              ).
-              error((data)->
-                fixed_alert("添加失败，请重新操作！")
-                insertEle.find(".icon-remove-sign").click()
-              )
-          )
-        ,30
+
+        tpl = """
+          <div class="modal">
+            <div class="modal-header">
+              <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4>在&nbsp;<span>#{data.name}</span>&nbsp;下新建组织</h4>
+            </div>
+            <div class="modal-body">
+              <p>
+                <input type="text" class="input" placeholder="请输入组织名称">
+              </p>
+            </div>
+            <div class="modal-footer">
+              <a href="javascript:;" class="btn cancel">取消</a>
+              <a href="javascript:;" class="btn btn-primary submit">创建</a>
+            </div>
+          </div>
+        """
+        popwindow = $("<div class='popwindow'>")
+        mask = $("<div class='mask cancel'>")
+        content = $("<div class='content'>")
+        content.append(tpl)
+        popwindow.append(mask).append(content)
+        $(document.body).append(popwindow)
+
+        content = popwindow.find(".content") 
+        content.css
+          left: ($(document.body).width() - content.width())/2
+          top: (window.innerHeight - content.height())/2
+
+        popwindowhide = ()->
+          popwindow.find(".cancel").unbind "click", popwindowhide
+          popwindow.find('input').unbind "keydown", keybind
+          popwindow.remove()
+ 
+        submit = ()->
+          _data =
+            organization:
+              name: popwindow.find("input").val()
+          $.post("#{scope.insertUrl}#{data.id}/children", _data).success (_data, _status)->
+            new Organization(_data.organization)
+            Organization.setIndex(false)
+            Organization.setExpandFlag(true)
+            scope.$apply ->
+              scope.datas = Organization.all
+              popwindow.find("a.submit").unbind "click", submit
+            fixed_alert("添加成功")
+            popwindowhide()
+          .error (_data, _status)->
+            fixed_alert("添加失败，请重新操作！")
+            popwindowhide()
+
+        keybind = (event)->
+          if event.keyCode is 13
+            submit()
+
+        popwindow.find("input").focus().val("")
+        popwindow.find(".cancel").bind "click", popwindowhide
+
+        popwindow.find("a.submit").bind "click", submit
+        popwindow.find('input').bind "keydown", keybind
+
 
       scope.bindRemove = (data, $event)->
         $event.stopPropagation()
         if not scope.options.remove 
           return false
 
-        $http.delete("#{scope.removeUrl}#{data.id}").success((dat)->
+        tpl = """
+          <div class="modal">
+            <div class="modal-header">
+              <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4>确认删除&nbsp;<span>#{data.name}</span></h4>
+            </div>
+            <div class="modal-footer">
+              <a href="javascript:;" class="btn cancel">取消</a>
+              <a href="javascript:;" class="btn btn-primary submit">删除</a>
+            </div>
+          </div>
+        """
+        confirm = $("<div class='confirm'>")
+        content = $("<div class='content'>")
+        content.append(tpl)
+        confirm.append(content)
+        $(document.body).append(confirm)
+        content = confirm.find(".content")
+        content.css
+          left: event.clientX - content.width()/2
+          top: if (event.clientY - content.height() - 20) < 0 then event.clientY + 20 else  event.clientY - content.height() - 20
+
+        hideconfirm = ()->
+          confirm.find(".cancel").unbind "click", hideconfirm
+          confirm.find("a.submit").unbind "click", submit
+          confirm.remove()
+
+        confirm.find(".cancel").bind "click", hideconfirm
+        index = data.index
+        level = data.level
+        currentEle = element.children().eq(index)
+        parentNode = data.parent
+        if parentNode.length > 0
+          parentNodeIndex = parentNode.index
+        else
+          parentNodeIndex = undefined
+        subnodeLength = 0
+        i = index+1
+        (()->
+          if scope.datas[i].level <= level
+            subnodeLength = i - index - 1
+            i = scope.datas.length
+          else
+            subnodeLength += 1
+          i += 1
+        )() while i < scope.datas.length
+        #jquery没有delete方法
+        submit = ()->
+          $http.delete("#{scope.removeUrl}#{data.id}").success (_data)->
+            scope.datas.splice(index,(subnodeLength+1))
+            i = index
+            (()->
+              scope.datas[i].index = i
+              i += 1
+            )() while i < scope.datas.length
+            if parentNodeIndex isnt (scope.datas.length-1)
+              if scope.datas[parentNodeIndex].level >= scope.datas[parentNodeIndex+1].level
+                scope.datas[parentNodeIndex].isLeafNode = true
+            else
+              scope.datas[parentNodeIndex].isLeafNode = true
+            hideconfirm()
+          .error (data)->
+            fixed_alert("删除失败，请重新操作！")
+            hideconfirm()
+
+
+        confirm.find("a.submit").bind "click", submit
+
+
+        ###$http.delete("#{scope.removeUrl}#{data.id}").success((dat)->
           index = data.index
           level = data.level
           console.log(level)
@@ -162,7 +253,7 @@
             scope.datas[parentNodeIndex].isLeafNode = true
         ).error((data)->
           fixed_alert("删除失败，请重新操作！")
-        )
+        )###
 
 
       scope.bindActive = (data, $event)->

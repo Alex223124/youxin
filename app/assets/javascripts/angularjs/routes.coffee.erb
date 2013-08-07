@@ -16,6 +16,18 @@
   .when '/organizations/:id/members',
     templateUrl: "<%= asset_path('members.html') %>",
     controller: MembersController
+  .when '/users/:id/organizations',
+    templateUrl: "<%= asset_path('organizations/show.html') %>",
+    controller: OrganizationsShowController
+  .when '/settings/profile',
+    templateUrl: "<%= asset_path('settings/baseSetting.html') %>",
+    controller: baseInfoController
+  .when '/settings/password',
+    templateUrl: "<%= asset_path('settings/password.html') %>",
+    controller: changePasswordController
+  .when '/user/profile',
+    templateUrl: "<%= asset_path('profile.html') %>",
+    controller: profileController
 
-  $locationProvider.html5Mode(true)
+  # $locationProvider.html5Mode(true)
 ])

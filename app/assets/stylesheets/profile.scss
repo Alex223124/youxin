@@ -1,0 +1,51 @@
+#profile{
+  .row-wrap{
+    padding: 15px;
+  }
+  .user-pic{
+    max-width: 100%;
+    text-align: center;
+    img{
+      max-width: 96%;
+    }
+  }
+  .organization-self-in{
+    li{
+      padding: 5px 10px;
+    }
+  }
+  .base-info,.more-info{
+    li{
+      padding: 3px 10px;
+    }
+  }
+  .block-info{
+    margin-top: 10px;
+    label{
+      padding: 5px 0;
+      letter-spacing: 4px;
+      border-bottom: 1px solid #a1bff6;
+    }
+  }
+}
+input.no-style{
+  border: none;
+  box-shadow: none;
+  background-color: transparent;
+  padding: 3px;
+  font-size: 14px;
+  height: 14px;
+  width: auto;
+  margin: 0;
+  &:focus{
+    border: 1px solid rgba(82, 168, 236, 0.8);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    -ms-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    -webkit-transition: border linear .2s, box-shadow linear .2s;
+    -ms-transition: border linear .2s, box-shadow linear .2s;
+    -moz-transition: border linear .2s, box-shadow linear .2s;
+    transition: border linear .2s, box-shadow linear .2s;
+  }
+}

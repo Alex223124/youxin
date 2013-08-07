@@ -1,0 +1,67 @@
+<div id="org-manager" class="tab-pane row-fluid">
+  <div class="span4 tabbable org-list">
+    <ul class="nav nav-tab">
+      <li class="active">
+        <a class="btn btn-link" href="javascript:;" data-target="#organizations_self_in" data-toggle="tab">我的组织</a>
+      </li>
+      <li>
+        <a class="btn btn-link" href="javascript:;" data-target="#all_organizations" data-toggle="tab">全部组织</a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div id="organizations_self_in" class="tab-pane active">
+        <li ng-repeat="organization in organizations_self_in" ng-click="setActiveOrganization(organization)" class="{{organization.id == activeOrganization.id ? 'active' : ''}}">
+          {{organization.name}}
+        </li>
+      </div>
+      <div id="all_organizations" class="tab-pane">
+        <angulartree datas="organizations" options="options" activeele="activeOrganization" active-fn="setActiveOrganization(org)">
+        </angulartree>
+      </div>
+    </div>
+  </div>
+  <div class="span8">
+    <div class="base-info">
+      <img ng-src="{{activeOrganization.avatar}}" alt="org" class="pull-left info-pic">
+      <div class="info-font">
+        <div class="parent-organization">
+          <li ng-repeat="parent in activeOrganization.parents">{{parent.name}}&gt;&gt;</li>
+        </div>
+        <h4 class="name">{{activeOrganization.name}}&nbsp;&nbsp;<i class="icon icon-heart"></i></h4>
+        <label>
+          <span class="line-tips">管理员</span>
+          <span>
+            <span ng-repeat="manager in activeOrganization.managers">{{manager.name}}</span>
+          </span>
+        </label>
+        <label><span class="line-tips">人数</span><span>{{activeOrganization.members_count}}</span></label>
+        <label>
+          <span class="line-tips">简介</span>
+          <span>让生活更加美好{{activeOrganization.bio}}</span>
+          <a href="#" class="pull-right" ng-click="moreInfoShow = !moreInfoShow">更多资料</a>
+        </label>
+      </div>
+    </div>
+    <div class="more-info" ng-show="moreInfoShow">
+      sgfu
+    </div>
+    <div class="other-info tabbable">
+      <div class="tab-content">
+        <ul class="member-list" id="member_list">
+          <li class="span6 member-item" ng-repeat="member in activeOrganization.members">
+            <img ng-src="{{member.avatar}}" alt="用户头像" class="pull-left">
+            <p>
+              <span class="name">{{member.name}}</span>
+              (<span class="position">{{member.position.name}}</span>)
+            </p>
+            <div>Tel: <span>{{member.phone}}</span></div>
+            <div class="description">
+              <span>简介:</span>
+              {{member.bio}}
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

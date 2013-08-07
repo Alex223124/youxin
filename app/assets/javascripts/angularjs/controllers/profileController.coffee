@@ -1,7 +1,59 @@
-@ReceiptsController = ['$scope', '$http', 'Receipt', ($scope, $http, Receipt) ->
-  $scope.read_receipts = Receipt.get('read')
-  $scope.unread_receipts = Receipt.get('unread')
+@profileController = ["$scope", "$http", ($scope, $http)->
+  getUserInformations = (callback, callbackerror)->
+    $http.get("/user").success (data, _status)->
+      callback(data.user, _status)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
 
+  getCurrentUserOrganizations = (callback, callbackerror)->
+    $http.get("/user/organizations.json").success (_data)->
+      callback(_data.organizations)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      fixed_alert("获取我所在的组织失败!")
+
+  getCreatedReceipts = (callback,callbackerror)->
+    $http.get("/user/created_receipts.json").success (_data,_status)->
+      callback(_data.created_receipts,_status)
+    .error (_data,_status)->
+      callbackerror(_data,_status)
+
+  getFavoritedReceipts = (callback,callbackerror)->
+    $http.get("/user/favorited_receipts.json").success (_data,_status)->
+      callback(_data.favorited_receipts,_status)
+    .error (_data,_status)->
+      callbackerror(_data,_status)
+
+  getUserInformations (_data)->
+    $scope.user = _data
+  ,(_data,_status)->
+    fixed_alert("获取信息失败!")
+
+  getCurrentUserOrganizations (_data)->
+    $scope.organizations = _data
+
+  ###getCreatedReceipts (_data)->
+    $scope.created_receipts = _data
+  ,(_data,_status)->
+    fixed_alert("获取发布的消息失败！")###
+
+  $scope.refreshFavoritedReceipts = ()->    
+    getFavoritedReceipts (_data)->
+      $scope.favorited_receipts = _data
+    ,(_data,_status)->
+      fixed_alert("获取收藏的消息失败！")
+
+  $scope.refreshCreatedReceipts = ()->
+    getCreatedReceipts (_data)->
+      $scope.created_receipts = _data
+    ,(_data,_status)->
+      fixed_alert("获取发布的消息失败！")
+
+  $scope.refreshCreatedReceipts()
+  $scope.refreshFavoritedReceipts()
+
+
+  # Below from ReceiptsController
   $scope.fetch_attachments = (receipt) ->
     read_receipt(receipt)
     post = receipt.post
@@ -38,63 +90,25 @@
     .error (data) ->
       fixed_alert('评论失败')
 
-  $scope.form = {}
-
-  $scope.getValueInObj = (input,collection)->
-    switch input.type
-      when "Field::TextField","Field::NumberField","Field::TextArea"
-        return collection.objOfProperty("key",input.identifier).value
-
-      when "Field::RadioButton"
-        option_id = collection.objOfProperty("key",input.identifier).value
-        return option_id and input.options.objOfProperty("id", option_id).value
-        
-      when "Field::CheckBox"
-        _result = []
-        option_ids = collection.objOfProperty("key",input.identifier).value
-        for _i in option_ids
-          _result.push(input.options.objOfProperty("id", _i).value)
-        return _result.join(",")
-        
-
-  $scope.set_form_collections = (receipt)->
-    $scope.form = receipt.post.forms.first()
-    $("#form_collections").show()
-
-  $scope.send_sms_notifications = (receipt,$event)->
-    post = receipt.post
-    self = $($event.target)
-    unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/sms_notifications").success () ->
-        fixed_alert("系统即将发送短信通知")
-        self.html("系统即将发送短信通知")
-        self.attr("disabled","disabled")
-      .error () ->
-        fixed_alert("发送失败")
-
   $scope.fetch_forms = (receipt) ->
     read_receipt(receipt)
     post = receipt.post
     unless post.forms
-      $http.get("/posts/#{post.id}/forms").success (data) ->
+      $http.get("/posts/#{post.id}/forms").success((data) ->
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
-        if receipt.origin
-          $http.get("/forms/#{form.id}/collections").success (data) ->
-            form.collections = data.collections
-        $http.get("/forms/#{form.id}/collection").success (data) ->
+        $http.get("/forms/#{form.id}/collection").success((data) ->
           form.collectioned = true
           collection = data.collection
           for entity in collection
             $scope.update_form(form, entity.key, entity.value)
-
+        )
+      )
     height = if $("\##{receipt.id}-forms").css("height") is "auto" then "0px" else "auto"
     $("\##{receipt.id}-forms").css("height",height)
-
-
-  $scope.show_collection = (receipt)->
-    false
+    _height = if $("\##{receipt.id}-forms-created").css("height") is "auto" then "0px" else "auto"
+    $("\##{receipt.id}-forms-created").css("height",_height)
 
   $scope.update_form = (form, key, value) ->
     for input in form.inputs
@@ -136,4 +150,6 @@
       receipt.read = true
       $http.put("/receipts/#{receipt.id}/read")
 
+
+  #$scope.user = $h
 ]

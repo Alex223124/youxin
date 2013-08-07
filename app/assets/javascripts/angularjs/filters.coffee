@@ -103,6 +103,7 @@
 
 @app.filter('avatar_version', ->
   (url, version) ->
+    return '' unless url
     array = url.split('/')
     array[array.length - 1] = "#{version}_#{array.last()}"
     array.join('/')

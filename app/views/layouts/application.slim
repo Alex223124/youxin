@@ -16,48 +16,49 @@ html
             i.icon-music
             span  优信
         li
-          a ng-href='/organizations'
+          a ng-href='#/organizations'
             i.icon-glass
             span 组织
         li
-          a ng-href='/members'
+          a ng-href='#/users/51fa45b87345763565000012/organizations'
             i.icon-heart
             span 对话
         li
-          a ng-href='/organizations/51fa45b77345763565000002/members'
+          a ng-href='#/organizations/51fa45b77345763565000002/members'
             i.icon-envelope
             span 通知
     .main-container
       .navbar.navbar-inverse
         .navbar-inner
           ul.nav.pull-right
-            a.btn.btn-primary.pull-left ng-href="/posts/new"
+            a.btn.btn-primary.pull-left ng-href="#/posts/new"
               i.icon-edit
               | 发优信
             li.active
-              a href='#' 下载
+              a ng-href='#/settings/password' 下载
             li
               a href='#' 私信
             li.dropdown
-              a.dropdown-toggle href='#' data-toggle='dropdown'
+              a.dropdown-toggle href='javascript:;' data-toggle='dropdown'
                 | 张三
                 b.caret
               ul.dropdown-menu
                 li
                   a href='#' tabindex='-1' 资料
                 li
-                  a href='#' tabindex='-1' 设置
+                  a href='#/settings/profile' tabindex='-1' 设置
                 li
-                  a href='#' tabindex='-1' 其他
+                  a href='#/user/profile' tabindex='-1' 其他
 
-      .main-content
-        ul.nav.nav-pills.sub-nav
-          li.active
-            a href='#' Home
-          li
-            a href='#' Home
-          li
-            a href='#' Home
+      .main-content ng-controller="refreshController"
+        / ul.nav.nav-pills.sub-nav
+        /   li.active
+        /     a href='#' Home
+        /   li
+        /     a href='#' Home
+        /   li
+        /     a href='#' Home
+        /   a.btn.btn-primary.pull-right ng-click="refresh()" href="javascript: void();" 更新
 
         = yield
 
