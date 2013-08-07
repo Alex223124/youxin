@@ -80,4 +80,24 @@ class Form
     end
   end
 
+  # TODO: need_test
+  def archive
+    book = Spreadsheet::Workbook.new
+    sheet = book.create_worksheet name: self.title
+
+    labels = self.inputs.map(&:label).unshift('username')
+    sheet.row(0).concat labels
+
+    identifiers = self.inputs.map(&:identifier)
+    self.collections.each_with_index do |collection, index|
+      row = sheet.row(index + 1)
+      row.push collection.user.name
+      identifiers.each do |identifier|
+        entity = collection.entities.where(key: identifier).first
+        row.push entity.get_value
+      end
+    end
+    book
+  end
+
 end

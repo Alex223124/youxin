@@ -18,6 +18,7 @@ describe Form do
 
   describe "Respond to" do
     it { should respond_to(:title) }
+    it { should respond_to(:archive) }
   end
 
   describe ".clean_attributes_with_inputs" do
@@ -362,4 +363,5 @@ describe Form do
     end
 
   end
+
 end

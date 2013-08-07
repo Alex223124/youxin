@@ -37,4 +37,18 @@ class Entity
   end
 
   embedded_in :collection
+
+  # TODO: need_test
+  def get_value
+    form = self.collection.form
+    input = form.inputs.where(identifier: self.key).first
+    case input.class
+    when Field::TextField, Field::TextArea, Field::NumberField
+      self.value
+    when Field::RadioButton
+      (input.options.where(id: self.value) && input.options.where(default_selected: true)).first.value
+    when Field::CheckBox
+      (input.options.where(:id.in => self.value) && input.options.where(default_selected: true)).map(&:value).join(', ')
+    end
+  end
 end
