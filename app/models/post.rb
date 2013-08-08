@@ -51,13 +51,14 @@ class Post
     return [] unless object.instance_of?(User)
     return [] unless subject.instance_of?(Post)
     abilities = []
-    abilities |= [:read] if subject.recipient_ids.include?(object.id)
+    abilities |= [:read] if subject.receipts.map(&:user_id).include?(object.id)
     abilities |= [:read, :manage] if subject.author_id == object.id
     abilities
   end
 
   def recipients
-    User.where(:id.in => self.recipient_ids)
+    self.receipts.all.map(&:user)
+    # User.where(:id.in => self.recipient_ids)
   end
   def organizations
     Organization.where(:id.in => self.organization_ids)

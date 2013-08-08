@@ -233,7 +233,7 @@
 ]
 
 @secondstepCtrl = ["$scope", '$http', "$document",(scope, $http ,$document)->
-  $http.get('/users/authorized_organizations?actions[]=create_youxin').success((data) ->
+  $http.get('/user/authorized_organizations?actions[]=create_youxin').success((data) ->
     Organization.all = []
     for organization in data.authorized_organizations
       new Organization(organization)
@@ -313,7 +313,7 @@
   scope.selectresult = []
   scope.present_organizations = []
   scope.selected_organization_ids = []
-  $http.get("/users/recent_authorized_organizations").success((data)->
+  $http.get("/user/recent_authorized_organizations").success((data)->
     #data.organization_ids
     #data.organization_clan_ids
     scope.commonly_used_organizations = data

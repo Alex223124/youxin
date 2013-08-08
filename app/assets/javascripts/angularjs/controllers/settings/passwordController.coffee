@@ -1,4 +1,14 @@
 @changePasswordController = ["$scope", "$http",($scope, $http)->
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    },
+    {
+      name: '个人设置',
+      url: '/user/organizations'
+    }
+  ]
   $scope.submit = ()->
     data =
       user:

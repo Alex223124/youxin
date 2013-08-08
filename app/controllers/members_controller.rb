@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class MembersController < ApplicationController
   before_filter :find_organization
   before_filter :authorize_add_member!, only: [:update], if: :is_put_method
@@ -24,14 +26,43 @@ class MembersController < ApplicationController
     end
   end
 
+  def import
+    initial_position = Position.where(name: '学生').first
+    begin
+      excel_praser = Youxin::ExcelPraser.new(params[:file].tempfile)
+    rescue Youxin::ExcelPraser::InvalidFileType => e
+      return bad_request!
+    end
+    excel_praser.process
+    fail_users = Array.new
+    created_users = Array.new
+    excel_praser.user_array.each do |user_attr|
+      password = Devise.friendly_token.first(8)
+      attrs = user_attr.merge({ password: password, password_confirmation: password })
+      user = User.new attrs
+      if user.save
+        # TODO: need asyn
+        user.send_reset_password_instructions
+        created_users.push user
+        @organization.push_member(user, initial_position)
+      else
+        user_attr[:errors] = user.errors.keys
+        fail_users.push user_attr
+      end
+    end
+    render json: created_users, each_serializer: MemberSerializer, root: :members, meta: { fail_members: fail_users }
+  end
+
   def create
     attrs = params[:user]
     password = Devise.friendly_token.first(8)
-    email = "#{password}@combee.com"
-    attrs.merge!({ password: password, password_confirmation: password, email: email })
+    attrs.merge!({ password: password, password_confirmation: password })
+    initial_position = Position.where(name: '学生').first
     user = User.new attrs
     if user.save
-      @organization.push_member(user)
+      # TODO: need asyn
+      user.send_reset_password_instructions
+      @organization.push_member(user, initial_position)
       render json: user, status: :created, serializer: MemberSerializer
     else
       render json: user.errors, status: :unprocessable_entity 

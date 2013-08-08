@@ -163,4 +163,23 @@ class Organization
           arguments.callee(i.children)
     )(@getAncestors())
 
+  @remove : (id) ->
+    for organization, index in @all
+      if organization.id is id
+        children = organization.children
+        @remove(children.first().id) while children.length
+
+        parent = organization.parent
+        for child, _index in parent.children
+          if child.id is id
+            parent.children.splice(_index, 1)
+            break
+
+        parent.isLeafNode = true unless parent.children.length
+
+        @all.splice(index, 1)
+        break
+
+    @setIndex()
+
 window.Organization = Organization

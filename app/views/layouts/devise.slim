@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title Youxin
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    = stylesheet_link_tag "application", media: "all"
+    = yield :styles
+    = yield :scripts
+    = csrf_meta_tags
+  body
+    .alert-container
+      - if flash[:alert]
+        .alert.alert-danger
+          button type="button" class="close" data-dismiss="alert" &times;
+          strong 错误：
+          | #{flash[:alert]}
+      - if flash[:notice]
+        .alert.alert-info
+          button type="button" class="close" data-dismiss="alert" &times;
+          strong 提示：
+          | #{flash[:notice]}
+
+    = yield

@@ -10,7 +10,7 @@
       insertUrl: "@"
       removeUrl: "@"
     template: """
-      <div ng-repeat="data in datas" ng-animate="animate" node-level="{{data.level}}" class="{{$index == 0 ? 'active' : ''}}" ng-click="bindActive(data, $event)" ng-style="{paddingLeft: data.level + \'em\'}">
+      <div ng-repeat="data in datas" ng-animate="animate" node-level="{{data.level}}" class="{{$index == activeele.index ? 'active' : ''}}" ng-click="bindActive(data, $event)" ng-style="{paddingLeft: data.level + \'em\'}">
         <i class="icon-{{_cache[data.selectFlag]}}" ng-show="options.select" ng-click="datas.changeSelectFlag(data, $event)"></i>
         <i class="expand-{{data.expandFlag}} visible-{{!data.isLeafNode}}" ng-show="options.expand" ng-click="bindExpand(data, $event)"></i>
         <span ng-click="bindActive(data, $event)">{{data.name}}<span>({{data.members_count}})</span></span>
@@ -155,14 +155,15 @@
           </div>
         """
         confirm = $("<div class='confirm'>")
+        mask = $("<div class='mask cancel'>")
         content = $("<div class='content'>")
         content.append(tpl)
-        confirm.append(content)
+        confirm.append(mask).append(content)
         $(document.body).append(confirm)
         content = confirm.find(".content")
         content.css
-          left: event.clientX - content.width()/2
-          top: if (event.clientY - content.height() - 20) < 0 then event.clientY + 20 else  event.clientY - content.height() - 20
+          left: ($(document.body).width() - content.width())/2
+          top: (window.innerHeight - content.height())/2
 
         hideconfirm = ()->
           confirm.find(".cancel").unbind "click", hideconfirm
@@ -190,71 +191,19 @@
         )() while i < scope.datas.length
         #jquery没有delete方法
         submit = ()->
-          $http.delete("#{scope.removeUrl}#{data.id}").success (_data)->
-            scope.datas.splice(index,(subnodeLength+1))
-            i = index
-            (()->
-              scope.datas[i].index = i
-              i += 1
-            )() while i < scope.datas.length
-            if parentNodeIndex isnt (scope.datas.length-1)
-              if scope.datas[parentNodeIndex].level >= scope.datas[parentNodeIndex+1].level
-                scope.datas[parentNodeIndex].isLeafNode = true
-            else
-              scope.datas[parentNodeIndex].isLeafNode = true
+          $.ajax
+            url: "#{scope.removeUrl}#{data.id}"
+            type: 'DELETE'
+          .success () ->
+            Organization.remove(data.id)
+            scope.$apply ->
+              scope.datas = Organization.all
             hideconfirm()
           .error (data)->
             fixed_alert("删除失败，请重新操作！")
             hideconfirm()
 
-
         confirm.find("a.submit").bind "click", submit
-
-
-        ###$http.delete("#{scope.removeUrl}#{data.id}").success((dat)->
-          index = data.index
-          level = data.level
-          console.log(level)
-          currentEle = element.children().eq(index)
-          if level isnt 0
-            i = index-1
-            parentNodeIndex = undefined
-            (()->
-              if scope.datas[i].level is level-1
-                parentNodeIndex = i
-                i = 0
-              i -= 1
-            )() while i >= 0
-          else
-            parentNodeIndex = undefined
-          subnodeLength = 0
-          i = index+1
-          (()->
-            if scope.datas[i].level <= level
-              subnodeLength = i - index - 1
-              i = scope.datas.length
-            else
-              subnodeLength += 1
-            i += 1
-          )() while i < scope.datas.length
-
-          scope.datas.splice(index,(subnodeLength+1))
-          i = index
-          (()->
-            scope.datas[i].index = i
-            i += 1
-          )() while i < scope.datas.length
-          if parentNodeIndex is undefined 
-            return false
-          if parentNodeIndex isnt (scope.datas.length-1)
-            if scope.datas[parentNodeIndex].level >= scope.datas[parentNodeIndex+1].level
-              scope.datas[parentNodeIndex].isLeafNode = true
-          else
-            scope.datas[parentNodeIndex].isLeafNode = true
-        ).error((data)->
-          fixed_alert("删除失败，请重新操作！")
-        )###
-
 
       scope.bindActive = (data, $event)->
         if $event isnt undefined

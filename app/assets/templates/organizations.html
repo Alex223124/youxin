@@ -1,3 +1,17 @@
+<!-- <div class="sub-nav">
+  <li ng-repeat="breadcrumb in breadcrumbs">
+    <a class="btn btn-link" ng-href='\#{{breadcrumb.url}}'>{{breadcrumb.name}}</a>
+    <span ng-hide="$last">&gt;</span>
+  </li>
+</div> -->
+<ul class="breadcrumb sub-nav">
+  <li ng-repeat="breadcrumb in breadcrumbs" class="{{$last ? 'active' : ''}}">
+    <a ng-href="\#{{breadcrumb.url}}" ng-hide="$last">{{breadcrumb.name}}</a>
+    <span ng-show="$last">{{breadcrumb.name}}</span>
+    <span class="divider" ng-hide="$last">/</span>
+  </li>
+</ul>
+
 <div id="main_content">
   <div id="orgInfoManager">
     <div id="create-org" class="row-fluid">
@@ -14,14 +28,24 @@
       </div>
       <div class="span8 org-info-show" id="org-info-show">
         <div class="base-info">
-          <img ng-src="{{defaultActiveEle.avatar}}" alt="org" class="pull-left info-pic">
+          <div class="pull-left info-pic pr">
+            <img ng-src="{{defaultActiveEle.avatar | avatar_version:'big'}}" alt="org">
+            <form id="avatarUploader" enctype="multipart/form-data">
+              <label class="inline fileinput-button">
+                <div class="opacity-half"></div>
+                <input type="file" accept="image/*" name='organization[avatar]' class="vh" onchange="angular.element(this).scope().uploadAvatar(this);">
+                <span>修改头像</span>
+              </label>
+            </form>
+          </div>
           <div class="info-font">
             <div class="parentorg">
               <li ng-repeat="parent in defaultActiveEle.parents">
-                {{parent.name}}&gt;&gt;
+                <a ng-href="\#/organizations/{{parent.id}}">{{parent.name}}</a>&gt;&gt;
               </li>
             </div>
             <h4 class="name" contenteditable="true" ng-blur="put_info({name: defaultActiveEle.name})" ng-model="defaultActiveEle.name">{{defaultActiveEle.name}}</h4>
+            <a ng-href="#/organizations/{{defaultActiveEle.id}}/members">管理成员</a>
             <label>
               <span class="line-tips">管理员</span>
               <span>
@@ -34,13 +58,13 @@
             </label>
             <label>
               <span class="line-tips">简介</span>
-              <span contenteditable="true" ng-blur="put_info({name: defaultActiveEle.bio})" ng-model="defaultActiveEle.bio">{{defaultActiveEle.bio}}</span>
+              <span contenteditable="true" class="bio" ng-blur="put_info({bio: defaultActiveEle.bio})" ng-model="defaultActiveEle.bio">{{defaultActiveEle.bio}}</span>
             </label>
           </div>
         </div>
         <div class="more-info clearfix">
           <label>编辑更多资料</label>
-          <textarea id="info-textarea" ng-model="defaultActiveEle.bio" ng-blur="put_info({name: defaultActiveEle.bio})" placeholder="Enter text ...">
+          <textarea id="info-textarea" ng-model="defaultActiveEle.bio" ng-blur="put_info({bio: defaultActiveEle.bio})" placeholder="Enter text ...">
           </textarea>
         </div>
         

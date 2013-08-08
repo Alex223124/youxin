@@ -1,7 +1,7 @@
 class FormsController < ApplicationController
-  before_filter :ensure_form, only: [:create_collection, :get_collection, :collections]
+  before_filter :ensure_form, only: [:create_collection, :get_collection, :collections, :download]
   before_filter :check_collection, only: [:get_collection]
-  before_filter :authorize_manage_form, only: [:collections]
+  before_filter :authorize_manage_form, only: [:collections, :download]
   def create
     form_data = params[:form]
     if form_data.blank? || form_data[:inputs].blank? || form_data[:inputs].size.zero?
@@ -31,6 +31,12 @@ class FormsController < ApplicationController
   end
   def get_collection
     render json: { collection: @collection.entities.as_json(only: [:key, :value]) }
+  end
+  def download
+    book = @form.archive
+    file = Tempfile.new('/tmp/excels', Rails.root)
+    book.write file.path
+    send_file file.path, filename: "#{@form.title}.xls", type: 'application/vnd.ms-excel; charset=utf-8', disposition: 'attachment'
   end
 
   private

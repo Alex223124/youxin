@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Form
   include Mongoid::Document
   include Mongoid::Paranoia # Soft delete
@@ -83,9 +85,9 @@ class Form
   # TODO: need_test
   def archive
     book = Spreadsheet::Workbook.new
-    sheet = book.create_worksheet name: self.title
+    sheet = book.create_worksheet
 
-    labels = self.inputs.map(&:label).unshift('username')
+    labels = self.inputs.map(&:label).unshift('提交用户')
     sheet.row(0).concat labels
 
     identifiers = self.inputs.map(&:identifier)

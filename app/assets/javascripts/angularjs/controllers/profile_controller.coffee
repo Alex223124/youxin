@@ -1,4 +1,14 @@
 @profileController = ["$scope", "$http", ($scope, $http)->
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    }
+    {
+      name: '个人主页'
+      url: '/user/organizations'
+    }
+  ]
   getUserInformations = (callback, callbackerror)->
     $http.get("/user").success (data, _status)->
       callback(data.user, _status)

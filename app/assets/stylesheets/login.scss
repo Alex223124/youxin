@@ -1,0 +1,75 @@
+.alert-container {
+  position: fixed;
+  text-align: center;
+  z-index: 1;
+  width: 100%;
+}
+#login-background{
+  background-color: #34495e;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  .position{
+    height:100%;
+    width: 1px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .wrapper{
+    display: inline-block;
+    vertical-align: middle;
+    left: -1px;
+    position: relative;
+    line-height: 100%;
+    .logo{
+      display: inline-block;
+      vertical-align: top;
+    }
+    .login-box{
+      padding: 20px;
+      border-radius: 4px;
+      vertical-align: middle;
+      display: inline-block;
+      background-color: #ecf0f1;
+      label{
+        position: relative;
+        text-align: left;
+        &.last{
+          text-align: center;
+          margin-bottom: 0;
+          margin-top: 10px;
+        }
+      }
+      input{
+        height: 30px;
+        width: 300px;
+        &.check_box {
+          vertical-align: top;
+          width: auto;
+          height: auto;
+        }
+      }
+      .password{
+        letter-spacing: 3px;
+      }
+      .btn{
+        width: 314px;
+        line-height: 30px;
+        letter-spacing: 8px;
+      }
+      i{
+        position: absolute;
+        right: 10px;
+        top: 12px;
+      }
+    }
+  }
+  .others{
+    position: fixed;
+    bottom: 20px;
+    display: block;
+    width: 100%;
+    color: white;
+  }
+}

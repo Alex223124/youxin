@@ -1,12 +1,62 @@
 #profile{
+  position: absolute;
+  top: 36px;
+  left: 0;
+  width: 100%;
+  bottom: 0;
   .row-wrap{
     padding: 15px;
   }
+  .span6{
+    height: 100%;
+    .row-wrap{
+      height: 100%;
+      padding: 0 15px;
+    }
+  }
+  .inner-wrap{
+    text-align: center;
+    margin-top: 20px;
+  }
   .user-pic{
     max-width: 100%;
+    display: inline-block;
     text-align: center;
     img{
       max-width: 96%;
+    }
+    span{
+      padding: 5px 10px; 
+    }
+  }
+  .tabbable{
+    height: 100%;
+    position: relative;
+    .nav{
+      margin: 5px;
+      li{
+        display: inline-block;
+        margin: 2px 5px;
+        a:hover{
+          border-radius: 4px;
+          color: white;
+        }
+        &.active{
+          a{
+            background-color: #3E5771;
+            color: white;
+            border-radius: 4px;
+          }
+        }
+      }
+    }
+    .tab-content{
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 50px;
+      overflow: auto;
     }
   }
   .organization-self-in{

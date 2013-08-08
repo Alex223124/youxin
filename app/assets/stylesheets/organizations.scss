@@ -64,6 +64,36 @@
     .org-info-show{
       .base-info{ 
         margin: 20px 0 20px 0; 
+        .info-pic{
+          &:hover form{
+            display: block;
+          }
+          .opacity-half{
+            background-color: #F3F3F3;
+            height: 20px;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            @include opacity(80);
+            cursor: pointer;
+          }
+          form{
+            width: 150px;
+            position: absolute;
+            bottom: 0;
+            margin-bottom: 0;
+            text-align: center;
+            display: none;
+            &.active {
+              display: block;
+            }
+            span{
+              cursor: pointer;
+              position: relative;
+              z-index: 1;
+            }
+          }
+        }
         img{
           margin-right: 10px;
           width: 150px;
@@ -78,9 +108,13 @@
         .manager{
           margin: auto 5px;
         }
+        .bio{
+          display: inline-block;
+          min-width: 200px;
+        }
         .name{
           font-weight: 600;
-          margin: 15px 0 15px 160px;
+          margin: 15px 0 15px 0px;
           line-height: 24px;
         }
         .parentorg{
@@ -194,6 +228,11 @@
     }
   }
   #create_org_user{
+    table.fail-memebers {
+      .error {
+        background-color: #f2dede;
+      }
+    }
     p{
       padding-left: 20px;
     }
@@ -258,7 +297,11 @@
 }
 
 #addOrgMember{
-  height: 100%;
+  position: absolute;
+  top: 36px;
+  left: 0;
+  width: 100%;
+  bottom: 0; 
   min-width: 980px;
   .row-fluid{
     height: 100%;
@@ -268,13 +311,31 @@
 
 /*组织管理*/
 #org-manager{
-  height: 100%;
+  position: absolute;
+  top: 36px;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  &>.span8{
+    height: 100%;
+    position: relative;
+    .wrap{
+      position: absolute;
+      top: 190px;
+      bottom: 0;
+      width: 100%;
+      left: 0;
+      overflow: auto;
+    }
+  }
   .org-list{
     background-color: #f5f5f5;
     border-right: 1px solid #e5e5e5;
     height: 100%;
     ul{
+      margin: 10px;
       li{
+        margin: 10px 5px;
         display: inline-block;
         @include border-radius(4px);
         a{

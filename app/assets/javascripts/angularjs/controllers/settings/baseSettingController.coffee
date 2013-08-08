@@ -8,6 +8,16 @@
   # getUserInformations((data)->
   #   $scope.user = data
   # )
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    },
+    {
+      name: '个人设置',
+      url: '/user/organizations'
+    }
+  ]
   
   $http.get("/user").success (data, _status)->
     $scope.user = data.user

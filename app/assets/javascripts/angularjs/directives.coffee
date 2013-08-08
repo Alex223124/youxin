@@ -4,9 +4,9 @@
     link: (scope,ele,attrs,ctrl)->
       ele.bind "keyup",()->
         scope.$apply ()->
-          ctrl.$setViewValue(ele.html())
+          ctrl.$setViewValue(ele.text())
       ctrl.$reder = (value)->
-        ele.html(value)
+        ele.text(value)
       #ctrl.$setViewValue(ele.html())
   }
 

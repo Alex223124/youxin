@@ -1,3 +1,4 @@
+# TODO: multi notifications
 window.fixed_alert = (msg)->
   msg = msg.toString()
   container = $(document.body).children('.alert-container')

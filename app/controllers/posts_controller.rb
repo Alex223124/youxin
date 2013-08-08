@@ -4,6 +4,7 @@ class PostsController < ApplicationController
   before_filter :authorized_create_post, only: [:create]
   before_filter :ensure_post_attributes, only: [:create]
   before_filter :authorized_read_post, only: [:get_comments, :create_comments]
+  before_filter :can_read_post, only: [:forms]
   def unread_receipts
     access_denied! unless can?(current_user, :manage, @post)
     unread_receipts = @post.receipts.unread
@@ -25,7 +26,6 @@ class PostsController < ApplicationController
   end
 
   def forms
-    access_denied! unless can?(current_user, :read, @post)
     forms = @post.forms
     render json: forms, each_serializer: FormSerializer, root: :forms
   end
@@ -54,6 +54,9 @@ class PostsController < ApplicationController
   private
   def ensure_post
     @post = Post.find(params[:id])
+  end
+  def can_read_post
+    return access_denied! unless can?(current_user, :read, @post)
   end
 
   def required_attributes

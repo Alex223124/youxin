@@ -1,19 +1,13 @@
 class ReceiptsController < ApplicationController
   before_filter :ensure_receipt, only: [:favorite, :unfavorite]
   def index
-    @receipts = current_user.receipts
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @receipts }
-    end
   end
   def read
-    @receipts = current_user.receipts.read
+    @receipts = paginate current_user.receipts.read
     render json: @receipts
   end
   def unread
-    @receipts = current_user.receipts.unread
+    @receipts = paginate current_user.receipts.unread
     render json: @receipts
   end
 

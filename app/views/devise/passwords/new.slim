@@ -1,8 +1,29 @@
-h2 Forgot your password?
-= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-  = f.error_notification
-  .form-inputs
-    = f.input :email, required: true, autofocus: true
-  .form-actions
-    = f.button :submit, "Send me reset password instructions"
-= render "devise/shared/links"
+.alert-container
+  - if resource.errors.any?
+    .alert.alert-danger
+      button type="button" class="close" data-dismiss="alert" &times;
+      strong 错误：
+      | #{resource.errors.full_messages.join(", ")}
+
+#login-background
+  .position
+  .wrapper
+    .logo
+      = image_tag 'logo.png'
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'login-box' }) do |f|
+      label
+        = f.email_field :email, autofocus: true, class: '', placeholder: '请输入邮箱', required: true
+        i.icon-user
+      label
+        = f.button '找回密码', class: 'btn btn-primary submit'
+      label.last
+        = link_to '返回登录', new_session_path(resource_name)
+      i.caret-left
+
+  .others 产品介绍
+
+= content_for :styles do
+  = stylesheet_link_tag 'login', media: 'all'
+= content_for :scripts do
+  = javascript_include_tag 'devise'
+  = javascript_include_tag 'bootstrap-alert'

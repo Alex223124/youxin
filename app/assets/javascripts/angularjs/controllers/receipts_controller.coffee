@@ -1,6 +1,56 @@
 @ReceiptsController = ['$scope', '$http', 'Receipt', ($scope, $http, Receipt) ->
-  $scope.read_receipts = Receipt.get('read')
-  $scope.unread_receipts = Receipt.get('unread')
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      href: '/'
+    }
+  ]
+  $scope.max_receipt_id = '0'
+  $scope.min_receipt_id = 'z'
+
+  $http.get('/receipts/read').success (data) ->
+    $scope.read_receipts = data.receipts
+    set_receipt_range_for_array(data.receipts)
+
+  $http.get('/receipts/unread').success (data) ->
+    $scope.unread_receipts = data.receipts
+    set_receipt_range_for_array(data.receipts)
+
+  set_receipt_range = (receipt) ->
+    return unless receipt
+    $scope.max_receipt_id = receipt.id if receipt.id > $scope.max_receipt_id
+    $scope.min_receipt_id = receipt.id if receipt.id < $scope.min_receipt_id
+
+  set_receipt_range_for_array = (array) ->
+    set_receipt_range(array.first())
+    set_receipt_range(array.last())
+
+  move_reads = () ->
+    compensatory_index = 0
+    for receipt, index in $scope.unread_receipts
+      current_index = index - compensatory_index
+      if $scope.unread_receipts[current_index].read
+        $scope.read_receipts = $scope.read_receipts.concat $scope.unread_receipts.splice(current_index, 1)
+        compensatory_index += 1
+
+  $scope.refresh = () ->
+    $http.get("/receipts/unread?since_id=#{$scope.max_receipt_id}").success (data) ->
+      if data.receipts.length
+        $scope.unread_receipts = $scope.unread_receipts.concat data.receipts
+        set_receipt_range_for_array(data.receipts)
+      else
+        fixed_alert('暂时没有未读消息')
+    move_reads()
+
+  $scope.load_more = (event) ->
+    $http.get("/receipts/read?max_id=#{$scope.min_receipt_id}").success (data) ->
+      if data.receipts.length
+        $scope.read_receipts = $scope.read_receipts.concat data.receipts
+        set_receipt_range_for_array(data.receipts)
+        fixed_alert("加载了 #{data.receipts.length} 条消息")
+      else
+        angular.element(event.target).attr('disabled', true).html('没有更多了')
+        fixed_alert('没有更多了')      
 
   $scope.fetch_attachments = (receipt) ->
     read_receipt(receipt)
@@ -14,10 +64,9 @@
 
   $scope.fetch_unread_receipts = (receipt) ->
     post = receipt.post
-    unless post.unread_receipts
-      $http.get("/posts/#{post.id}/unread_receipts").success((data) ->
-        post.unread_receipts = data.unread_receipts
-      )
+    $http.get("/posts/#{post.id}/unread_receipts").success((data) ->
+      post.unread_receipts = data.unread_receipts
+    )
 
   $scope.fetch_comments = (receipt) ->
     read_receipt(receipt)
@@ -91,10 +140,6 @@
 
     height = if $("\##{receipt.id}-forms").css("height") is "auto" then "0px" else "auto"
     $("\##{receipt.id}-forms").css("height",height)
-
-
-  $scope.show_collection = (receipt)->
-    false
 
   $scope.update_form = (form, key, value) ->
     for input in form.inputs

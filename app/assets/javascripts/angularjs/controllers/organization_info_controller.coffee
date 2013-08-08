@@ -1,13 +1,21 @@
-@OrganizationsShowController = ["$scope", "$http", "$routeParams",($scope, $http ,$routeParams)->
+@OrganizationsShowController = ["$scope", "$http",($scope, $http)->
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    },
+    {
+      name: '组织展示',
+      url: '/user/organizations'
+    }
+  ]
 
-  user_id = $routeParams['id']
-
-  getOrganizationsByUser = (userId, callback, callbackerror)->
-    $http.get("/users/#{userId}/organizations.json").success (_data)->
+  getOrganizationsByUser = (callback, callbackerror)->
+    $http.get("/user/organizations.json").success (_data)->
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取我所在的组织失败!")
+      fixed_alert("获取我所在的组织失败")
 
   getAllOrganizations = (callback, callbackerror)->
     Organization.all = []
@@ -35,13 +43,13 @@
       callbackerror(_data, _status)
       fixed_alert("获取管理员信息失败")
 
-  getOrganizationsByUser(user_id, (data)->
+  getOrganizationsByUser (data)->
     $scope.organizations_self_in = data
-  )
-  getAllOrganizations((organizations)->
+
+  getAllOrganizations (organizations)->
     $scope.organizations = organizations
     $scope.activeOrganization = setActive(organizations.first().id)
-  )
+
   parents = (org)->
     _result = []
     if typeof org.getAncestors isnt "Function" 

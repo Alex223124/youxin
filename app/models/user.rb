@@ -59,17 +59,19 @@ class User
   field :uid, type: String
 
   validates :name, presence: true
-  validates :phone, format: { with: /\A1\d{10}\Z/ }, allow_nil: true
+  validates :phone, format: { with: /\A1\d{10}\Z/ }, uniqueness: true, allow_nil: true
   validates :gender, inclusion: %w(男 女), allow_nil: true
   validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_nil: true
 
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
 
+  attr_accessor :login
   attr_accessible :phone, :name, :email, :password, :password_confirmation,
                   :bio, :gender, :qq, :blog,:uid,
                   :avatar, :avatar_cache, :remove_avatar,
-                  :header, :header_cache, :remove_header
+                  :header, :header_cache, :remove_header,
+                  :login
 
   has_many :user_organization_position_relationships, dependent: :destroy
   has_many :user_actions_organization_relationships, dependent: :destroy
@@ -126,6 +128,15 @@ class User
     else
       params.delete(:current_password)
       self.update_without_password(params)
+    end
+  end
+  # Function to handle user's login via email or phone
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if login = conditions.delete(:login).downcase
+      where(conditions).where('$or' => [ {:phone => /^#{Regexp.escape(login)}$/i}, {:email => /^#{Regexp.escape(login)}$/i} ]).first
+    else
+      where(conditions).first
     end
   end
 

@@ -230,4 +230,11 @@ ul, ol, li {
 
 [contenteditable="true"]{
   cursor: pointer;
+  display: inline-block;
+  min-width: 20px;
+  padding: 2px 4px;
+  &:hover,&:focus{
+    background-color: #ffffff;
+    outline: 1px solid #e5e5e5;
+  }
 }

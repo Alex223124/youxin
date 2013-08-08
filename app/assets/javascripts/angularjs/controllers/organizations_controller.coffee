@@ -1,15 +1,27 @@
-@OrganizationsController = ['$scope', '$http', ($scope, $http) ->
-  getOrganizationsByUser = (userId, callback, callbackerror)->
-    $http.get("/users/#{userId}/organizations.json").success (_data)->
+@OrganizationsController = ['$scope', '$http', '$route', '$routeParams', '$location', ($scope, $http, $route, $routeParams, $location) ->
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    }
+    {
+      name: '组织管理'
+      url: '/user/organizations'
+    }
+  ]
+  organization_id = $routeParams['id']
+
+  getOrganizationsByUser = (callback, callbackerror)->
+    $http.get("/user/organizations.json").success (_data)->
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取我所在的组织失败!")
+      fixed_alert("获取我所在的组织失败")
 
   getAllOrganizations = (callback, callbackerror)->
     Organization.all = []
-    $http.get('/organizations.json').success (_data)->
-      for organization in _data.organizations
+    $http.get('/user/authorized_organizations.json?actions[]=create_organization&actions[]=delete_organization&actions[]=edit_organization').success (_data)->
+      for organization in _data.authorized_organizations
         new Organization(organization)
       Organization.setIndex(false)
       callback(Organization.all)
@@ -22,7 +34,7 @@
       _callback(_data.members)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("ha")
+      fixed_alert("获取组织成员失败")
 
   getOrganizationManagers = (org_id, callback, callbackerror)->
     $http.get("/organizations/#{org_id}/authorized_users").success (data)->
@@ -31,30 +43,24 @@
       callbackerror(_data, _status)
       fixed_alert("获取管理员信息失败")
 
-  getAllOrganizations((data)->
-    $scope.orgs = data
-    for _i in $scope.orgs
-      _i.expandFlag = true
-    $scope.defaultActiveEle = data[0]
-    $scope.defaultActiveEle.parents = parents($scope.defaultActiveEle)
-    getOrganizationManagers($scope.defaultActiveEle.id, (managers)->
-      $scope.defaultActiveEle.managers = managers
-    )
-  )
-
-  $scope.$on "refresh", ()->
-    getAllOrganizations (data)->
+  unless $scope.orgs
+    getAllOrganizations((data)->
       $scope.orgs = data
       for _i in $scope.orgs
         _i.expandFlag = true
-      $scope.defaultActiveEle = data[0]
-      $scope.defaultActiveEle.parents = parents($scope.defaultActiveEle)
-      getOrganizationManagers($scope.defaultActiveEle.id, (managers)->
-        $scope.defaultActiveEle.managers = managers
-      )
-    ,(data, status)->
-      $scope.$emit "refreshFail"
+        if _i.id is organization_id
+          actived_organization = _i
+      actived_organization = actived_organization or data[0]
 
+      if actived_organization
+        $scope.defaultActiveEle = actived_organization
+        $scope.setActiveElement actived_organization
+        $scope.defaultActiveEle.parents = parents($scope.defaultActiveEle)
+
+        getOrganizationManagers($scope.defaultActiveEle.id, (managers)->
+          $scope.defaultActiveEle.managers = managers
+        )
+    )
 
   $scope.userOptions =
     expand: true
@@ -76,22 +82,47 @@
     _result
 
   $scope.setActiveElement = (org)->
-    if org.id
+    if org and org.id
       $scope.defaultActiveEle.managers = []
       $scope.defaultActiveEle = org
+
+      $scope.defaultActiveEle.name_was = org.name
+      $scope.defaultActiveEle.bio_was = org.bio
+
       $scope.defaultActiveEle.parents = parents($scope.defaultActiveEle)
+      $location.path("/organizations/#{org.id}")
       $("#all-organizations").children(".active").removeClass("active")
       $("#all-organizations").children().eq(org.index).addClass("active")
       getOrganizationManagers $scope.defaultActiveEle.id, (managers)->
         $scope.defaultActiveEle.managers = managers
 
   $scope.put_info = (data)->
-    dataCache = {}
-    dataCache.organization = data
-    $http.put("/organizations/#{$scope.defaultActiveEle.id}",dataCache).error (_data,_status)->
-      switch _status
-        when 403
-          fixed_alert("您没有该组织的管理权限！")
-        else
-          fixed_alert("修改失败，请重新操作！")
+    for _k, _v of data
+      if _v
+        dataCache = {}
+        dataCache.organization = data
+        if _v isnt $scope.defaultActiveEle["#{_k}_was"]
+          $http.put("/organizations/#{$scope.defaultActiveEle.id}",dataCache).success ()->
+            $scope.defaultActiveEle["#{_k}_was"] = _v
+            fixed_alert("修改成功")
+          .error (_data,_status)->
+            switch _status
+              when 403
+                fixed_alert("您没有该组织的管理权限")
+              else
+                fixed_alert("修改失败，请重新操作")
+
+  $scope.uploadAvatar = (ele)->
+    form = $(ele).parents('form')
+    form.attr(action: "/organizations/#{$scope.defaultActiveEle.id}")
+    form.addClass('active').find('span').html('上传中 ...')
+    form.ajaxSubmit
+      type: 'PUT'
+      error: (event, statusText, responseText, form) ->
+        fixed_alert("修改头像失败, 请重新操作!")
+        form.removeClass('active').find('span').html('修改头像')
+      success: (responseText, statusText, xhr, form) ->
+        form.removeClass('active').find('span').html('修改头像')
+        $scope.$apply ->
+          $scope.defaultActiveEle.avatar = responseText.organization.avatar
 ]

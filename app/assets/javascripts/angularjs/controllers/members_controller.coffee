@@ -1,6 +1,13 @@
 @MembersController = ['$scope', '$http', '$route', '$routeParams', ($scope, $http, $route, $routeParams) ->
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    }
+  ]
   organization_id = $routeParams['id']
   $scope.members = []
+  $scope.fail_memebers = []
   $http.get("/organizations/#{organization_id}/members.json")
   .success (data) ->
     $scope.members = data.members
@@ -8,6 +15,7 @@
     fixed_alert("数据加载失败")
 
   $http.get('/organizations.json').success (data)->
+    Organization.all = []
     for organization in data.organizations
       new Organization(organization)
     Organization.setIndex(false)
@@ -16,6 +24,16 @@
       _i.expandFlag = true
     $scope.activeElement = $scope.organizations.first()
     $scope.current_organization = $scope.organizations.objOfProperty("id", organization_id)
+    $scope.breadcrumbs = $scope.breadcrumbs.concat [
+      {
+        name: $scope.current_organization.name
+        url: "/organizations/#{$scope.current_organization.id}"
+      }
+      {
+        name: '成员管理'
+        url: '/user/organizations'
+      }
+    ]
     $http.get("/organizations/#{$scope.activeElement.id}/members.json").success (data)->
       $scope.activeElementMembers = data.members
     .error (_data, _status)->
@@ -99,11 +117,16 @@
     objCache =
       user:
         name: $scope.user_name
+        email: $scope.user_email
         phone: $scope.user_tel
     $http.post("/organizations/#{organization_id}/members", objCache).success (data)->
       $scope.members.push(data.member)
-    $scope.user_name = ""
-    $scope.user_tel = ""
+      $scope.user_name = ""
+      $scope.user_tel = ""
+      $scope.user_email = ""
+      fixed_alert("添加成功")
+    .error ()->
+      fixed_alert("添加失败，请检查输入是否合法")
     $scope.hasOrgMember = true
 
   $scope.addToCurrentOrg = (_id)->
@@ -118,10 +141,29 @@
         $scope.hasOrgMember = true
       .error ()->
         fixed_alert("#{$scope.members.last().name} 添加失败!")
+
+  $scope.showFileName = (ele)->
+    form = $(ele).parents("form")
+    fileInfo = form.find("input").val()
+    $scope.$apply ->
+      $scope.fileName = fileInfo.split("\\").last()
+  $scope.importUsers = (event) ->
+    unless ///\.xls///.test $scope.fileName
+      fixed_alert("文件类型错误，请选择 Excel(2003) 文件")
+      return false
+    $scope.fail_memebers = []
+    submit_btn = $(event.target)
+    form = submit_btn.siblings("form")
+    submit_btn.html('处理中 ...').addClass('disabled')
+    form.attr(action: "/organizations/#{$scope.current_organization.id}/members/import")
+    form.ajaxSubmit
+      type: 'POST'
+      error: (event, statusText, data, form) ->
+        fixed_alert("上传失败，请重试")
+        submit_btn.html('提交').removeClass('disabled')
+      success: (data, statusText, xhr, form) ->
+        submit_btn.html('提交').removeClass('disabled')
+        $scope.$apply ->
+          $scope.members = $scope.members.concat(data.members)
+          $scope.fail_memebers = data.meta.fail_members
 ]
-
-
-###data =
-  user:
-    phone: 'phone'
-"/users/#{id}", data###

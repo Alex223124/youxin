@@ -1,8 +1,11 @@
 Youxin::Application.routes.draw do
   resources :forms, only: [:create] do
-    get 'collection' => 'forms#get_collection', on: :member
-    get 'collections' => 'forms#collections', on: :member
-    post 'collection' => 'forms#create_collection', on: :member
+    member do
+      get 'collection' => 'forms#get_collection'
+      get 'collections' => 'forms#collections'
+      post 'collection' => 'forms#create_collection'
+      get 'download' => 'forms#download'
+    end
   end
   get 'receipts/read' => 'receipts#read'
   get 'receipts/unread' => 'receipts#unread'
@@ -14,8 +17,8 @@ Youxin::Application.routes.draw do
   root to: 'receipts#index'
   devise_for :users
   resources :users, only: [:update] do
-    get 'authorized_organizations' => 'users#authorized_organizations', on: :collection
-    get 'recent_authorized_organizations' => 'users#recent_authorized_organizations', on: :collection
+    get 'authorized_organizations' => 'users#authorized_organizations', on: :member
+    get 'recent_authorized_organizations' => 'users#recent_authorized_organizations', on: :member
     get 'organizations' => 'users#organizations', on: :member
   end
 
@@ -25,6 +28,7 @@ Youxin::Application.routes.draw do
     put 'members' => 'members#update', on: :member
     get 'authorized_users' => 'organizations#authorized_users', on: :member
     post 'children' => 'organizations#create', on: :member
+    post 'members/import' => 'members#import', on: :member
   end
 
   resource :user, only: [] do
@@ -33,6 +37,8 @@ Youxin::Application.routes.draw do
     get 'organizations' => 'user#organizations'
     get 'created_receipts' => 'user#created_receipts'
     get 'favorited_receipts' => 'user#favorited_receipts'
+    get 'authorized_organizations' => 'user#authorized_organizations'
+    get 'recent_authorized_organizations' => 'user#recent_authorized_organizations'
   end
 
   namespace :admin do

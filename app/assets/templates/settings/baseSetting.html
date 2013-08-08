@@ -1,3 +1,11 @@
+<ul class="breadcrumb sub-nav">
+  <li ng-repeat="breadcrumb in breadcrumbs" class="{{$last ? 'active' : ''}}">
+    <a ng-href="\#{{breadcrumb.url}}" ng-hide="$last">{{breadcrumb.name}}</a>
+    <span ng-show="$last">{{breadcrumb.name}}</span>
+    <span class="divider" ng-hide="$last">/</span>
+  </li>
+</ul>
+
 <div id="setting" class="row-fluid">
   <div class="span3">
     <div class="setting-option-wrap">
@@ -5,16 +13,7 @@
         基本信息
       </div>
       <div class="setting-option">
-        修改密码
-      </div>
-      <div class="setting-option">
-        教育信息
-      </div>
-      <div class="setting-option">
-        职业信息
-      </div>
-      <div class="setting-option">
-        组织管理
+        <a ng-href="#/settings/password">修改密码</a>
       </div>
     </div>
   </div>

@@ -1,11 +1,31 @@
-h2 Change your password
-= simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
-  = f.error_notification
-  = f.input :reset_password_token, as: :hidden
-  = f.full_error :reset_password_token
-  .form-inputs
-    = f.input :password, label: "New password", required: true, autofocus: true
-    = f.input :password_confirmation, label: "Confirm your new password", required: true
-  .form-actions
-    = f.button :submit, "Change my password"
-= render "devise/shared/links"
+.alert-container
+  - if resource.errors.any?
+    .alert.alert-danger
+      button type="button" class="close" data-dismiss="alert" &times;
+      strong 错误：
+      | #{resource.errors.full_messages.join(", ")}
+
+#login-background
+  .position
+  .wrapper
+    .logo
+      = image_tag 'logo.png'
+    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'login-box' }) do |f|
+      = f.hidden_field :reset_password_token
+      label
+        = f.password_field :password, autofocus: true, placeholder: '请输入新密码'
+      label
+        = f.password_field :password_confirmation, placeholder: '请再次输入密码'
+      label
+        = f.button '修改密码', class: 'btn btn-primary submit'
+      label.last
+        = link_to '返回登录', new_session_path(resource_name)
+      i.caret-left
+
+  .others 产品介绍
+
+= content_for :styles do
+  = stylesheet_link_tag 'login', media: 'all'
+= content_for :scripts do
+  = javascript_include_tag 'devise'
+  = javascript_include_tag 'bootstrap-alert'
