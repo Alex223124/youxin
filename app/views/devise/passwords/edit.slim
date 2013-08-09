@@ -22,7 +22,11 @@
         = link_to '返回登录', new_session_path(resource_name)
       i.caret-left
 
-  .others 产品介绍
+  .others
+    | Copyright © 2013 &nbsp
+    i.icon-heart
+    | &nbsp Combee
+    a.contact_us href="mailto:combee.co@gmail.com" 联系我们
 
 = content_for :styles do
   = stylesheet_link_tag 'login', media: 'all'
