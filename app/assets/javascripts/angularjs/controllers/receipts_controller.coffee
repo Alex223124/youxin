@@ -1,4 +1,4 @@
-@ReceiptsController = ['$scope', '$http', 'Receipt', ($scope, $http, Receipt) ->
+@ReceiptsController = ['$scope', '$http', ($scope, $http) ->
   $scope.breadcrumbs = [
     {
       name: '首页'

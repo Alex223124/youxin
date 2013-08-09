@@ -32,9 +32,10 @@ html
       .navbar.navbar-inverse
         .navbar-inner
           ul.nav.pull-right
-            a.btn.btn-primary.pull-left ng-href="#/posts/new"
-              i.icon-edit
-              | 发优信
+            - unless current_user.authorized_organizations.count.zero?
+              a.btn.btn-primary.pull-left ng-href="#/posts/new"
+                i.icon-edit
+                | 发优信
             li.dropdown
               a.dropdown-toggle href='javascript:;' data-toggle='dropdown'
                 | #{current_user.name}

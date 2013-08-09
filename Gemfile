@@ -1,4 +1,4 @@
-source 'http://ruby.taobao.org'
+source 'https://rubygems.org'
 
 def darwin_only(require_as)
   RUBY_PLATFORM.include?('darwin') && require_as
@@ -14,7 +14,6 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
   gem 'uglifier', '>= 1.0.3'
-  gem 'bootstrap-wysihtml5-rails'
 end
 
 gem 'jquery-rails', '~> 2.2.1'
@@ -59,10 +58,10 @@ end
 gem 'slim-rails' # html template
 gem 'bootstrap-sass', '~> 2.3.1.0' # bootstrap
 gem 'angularjs-rails', '~> 1.0.7' # angularjs
-gem 'angularjs-rails-resource', '~> 0.2.0'
 gem 'simple_form'
 gem 'font-awesome-sass-rails', github: 'pduersteler/font-awesome-sass-rails', branch: :master
 # gem 'font-awesome-sass-rails'
+gem 'bootstrap-wysihtml5-rails'
 
 # Youxin settings
 gem 'settingslogic', '~> 2.0.9'
