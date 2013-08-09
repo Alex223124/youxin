@@ -54,6 +54,9 @@ group :development, :test do
   gem 'quiet_assets', '~> 1.0.2' # disable assets log
   gem 'faker' # fake data
 end
+group :production do
+  gem 'unicorn'
+end
 
 gem 'slim-rails' # html template
 gem 'bootstrap-sass', '~> 2.3.1.0' # bootstrap
