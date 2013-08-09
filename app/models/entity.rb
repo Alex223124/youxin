@@ -46,9 +46,9 @@ class Entity
     when Field::TextField, Field::TextArea, Field::NumberField
       self.value
     when Field::RadioButton
-      (input.options.where(id: self.value) && input.options.where(default_selected: true)).first.value
+      (input.options.where(id: self.value).first || input.options.where(default_selected: true).first).try(:value)
     when Field::CheckBox
-      (input.options.where(:id.in => self.value) && input.options.where(default_selected: true)).map(&:value).join(', ')
+      (input.options.where(:id.in => self.value) || input.options.where(default_selected: true)).map(&:value).join(', ')
     end
   end
 end

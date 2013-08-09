@@ -95,6 +95,28 @@
     .error (data) ->
       App.alert('评论失败', 'error')
 
+  $scope.form = {}
+
+  $scope.getValueInObj = (input,collection)->
+    switch input.type
+      when "Field::TextField","Field::NumberField","Field::TextArea"
+        return collection.objOfProperty("key",input.identifier).value
+
+      when "Field::RadioButton"
+        option_id = collection.objOfProperty("key",input.identifier).value
+        return option_id and input.options.objOfProperty("id", option_id).value
+        
+      when "Field::CheckBox"
+        _result = []
+        option_ids = collection.objOfProperty("key",input.identifier).value
+        for _i in option_ids
+          _result.push(input.options.objOfProperty("id", _i).value)
+        return _result.join(",")
+
+  $scope.set_form_collections = (receipt)->
+    $scope.form = receipt.post.forms.first()
+    $("#form_collections").show()
+
   $scope.fetch_forms = (receipt) ->
     read_receipt(receipt)
     post = receipt.post
@@ -103,6 +125,9 @@
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
+        if receipt.origin
+          $http.get("/forms/#{form.id}/collections").success (data) ->
+            form.collections = data.collections
         $http.get("/forms/#{form.id}/collection").success((data) ->
           form.collectioned = true
           collection = data.collection
@@ -155,6 +180,15 @@
       receipt.read = true
       $http.put("/receipts/#{receipt.id}/read")
 
+  $scope.send_sms_notifications = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/sms_notifications").success () ->
+        App.alert("系统已经发送短信通知")
+        self.html("系统已经发送短信通知")
+        self.attr("disabled","disabled")
+      .error () ->
+        App.alert("发送失败", 'error')
 
-  #$scope.user = $h
 ]
