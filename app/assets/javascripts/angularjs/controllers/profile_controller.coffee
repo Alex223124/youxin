@@ -137,8 +137,8 @@
       )
     height = if $("\##{receipt.id}-forms").css("height") is "auto" then "0px" else "auto"
     $("\##{receipt.id}-forms").css("height",height)
-    _height = if $("\##{receipt.id}-forms-created").css("height") is "auto" then "0px" else "auto"
-    $("\##{receipt.id}-forms-created").css("height",_height)
+    _height = if $("\##{receipt.id}-forms-favorited").css("height") is "auto" then "0px" else "auto"
+    $("\##{receipt.id}-forms-favorited").css("height",_height)
 
   $scope.update_form = (form, key, value) ->
     for input in form.inputs

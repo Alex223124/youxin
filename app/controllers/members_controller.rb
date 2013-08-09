@@ -10,7 +10,11 @@ class MembersController < ApplicationController
   serialization_scope :organization
   def index
     members = @organization.members
-    render json: members, each_serializer: MemberSerializer, root: :members
+    if @organization.members.include?(current_user) || @organization.authorized_users.include?(current_user)
+      render json: members, each_serializer: MemberSerializer, root: :members
+    else
+      render json: members, each_serializer: OtherMemberSerializer, root: :members
+    end
   end
 
   def update
