@@ -15,7 +15,7 @@
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取我所在的组织失败")
+      App.alert("获取我所在的组织失败", 'error')
 
   getAllOrganizations = (callback, callbackerror)->
     Organization.all = []
@@ -27,21 +27,21 @@
       callback(Organization.all)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取所有组织失败")
+      App.alert("获取所有组织失败", 'error')
 
   getMemberByOrganization = (org_id, _callback, callbackerror)->
     $http.get("/organizations/#{org_id}/members.json").success (_data)->
       _callback(_data.members)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("ha")
+      App.alert("获取成员信息失败", 'error')
 
   getOrganizationManagers = (org_id, callback, callbackerror)->
     $http.get("/organizations/#{org_id}/authorized_users").success (data)->
       callback(data.authorized_users)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取管理员信息失败")
+      App.alert("获取管理员信息失败", 'error')
 
   getOrganizationsByUser (data)->
     $scope.organizations_self_in = data

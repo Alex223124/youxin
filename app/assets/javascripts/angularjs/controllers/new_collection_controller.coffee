@@ -20,5 +20,5 @@
     .success (data) ->
       form.collectioned = true
     .error (data) ->
-      fixed_alert('提交失败，请检查填写内容')
+      App.alert('提交失败，请检查填写内容', 'error')
 ]

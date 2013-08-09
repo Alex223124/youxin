@@ -81,7 +81,7 @@ ul.breadcrumb.sub-nav
             .post ng-repeat="receipt in created_receipts"
               .content
                 .created_at.pull-right
-                  small.timeago.muted datetime="{{receipt.created_at}}"
+                  small.timeago.muted timeago="receipt.created_at"
                 .avatar
                   img.pull-left ng-src="{{receipt.author.avatar | avatar_version:'small'}}"
                 .name
@@ -171,7 +171,7 @@ ul.breadcrumb.sub-nav
                 .accordion-group.comments-box
                   .collapse id="{{receipt.id}}-comments"
                     .reply-box
-                      textarea.input-block-level placeholder="write something ..." rows="1" ng-model="receipt.post.commentBody"
+                      textarea.input-block-level placeholder="回复 ..." rows="1" ng-model="receipt.post.commentBody"
                       .tools
                         a.btn.btn-link.btn-small.btn-cancel 取消
                         a.btn.btn-success.btn-small ng-click="createComments(receipt, $event);" 回复
@@ -185,14 +185,14 @@ ul.breadcrumb.sub-nav
                         span.name
                           a href="/users/{{comment.user.name}}" {{comment.user.name}}
                         span.created_at style="padding-left: 7px;"
-                          small.timeago.muted datetime="{{comment.created_at}}"
+                          small.timeago.muted timeago="comment.created_at"
                         .body {{comment.body}}
 
           #favorited_receipts.tab-pane
             .post ng-repeat="receipt in favorited_receipts"
               .content
                 .created_at.pull-right
-                  small.timeago.muted datetime="{{receipt.created_at}}"
+                  small.timeago.muted timeago="receipt.created_at"
                 .avatar
                   img.pull-left ng-src="{{receipt.author.avatar | avatar_version:'small'}}"
                 .name
@@ -282,7 +282,7 @@ ul.breadcrumb.sub-nav
                 .accordion-group.comments-box
                   .collapse id="{{receipt.id}}-comments-favorited"
                     .reply-box
-                      textarea.input-block-level placeholder="write something ..." rows="1" ng-model="receipt.post.commentBody"
+                      textarea.input-block-level placeholder="回复 ..." rows="1" ng-model="receipt.post.commentBody"
                       .tools
                         a.btn.btn-link.btn-small.btn-cancel 取消
                         a.btn.btn-success.btn-small ng-click="createComments(receipt, $event);" 回复
@@ -296,5 +296,5 @@ ul.breadcrumb.sub-nav
                         span.name
                           a href="/users/{{comment.user.name}}" {{comment.user.name}}
                         span.created_at style="padding-left: 7px;"
-                          small.timeago.muted datetime="{{comment.created_at}}"
+                          small.timeago.muted timeago="comment.created_at"
                         .body {{comment.body}}

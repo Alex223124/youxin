@@ -120,10 +120,10 @@
             scope.$apply ->
               scope.datas = Organization.all
               popwindow.find("a.submit").unbind "click", submit
-            fixed_alert("添加成功")
+            App.alert("添加成功")
             popwindowhide()
           .error (_data, _status)->
-            fixed_alert("添加失败，请重新操作！")
+            App.alert("添加失败，请重新操作", 'error')
             popwindowhide()
 
         keybind = (event)->
@@ -200,7 +200,7 @@
               scope.datas = Organization.all
             hideconfirm()
           .error (data)->
-            fixed_alert("删除失败，请重新操作！")
+            App.alert("删除失败，请重新操作", 'error')
             hideconfirm()
 
         confirm.find("a.submit").bind "click", submit

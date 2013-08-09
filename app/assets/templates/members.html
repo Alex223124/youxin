@@ -45,7 +45,7 @@
                 <div class="span6 member-list">
                   <ul>
                     <li>
-                      <input type="text" ng-model="searchInput" placeholder="姓名,电话或学号">
+                      <input type="text" ng-model="searchInput" placeholder="姓名或电话">
                     </li>
                     <li ng-repeat="member in activeElementMembers | filter:searchInput" ng-click="addToCurrentOrg(member.id)">
                       <img ng-src="{{member.avatar | avatar_version:'normal'}}">

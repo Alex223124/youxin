@@ -16,7 +16,7 @@
         password: $scope.password
         password_confirmation: $scope.passwordConfirmation
     $http.put("/user", data).success (data)->
-      fixed_alert("修改成功!")
+      App.alert("修改成功")
     .error (data,status)->
-      fixed_alert("修改失败,请重试!")
+      App.alert("修改失败,请重试", 'error')
 ]

@@ -1,5 +1,3 @@
-#= require fixed_alert
-
 Array.prototype.objOfProperty = (_property,_value,_hasChildren)->
   _result = undefined
   for _item in this

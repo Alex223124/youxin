@@ -28,16 +28,16 @@
     data = {}
     data.user = $scope.user
     $http.put("/user", data).success ()->
-      fixed_alert ("保存成功!")
+      App.alert("保存成功")
     .error (_data,_status)->
-      fixed_alert ("提交失败!")
+      App.alert("提交失败", 'error')
 
   $scope.uploadAvatar = (ele) ->
     form = $(ele).parents('form')
     form.ajaxSubmit
       type: 'PUT'
       error: (event, statusText, responseText, form) ->
-        fixed_alert("修改头像失败, 请重新操作!")
+        App.alert("修改头像失败, 请重新操作", 'error')
       success: (responseText, statusText, xhr, form) ->
         $scope.$apply ->
           $scope.user = responseText.user

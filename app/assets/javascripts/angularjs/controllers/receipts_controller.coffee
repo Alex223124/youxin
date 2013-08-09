@@ -39,7 +39,7 @@
         $scope.unread_receipts = $scope.unread_receipts.concat data.receipts
         set_receipt_range_for_array(data.receipts)
       else
-        fixed_alert('暂时没有未读消息')
+        App.alert('暂时没有未读消息', 'info')
     move_reads()
 
   $scope.load_more = (event) ->
@@ -47,10 +47,10 @@
       if data.receipts.length
         $scope.read_receipts = $scope.read_receipts.concat data.receipts
         set_receipt_range_for_array(data.receipts)
-        fixed_alert("加载了 #{data.receipts.length} 条消息")
+        App.alert("加载了 #{data.receipts.length} 条消息")
       else
         angular.element(event.target).attr('disabled', true).html('没有更多了')
-        fixed_alert('没有更多了')      
+        App.alert('没有更多了')      
 
   $scope.fetch_attachments = (receipt) ->
     read_receipt(receipt)
@@ -85,7 +85,7 @@
       angular.element(e.target).prev().click()
       post.comments.unshift data.comment
     .error (data) ->
-      fixed_alert('评论失败')
+      App.alert('评论失败', 'error')
 
   $scope.form = {}
 
@@ -115,11 +115,11 @@
     self = $($event.target)
     unless self.attr("disabled")
       $http.post("/posts/#{post.id}/sms_notifications").success () ->
-        fixed_alert("系统即将发送短信通知")
-        self.html("系统即将发送短信通知")
+        App.alert("系统已经发送短信通知")
+        self.html("系统已经发送短信通知")
         self.attr("disabled","disabled")
       .error () ->
-        fixed_alert("发送失败")
+        App.alert("发送失败", 'error')
 
   $scope.fetch_forms = (receipt) ->
     read_receipt(receipt)

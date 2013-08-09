@@ -20,7 +20,7 @@
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取我所在的组织失败!")
+      App.alert("获取我所在的组织失败!", 'error')
 
   getCreatedReceipts = (callback,callbackerror)->
     $http.get("/user/created_receipts.json").success (_data,_status)->
@@ -37,27 +37,22 @@
   getUserInformations (_data)->
     $scope.user = _data
   ,(_data,_status)->
-    fixed_alert("获取信息失败!")
+    App.alert("获取信息失败!", 'error')
 
   getCurrentUserOrganizations (_data)->
     $scope.organizations = _data
-
-  ###getCreatedReceipts (_data)->
-    $scope.created_receipts = _data
-  ,(_data,_status)->
-    fixed_alert("获取发布的消息失败！")###
 
   $scope.refreshFavoritedReceipts = ()->    
     getFavoritedReceipts (_data)->
       $scope.favorited_receipts = _data
     ,(_data,_status)->
-      fixed_alert("获取收藏的消息失败！")
+      App.alert("获取收藏的消息失败！", 'error')
 
   $scope.refreshCreatedReceipts = ()->
     getCreatedReceipts (_data)->
       $scope.created_receipts = _data
     ,(_data,_status)->
-      fixed_alert("获取发布的消息失败！")
+      App.alert("获取发布的消息失败！", 'error')
 
   $scope.refreshCreatedReceipts()
   $scope.refreshFavoritedReceipts()
@@ -98,7 +93,7 @@
       angular.element(e.target).prev().click()
       post.comments.unshift data.comment
     .error (data) ->
-      fixed_alert('评论失败')
+      App.alert('评论失败', 'error')
 
   $scope.fetch_forms = (receipt) ->
     read_receipt(receipt)

@@ -11,8 +11,8 @@
 
   $scope.submit = ()->
     $http.put("/user",$scope.informations).success ()->
-      fixed_alert ("form had been submit succesfully!")
+      App.alert("成功提交表单")
     .error (_data,_status)->
-      fixed_alert ("failed to submit forms!")
+      App.alert("提交表单失败，请重试", 'error')
 
 ]

@@ -109,7 +109,7 @@
   scope.saveForm = ()->
     form_json = 
       form: $filter('format_form_json')(scope.form_json)
-    console.log form_json
+    # console.log form_json
     http(
       data: form_json
       url: "/forms"
@@ -120,8 +120,9 @@
       scope.formData.name = form.title
       scope.formData.id = form.id 
       scope.youxindata.form_ids = [form.id]     
+      App.alert("表格 [#{scope.form_json.title}] 保存成功")
     ).error((data)->
-      alert("failed to save " + scope.form_json.title + "!")
+      App.alert("表格 [#{scope.form_json.title}] 保存失败!", 'error')
     )
   scope.$on "clearData",()->
     scope.formData.name = ""
@@ -194,13 +195,14 @@
   
   #$scope.$on "formReady",()->
   $scope.submit = ()->
-    console.log($scope.youxindata)
+    # console.log($scope.youxindata)
     $http(
       url: "/posts"
       method: "POST"
       data: $scope.youxindata
     ).success(()->
       $scope.$broadcast("clearData")
+      App.alert("消息已成功发送")
       $location.url("/")
       Organization.all = []
     )
@@ -218,7 +220,7 @@
     $scope.youxindata.title = this.msgtitle
     $scope.youxindata.body_html = $("#wysihtml5-textarea").val()
     self = $("#send-msg").find(".first-step")
-    console.log $scope.youxindata 
+    # console.log $scope.youxindata 
     window.setTimeout(()->
       if (self.find(".nextStep").attr("disabled") is undefined)
         targetele = self.closest(".write-steps").find(".second-step")

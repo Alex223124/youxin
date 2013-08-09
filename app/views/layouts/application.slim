@@ -13,20 +13,20 @@ html
       ul.nav.nav-pills.nav-stacked ng-controller="navController"
         li ng-class="isActive('/')"
           a ng-href='/'
-            i.icon-music
+            i.icon-location-arrow
             span  优信
         li ng-class="isActive('/user/organizations')"
           a ng-href='#/user/organizations'
-            i.icon-heart
+            i.icon-sitemap
             span 组织展示
         - unless current_user.authorized_organizations.count.zero?
           li ng-class="isActive('/organizations')"
             a ng-href='#/organizations'
-              i.icon-glass
+              i.icon-cogs
               span 组织管理
           li ng-class="isActive('/organization_members')"
             a ng-href='#/organizations/#{current_user.authorized_organizations.first.id}/members'
-              i.icon-envelope
+              i.icon-group
               span 成员管理
     .main-container
       .navbar.navbar-inverse
@@ -50,6 +50,7 @@ html
       .main-content
         = yield
 
+    .notifications.center
     javascript:
       ROOT_URL = "#{root_url}";
       FAYE_SERVER_URL = "#{Youxin.config.faye.server}";

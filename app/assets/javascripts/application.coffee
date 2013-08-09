@@ -14,13 +14,12 @@
 #= require jquery_ujs
 #= require bootstrap
 #= require angularjs
-#= require timeago
-#= require locales/timeago.zh-cn
 #= require popuper
 #= require notifications
 #= require tool
 #= require bootstrap-wysihtml5
 #= require bootstrap-wysihtml5/locales/zh-CN
+#= require bootstrap-notify
 #= require jquery.form
 #= require_self
 
@@ -56,8 +55,6 @@ window.App =
         _select_ele.animate({marginTop: "-10px",opacity:"hide"},300)
         _body.removeData("radio-select")
 
-  enableTemeago : () ->
-    $('.timeago').timeago({selector: 'small.timeago'})
   enableReplyBox : () ->
     $('.main-content').on 'focus', '.reply-box textarea', ->
       $(this).css('height', '60px')
@@ -139,9 +136,14 @@ window.App =
     richedit = $("#wysihtml5-textarea")
     richedit.wysihtml5(defaultOptions)
 
+  alert : (message, type = 'success') ->
+    return false unless message
+    $('.notifications.center').notify
+      message: message
+      type: type
+    .show()
 
-$ ->
-  App.enableTemeago()
+$(document).ready ->
   App.enableReplyBox()
   Youxin.initNotificationSubscribe()
   App.open()

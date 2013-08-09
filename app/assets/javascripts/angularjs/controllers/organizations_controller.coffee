@@ -16,7 +16,7 @@
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取我所在的组织失败")
+      App.alert("获取我所在的组织失败", 'error')
 
   getAllOrganizations = (callback, callbackerror)->
     Organization.all = []
@@ -27,21 +27,21 @@
       callback(Organization.all)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取所有组织失败")
+      App.alert("获取所有组织失败", 'error')
 
   getMemberByOrganization = (org_id, _callback, callbackerror)->
     $http.get("/organizations/#{org_id}/members.json").success (_data)->
       _callback(_data.members)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取组织成员失败")
+      App.alert("获取组织成员失败", 'error')
 
   getOrganizationManagers = (org_id, callback, callbackerror)->
     $http.get("/organizations/#{org_id}/authorized_users").success (data)->
       callback(data.authorized_users)
     .error (_data, _status)->
       callbackerror(_data, _status)
-      fixed_alert("获取管理员信息失败")
+      App.alert("获取管理员信息失败", 'error')
 
   unless $scope.orgs
     getAllOrganizations((data)->
@@ -104,13 +104,13 @@
         if _v isnt $scope.defaultActiveEle["#{_k}_was"]
           $http.put("/organizations/#{$scope.defaultActiveEle.id}",dataCache).success ()->
             $scope.defaultActiveEle["#{_k}_was"] = _v
-            fixed_alert("修改成功")
+            App.alert("修改成功")
           .error (_data,_status)->
             switch _status
               when 403
-                fixed_alert("您没有该组织的管理权限")
+                App.alert("您没有该组织的管理权限", 'error')
               else
-                fixed_alert("修改失败，请重新操作")
+                App.alert("修改失败，请重新操作", 'error')
 
   $scope.uploadAvatar = (ele)->
     form = $(ele).parents('form')
@@ -119,7 +119,7 @@
     form.ajaxSubmit
       type: 'PUT'
       error: (event, statusText, responseText, form) ->
-        fixed_alert("修改头像失败, 请重新操作!")
+        App.alert("修改头像失败, 请重新操作!", 'error')
         form.removeClass('active').find('span').html('修改头像')
       success: (responseText, statusText, xhr, form) ->
         form.removeClass('active').find('span').html('修改头像')
