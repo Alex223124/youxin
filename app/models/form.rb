@@ -84,22 +84,27 @@ class Form
 
   # TODO: need_test
   def archive
-    book = Spreadsheet::Workbook.new
-    sheet = book.create_worksheet
+    file = Tempfile.new('/tmp/excels', Rails.root)
+    book = WriteExcel.new file.path
+    sheet = book.add_worksheet(self.title || '未命名表单')
+    format_bold = book.add_format
+    format_bold.set_bold
 
     labels = self.inputs.map(&:label).unshift('提交用户')
-    sheet.row(0).concat labels
+    sheet.write 'A1', labels, format_bold
 
     identifiers = self.inputs.map(&:identifier)
     self.collections.each_with_index do |collection, index|
-      row = sheet.row(index + 1)
-      row.push collection.user.name
+      values = []
+      values.push collection.user.name
       identifiers.each do |identifier|
         entity = collection.entities.where(key: identifier).first
-        row.push entity.get_value
+        values.push entity.get_value
       end
+      sheet.write "A#{index + 2}", values
     end
-    book
+    book.close
+    file
   end
 
 end

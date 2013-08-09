@@ -33,9 +33,7 @@ class FormsController < ApplicationController
     render json: { collection: @collection.entities.as_json(only: [:key, :value]) }
   end
   def download
-    book = @form.archive
-    file = Tempfile.new('/tmp/excels', Rails.root)
-    book.write file.path
+    file = @form.archive
     send_file file.path, filename: "#{@form.title}.xls", type: 'application/vnd.ms-excel; charset=utf-8', disposition: 'attachment'
   end
 
@@ -44,7 +42,7 @@ class FormsController < ApplicationController
     @form = Form.find(params[:id])
     return not_found! unless @form
   end
-  def check_collection
+  def check_collection  
     @collection = current_user.collections.find_by(form_id: @form.id)
     return bad_request! unless @collection
   end
