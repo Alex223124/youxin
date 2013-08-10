@@ -374,8 +374,8 @@
     false: "-alt"
 
   $scope.msg_push = 
-    active: false
-    date: '2'
+    active: true
+    date: '5'
     full_msg: false    
   
   $scope.collectData = ()->
@@ -391,7 +391,7 @@
   
   $scope.$on "clearData",()->
     $scope.msg_push = 
-      active: false
-      date: '2'
+      active: true
+      date: '5'
       full_msg: false    
 ]

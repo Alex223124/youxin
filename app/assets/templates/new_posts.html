@@ -80,14 +80,14 @@
         <label>选择推送方式:</label>
         <div>
           <span class="push-method">
-            <input type="checkbox" ng-model="msg_push.active"><i class="icon-envelope{{icon_map1[msg_push.active]}}" ng-click="msg_push.active=!msg_push.active"></i>
+            <input type="checkbox" ng-model="msg_push.active"><i class="icon-envelope{{icon_map1[msg_push.active]}}" ng-click="msg_push.active=!msg_push.active" style="color: #53a63f;"></i>
           </span>
           <div class="inline-block pull-right msg-push active-{{msg_push.active}}">
             <span>
               优信将在消息发出
               <span class="timeSet" ng-model="msg_push.date" contenteditable="true">
-                2
-              </span>小时后向仍未确认已阅的用户发送短信提醒
+                {{msg_push.date}}
+              </span>小时后向仍未确认已读的用户发送短信提醒
             </span>
           </div>
           <div class="clearfix"></div>
