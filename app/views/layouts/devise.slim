@@ -24,3 +24,9 @@ html
           | #{flash[:notice]}
 
     = yield
+
+    javascript:
+      ROOT_URL = "#{root_url}";
+      FAYE_SERVER_URL = "#{Youxin.config.faye.server}";
+      SUBSCRIPTION_PREFIX = "#{Youxin.config.faye.subscription_prefix}"
+      CURRENT_USER_NOTIFICATION_CHANNEL = "#{current_user && current_user.notification_channel || ''}";
