@@ -15,6 +15,7 @@
 
     error = (response) ->
       if response.status is 401
+        App.alert('登录超时，请重新登录，页面即将跳转', 'error')
         window.location.reload()
       $q.reject(response);
 
