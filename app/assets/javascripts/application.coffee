@@ -4,6 +4,7 @@
 #= require bootstrap-alert
 #= require bootstrap-dropdown
 #= require bootstrap-collapse
+#= require bootstrap-tab
 #= require angularjs
 #= require popuper
 #= require notifications
@@ -73,7 +74,7 @@ window.App =
     myCustomTemplates =
       "font-styles" : (locale,options)->
         return "<li class='dropdown'>" +
-        "<a class='dropdown-toggle' data-toggle='dropdown' href='#'>" +              
+        "<a class='dropdown-toggle' data-toggle='dropdown' href='javascript:;'>" +              
         "<i class='icon-font'></i>&nbsp;<span class='current-font'>" + locale.font_styles.normal + "</span>&nbsp;<i class='icon icon-caret-down'></i>" + "</a>" +
         "<ul class='dropdown-menu dropdown-left'>" +
             "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='div' tabindex='-1'>" + locale.font_styles.normal + "</a></li>" +
@@ -96,31 +97,13 @@ window.App =
                 "<a data-wysihtml5-command='Indent' title='" + locale.lists.indent + "' tabindex='-1'><i class='icon-indent-left'></i></a>" +
              "</li>"
       
-      "link" : (locale,options)->
-        return "<li>" +
-              "<div class='bootstrap-wysihtml5-insert-link-modal modal hidden fade'>" +
-                "<div class='modal-header'>" +
-                  "<a class='close' data-dismiss='modal'>&times;</a>" +
-                  "<h3>" + locale.link.insert + "</h3>" +
-                "</div>" +
-                "<div class='modal-body'>" +
-                  "<input value='http://' class='bootstrap-wysihtml5-insert-link-url input-xlarge'>" +
-                  "<label class='checkbox'> <input type='checkbox' class='bootstrap-wysihtml5-insert-link-target' checked>" + locale.link.target + "</label>" +
-                "</div>" +
-                "<div class='modal-footer'>" +
-                  "<a href='#' data-dismiss='modal'>" + locale.link.cancel + "</a>" +
-                  "<a href='#' data-dismiss='modal'>" + locale.link.insert + "</a>" +
-                "</div>" +
-              "</div>" +
-              "<a data-wysihtml5-command='createLink' title='" + locale.link.insert + "' tabindex='-1'><i class='icon-share'></i></a>" +
-            "</li>"
     defaultOptions = 
       "font-styles": true
       "color": false
       "emphasis": true
       "lists": true
       "html": false
-      "link": true
+      "link": false
       "image": false
       locale: "zh-CN"
       customTemplates: myCustomTemplates

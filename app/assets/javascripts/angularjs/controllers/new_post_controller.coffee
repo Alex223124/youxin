@@ -120,6 +120,7 @@
       scope.formData.name = form.title
       scope.formData.id = form.id 
       scope.youxindata.form_ids = [form.id]     
+      controllerElement.hide(200)
       App.alert("表格 [#{scope.form_json.title}] 保存成功")
     ).error((data)->
       App.alert("表格 [#{scope.form_json.title}] 保存失败!", 'error')
@@ -197,7 +198,7 @@
   $scope.submit = ()->
     # console.log($scope.youxindata)
     $http(
-      url: "/posts"
+      url: "/posts.json"
       method: "POST"
       data: $scope.youxindata
     ).success(()->
@@ -235,7 +236,7 @@
 ]
 
 @secondstepCtrl = ["$scope", '$http', "$document",(scope, $http ,$document)->
-  $http.get('/user/authorized_organizations?actions[]=create_youxin').success((data) ->
+  $http.get('/user/authorized_organizations.json?actions[]=create_youxin').success((data) ->
     Organization.all = []
     for organization in data.authorized_organizations
       new Organization(organization)
@@ -315,7 +316,7 @@
   scope.selectresult = []
   scope.present_organizations = []
   scope.selected_organization_ids = []
-  $http.get("/user/recent_authorized_organizations").success((data)->
+  $http.get("/user/recent_authorized_organizations.json").success((data)->
     #data.organization_ids
     #data.organization_clan_ids
     scope.commonly_used_organizations = data

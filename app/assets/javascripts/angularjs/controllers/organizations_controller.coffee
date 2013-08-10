@@ -37,7 +37,7 @@
       App.alert("获取组织成员失败", 'error')
 
   getOrganizationManagers = (org_id, callback, callbackerror)->
-    $http.get("/organizations/#{org_id}/authorized_users").success (data)->
+    $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
       callback(data.authorized_users)
     .error (_data, _status)->
       callbackerror(_data, _status)
@@ -102,7 +102,7 @@
         dataCache = {}
         dataCache.organization = data
         if _v isnt $scope.defaultActiveEle["#{_k}_was"]
-          $http.put("/organizations/#{$scope.defaultActiveEle.id}",dataCache).success ()->
+          $http.put("/organizations/#{$scope.defaultActiveEle.id}.json",dataCache).success ()->
             $scope.defaultActiveEle["#{_k}_was"] = _v
             App.alert("修改成功")
           .error (_data,_status)->

@@ -10,7 +10,7 @@
     }
   ]
   getUserInformations = (callback, callbackerror)->
-    $http.get("/user").success (data, _status)->
+    $http.get("/user.json").success (data, _status)->
       callback(data.user, _status)
     .error (_data, _status)->
       callbackerror(_data, _status)
@@ -64,7 +64,7 @@
     post = receipt.post
     unless post.attachments
       receipt.attachments_loading = true
-      $http.get("/posts/#{post.id}/attachments").success((data) ->
+      $http.get("/posts/#{post.id}/attachments.json").success((data) ->
         receipt.attachments_loading = false
         post.attachments = data.attachments
       )
@@ -72,7 +72,7 @@
   $scope.fetch_unread_receipts = (receipt) ->
     post = receipt.post
     unless post.unread_receipts
-      $http.get("/posts/#{post.id}/unread_receipts").success((data) ->
+      $http.get("/posts/#{post.id}/unread_receipts.json").success((data) ->
         post.unread_receipts = data.unread_receipts
       )
 
@@ -80,7 +80,7 @@
     read_receipt(receipt)
     post = receipt.post
     unless post.comments
-      $http.get("/posts/#{post.id}/comments").success((data) ->
+      $http.get("/posts/#{post.id}/comments.json").success((data) ->
         post.comments = data.comments
       )
 
@@ -88,7 +88,7 @@
     post = receipt.post
     comment =
       body: post.commentBody
-    $http.post("/posts/#{post.id}/comments", { comment: comment })
+    $http.post("/posts/#{post.id}/comments.json", { comment: comment })
     .success (data) ->
       angular.element(e.target).prev().click()
       post.comments.unshift data.comment
@@ -121,14 +121,14 @@
     read_receipt(receipt)
     post = receipt.post
     unless post.forms
-      $http.get("/posts/#{post.id}/forms").success((data) ->
+      $http.get("/posts/#{post.id}/forms.json").success((data) ->
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
         if receipt.origin
-          $http.get("/forms/#{form.id}/collections").success (data) ->
+          $http.get("/forms/#{form.id}/collections.json").success (data) ->
             form.collections = data.collections
-        $http.get("/forms/#{form.id}/collection").success((data) ->
+        $http.get("/forms/#{form.id}/collection.json").success((data) ->
           form.collectioned = true
           collection = data.collection
           for entity in collection
@@ -164,11 +164,11 @@
   $scope.favoriteable = (receipt) ->
     read_receipt(receipt)
     if receipt.favorited
-      $http.delete("/receipts/#{receipt.id}/favorite").success((data) ->
+      $http.delete("/receipts/#{receipt.id}/favorite.json").success((data) ->
         receipt.favorited = false
       )
     else
-      $http.post("/receipts/#{receipt.id}/favorite").success((data) ->
+      $http.post("/receipts/#{receipt.id}/favorite.json").success((data) ->
         receipt.favorited = true
       )
   $scope.expandable = (receipt) ->
@@ -178,13 +178,13 @@
   read_receipt = (receipt) ->
     unless receipt.read
       receipt.read = true
-      $http.put("/receipts/#{receipt.id}/read")
+      $http.put("/receipts/#{receipt.id}/read.json")
 
   $scope.send_sms_notifications = (receipt,$event)->
     post = receipt.post
     self = $($event.target)
     unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/sms_notifications").success () ->
+      $http.post("/posts/#{post.id}/sms_notifications.json").success () ->
         App.alert("系统已经发送短信通知")
         self.html("系统已经发送短信通知")
         self.attr("disabled","disabled")

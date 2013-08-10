@@ -49,7 +49,7 @@
       else
         App.alert("获取组织失败,请重新操作！", 'error')   
 
-  $http.get("/help/positions").success (data)->
+  $http.get("/help/positions.json").success (data)->
     $scope.position_options = data.positions
   .error (_data,_status)->
     $scope.position_options = []
@@ -57,7 +57,7 @@
   $scope.callback = (newOption, member, oldOption)->
     if oldOption is null or (newOption.id isnt oldOption.id)
       data = getData(member.id, newOption.id)
-      $http.put("/organizations/#{organization_id}/members", data).success ()->
+      $http.put("/organizations/#{organization_id}/members.json", data).success ()->
         return true
       .error ()->
         App.alert("由于网络原因，您需要重新操作！", 'error')
@@ -90,7 +90,7 @@
   $scope.removeMember = (_id)->
     data = getData(_id)
     data.method = 'delete'
-    $http.put("/organizations/#{organization_id}/members", data).success ()->
+    $http.put("/organizations/#{organization_id}/members.json", data).success ()->
       thisIndex = $scope.members.indexOfProperty("id",_id)
       $scope.members.splice(thisIndex,1)
       if $scope.members.length is 0
@@ -104,7 +104,7 @@
     data = {}
     data.user = 
       phone: member.phone
-    $http.put("/users/#{member.id}", data).success ()->
+    $http.put("/users/#{member.id}.json", data).success ()->
       App.alert("修改成功!")
     .error (_data)->
       App.alert("修改失败!", 'error')
@@ -119,7 +119,7 @@
         name: $scope.user_name
         email: $scope.user_email
         phone: $scope.user_tel
-    $http.post("/organizations/#{organization_id}/members", objCache).success (data)->
+    $http.post("/organizations/#{organization_id}/members.json", objCache).success (data)->
       $scope.members.push(data.member)
       $scope.user_name = ""
       $scope.user_tel = ""
@@ -136,7 +136,7 @@
     else
       data = getData(_id)
       data.method = "put"
-      $http.put("/organizations/#{organization_id}/members", data).success ()->
+      $http.put("/organizations/#{organization_id}/members.json", data).success ()->
         $scope.members.push($scope.activeElementMembers.objOfProperty("id",_id))
         $scope.hasOrgMember = true
       .error ()->

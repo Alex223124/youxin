@@ -8,11 +8,11 @@
   $scope.max_receipt_id = '0'
   $scope.min_receipt_id = 'z'
 
-  $http.get('/receipts/read').success (data) ->
+  $http.get('/receipts/read.json').success (data) ->
     $scope.read_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
 
-  $http.get('/receipts/unread').success (data) ->
+  $http.get('/receipts/unread.json').success (data) ->
     $scope.unread_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
 
@@ -34,7 +34,7 @@
         compensatory_index += 1
 
   $scope.refresh = () ->
-    $http.get("/receipts/unread?since_id=#{$scope.max_receipt_id}").success (data) ->
+    $http.get("/receipts/unread.json?since_id=#{$scope.max_receipt_id}").success (data) ->
       if data.receipts.length
         $scope.unread_receipts = $scope.unread_receipts.concat data.receipts
         set_receipt_range_for_array(data.receipts)
@@ -43,7 +43,7 @@
     move_reads()
 
   $scope.load_more = (event) ->
-    $http.get("/receipts/read?max_id=#{$scope.min_receipt_id}").success (data) ->
+    $http.get("/receipts/read.json?max_id=#{$scope.min_receipt_id}").success (data) ->
       if data.receipts.length
         $scope.read_receipts = $scope.read_receipts.concat data.receipts
         set_receipt_range_for_array(data.receipts)
@@ -57,14 +57,14 @@
     post = receipt.post
     unless post.attachments
       receipt.attachments_loading = true
-      $http.get("/posts/#{post.id}/attachments").success((data) ->
+      $http.get("/posts/#{post.id}/attachments.json").success((data) ->
         receipt.attachments_loading = false
         post.attachments = data.attachments
       )
 
   $scope.fetch_unread_receipts = (receipt) ->
     post = receipt.post
-    $http.get("/posts/#{post.id}/unread_receipts").success((data) ->
+    $http.get("/posts/#{post.id}/unread_receipts.json").success((data) ->
       post.unread_receipts = data.unread_receipts
     )
 
@@ -72,7 +72,7 @@
     read_receipt(receipt)
     post = receipt.post
     unless post.comments
-      $http.get("/posts/#{post.id}/comments").success((data) ->
+      $http.get("/posts/#{post.id}/comments.json").success((data) ->
         post.comments = data.comments
       )
 
@@ -80,7 +80,7 @@
     post = receipt.post
     comment =
       body: post.commentBody
-    $http.post("/posts/#{post.id}/comments", { comment: comment })
+    $http.post("/posts/#{post.id}/comments.json", { comment: comment })
     .success (data) ->
       angular.element(e.target).prev().click()
       post.comments.unshift data.comment
@@ -114,7 +114,7 @@
     post = receipt.post
     self = $($event.target)
     unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/sms_notifications").success () ->
+      $http.post("/posts/#{post.id}/sms_notifications.json").success () ->
         App.alert("系统已经发送短信通知")
         self.html("系统已经发送短信通知")
         self.attr("disabled","disabled")
@@ -125,14 +125,14 @@
     read_receipt(receipt)
     post = receipt.post
     unless post.forms
-      $http.get("/posts/#{post.id}/forms").success (data) ->
+      $http.get("/posts/#{post.id}/forms.json").success (data) ->
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
         if receipt.origin
-          $http.get("/forms/#{form.id}/collections").success (data) ->
+          $http.get("/forms/#{form.id}/collections.json").success (data) ->
             form.collections = data.collections
-        $http.get("/forms/#{form.id}/collection").success (data) ->
+        $http.get("/forms/#{form.id}/collection.json").success (data) ->
           form.collectioned = true
           collection = data.collection
           for entity in collection
@@ -165,11 +165,11 @@
   $scope.favoriteable = (receipt) ->
     read_receipt(receipt)
     if receipt.favorited
-      $http.delete("/receipts/#{receipt.id}/favorite").success((data) ->
+      $http.delete("/receipts/#{receipt.id}/favorite.json").success((data) ->
         receipt.favorited = false
       )
     else
-      $http.post("/receipts/#{receipt.id}/favorite").success((data) ->
+      $http.post("/receipts/#{receipt.id}/favorite.json").success((data) ->
         receipt.favorited = true
       )
   $scope.expandable = (receipt) ->
@@ -179,6 +179,6 @@
   read_receipt = (receipt) ->
     unless receipt.read
       receipt.read = true
-      $http.put("/receipts/#{receipt.id}/read")
+      $http.put("/receipts/#{receipt.id}/read.json")
 
 ]

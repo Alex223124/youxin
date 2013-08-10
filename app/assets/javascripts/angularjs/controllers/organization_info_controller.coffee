@@ -37,7 +37,7 @@
       App.alert("获取成员信息失败", 'error')
 
   getOrganizationManagers = (org_id, callback, callbackerror)->
-    $http.get("/organizations/#{org_id}/authorized_users").success (data)->
+    $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
       callback(data.authorized_users)
     .error (_data, _status)->
       callbackerror(_data, _status)
