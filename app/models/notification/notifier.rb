@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require "net/http"
 require "net/https"
 
@@ -27,7 +29,9 @@ class Notification::Notifier
     def publish_to_phone(receipt)
       receipt = Receipt.find(receipt) unless receipt.is_a? Receipt
       if receipt && receipt.user.phone?
-        content = receipt.post.body
+        post = receipt.post
+        content = "#{post.title}，#{post.body}"
+        content = "#{post.author.name}: #{content[0..35]}...【combee.co】"
         res = ChinaSMS.to(receipt.user.phone, content)
         CommunicationRecord::Sms.create receipt: receipt, status: res[:code]
       end
