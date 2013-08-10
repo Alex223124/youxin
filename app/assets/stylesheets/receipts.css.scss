@@ -5,10 +5,22 @@
   margin: 20px 10px;
   border:  1px solid #d9d9d9;
   & > .content {
+    position: relative;
     padding: 10px;
     border-bottom: 1px solid #d9d9d9;
     &:hover {
       background: whitesmoke;
+    }
+    .read-dot {
+      position: absolute;
+      right: 30px;
+      top: 30px;
+      font-size: 0.7em;
+      color: #16A085;
+      cursor: pointer;
+      &:hover {
+        color: #0d5d4d;
+      }
     }
     .avatar {
         img {

@@ -5,6 +5,7 @@
 #= require bootstrap-dropdown
 #= require bootstrap-collapse
 #= require bootstrap-tab
+#= require bootstrap-tooltip
 #= require angularjs
 #= require popuper
 #= require notifications

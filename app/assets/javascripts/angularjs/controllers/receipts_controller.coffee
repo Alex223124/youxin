@@ -53,7 +53,7 @@
         App.alert('没有更多了')      
 
   $scope.fetch_attachments = (receipt) ->
-    read_receipt(receipt)
+    $scope.read_receipt(receipt)
     post = receipt.post
     unless post.attachments
       receipt.attachments_loading = true
@@ -69,7 +69,7 @@
     )
 
   $scope.fetch_comments = (receipt) ->
-    read_receipt(receipt)
+    $scope.read_receipt(receipt)
     post = receipt.post
     unless post.comments
       $http.get("/posts/#{post.id}/comments.json").success((data) ->
@@ -122,7 +122,7 @@
         App.alert("发送失败", 'error')
 
   $scope.fetch_forms = (receipt) ->
-    read_receipt(receipt)
+    $scope.read_receipt(receipt)
     post = receipt.post
     unless post.forms
       $http.get("/posts/#{post.id}/forms.json").success (data) ->
@@ -163,7 +163,7 @@
             option.default_selected = false
 
   $scope.favoriteable = (receipt) ->
-    read_receipt(receipt)
+    $scope.read_receipt(receipt)
     if receipt.favorited
       $http.delete("/receipts/#{receipt.id}/favorite.json").success((data) ->
         receipt.favorited = false
@@ -173,12 +173,17 @@
         receipt.favorited = true
       )
   $scope.expandable = (receipt) ->
-    read_receipt(receipt)
+    $scope.read_receipt(receipt)
     receipt.expanded = !receipt.expanded
 
-  read_receipt = (receipt) ->
+  $scope.read_receipt = (receipt) ->
     unless receipt.read
       receipt.read = true
       $http.put("/receipts/#{receipt.id}/read.json")
+
+  $scope.showTooltip = (event) ->
+    $(event.target).tooltip('show')
+  $scope.hideTooltip = (event) ->
+    $(event.target).tooltip('hide')
 
 ]

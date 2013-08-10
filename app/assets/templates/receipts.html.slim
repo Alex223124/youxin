@@ -11,6 +11,8 @@ ul.breadcrumb.sub-nav
       .refresh-btn.btn.btn-block.btn-info.btn-link ng-click="refresh();" 刷新
     .post ng-repeat="receipt in unread_receipts | orderBy:'id'"
       .content
+        .read-dot data-toggle="tooltip" title="标记为已读" ng-mouseenter="showTooltip($event);" ng-mouseleave="hideTooltip($event);" ng-click="read_receipt(receipt);" ng-show="!receipt.read"
+          i.icon-circle
         .created_at.pull-right
           small.timeago.muted timeago="receipt.created_at"
         .avatar
