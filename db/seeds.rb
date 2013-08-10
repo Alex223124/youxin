@@ -24,7 +24,7 @@ organization10 = Organization.create name: 'ict', parent_id: organization6.id, b
 password = '12345678'
 
 10.times do |n|
-  name = "#{n}"
+  name = "name-#{n}"
   phone = 18600000000 + n
   bio = "bio-#{n}"
   gender = %w(男 女).sample
