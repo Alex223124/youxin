@@ -1,11 +1,9 @@
-# encoding: utf-8
-
 class MembersController < ApplicationController
   before_filter :find_organization
   before_filter :authorize_add_member!, only: [:update], if: :is_put_method
-  before_filter :authorize_add_member!, only: [:create]
+  before_filter :authorize_add_member!, only: [:create, :update_role]
   before_filter :authorize_remove_member!, only: [:update], if: :is_delete_method
-  before_filter :ensure_members, only: [:update]
+  before_filter :ensure_members, only: [:update, :update_role]
 
   serialization_scope :organization
   def index
@@ -17,6 +15,23 @@ class MembersController < ApplicationController
     end
   end
 
+  def update_role
+    role = Role.where(id: params[:role_id]).first
+    if role
+      @members.each do |member|
+        relationship = member.user_role_organization_relationships.where(organization_id: @organization.id).first_or_initialize
+        relationship.role = role
+        relationship.save
+      end
+      head :no_content
+    else
+      @members.each do |member|
+        relationship = member.user_role_organization_relationships.where(organization_id: @organization.id).first
+        relationship.destroy if relationship
+      end
+      head :no_content
+    end
+  end
   def update
     if is_put_method
       position = Position.where(id: params[:position_id]).first
@@ -31,7 +46,6 @@ class MembersController < ApplicationController
   end
 
   def import
-    initial_position = Position.where(name: '学生').first
     begin
       excel_praser = Youxin::ExcelPraser.new(params[:file].tempfile)
     rescue Youxin::ExcelPraser::InvalidFileType => e
@@ -48,7 +62,7 @@ class MembersController < ApplicationController
         # TODO: need asyn
         user.send_reset_password_instructions
         created_users.push user
-        @organization.push_member(user, initial_position)
+        @organization.push_member(user)
       else
         user_attr[:errors] = user.errors.keys
         fail_users.push user_attr
@@ -61,12 +75,11 @@ class MembersController < ApplicationController
     attrs = params[:user]
     password = Devise.friendly_token.first(8)
     attrs.merge!({ password: password, password_confirmation: password })
-    initial_position = Position.where(name: '学生').first
     user = User.new attrs
     if user.save
       # TODO: need asyn
       user.send_reset_password_instructions
-      @organization.push_member(user, initial_position)
+      @organization.push_member(user)
       render json: user, status: :created, serializer: MemberSerializer
     else
       render json: user.errors, status: :unprocessable_entity 

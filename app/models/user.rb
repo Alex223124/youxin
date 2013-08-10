@@ -58,7 +58,7 @@ class User
   field :blog, type: String
   field :uid, type: String
 
-  validates :name, presence: true
+  validates :name, presence: true, length: 2..10
   validates :phone, format: { with: /\A1\d{10}\Z/ }, uniqueness: true, allow_nil: true
   validates :gender, inclusion: %w(男 女), allow_nil: true
   validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_nil: true
@@ -108,7 +108,7 @@ class User
   has_and_belongs_to_many :conversations, inverse_of: :participant
   has_many :messages, dependent: :destroy
   has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
-  has_one :user_role_organization_relationship, dependent: :destroy
+  has_many :user_role_organization_relationships, dependent: :destroy
 
   before_save :ensure_authentication_token!
   before_save :ensure_notification_channel!
@@ -149,6 +149,15 @@ class User
   end
   def human_position_in_organization(organization)
     position_in_organization(organization).try(:name)
+  end
+  def role_in_organization(organization)
+    organization = Organization.where(id: organization).first unless organization.is_a? Organization    
+    relationship = self.user_role_organization_relationships.where(organization_id: organization.id).first
+    if relationship
+      relationship.role
+    else
+      role_in_organization(organization.parent) if organization.parent?
+    end
   end
   # Organization
 

@@ -8,18 +8,18 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-orgnization1 = Organization.create name: 'uestc', bio: 'bio-usetc'
+organization1 = Organization.create name: 'uestc', bio: 'bio-usetc'
 
-orgnization2 = Organization.create name: 'scie', parent_id: orgnization1.id, bio: 'bio-scie'
-orgnization3 = Organization.create name: 'networking', parent_id: orgnization2.id, bio: 'bio-networking'
-orgnization4 = Organization.create name: 'information', parent_id: orgnization2.id, bio: 'bio-information'
-orgnization5 = Organization.create name: 'communication', parent_id: orgnization2.id, bio: 'bio-communication'
+organization2 = Organization.create name: 'scie', parent_id: organization1.id, bio: 'bio-scie'
+organization3 = Organization.create name: 'networking', parent_id: organization2.id, bio: 'bio-networking'
+organization4 = Organization.create name: 'information', parent_id: organization2.id, bio: 'bio-information'
+organization5 = Organization.create name: 'communication', parent_id: organization2.id, bio: 'bio-communication'
 
-orgnization6 = Organization.create name: 'see', parent_id: orgnization1.id, bio: 'bio-see'
-orgnization7 = Organization.create name: 'eie', parent_id: orgnization6.id, bio: 'bio-eie'
-orgnization8 = Organization.create name: 'efrt', parent_id: orgnization6.id, bio: 'bio-efrt'
-orgnization9 = Organization.create name: 'ewta', parent_id: orgnization6.id, bio: 'bio-ewta'
-orgnization10 = Organization.create name: 'ict', parent_id: orgnization6.id, bio: 'bio-ict'
+organization6 = Organization.create name: 'see', parent_id: organization1.id, bio: 'bio-see'
+organization7 = Organization.create name: 'eie', parent_id: organization6.id, bio: 'bio-eie'
+organization8 = Organization.create name: 'efrt', parent_id: organization6.id, bio: 'bio-efrt'
+organization9 = Organization.create name: 'ewta', parent_id: organization6.id, bio: 'bio-ewta'
+organization10 = Organization.create name: 'ict', parent_id: organization6.id, bio: 'bio-ict'
 
 password = '12345678'
 
@@ -48,18 +48,23 @@ Position.create name: "教授"
 Position.create name: "院长"
 Position.create name: "辅导员"
 
-Organization.all.each do |orgnization|
+Organization.all.each do |organization|
   times = rand(10)
   times.times do
-    orgnization.add_member(User.all[rand(10)], Position.all[rand(5)])
+    organization.add_member(User.all[rand(10)], Position.all[rand(5)])
   end
 end
 
 admin1 = User.first
 admin2 = User.last
 actions = Action.options_array
-orgnization1.authorize_cover_offspring(admin1, actions)
-orgnization2.authorize_cover_offspring(admin2, actions)
+# organization1.authorize_cover_offspring(admin1, actions)
+# organization2.authorize_cover_offspring(admin2, actions)
+
+admin_role = Role.create name: '管理员', actions: actions
+admin1.user_role_organization_relationships.create organization_id: organization1.id, role_id: admin_role.id
+admin2.user_role_organization_relationships.create organization_id: organization2.id, role_id: admin_role.id
+
 
 posts = []
 posts << %(I wish the rest of my life could move as slowly as the people working for American Airlines' lost baggage department.)
@@ -71,10 +76,10 @@ posts << %{How do you land an engineering job? "ABC: Always Be Coding" by @guita
 admins = [admin1, admin2]
 
 10.times do |n|
-  orgnizations = []
+  organizations = []
   7.times do
-    orgnizations |= [Organization.all.sample]
+    organizations |= [Organization.all.sample]
   end
-  post = admins.sample.posts.new organization_ids: orgnizations.map(&:id), body_html: posts.sample
+  post = admins.sample.posts.new organization_ids: organizations.map(&:id), body_html: posts.sample
   post.save
 end

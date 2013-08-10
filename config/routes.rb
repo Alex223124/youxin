@@ -26,6 +26,7 @@ Youxin::Application.routes.draw do
     get 'members' => 'members#index', on: :member
     post 'members' => 'members#create', on: :member
     put 'members' => 'members#update', on: :member
+    put 'members/role' => 'members#update_role', on: :member
     get 'authorized_users' => 'organizations#authorized_users', on: :member
     post 'children' => 'organizations#create', on: :member
     post 'members/import' => 'members#import', on: :member
@@ -53,6 +54,7 @@ Youxin::Application.routes.draw do
 
   # help
   get 'help/positions' => 'help#positions'
+  get 'help/roles' => 'help#roles'
 
   resources :attachments, only: [:show, :create]
   resources :posts, only: [:create] do

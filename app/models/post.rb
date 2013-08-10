@@ -15,6 +15,7 @@ class Post
 
   validates :author_id, presence: true
   validates :organization_ids, presence: true
+  validates :title, length: { maximum: 20 }
   validates :body_html, presence: true
 
   attr_accessible :title, :body, :body_html, :organization_ids,

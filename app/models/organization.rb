@@ -113,7 +113,7 @@ class Organization
   def deauthorize(user)
     user = User.find(user) unless user.is_a?(User)
     return unless user
-    self.user_actions_organization_relationships.where(user_id: user.id).try(:delete)
+    self.user_actions_organization_relationships.destroy_all(user_id: user.id)
   end
   def deauthorize_cover_offspring(user)
     (self.offspring + [self]).each do |organization|

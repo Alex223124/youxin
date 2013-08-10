@@ -17,10 +17,13 @@
         <span class="user-name">{{member.name}}</span>
         <span contenteditable="true" ng-model="member.phone" ng-blur="updatePhone(member)" class="user-tel">{{member.phone}}</span>
 
-        <span radioselect="true" class="position" ng-model="member.position" member="member" callback="callback(newOption, member, oldOption)" options="position_options">
+        <span radioselect="true" class="position" ng-model="member.role" member="member" callback="callback(newOption, member, oldOption)" options="role_options">
+          {{member.role.name || '普通用户'}}
+        </span>
+<!--         <span radioselect="true" class="position" ng-model="member.position" member="member" callback="callback(newOption, member, oldOption)" options="position_options">
           {{member.position.name == null ? "暂无身份" : member.position.name}}
         </span>
-        <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
+ -->        <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
         <li class="remove-all" ng-show="hasOrgMember">
           <span ng-click="removeAll()">删除全部</span>
           <i class="remove icon-remove-sign" ng-click="removeAll()"></i>

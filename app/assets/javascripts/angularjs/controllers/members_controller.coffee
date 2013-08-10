@@ -49,8 +49,13 @@
       else
         App.alert("获取组织失败,请重新操作！", 'error')   
 
-  $http.get("/help/positions.json").success (data)->
-    $scope.position_options = data.positions
+  # $http.get("/help/positions.json").success (data)->
+  #   $scope.position_options = data.positions
+  # .error (_data,_status)->
+  #   $scope.position_options = []
+  $http.get("/help/roles.json").success (data)->
+    data.roles.unshift({ id: 'not_admin', name: '普通用户' })
+    $scope.role_options = data.roles
   .error (_data,_status)->
     $scope.position_options = []
 
@@ -58,7 +63,7 @@
     if oldOption is null or (newOption.id isnt oldOption.id)
       data = getData(member.id, newOption.id)
       data.method = 'put'
-      $http.put("/organizations/#{organization_id}/members.json", data).success ()->
+      $http.put("/organizations/#{organization_id}/members/role.json", data).success ()->
         return true
       .error ()->
         App.alert("由于网络原因，您需要重新操作！", 'error')
@@ -85,7 +90,7 @@
     _result.member_ids = []
     _result.member_ids.push(_id1)
     if _id2 isnt undefined
-      _result.position_id = _id2
+      _result.role_id = _id2
     _result
 
   $scope.removeMember = (_id)->
