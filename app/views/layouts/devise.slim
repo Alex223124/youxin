@@ -6,6 +6,7 @@ html
     link rel="shortcut icon" href="#{image_path('favicon.png')}"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'login', media: 'all'
+    = javascript_include_tag "application"
     = yield :styles
     = yield :scripts
     = csrf_meta_tags
