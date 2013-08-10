@@ -57,6 +57,7 @@
   $scope.callback = (newOption, member, oldOption)->
     if oldOption is null or (newOption.id isnt oldOption.id)
       data = getData(member.id, newOption.id)
+      data.method = 'put'
       $http.put("/organizations/#{organization_id}/members.json", data).success ()->
         return true
       .error ()->

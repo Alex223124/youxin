@@ -19,7 +19,7 @@ class MembersController < ApplicationController
 
   def update
     if is_put_method
-      position = Position.where(params[:position_id]).first
+      position = Position.where(id: params[:position_id]).first
       @organization.push_members(@members, position)
       render json: @members, each_serializer: MemberSerializer, root: :members
     elsif is_delete_method      
