@@ -12,6 +12,8 @@ class Scheduler::Base
   belongs_to :user
   belongs_to :post
 
+  default_scope desc(:_id)
+
   before_validation do
     self.user_id = self.post.author_id
   end

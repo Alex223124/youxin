@@ -20,7 +20,7 @@ gem 'jquery-rails', '~> 2.2.1'
 
 gem 'mongoid'
 gem 'carrierwave-mongoid', '~> 0.5.0'
-gem 'mini_magick', '~> 3.5.0'
+gem 'mini_magick', '~> 3.6.0'
 gem 'mime-types', '~> 1.23'
 gem 'kaminari'
 

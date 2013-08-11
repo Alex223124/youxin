@@ -32,7 +32,7 @@ password = '12345678'
   blog = "blog-#{n}"
   uid = 123456 + n
   User.create name: name,
-              email: "#{name}@a.a",
+              email: "#{n}@a.a",
               password: password,
               password_confirmation: password,
               phone: phone,

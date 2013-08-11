@@ -105,8 +105,8 @@
         label{
           cursor: default;
         }
-        .manager{
-          margin: auto 5px;
+        span.manager{
+          padding: 0 3px;
         }
         .bio{
           display: inline-block;
@@ -388,6 +388,9 @@
     label{
       a.pull-right{
         margin-right: 20px;
+      }
+      span.manager {
+        padding: 0 3px;
       }
     }
   }

@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_filter :ensure_post, only: [:unread_receipts, :get_comments, :create_comments, :forms, :sms_notifications]
+  before_filter :ensure_post, only: [:unread_receipts, :get_comments, :create_comments, :forms, :sms_notifications, :sms_scheduler]
   before_filter :required_attributes, only: [:create]
   before_filter :authorized_create_post, only: [:create]
   before_filter :ensure_post_attributes, only: [:create]
@@ -49,6 +49,10 @@ class PostsController < ApplicationController
       @post.sms_schedulers.create delayed_at: Time.now
     end
     head :no_content
+  end
+  def sms_scheduler
+    sms_scheduler = @post.sms_schedulers.where(ran_at: nil).first || @post.sms_schedulers.first
+    render json: sms_scheduler, serializer: SmsSchedulerSerializer, root: :sms_scheduler
   end
 
   private

@@ -18,10 +18,10 @@ ul.breadcrumb.sub-nav
         .avatar
           img.pull-left ng-src="{{receipt.author.avatar | avatar_version:'small'}}"
         .name
-          a href="/users/{{receipt.author.name}}" {{receipt.author.name}}
+          span {{receipt.author.name}}
         .organizations
-          a href="#" class="organization" ng-repeat="organization in receipt.organizations" {{organization.name}}
-          a href="#" class="organization" ng-repeat="organization_clan in receipt.organization_clans" {{organization_clan.name}}及以下组织
+          span.organization ng-repeat="organization in receipt.organizations" {{organization.name}}
+          span.organization ng-repeat="organization_clan in receipt.organization_clans" {{organization_clan.name}}及以下组织
         .details
           span.title {{receipt.post.title}}
           span.body ng-show="!!receipt.expanded" compile-string="receipt.post.body_html"
@@ -87,7 +87,7 @@ ul.breadcrumb.sub-nav
                           input type="checkbox" ng-model="option.default_selected"
                           span {{option.value}}
                 li
-                  .btn ng-click="set_form_collections(receipt)" 查看填写情况
+                  .btn ng-click="set_form_collections(receipt)" ng-show="receipt.origin" 查看填写情况
                   .btn.btn-disabled ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="form.collectioned" 已填写
                   .btn.btn-primary ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="!form.collectioned" 提交
 
@@ -99,7 +99,9 @@ ul.breadcrumb.sub-nav
                   i.icon-ok.pull-right ng-show="unread_receipt.read"
                   span.name {{unread_receipt.user.name}}
                   / i.icon-envelope
-            .btn.btn-primary.pull-right ng-click="send_sms_notifications(receipt,$event)" 立即短信通知
+            span.btn.btn-primary.pull-right ng-click="send_sms_notifications(receipt,$event)" 立即短信通知
+            span.muted.disabled.sms_scheduler.label.label-success ng-show="receipt.post.sms_scheduler && receipt.post.sms_scheduler.ran_at" 短信已在 {{receipt.post.sms_scheduler.ran_at | utc2local}} 向未读用户发送
+            span.muted.disabled.sms_scheduler.label.label-info ng-show="receipt.post.sms_scheduler && !receipt.post.sms_scheduler.ran_at" 短信将在 {{receipt.post.sms_scheduler.delayed_at | utc2local}} 向未读用户发送
 
         .accordion-group.comments-box
           .collapse id="{{receipt.id}}-comments"
@@ -129,10 +131,10 @@ ul.breadcrumb.sub-nav
         .avatar
           img.pull-left ng-src="{{receipt.author.avatar | avatar_version:'small'}}"
         .name
-          a href="/users/{{receipt.author.name}}" {{receipt.author.name}}
+          span {{receipt.author.name}}
         .organizations
-          a href="#" class="organization" ng-repeat="organization in receipt.organizations" {{organization.name}}
-          a href="#" class="organization" ng-repeat="organization_clan in receipt.organization_clans" {{organization_clan.name}}及以下组织
+          span.organization ng-repeat="organization in receipt.organizations" {{organization.name}}
+          span.organization ng-repeat="organization_clan in receipt.organization_clans" {{organization_clan.name}}及以下组织
         .details
           span.title {{receipt.post.title}}
           span.body ng-show="!!receipt.expanded" compile-string="receipt.post.body_html"
@@ -198,7 +200,7 @@ ul.breadcrumb.sub-nav
                           input type="checkbox" ng-model="option.default_selected"
                           span {{option.value}}
                 li
-                  .btn ng-click="set_form_collections(receipt)" 查看填写情况
+                  .btn ng-click="set_form_collections(receipt)" ng-show="receipt.origin" 查看填写情况
                   .btn.btn-disabled ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="form.collectioned" 已填写
                   .btn.btn-primary ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="!form.collectioned" 提交
 
@@ -210,7 +212,9 @@ ul.breadcrumb.sub-nav
                   i.icon-ok.pull-right ng-show="unread_receipt.read"
                   span.name {{unread_receipt.user.name}}
                   / i.icon-envelope
-            .btn.btn-primary.pull-right ng-click="send_sms_notifications(receipt,$event)" 立即短信通知
+            span.btn.btn-primary.pull-right ng-click="send_sms_notifications(receipt,$event)" 立即短信通知
+            span.muted.disabled.sms_scheduler.label.label-success ng-show="receipt.post.sms_scheduler && receipt.post.sms_scheduler.ran_at" 短信已在 {{receipt.post.sms_scheduler.ran_at | utc2local}} 向未读用户发送
+            span.muted.disabled.sms_scheduler.label.label-info ng-show="receipt.post.sms_scheduler && !receipt.post.sms_scheduler.ran_at" 短信将在 {{receipt.post.sms_scheduler.delayed_at | utc2local}} 向未读用户发送
 
         .accordion-group.comments-box
           .collapse id="{{receipt.id}}-comments"

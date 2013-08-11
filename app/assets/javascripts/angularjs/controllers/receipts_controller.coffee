@@ -64,9 +64,10 @@
 
   $scope.fetch_unread_receipts = (receipt) ->
     post = receipt.post
-    $http.get("/posts/#{post.id}/unread_receipts.json").success((data) ->
+    $http.get("/posts/#{post.id}/unread_receipts.json").success (data) ->
       post.unread_receipts = data.unread_receipts
-    )
+    $http.get("/posts/#{post.id}/sms_scheduler.json").success (data) ->
+      post.sms_scheduler = data.sms_scheduler
 
   $scope.fetch_comments = (receipt) ->
     $scope.read_receipt(receipt)

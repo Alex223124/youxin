@@ -120,7 +120,7 @@ window.App =
 
 $(document).ready ->
   App.enableReplyBox()
-  Youxin.initNotificationSubscribe()
+  # Youxin.initNotificationSubscribe()
   App.open()
   App.close()
   App.selectComponent()

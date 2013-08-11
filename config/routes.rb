@@ -64,6 +64,7 @@ Youxin::Application.routes.draw do
       post 'comments' => 'posts#create_comments'
       get 'forms' => 'posts#forms'
       post 'sms_notifications' => 'posts#sms_notifications'
+      get 'sms_scheduler' => 'posts#sms_scheduler'
     end
     resources :attachments, only: [:index]
   end

@@ -108,3 +108,13 @@
     array[array.length - 1] = "#{version}_#{array.last()}"
     array.join('/')
 )
+
+@app.filter 'utc2local', ->
+  (datastr) ->
+    timeStr = $.trim(datastr)
+    timeStr = timeStr.replace(/\.\d+/,"")
+    timeStr = timeStr.replace(/-/,"/").replace(/-/,"/")
+    timeStr = timeStr.replace(/T/," ").replace(/Z/," UTC")
+    timeStr = timeStr.replace(/([\+\-]\d\d)\:?(\d\d)/," $1$2")
+    local = new Date(timeStr)
+    "#{local.getMonth()}月#{local.getDate()}日#{local.getHours()}时#{local.getMinutes()}分"

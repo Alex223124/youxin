@@ -39,7 +39,7 @@
         <label>
           <span class="line-tips">管理员</span>
           <span>
-            <span ng-repeat="manager in activeOrganization.managers">{{manager.name}}</span>
+            <span ng-repeat="manager in activeOrganization.managers" class="manager">{{manager.name}}</span>
           </span>
         </label>
         <label><span class="line-tips">人数</span><span>{{activeOrganization.members_count}}</span></label>
@@ -60,7 +60,6 @@
               <img ng-src="{{member.avatar | avatar_version:'normal'}}" alt="用户头像" class="pull-left">
               <p>
                 <span class="name">{{member.name}}</span>
-                (<span class="position">{{member.position.name}}</span>)
               </p>
               <div>联系方式: <span>{{member.phone}}</span></div>
               <div class="description">
