@@ -18,6 +18,13 @@
     Organization.all = []
     for organization in data.organizations
       new Organization(organization)
+    # not_exists
+    org = {}
+    org.id = 'not_exists'
+    org.name = '所有用户'
+    org.members_count = '...'
+
+    new Organization(org)
     Organization.setIndex(false)
     $scope.organizations = Organization.all
     for _i in $scope.organizations
@@ -80,7 +87,7 @@
   $scope.activeFn = (org)->
     $("#org-tree-container").children(".active").removeClass("active")
     $("#org-tree-container").children().eq(org.index).addClass("active")
-    $http.get("/organizations/#{org.id}/members.json").success (data) ->
+    $http.get("/organizations/#{org.id}/all_members.json").success (data) ->
       $scope.activeElementMembers = data.members
     .error (data)->
       App.alert("获取组织成员失败,请重新操作！", 'error')

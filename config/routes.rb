@@ -30,6 +30,7 @@ Youxin::Application.routes.draw do
     get 'authorized_users' => 'organizations#authorized_users', on: :member
     post 'children' => 'organizations#create', on: :member
     post 'members/import' => 'members#import', on: :member
+    get 'all_members' => 'organizations#all_members', on: :member
   end
 
   resource :user, only: [] do

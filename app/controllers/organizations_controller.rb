@@ -36,6 +36,20 @@ class OrganizationsController < ApplicationController
     render json: authorized_users, each_serializer: BasicUserSerializer, root: :authorized_users
   end
 
+  def all_members
+    @organization = Organization.find(params[:id])
+    if params[:id] == 'not_exists'
+      members = User.all
+    else
+      if @organization
+        members = @organization.members
+      else
+        return not_found!
+      end
+    end
+    render json: members, each_serializer: CustomMemberSerializer, root: :members
+  end
+
   private
   def find_organization
     @organization = Organization.find(params[:id])
