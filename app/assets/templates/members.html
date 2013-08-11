@@ -29,14 +29,14 @@
           <i class="remove icon-remove-sign" ng-click="removeAll()"></i>
         </li>
       </ul>
-      <div class="span7 add-org-user">
-        <div class="tabbable">
+      <div class="span7 add-org-user" style="height: 100%;">
+        <div class="tabbable" style="height: 100%;">
           <ul class="nav nav-tab" id="add-user-tab">
             <li class="active"><a href="javascript:;" data-target="#import_org_user" data-toggle="tab">移入用户</a></li>
             <li><a href="javascript:;" data-target="#create_org_user" data-toggle="tab">新建用户</a></li>
           </ul>
-          <div class="tab-content">
-            <div class="tab-pane active" id="import_org_user">
+          <div class="tab-content" style="height: 90%;">
+            <div class="tab-pane active" id="import_org_user" style="height: 100%;">
               <div class="row-fluid">
                 <ul class="org-list top span6">
                   <label>从组织中选择</label>
@@ -45,7 +45,7 @@
                     </angulartree>
                   </div>
                 </ul>
-                <div class="span6 member-list">
+                <div class="span6 member-list" style="overflow-y: scroll;">
                   <ul>
                     <li>
                       <input type="text" ng-model="searchInput" placeholder="姓名或电话">
