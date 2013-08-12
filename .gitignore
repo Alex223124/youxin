@@ -21,5 +21,6 @@ pickle-email-*.html
 
 /config/mongoid.yml
 /config/youxin.yml
+/config/unicorn.rb
 
 /public/*/*
