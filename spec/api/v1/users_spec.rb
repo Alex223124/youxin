@@ -45,7 +45,7 @@ describe Youxin::API, 'users' do
           put api('/user', @user), { header: @header2 }
           @user.reload
         end.to change { @user.header.url }
-        response.status.should == 204        
+        response.status.should == 204
       end
     end
     context "avatar" do
@@ -61,7 +61,7 @@ describe Youxin::API, 'users' do
           @user.reload
         end.to change { @user.avatar.url }
         response.status.should == 204
-      end      
+      end
       it "should update avatar" do
         pending 'should change avatar again'
         @user.update_attributes avatar: @avatar1
@@ -71,7 +71,7 @@ describe Youxin::API, 'users' do
           @user.reload
         end.to change { @user.avatar.url }
         response.status.should == 204
-      end      
+      end
     end
     context "name" do
       it "should update name" do
