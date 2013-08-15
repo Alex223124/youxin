@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe GridfsController do
-  let(:user) { 
+  let(:user) {
     avatar_path = Rails.root.join("spec/factories/images/avatar.png")
     user = create :user, avatar: Rack::Test::UploadedFile.new(avatar_path)
   }
