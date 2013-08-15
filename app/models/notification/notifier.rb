@@ -4,8 +4,8 @@ require "net/http"
 require "net/https"
 
 class Notification::Notifier
+  include Notification::Backend
   class << self
-    # TODO add async_job(like apn_sender)
     def publish_to_faye_client(users, data)
       users.each do |user|
         user = User.find(user) unless user.is_a? User

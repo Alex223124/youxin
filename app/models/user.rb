@@ -156,7 +156,7 @@ class User
     position_in_organization(organization).try(:name)
   end
   def role_in_organization(organization)
-    organization = Organization.where(id: organization).first unless organization.is_a? Organization    
+    organization = Organization.where(id: organization).first unless organization.is_a? Organization
     relationship = self.user_role_organization_relationships.where(organization_id: organization.id).first
     if relationship
       relationship.role
@@ -247,7 +247,7 @@ class User
       participants = obj | [self]
       return false if participants.size < 2
       participants.each do |participant|
-        conversation.participants.push participant 
+        conversation.participants.push participant
       end
     else
       return false

@@ -32,9 +32,27 @@ describe Notification::Notifier do
       }
     end
   end
+  describe ".publish_to_ios_device_async" do
+    before do
+      ResqueSpec.reset!
+    end
+    it "should do notifier.publish_to_ios_device to youxin_notification_queue" do
+      Notification::Notifier.publish_to_ios_device_async([@user], @ios_data)
+      PublishToIosDeviceJob.should have_queued([@user], @ios_data).in(:youxin_notification_queue)
+    end
+  end
   describe ".publish_to_faye_client" do
     it "should send notification to faye_client" do
       Notification::Notifier.publish_to_faye_client([@user], @faye_data)
+    end
+  end
+  describe ".publish_to_faye_client_async" do
+    before do
+      ResqueSpec.reset!
+    end
+    it "should do notifier.publish_to_faye_client to youxin_notification_queue" do
+      Notification::Notifier.publish_to_faye_client_async([@user], @faye_data)
+      PublishToFayeClientJob.should have_queued([@user], @faye_data).in(:youxin_notification_queue)
     end
   end
   describe ".publish_to_phone" do
@@ -50,7 +68,16 @@ describe Notification::Notifier do
     it "should update status" do
       Notification::Notifier.publish_to_phone(@receipt)
       @author.sms_communication_records.last.status.should == '0'
-      
+
+    end
+  end
+  describe ".publish_to_phone_async" do
+    before do
+      ResqueSpec.reset!
+    end
+    it "should do notifier.publish_to_phone to youxin_notification_queue" do
+      Notification::Notifier.publish_to_phone_async(@receipt)
+      PublishToPhoneJob.should have_queued(@receipt).in(:youxin_notification_queue)
     end
   end
 

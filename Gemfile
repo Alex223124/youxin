@@ -33,6 +33,7 @@ group :test do
   gem 'mongoid-rspec'
   gem 'factory_girl_rails'
   gem 'webmock'
+  gem 'resque_spec'
 
   gem 'guard-rspec', '~> 2.5.4'
   # Notification
