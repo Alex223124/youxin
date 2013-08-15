@@ -1,4 +1,5 @@
 class GridfsController < ApplicationController
+  skip_before_filter :authenticate_user!
 	def serve
     gridfs_path = env["PATH_INFO"]
     begin

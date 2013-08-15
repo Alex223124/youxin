@@ -30,16 +30,14 @@ class AttachmentsController < ApplicationController
   end
   def prepare_attachment
     @attachment = Attachment::Base.find(params[:id])
-    unless @attachment && can?(current_user, :download, @attachment)
-      access_denied!
-      return false
-    end
-    if @attachment.image? && params['version'].present?
+    return not_found! unless @attachment
+    return access_denied! unless can?(current_user, :download, @attachment)
+
+    if @attachment.image? and params['version'].present?
       begin
         @path = @attachment.storage.send(params['version']).path
       rescue => e
-        access_denied!
-        return false
+        return not_found!
       end
       @file_name = "#{params['version']}_#{@attachment.file_name}"
     else

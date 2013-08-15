@@ -37,9 +37,9 @@ describe AttachmentsController do
     get 'show', id: @attachment_file.id, private_token: @admin.private_token
     response.status.should == 200
   end
-  it "should return 404" do
+  it "should return 403" do
     get 'show', id: @attachment_file.id, private_token: @user_another.private_token
-    response.status.should == 404
+    response.status.should == 403
   end
   context "image" do
     it "should return 200 when image_attachment exists" do

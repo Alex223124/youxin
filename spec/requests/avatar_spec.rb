@@ -1,11 +1,11 @@
 require 'spec_helper'
 
 describe "Avatar" do
-  let(:user) { 
+  let(:user) {
     avatar_path = Rails.root.join("spec/factories/images/avatar.png")
     user = create :user, avatar: Rack::Test::UploadedFile.new(avatar_path)
   }
-  let(:organization) { 
+  let(:organization) {
     avatar_path = Rails.root.join("spec/factories/images/avatar.png")
     organization = create :organization, avatar: Rack::Test::UploadedFile.new(avatar_path)
   }

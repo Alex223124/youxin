@@ -4,7 +4,8 @@ class Session < Grape::API
   # Example Request:
   #  POST /session
   post "/session" do
-    resource = User.find_for_database_authentication(email: params[:email])
+    required_attributes! [:login, :password]
+    resource = User.find_for_database_authentication(login: params[:login])
 
     return unauthorized! unless resource
 

@@ -12,8 +12,8 @@ class Attachment::Base
   default_scope desc(:_id)
 
   def self.allowed(object, subject)
-    return [] unless object.instance_of?(User)
-    return [] unless subject.instance_of?(Attachment::Base) || subject.instance_of?(Attachment::File) || subject.instance_of?(Attachment::Image)
+    return [] unless object.is_a?(User)
+    return [] unless subject.is_a?(Attachment::Base)
     abilities = []
     if subject.post
       abilities |= [:download] if object.receipts.where(post_id: subject.post.id).exists?

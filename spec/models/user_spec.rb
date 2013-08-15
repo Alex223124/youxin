@@ -26,7 +26,7 @@ describe User do
     it { should have_many(:messages) }
     it { should have_many(:message_notifications) }
     it { should have_many(:schedulers) }
-    it { should have_one(:user_role_organization_relationship) }
+    it { should have_many(:user_role_organization_relationships) }
   end
 
   describe "Respond to" do
@@ -377,19 +377,19 @@ describe User do
     context "without password" do
       before do
         user.save
-        user.update_with_password name: 'name-modify'
+        user.update_with_password name: 'name-new'
         user.reload
       end
-      its(:name) { should == 'name-modify' }
+      its(:name) { should == 'name-new' }
     end
 
     context "with password" do
       before do
         user.save
-        user.update_with_password name: 'name-modify', password: 'invalid_password'
+        user.update_with_password name: 'name-new', password: 'invalid_password'
         user.reload
       end
-      its(:name) { should_not == 'name-modify' }
+      its(:name) { should_not == 'name-new' }
     end
   end
 

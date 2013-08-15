@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'spec_helper'
 
 describe Youxin::ExcelPraser do
@@ -22,7 +24,7 @@ describe Youxin::ExcelPraser do
 
     it "should be properly initialized" do
       excel_praser.file.should == xls_file
-      excel_praser.user_array.should be_kind_of Array 
+      excel_praser.user_array.should be_kind_of Array
     end
 
     it "should respond to accessor" do
@@ -62,11 +64,11 @@ describe Youxin::ExcelPraser do
       end
     end
 
-    it "should return user hash composed of name, email, password" do
+    it "should return user hash composed of name, email, phone" do
       excel_praser.user_array.each do |user_hash|
         user_hash.should have_key :name
         user_hash.should have_key :email
-        user_hash.should have_key :password
+        user_hash.should have_key :phone
       end
     end
 
@@ -75,9 +77,9 @@ describe Youxin::ExcelPraser do
     end
 
     it "should return correct user_hash" do
-      user_array = [ { name: '张三', email: 'zhangsan@y.x', password: '123456'},
-                     { name: '李四', email: 'lisi@y.x', password: '123456'},
-                     { name: '王五', email: 'wangwu@y.x', password: '123456'} ]
+      user_array = [ { name: '张三', email: 'zhangsan@y.x', phone: '123456'},
+                     { name: '李四', email: 'lisi@y.x', phone: '123456'},
+                     { name: '王五', email: 'wangwu@y.x', phone: '123456'} ]
       excel_praser.user_array.should == user_array
     end
   end
