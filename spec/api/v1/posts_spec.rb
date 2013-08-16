@@ -201,7 +201,7 @@ describe Youxin::API, 'posts' do
 
     it "should not found post" do
       get api("/posts/not_exist/forms", @user)
-      response.status.should == 404      
+      response.status.should == 404
     end
 
   end
@@ -461,6 +461,58 @@ describe Youxin::API, 'posts' do
         post api("/posts/#{@post.id}/comments", @admin), attrs
         response.status.should == 400
         json_response.to_s.should =~ /body/i
+      end
+    end
+    context "POST /sms_notifications" do
+      before do
+        ResqueSpec.reset!
+      end
+      it "should return 204" do
+      post api("/posts/#{@post.id}/sms_notifications", @admin)
+      response.status.should == 204
+      end
+      it "should create a sms_scheduler" do
+        expect do
+          post api("/posts/#{@post.id}/sms_notifications", @admin)
+        end.to change { @post.sms_schedulers.count }.by(1)
+      end
+      it "should update current sms_scheduler if it doesnt be executed" do
+        sms_scheduler = @post.sms_schedulers.create delayed_at: 1.days.from_now
+        post api("/posts/#{@post.id}/sms_notifications", @admin)
+        SendSmsToUnreads.should have_scheduled(sms_scheduler.id)
+      end
+      it "should return 403 if user cannt manage this post" do
+        post api("/posts/#{@post.id}/sms_notifications", @user)
+        response.status.should == 403
+      end
+    end
+    context "GET /sms_scheduler" do
+      before do
+        ResqueSpec.reset!
+      end
+      it "should return nothing" do
+        get api("/posts/#{@post.id}/sms_scheduler", @admin)
+        response.status.should == 200
+      end
+      it "should return the last sms_scheduler" do
+        sms_scheduler = @post.sms_schedulers.create delayed_at: 1.days.from_now
+        get api("/posts/#{@post.id}/sms_scheduler", @admin)
+        json_response.should == {
+          delayed_at: sms_scheduler.delayed_at,
+          ran_at: sms_scheduler.ran_at
+        }.as_json
+      end
+      it "should return the last ran sms_scheduler" do
+        timestamp = 1.days.from_now
+        sms_scheduler = @post.sms_schedulers.create delayed_at: timestamp
+        sms_scheduler.ran_at = Time.now
+        sms_scheduler.save
+        get api("/posts/#{@post.id}/sms_scheduler", @admin)
+        json_response['ran_at'].should_not be_nil
+      end
+      it "should return 403" do
+        get api("/posts/#{@post.id}/sms_scheduler", @user)
+        response.status.should == 403
       end
     end
   end

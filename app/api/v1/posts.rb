@@ -79,7 +79,21 @@ class Posts < Grape::API
           fail!(comment.errors)
         end
       end
+      post :sms_notifications do
+        authorize! :manage, @post
+        scheduler = @post.sms_schedulers.where(ran_at: nil).first
+        if scheduler
+          scheduler.run_now!
+        else
+          @post.sms_schedulers.create delayed_at: Time.now
+        end
+        status(204)
+      end
+      get :sms_scheduler do
+        authorize! :manage, @post
+        sms_scheduler = @post.sms_schedulers.where(ran_at: nil).first || @post.sms_schedulers.first
+        present sms_scheduler, with: Youxin::Entities::SmsScheduler
+      end
     end
-
   end
 end
