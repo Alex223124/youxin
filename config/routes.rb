@@ -15,6 +15,7 @@ Youxin::Application.routes.draw do
   resources :attachments, only: [:show]
 
   get '/uploads/avatar/*path' => 'gridfs#serve'
+  get '/uploads/header/*path' => 'gridfs#serve'
 
   require 'api'
   mount Youxin::API => '/'
