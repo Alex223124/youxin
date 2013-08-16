@@ -1,7 +1,7 @@
 module DeviseControllerMacros
 
   def login_user(user = nil)
-    user ||= FactoryGirl.create(:user, :confirmed)
+    user ||= FactoryGirl.create(:user)
     sign_in user
     user
   end
@@ -10,7 +10,7 @@ end
 
 module DeviseFeatureMacros
   def sign_in(user = nil)
-    user ||= FactoryGirl.create(:user, :confirmed)
+    user ||= FactoryGirl.create(:user)
 
     visit new_user_session_path
     fill_in 'user_email', with: user.email

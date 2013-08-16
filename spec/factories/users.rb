@@ -11,11 +11,6 @@ FactoryGirl.define do
     phone
     password '12345678'
     password_confirmation '12345678'
-
-    trait :confirmed do
-      confirmed_at 1.hour.ago
-    end
-
   end
 
   factory :admin, parent: :user do

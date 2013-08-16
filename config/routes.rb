@@ -1,4 +1,14 @@
 Youxin::Application.routes.draw do
+  root to: 'home#index'
+  resources :receipts, only: [:index] do
+    member do
+      put 'read' => 'receipts#read'
+      post 'favorite' =>  'receipts#favorite'
+      delete 'favorite' => 'receipts#unfavorite'
+    end
+  end
+
+# ------------need fix-----------------
   resources :forms, only: [:create] do
     member do
       get 'collection' => 'forms#get_collection'
@@ -9,12 +19,6 @@ Youxin::Application.routes.draw do
   end
   get 'receipts/read' => 'receipts#read'
   get 'receipts/unread' => 'receipts#unread'
-  resources :receipts do
-    put 'read' => 'receipts#mark_as_read', on: :member
-    post 'favorite' =>  'receipts#favorite', on: :member
-    delete 'favorite' => 'receipts#unfavorite', on: :member
-  end
-  root to: 'receipts#index'
   devise_for :users
   resources :users, only: [:update] do
     get 'authorized_organizations' => 'users#authorized_organizations', on: :member

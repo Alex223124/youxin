@@ -8,11 +8,11 @@
   $scope.max_receipt_id = '0'
   $scope.min_receipt_id = 'z'
 
-  $http.get('/receipts/read.json').success (data) ->
+  $http.get('/receipts.json?status=read').success (data) ->
     $scope.read_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
 
-  $http.get('/receipts/unread.json').success (data) ->
+  $http.get('/receipts.json?status=unread').success (data) ->
     $scope.unread_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
 
@@ -34,7 +34,7 @@
         compensatory_index += 1
 
   $scope.refresh = () ->
-    $http.get("/receipts/unread.json?since_id=#{$scope.max_receipt_id}").success (data) ->
+    $http.get("/receipts.json?status=unread&since_id=#{$scope.max_receipt_id}").success (data) ->
       if data.receipts.length
         $scope.unread_receipts = $scope.unread_receipts.concat data.receipts
         set_receipt_range_for_array(data.receipts)
@@ -43,14 +43,14 @@
     move_reads()
 
   $scope.load_more = (event) ->
-    $http.get("/receipts/read.json?max_id=#{$scope.min_receipt_id}").success (data) ->
+    $http.get("/receipts.json?status=read&max_id=#{$scope.min_receipt_id}").success (data) ->
       if data.receipts.length
         $scope.read_receipts = $scope.read_receipts.concat data.receipts
         set_receipt_range_for_array(data.receipts)
         App.alert("加载了 #{data.receipts.length} 条消息")
       else
         angular.element(event.target).attr('disabled', true).html('没有更多了')
-        App.alert('没有更多了')      
+        App.alert('没有更多了')
 
   $scope.fetch_attachments = (receipt) ->
     $scope.read_receipt(receipt)
@@ -98,14 +98,14 @@
       when "Field::RadioButton"
         option_id = collection.objOfProperty("key",input.identifier).value
         return option_id and input.options.objOfProperty("id", option_id).value
-        
+
       when "Field::CheckBox"
         _result = []
         option_ids = collection.objOfProperty("key",input.identifier).value
         for _i in option_ids
           _result.push(input.options.objOfProperty("id", _i).value)
         return _result.join(",")
-        
+
 
   $scope.set_form_collections = (receipt)->
     $scope.form = receipt.post.forms.first()
