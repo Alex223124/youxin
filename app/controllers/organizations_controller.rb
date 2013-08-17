@@ -1,7 +1,6 @@
 class OrganizationsController < ApplicationController
-  before_filter :find_organization, only: [:create, :update, :destroy, :authorized_users]
-  # create children, require parent
-  before_filter :authorize_create_organization!, only: [:create]
+  before_filter :ensure_organization, only: [:create_children, :update, :destroy, :authorized_users]
+  before_filter :authorize_create_organization!, only: [:create_children]
   before_filter :authorize_delete_organization!, only: [:destroy]
   before_filter :authorize_edit_organization!, only: [:update]
   def index
@@ -9,7 +8,8 @@ class OrganizationsController < ApplicationController
     render json: @organizations, each_serializer: AuthorizedOrganizationSerializer, root: :organizations
   end
 
-  def create
+  # FIXME: authorize the new child, when create new child
+  def create_children
     @organization = @organization.children.new(params[:organization])
     if @organization.save
       render json: @organization, status: :created, serializer: AuthorizedOrganizationSerializer, root: :organization
@@ -20,14 +20,14 @@ class OrganizationsController < ApplicationController
 
   def update
     if @organization.update_attributes(params[:organization])
-      render json: @organization, serializer: AuthorizedOrganizationSerializer, root: :organization
+      head :no_content
     else
       render json: @organization.errors, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @organization.destroy if @organization.present?
+    @organization.destroy
     head :no_content
   end
 
@@ -36,6 +36,7 @@ class OrganizationsController < ApplicationController
     render json: authorized_users, each_serializer: BasicUserSerializer, root: :authorized_users
   end
 
+  # OPTIMIZE: need refactory
   def all_members
     @organization = Organization.find(params[:id])
     if params[:id] == 'not_exists'
@@ -51,15 +52,8 @@ class OrganizationsController < ApplicationController
   end
 
   private
-  def find_organization
-    @organization = Organization.find(params[:id])
-    return not_found! unless @organization
+  def ensure_organization
+    @organization = Organization.where(id: params[:id]).first
+    raise Youxin::NotFound unless @organization
   end
-  %W{create delete edit}.each do |action|
-    define_method "authorize_#{action}_organization!" do
-      return access_denied! unless can?(current_user, "#{action}_organization".to_sym, @organization)
-    end
-  end
-
-
 end

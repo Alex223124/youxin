@@ -114,12 +114,12 @@ class ApplicationController < ActionController::Base
     render json: messages, status: :unprocessable_entity
   end
 
-  def authorize! action, subject
-    unless abilities.allowed?(current_user, action, subject)
-      return false
-    end
-    true
-  end
+  # def authorize! action, subject
+  #   unless abilities.allowed?(current_user, action, subject)
+  #     return false
+  #   end
+  #   true
+  # end
   def bulk_authorize! action, subjects
     subjects.each do |subject|
       return false unless authorize!(action, subject)

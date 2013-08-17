@@ -7,7 +7,11 @@ Youxin::Application.routes.draw do
       delete 'favorite' => 'receipts#unfavorite'
     end
   end
-
+  resources :organizations, only: [:index, :update, :destroy] do
+    member do
+      post 'children' => 'organizations#create_children'
+    end
+  end
 # ------------need fix-----------------
   resources :forms, only: [:create] do
     member do
