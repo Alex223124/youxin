@@ -12,6 +12,13 @@ Youxin::Application.routes.draw do
       post 'children' => 'organizations#create_children'
     end
   end
+  resources :forms, only: [:create] do
+    member do
+      get 'download' => 'forms#download'
+    end
+    resources :collections, only: [:create, :index]
+    resource :collection, only: [:show]
+  end
 # ------------need fix-----------------
   resources :forms, only: [:create] do
     member do

@@ -7,10 +7,10 @@ class Form
 
   field :title, type: String
 
-  attr_accessible :title, :post_id, :text_fields_attributes, :text_areas_attributes,
-                  :radio_buttons_attributes, :check_boxes_attributes, :number_fields_attributes
+  attr_accessible :title, :post_id, :inputs_attributes
 
   validates :title, presence: true
+  validates :inputs, presence: true
 
   belongs_to :author, class_name: 'User'
   belongs_to :post
@@ -22,58 +22,28 @@ class Form
   has_many :number_fields, class_name: 'Field::NumberField', dependent: :destroy
   has_many :collections, dependent: :destroy
 
-  accepts_nested_attributes_for :text_fields
-  accepts_nested_attributes_for :text_areas
-  accepts_nested_attributes_for :radio_buttons
-  accepts_nested_attributes_for :check_boxes
-  accepts_nested_attributes_for :number_fields
+  accepts_nested_attributes_for :inputs
 
   class << self
     def clean_attributes_with_inputs(attrs = {})
       inputs = attrs.delete(:inputs)
       field_num = 0
-      attrs[:text_fields_attributes] = {}
-      attrs[:text_areas_attributes] = {}
-      attrs[:radio_buttons_attributes] = {}
-      attrs[:check_boxes_attributes] = {}
-      attrs[:number_fields_attributes] = {}
+      attrs[:inputs_attributes] = {}
       inputs.each do |input|
         field_num += 1
         input[:identifier] = "field_#{ field_num }"
         input[:position] = field_num
         case input[:_type]
-        when "Field::TextField"
-          input.delete(:_type)
-
-          attrs[:text_fields_attributes][field_num] = input
-        when "Field::TextArea"
-          input.delete(:_type)
-
-          attrs[:text_areas_attributes][field_num] = input
-        when "Field::RadioButton"
-          input.delete(:_type)
-
+        when "Field::TextField", "Field::TextArea", "Field::NumberField"
+          attrs[:inputs_attributes][field_num] = input
+        when "Field::RadioButton", "Field::CheckBox"
           input[:options_attributes] = {}
           options = input.delete(:options)
           options.each_with_index do |option, index|
             option.delete(:_type)
             input[:options_attributes][index] = option
           end
-          attrs[:radio_buttons_attributes][field_num] = input
-        when "Field::CheckBox"
-          input.delete(:_type)
-
-          input[:options_attributes] = {}
-          options = input.delete(:options)
-          options.each_with_index do |option, index|
-            option.delete(:_type)
-            input[:options_attributes][index] = option
-          end
-          attrs[:check_boxes_attributes][field_num] = input
-        when "Field::NumberField"
-          input.delete(:_type)
-
-          attrs[:number_fields_attributes][field_num] = input
+          attrs[:inputs_attributes][field_num] = input
         else
           field_num -= 1
         end

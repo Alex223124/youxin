@@ -80,7 +80,7 @@ module Youxin
     end
 
     class PostSimple < Grape::Entity
-      expose :id, :title, :body, :body_html, :created_at    
+      expose :id, :title, :body, :body_html, :created_at
     end
     class PostBasic < PostSimple
       expose :attachments, using: Entities::Attachment
@@ -160,7 +160,7 @@ module Youxin
     end
 
     class Commentable < Grape::Entity
-      expose :id, :title, :body, :body_html, :created_at    
+      expose :id, :title, :body, :body_html, :created_at
     end
     class Comment < Grape::Entity
       expose :id, :body, :created_at

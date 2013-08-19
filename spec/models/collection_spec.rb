@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 describe Collection do
-  let(:collection) { build :collection }
-  subject { collection }
-
   describe "Association" do
     it { should belong_to(:form) }
     it { should belong_to(:user) }

@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :field_base, class: Field::Base do
-    form
+    form_id '123'
   end
 end

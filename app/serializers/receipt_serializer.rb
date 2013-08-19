@@ -4,7 +4,7 @@ class ReceiptSerializer < ActiveModel::Serializer
              :origin,
              :favorited,
              :created_at
- 
+
   has_one :post, serializer: BasicPostSerializer
   has_one :author, serializer: BasicUserSerializer
   has_many :organizations, serializer: BasicOrganizationSerializer

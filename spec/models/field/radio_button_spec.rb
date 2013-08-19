@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe Field::RadioButton do
-  let(:radio_button) { build :radio_button }
-  subject { radio_button }
   describe "Association" do
     it { should belong_to(:form) }
     it { should embed_many(:options) }
@@ -14,8 +12,11 @@ describe Field::RadioButton do
 
   describe "#create" do
     context "only one can be selected" do
-      it "successfully" do
-        @radio_button = build :radio_button
+      before(:each) do
+        @form = build :form
+      end
+      it "succeeds" do
+        @radio_button = build :radio_button, form: @form
         @option_1 = build :option
         @option_2 = build :option
         @option_3 = build :option
@@ -26,8 +27,8 @@ describe Field::RadioButton do
         @radio_button.should be_valid
         @radio_button.options.count.should == 3
       end
-      it "fail multi selected" do
-        @radio_button = build :radio_button
+      it "fails when multi selected" do
+        @radio_button = build :radio_button, form: @form
         @option_1 = build :option, default_selected: true
         @option_2 = build :option, default_selected: true
         @option_3 = build :option
@@ -35,10 +36,15 @@ describe Field::RadioButton do
         @radio_button.save
         @radio_button.should have(1).error_on(:options)
       end
-      it "fail duplicate options" do
-        @radio_button = build :radio_button
+      it "fails when duplicate options" do
+        @radio_button = build :radio_button, form: @form
         @option = build :option
         @radio_button.options = [@option, @option]
+        @radio_button.save
+        @radio_button.should_not be_valid
+      end
+      it "fails when no options" do
+        @radio_button = build :radio_button, form: @form
         @radio_button.save
         @radio_button.should_not be_valid
       end

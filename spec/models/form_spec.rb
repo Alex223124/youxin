@@ -362,6 +362,17 @@ describe Form do
       end
     end
 
+    context "attributes" do
+      it "should be invalid" do
+        @form_json = {
+          title: 'form-first',
+        }
+        @author = create :author
+        form = @author.forms.new(Form.clean_attributes_with_inputs(@form_json))
+        form.should_not be_valid
+      end
+    end
+
   end
 
 end

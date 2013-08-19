@@ -1,9 +1,3 @@
-class CollectionSerializer < ActiveModel::Serializer
-  attributes :entities
-  
+class CollectionSerializer < BasicCollectionSerializer
   has_one :user, serializer: BasicUserSerializer
-
-  def entities
-    object.entities.as_json(only: [:key, :value])
-  end
 end
