@@ -19,6 +19,15 @@ Youxin::Application.routes.draw do
     resources :collections, only: [:create, :index]
     resource :collection, only: [:show]
   end
+  resources :posts, only: [:create] do
+    member do
+      get 'unread_receipts' => 'posts#unread_receipts'
+      get 'forms' => 'posts#forms'
+      post 'run_sms_notifications_now' => 'posts#run_sms_notifications_now'
+      get 'last_sms_scheduler' => 'posts#last_sms_scheduler'
+    end
+    resources :comments, only: [:index, :create]
+  end
 # ------------need fix-----------------
   resources :forms, only: [:create] do
     member do

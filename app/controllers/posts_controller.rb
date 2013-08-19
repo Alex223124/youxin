@@ -1,28 +1,18 @@
+# encoding: utf-8
+
 class PostsController < ApplicationController
-  before_filter :ensure_post, only: [:unread_receipts, :get_comments, :create_comments, :forms, :sms_notifications, :sms_scheduler]
-  before_filter :required_attributes, only: [:create]
-  before_filter :authorized_create_post, only: [:create]
-  before_filter :ensure_post_attributes, only: [:create]
+  before_filter :ensure_post!, only: [:unread_receipts, :forms, :run_sms_notifications_now, :last_sms_scheduler]
+  before_filter :authorized_manage_post!, only: [:unread_receipts, :run_sms_notifications_now, :last_sms_scheduler]
+  before_filter :authorized_read_post!, only: [:forms]
+
+  before_filter :prepare_post_params, only: [:create]
+  before_filter :authorized_create_post!, only: [:create]
+  before_filter :authorized_manage_additions!, only: [:create]
+
   before_filter :authorized_read_post, only: [:get_comments, :create_comments]
-  before_filter :can_read_post, only: [:forms]
   def unread_receipts
-    access_denied! unless can?(current_user, :manage, @post)
     unread_receipts = @post.receipts.unread
     render json: unread_receipts, each_serializer: ReceiptAdminSerializer, root: :unread_receipts
-  end
-
-  def get_comments
-    comments = @post.comments
-    render json: comments, each_serializer: CommentSerializer, root: :comments
-  end
-  def create_comments
-    params[:comment][:user_id] = current_user.id
-    comment = @post.comments.new(params[:comment])
-    if comment.save
-      render json: comment, status: :created
-    else
-      render json: comment.errors, status: :unprocessable_entity
-    end
   end
 
   def forms
@@ -31,17 +21,18 @@ class PostsController < ApplicationController
   end
 
   def create
-    if @post.save
-      @attachments.map { |attachment| @post.attachments << attachment }
-      @forms.map { |form| @post.forms << form }
-      @post.sms_schedulers.create delayed_at: @delayed_at if @delayed_at
-      render json: @post, status: :created
+    post = current_user.posts.new params[:post]
+    if post.save
+      @attachments.each { |attachment| post.attachments << attachment }
+      @forms.each { |form| post.forms << form }
+      post.sms_schedulers.create delayed_at: Time.at(@delayed_sms_at.to_i) if @delayed_sms_at
+      render json: post, status: :created
     else
-      fail!(@post.errors)
+      render json: post.errors, status: :unprocessable_entity
     end
-
   end
-  def sms_notifications
+
+  def run_sms_notifications_now
     scheduler = @post.sms_schedulers.where(ran_at: nil).first
     if scheduler
       scheduler.run_now!
@@ -50,58 +41,55 @@ class PostsController < ApplicationController
     end
     head :no_content
   end
-  def sms_scheduler
-    sms_scheduler = @post.sms_schedulers.where(ran_at: nil).first || @post.sms_schedulers.first
-    render json: sms_scheduler, serializer: SmsSchedulerSerializer, root: :sms_scheduler
+
+  def last_sms_scheduler
+    last_sms_scheduler = @post.sms_schedulers.where(ran_at: nil).first || @post.sms_schedulers.first
+    render json: last_sms_scheduler, serializer: SmsSchedulerSerializer, root: :sms_scheduler
   end
 
   private
-  def ensure_post
-    @post = Post.find(params[:id])
+  def ensure_post!
+    @post = Post.where(id: params[:id]).first
+    raise Youxin::NotFound unless @post
   end
-  def can_read_post
-    return access_denied! unless can?(current_user, :read, @post)
+  def authorized_manage_post!
+    raise Youxin::Forbidden unless current_user_can?(:manage, @post)
   end
+  def authorized_read_post!
+    raise Youxin::Forbidden unless current_user_can?(:read, @post)
+  end
+  def prepare_post_params
+    @organization_ids = params[:post][:organization_ids]
+    @attachment_ids = params[:post].delete(:attachment_ids)
+    @form_ids = params[:post].delete(:form_ids)
+    @delayed_sms_at = params[:post].delete(:delayed_sms_at)
 
-  def required_attributes
-    required_attributes! [:body_html, :organization_ids]
+    params[:post]
   end
-  def authorized_create_post
-    bulk_authorize! :create_youxin, Organization.where(:id.in => params[:organization_ids])
+  def authorized_create_post!
+    if @organization_ids
+      bulk_authorize! :create_youxin, Organization.where(:id.in => @organization_ids)
+    else
+      raise Youxin::NotFound.new('组织')
+    end
   end
-  def ensure_post_attributes
-    attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at, :form_ids]
-    attachment_ids = attrs.delete(:attachment_ids)
-    @delayed_at = Time.at(attrs.delete(:delayed_sms_at).to_i) if attrs[:delayed_sms_at].present?
-    form_ids = attrs.delete(:form_ids)
-    @post = current_user.posts.new attrs
-
+  def authorized_manage_additions!
     @forms = []
-    form_ids.each do |form_id|
-      form = Form.find(form_id)
-      not_found!("form") unless form
+    @form_ids.each do |form_id|
+      form = Form.where(id: form_id, post_id: nil).first
+      raise Youxin::NotFound.new('表格') unless form
       authorize! :manage, form
 
-      if form.post_id.present?
-        @post.errors.add :form_ids, :inclusion
-      end
       @forms |= [form]
-    end if form_ids
+    end if @form_ids
 
     @attachments = []
-    attachment_ids.each do |attachment_id|
-      attachment = Attachment::Base.find(attachment_id)
-
-      not_found!("attachment") unless attachment
+    @attachment_ids.each do |attachment_id|
+      attachment = Attachment::Base.where(id: attachment_id, post_id: nil).first
+      raise Youxin::NotFound.new('附件') unless attachment
       authorize! :manage, attachment
 
-      if attachment.post_id.present?
-        @post.errors.add :attachment_ids, :inclusion
-      end
       @attachments |= [attachment]
-    end if attachment_ids    
-  end
-  def authorized_read_post
-    return access_denied! unless can?(current_user, :read, @post)
+    end if @attachment_ids
   end
 end

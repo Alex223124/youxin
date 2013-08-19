@@ -56,19 +56,20 @@ class ApplicationController < ActionController::Base
     abilities << Post
     abilities << Attachment::Base
     abilities << Conversation
+    abilities << Form
     abilities
   end
 
   def method_missing(method_sym, *arguments, &block)
     if method_sym.to_s =~ /^authorize_(.*)!$/
-      authorize!($1.to_sym)
+      authorize!($1.to_sym, @organization)
     else
       super(method_sym, *arguments, &block)
     end
   end
 
-  def authorize!(action)
-    raise Youxin::Forbidden unless current_user_can?(action, @organization)
+  def authorize!(action, subject)
+    raise Youxin::Forbidden unless current_user_can?(action, subject)
   end
 
   def required_attributes!(keys)
@@ -76,6 +77,11 @@ class ApplicationController < ActionController::Base
       raise Youxin::InvalidParameters.new(key) unless params.has_key?(key)
     end
   end
+
+  def bulk_authorize! action, subjects
+    subjects.each { |subject| authorize!(action, subject) }
+  end
+
 
 # ------------need fix-------------
   def authenticated_as_attachmentable
@@ -120,12 +126,12 @@ class ApplicationController < ActionController::Base
   #   end
   #   true
   # end
-  def bulk_authorize! action, subjects
-    subjects.each do |subject|
-      return false unless authorize!(action, subject)
-    end
-    true
-  end
+  # def bulk_authorize! action, subjects
+  #   subjects.each do |subject|
+  #     return false unless authorize!(action, subject)
+  #   end
+  #   true
+  # end
 
 
 end

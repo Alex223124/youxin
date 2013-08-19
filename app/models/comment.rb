@@ -5,6 +5,9 @@ class Comment
 
   field :body, type: String
 
+  attr_accessible :body, :user_id,
+                  :commentable_id, :commentable_type
+
   validates :body, presence: true
   validates :commentable_id, presence: true
   validates :commentable_type, presence: true

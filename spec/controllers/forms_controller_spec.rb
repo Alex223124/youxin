@@ -91,8 +91,8 @@ describe FormsController do
     before(:each) do
       admin = create :user
       login_user admin
-      actions_organization = Action.options_array_for(:organization)
-      @parent.authorize_cover_offspring(admin, actions_organization)
+      actions_youxin = Action.options_array_for(:youxin)
+      @parent.authorize_cover_offspring(admin, actions_youxin)
     end
     it "should create a new form" do
       expect do
@@ -121,11 +121,11 @@ describe FormsController do
     before(:each) do
       admin = create :user
       login_user admin
-      actions_organization = Action.options_array_for(:organization)
-      @parent.authorize_cover_offspring(admin, actions_organization)
+      actions_youxin = Action.options_array_for(:youxin)
+      @parent.authorize_cover_offspring(admin, actions_youxin)
 
       post = create :post, author: admin, organization_ids: [@parent].map(&:id)
-      @form = post.forms.create(Form.clean_attributes_with_inputs(@form_json))
+      @form = admin.forms.create(Form.clean_attributes_with_inputs(@form_json).merge({ post_id: post.id }))
     end
     it "should return 200" do
       get :download, id: @form.id

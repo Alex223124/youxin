@@ -50,6 +50,17 @@ class Form
       end if inputs
       attrs
     end
+
+    def allowed(object, subject)
+      return [] unless object.is_a?(User)
+      return [] unless subject.is_a?(Form)
+      abilities = []
+      if subject.post
+        abilities |= [:read] if object.receipts.where(post_id: subject.post.id).exists?
+      end
+      abilities |= [:read, :manage] if subject.author_id == object.id
+      abilities
+    end
   end
 
   # TODO: need_test

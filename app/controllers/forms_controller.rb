@@ -30,6 +30,6 @@ class FormsController < ApplicationController
     raise Youxin::Forbidden if current_user.authorized_organizations.count.zero?
   end
   def authorize_manage_form!
-    raise Youxin::Forbidden unless current_user_can?(:manage, @form.post)
+    raise Youxin::Forbidden unless current_user_can?(:manage, @form)
   end
 end
