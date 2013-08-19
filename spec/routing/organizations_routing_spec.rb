@@ -10,4 +10,7 @@ describe OrganizationsController do
   it "to #update" do
     put('/organizations/123').should route_to('organizations#update', id: '123')
   end
+  it "to #authorized_users" do
+    get('/organizations/123/authorized_users').should route_to('organizations#authorized_users', id: '123')
+  end
 end

@@ -10,6 +10,16 @@ Youxin::Application.routes.draw do
   resources :organizations, only: [:index, :update, :destroy] do
     member do
       post 'children' => 'organizations#create_children'
+      get 'authorized_users' => 'organizations#authorized_users'
+    end
+    resources :members, only: [:index, :create] do
+      collection do
+        post 'import' => 'members#import'
+        put '/' => 'members#update'
+        delete '/' => 'members#destroy'
+        put 'role' => 'members#update_role'
+        delete 'role' => 'members#destroy_role'
+      end
     end
   end
   resources :forms, only: [:create] do
@@ -46,16 +56,16 @@ Youxin::Application.routes.draw do
     get 'organizations' => 'users#organizations', on: :member
   end
 
-  resources :organizations, only: [:destroy, :index, :update] do
-    get 'members' => 'members#index', on: :member
-    post 'members' => 'members#create', on: :member
-    put 'members' => 'members#update', on: :member
-    put 'members/role' => 'members#update_role', on: :member
-    get 'authorized_users' => 'organizations#authorized_users', on: :member
-    post 'children' => 'organizations#create', on: :member
-    post 'members/import' => 'members#import', on: :member
-    get 'all_members' => 'organizations#all_members', on: :member
-  end
+  # resources :organizations, only: [:destroy, :index, :update] do
+  #   get 'members' => 'members#index', on: :member
+  #   post 'members' => 'members#create', on: :member
+  #   put 'members' => 'members#update', on: :member
+  #   put 'members/role' => 'members#update_role', on: :member
+  #   get 'authorized_users' => 'organizations#authorized_users', on: :member
+  #   post 'children' => 'organizations#create', on: :member
+  #   post 'members/import' => 'members#import', on: :member
+  #   get 'all_members' => 'organizations#all_members', on: :member
+  # end
 
   resource :user, only: [] do
     put '' => 'user#update'
@@ -67,32 +77,32 @@ Youxin::Application.routes.draw do
     get 'recent_authorized_organizations' => 'user#recent_authorized_organizations'
   end
 
-  namespace :admin do
-    resources :users, only: [:new, :create, :index]
-    post 'users/excel_importor' => 'users#excel_importor'
-    resources :organizations, only: [:new, :create, :destroy, :index] do
-      get 'members' => 'members#index', on: :member
-      put 'members' => 'members#update', on: :member
-      delete 'members' => 'members#destroy', on: :member
-    end
-  end
+  # namespace :admin do
+  #   resources :users, only: [:new, :create, :index]
+  #   post 'users/excel_importor' => 'users#excel_importor'
+  #   resources :organizations, only: [:new, :create, :destroy, :index] do
+  #     get 'members' => 'members#index', on: :member
+  #     put 'members' => 'members#update', on: :member
+  #     delete 'members' => 'members#destroy', on: :member
+  #   end
+  # end
 
   # help
   get 'help/positions' => 'help#positions'
   get 'help/roles' => 'help#roles'
 
   resources :attachments, only: [:show, :create]
-  resources :posts, only: [:create] do
-    member do
-      get 'unread_receipts' => 'posts#unread_receipts'
-      get 'comments' => 'posts#get_comments'
-      post 'comments' => 'posts#create_comments'
-      get 'forms' => 'posts#forms'
-      post 'sms_notifications' => 'posts#sms_notifications'
-      get 'sms_scheduler' => 'posts#sms_scheduler'
-    end
-    resources :attachments, only: [:index]
-  end
+  # resources :posts, only: [:create] do
+  #   member do
+  #     get 'unread_receipts' => 'posts#unread_receipts'
+  #     get 'comments' => 'posts#get_comments'
+  #     post 'comments' => 'posts#create_comments'
+  #     get 'forms' => 'posts#forms'
+  #     post 'sms_notifications' => 'posts#sms_notifications'
+  #     get 'sms_scheduler' => 'posts#sms_scheduler'
+  #   end
+  #   resources :attachments, only: [:index]
+  # end
 
   get '/uploads/avatar/*path' => 'gridfs#serve'
   get '/uploads/header/*path' => 'gridfs#serve'

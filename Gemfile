@@ -34,6 +34,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'webmock'
   gem 'resque_spec'
+  gem 'rack-test', require: 'rack/test', github: 'brynary/rack-test'
 
   gem 'guard-rspec', '~> 2.5.4'
   # Notification

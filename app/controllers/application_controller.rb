@@ -16,12 +16,12 @@ class ApplicationController < ActionController::Base
 
   rescue_from Youxin::NotFound do |exception|
     log_exception(exception)
-    render json: "#{exception.message || 资源} 未找到", status: :not_found
+    render json: "#{exception.message || 资源}未找到", status: :not_found
   end
 
   rescue_from Youxin::InvalidParameters do |exception|
     log_exception(exception)
-    render json: "参数 #{exception.message} 不存在", status: :bad_request
+    render json: "参数 #{exception.message} 有问题", status: :bad_request
   end
 
   protected
