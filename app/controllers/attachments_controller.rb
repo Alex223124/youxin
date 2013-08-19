@@ -1,11 +1,11 @@
 class AttachmentsController < ApplicationController
   before_filter :prepare_attachment, only: [:show]
-  before_filter :prepare_post, only: [:index]
-  before_filter :authenticated_as_attachmentable, only: [:create]
-  before_filter :require_attributes, only: [:create]
+  before_filter :ensure_post!, only: [:index]
+  before_filter :authorize_read_post!, only: [:index]
+  before_filter :authorize_create_attachments!, only: [:create]
 
   def index
-    render json: @post.attachments, each_serializer: AttachmentSerializer
+    render json: @post.attachments, each_serializer: AttachmentSerializer, root: :attachments
   end
 
   def show
@@ -13,31 +13,27 @@ class AttachmentsController < ApplicationController
   end
 
   def create
-    attachment = current_user.image_attachments.new storage: @file
-    attachment = current_user.file_attachments.new storage: @file unless attachment.valid?
+    attachment = current_user.image_attachments.new storage: params[:file]
+    attachment = current_user.file_attachments.new storage: params[:file] unless attachment.valid?
 
     if attachment.save
-      render json: attachment, status: :created, serializer: AttachmentSerializer
+      render json: attachment, status: :created, serializer: AttachmentSerializer, root: :attachment
     else
       render json: attachment.errors, status: :unprocessable_entity
     end
   end
 
   private
-  def require_attributes
-    @file = params[:file]
-    return not_found! unless @file
-  end
   def prepare_attachment
     @attachment = Attachment::Base.find(params[:id])
-    return not_found! unless @attachment
-    return access_denied! unless can?(current_user, :download, @attachment)
+    raise Youxin::NotFound unless @attachment
+    raise Youxin::Forbidden unless can?(current_user, :download, @attachment)
 
     if @attachment.image? and params['version'].present?
       begin
         @path = @attachment.storage.send(params['version']).path
-      rescue => e
-        return not_found!
+      rescue
+        raise Youxin::NotFound
       end
       @file_name = "#{params['version']}_#{@attachment.file_name}"
     else
@@ -46,12 +42,14 @@ class AttachmentsController < ApplicationController
     end
     @file_type = @attachment.file_type
   end
-
-  def prepare_post
-    @post = Post.find(params[:post_id])
-    unless @post && can?(current_user, :read, @post)
-      access_denied!
-      return false
-    end
+  def ensure_post!
+    @post = Post.where(id: params[:post_id]).first
+    raise Youxin::NotFound unless @post
+  end
+  def authorize_read_post!
+    raise Youxin::Forbidden unless current_user_can?(:read, @post)
+  end
+  def authorize_create_attachments!
+    raise Youxin::Forbidden if current_user.authorized_organizations.count.zero?
   end
 end

@@ -37,7 +37,10 @@ Youxin::Application.routes.draw do
       get 'last_sms_scheduler' => 'posts#last_sms_scheduler'
     end
     resources :comments, only: [:index, :create]
+    resources :attachments, only: [:index]
   end
+  resources :attachments, only: [:show, :create]
+
 # ------------need fix-----------------
   resources :forms, only: [:create] do
     member do
@@ -91,7 +94,7 @@ Youxin::Application.routes.draw do
   get 'help/positions' => 'help#positions'
   get 'help/roles' => 'help#roles'
 
-  resources :attachments, only: [:show, :create]
+  # resources :attachments, only: [:show, :create]
   # resources :posts, only: [:create] do
   #   member do
   #     get 'unread_receipts' => 'posts#unread_receipts'
