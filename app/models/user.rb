@@ -169,7 +169,7 @@ class User
   # Authorization
   def authorized_organizations(actions = nil)
     if actions
-      actions.map(&:to_sym)
+      actions.map!(&:to_sym)
       authorized_orgs = []
       self.user_actions_organization_relationships.each do |relationship|
         authorized_orgs << relationship.organization if actions - relationship.actions == []

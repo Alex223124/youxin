@@ -41,6 +41,22 @@ Youxin::Application.routes.draw do
   end
   resources :attachments, only: [:show, :create]
 
+  resource :account, only: [:show, :update] do
+    get 'organizations' => 'accounts#organizations'
+    get 'authorized_organizations' => 'accounts#authorized_organizations'
+    get 'recent_authorized_organizations' => 'accounts#recent_authorized_organizations'
+    get 'created_receipts' => 'accounts#created_receipts'
+    get 'favorited_receipts' => 'accounts#favorited_receipts'
+  end
+  devise_for :users
+  resources :users, only: [:update, :show] do
+    member do
+      get 'organizations' => 'users#organizations'
+      get 'authorized_organizations' => 'users#authorized_organizations'
+      get 'created_receipts' => 'users#created_receipts'
+    end
+  end
+
 # ------------need fix-----------------
   resources :forms, only: [:create] do
     member do
@@ -52,12 +68,12 @@ Youxin::Application.routes.draw do
   end
   get 'receipts/read' => 'receipts#read'
   get 'receipts/unread' => 'receipts#unread'
-  devise_for :users
-  resources :users, only: [:update] do
-    get 'authorized_organizations' => 'users#authorized_organizations', on: :member
-    get 'recent_authorized_organizations' => 'users#recent_authorized_organizations', on: :member
-    get 'organizations' => 'users#organizations', on: :member
-  end
+  # devise_for :users
+  # resources :users, only: [:update] do
+  #   get 'authorized_organizations' => 'users#authorized_organizations', on: :member
+  #   get 'recent_authorized_organizations' => 'users#recent_authorized_organizations', on: :member
+  #   get 'organizations' => 'users#organizations', on: :member
+  # end
 
   # resources :organizations, only: [:destroy, :index, :update] do
   #   get 'members' => 'members#index', on: :member
@@ -70,15 +86,15 @@ Youxin::Application.routes.draw do
   #   get 'all_members' => 'organizations#all_members', on: :member
   # end
 
-  resource :user, only: [] do
-    put '' => 'user#update'
-    get '' => 'user#show'
-    get 'organizations' => 'user#organizations'
-    get 'created_receipts' => 'user#created_receipts'
-    get 'favorited_receipts' => 'user#favorited_receipts'
-    get 'authorized_organizations' => 'user#authorized_organizations'
-    get 'recent_authorized_organizations' => 'user#recent_authorized_organizations'
-  end
+  # resource :user, only: [] do
+  #   put '' => 'user#update'
+  #   get '' => 'user#show'
+  #   get 'organizations' => 'user#organizations'
+  #   get 'created_receipts' => 'user#created_receipts'
+  #   get 'favorited_receipts' => 'user#favorited_receipts'
+  #   get 'authorized_organizations' => 'user#authorized_organizations'
+  #   get 'recent_authorized_organizations' => 'user#recent_authorized_organizations'
+  # end
 
   # namespace :admin do
   #   resources :users, only: [:new, :create, :index]
