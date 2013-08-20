@@ -95,9 +95,9 @@ describe AccountsController do
         current_user.reload
       end.to change { current_user.name }
     end
-    it "should return 204" do
+    it "should return updated user" do
       put :update, user: @valid_attrs
-      response.status.should == 204
+      json_response.should have_key('user')
     end
     it "should return 422" do
       @valid_attrs.merge!({ name: '' })

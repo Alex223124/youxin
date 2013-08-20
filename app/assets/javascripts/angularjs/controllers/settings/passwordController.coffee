@@ -15,7 +15,7 @@
         current_password: $scope.currentPassword
         password: $scope.password
         password_confirmation: $scope.passwordConfirmation
-    $http.put("/user.json", data).success (data)->
+    $http.put("/account.json", data).success (data)->
       App.alert("修改成功")
     .error (data,status)->
       App.alert("修改失败,请重试", 'error')

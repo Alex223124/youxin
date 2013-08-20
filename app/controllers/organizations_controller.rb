@@ -20,7 +20,7 @@ class OrganizationsController < ApplicationController
 
   def update
     if @organization.update_attributes(params[:organization])
-      head :no_content
+      render json: @organization, serializer: AuthorizedOrganizationSerializer, root: :organization
     else
       render json: @organization.errors, status: :unprocessable_entity
     end

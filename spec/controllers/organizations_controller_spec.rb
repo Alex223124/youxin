@@ -58,9 +58,9 @@ describe OrganizationsController do
       actions_organization = Action.options_array_for(:organization)
       @parent.authorize_cover_offspring(current_user, actions_organization)
     end
-    it "should return 204" do
+    it "should return the updated organization" do
       put :update, id: @parent.id, organization: { name: 'new-name', bio: 'new-bio' }
-      response.status.should == 204
+      json_response.should have_key('organization')
     end
     it "should update name" do
       expect do

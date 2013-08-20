@@ -12,7 +12,7 @@
   organization_id = $routeParams['id']
 
   getOrganizationsByUser = (callback, callbackerror)->
-    $http.get("/user/organizations.json").success (_data)->
+    $http.get("/account/organizations.json").success (_data)->
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
@@ -20,7 +20,7 @@
 
   getAllOrganizations = (callback, callbackerror)->
     Organization.all = []
-    $http.get('/user/authorized_organizations.json?actions[]=create_organization&actions[]=delete_organization&actions[]=edit_organization').success (_data)->
+    $http.get('/account/authorized_organizations.json?actions[]=create_organization&actions[]=delete_organization&actions[]=edit_organization').success (_data)->
       for organization in _data.authorized_organizations
         new Organization(organization)
       Organization.setIndex(false)

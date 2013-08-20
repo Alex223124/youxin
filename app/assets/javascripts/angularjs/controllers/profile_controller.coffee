@@ -10,26 +10,26 @@
     }
   ]
   getUserInformations = (callback, callbackerror)->
-    $http.get("/user.json").success (data, _status)->
+    $http.get("/account.json").success (data, _status)->
       callback(data.user, _status)
     .error (_data, _status)->
       callbackerror(_data, _status)
 
   getCurrentUserOrganizations = (callback, callbackerror)->
-    $http.get("/user/organizations.json").success (_data)->
+    $http.get("/account/organizations.json").success (_data)->
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
       App.alert("获取我所在的组织失败!", 'error')
 
   getCreatedReceipts = (callback,callbackerror)->
-    $http.get("/user/created_receipts.json").success (_data,_status)->
+    $http.get("/account/created_receipts.json").success (_data,_status)->
       callback(_data.created_receipts,_status)
     .error (_data,_status)->
       callbackerror(_data,_status)
 
   getFavoritedReceipts = (callback,callbackerror)->
-    $http.get("/user/favorited_receipts.json").success (_data,_status)->
+    $http.get("/account/favorited_receipts.json").success (_data,_status)->
       callback(_data.favorited_receipts,_status)
     .error (_data,_status)->
       callbackerror(_data,_status)
@@ -74,7 +74,7 @@
     unless post.unread_receipts
       $http.get("/posts/#{post.id}/unread_receipts.json").success (data) ->
         post.unread_receipts = data.unread_receipts
-    $http.get("/posts/#{post.id}/sms_scheduler.json").success (data) ->
+    $http.get("/posts/#{post.id}/last_sms_scheduler.json").success (data) ->
       post.sms_scheduler = data.sms_scheduler
 
   $scope.fetch_comments = (receipt) ->
@@ -105,17 +105,24 @@
 
       when "Field::RadioButton"
         option_id = collection.objOfProperty("key",input.identifier).value
-        return option_id and input.options.objOfProperty("id", option_id).value
-        
+        return '' unless option_id? 
+        input.options.objOfProperty("id", option_id).value
+
       when "Field::CheckBox"
         _result = []
         option_ids = collection.objOfProperty("key",input.identifier).value
+        return '' unless option_ids?
         for _i in option_ids
           _result.push(input.options.objOfProperty("id", _i).value)
         return _result.join(",")
 
   $scope.set_form_collections = (receipt)->
-    $scope.form = receipt.post.forms.first()
+    form = receipt.post.forms.first()
+    if receipt.origin
+      $http.get("/forms/#{form.id}/collections.json").success (data) ->
+        form.collections = data.collections
+
+    $scope.form = form
     $("#form_collections").show()
 
   $scope.fetch_forms = (receipt) ->
@@ -126,20 +133,17 @@
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
-        if receipt.origin
-          $http.get("/forms/#{form.id}/collections.json").success (data) ->
-            form.collections = data.collections
         $http.get("/forms/#{form.id}/collection.json").success((data) ->
           form.collectioned = true
           collection = data.collection
-          for entity in collection
+          for entity in collection.entities
             $scope.update_form(form, entity.key, entity.value)
         )
       )
-    height = if $("\##{receipt.id}-forms").css("height") is "auto" then "0px" else "auto"
-    $("\##{receipt.id}-forms").css("height",height)
-    _height = if $("\##{receipt.id}-forms-favorited").css("height") is "auto" then "0px" else "auto"
-    $("\##{receipt.id}-forms-favorited").css("height",_height)
+    height = if $("\##{receipt.id}-created_receipts-forms").css("height") is "auto" then "0px" else "auto"
+    $("\##{receipt.id}-created_receipts-forms").css("height",height)
+    _height = if $("\##{receipt.id}-favorited_receipts-forms").css("height") is "auto" then "0px" else "auto"
+    $("\##{receipt.id}-favorited_receipts-forms").css("height",_height)
 
   $scope.update_form = (form, key, value) ->
     for input in form.inputs
@@ -185,7 +189,7 @@
     post = receipt.post
     self = $($event.target)
     unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/sms_notifications.json").success () ->
+      $http.post("/posts/#{post.id}/run_sms_notifications_now.json").success () ->
         App.alert("系统已经发送短信通知")
         self.html("系统已经发送短信通知")
         self.attr("disabled","disabled")

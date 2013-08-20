@@ -80,7 +80,7 @@
                 li
                   .btn ng-click="ctrl.set_form_collections(receipt)" ng-show="receipt.origin" 查看填写情况
                   .btn.btn-disabled ng-click="ctrl.submit(receipt);" ng-disabled="form.collectioned" ng-show="form.collectioned" 已填写
-                  .btn.btn-primary ng-click="ctrl.submit(receipt);" ng-disabled="form.collectioned" ng-show="!form.collectioned" 提交
+                  .btn.btn-primary ng-click="submit(receipt);" ng-disabled="form.collectioned" ng-show="!form.collectioned" 提交
 
         .accordion-group.recipients-box
           .collapse id="{{receipt.id}}-{{flag}}-recipients"

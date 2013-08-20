@@ -198,7 +198,8 @@
     $http(
       url: "/posts.json"
       method: "POST"
-      data: $scope.youxindata
+      data:
+        post: $scope.youxindata
     ).success(()->
       $scope.$broadcast("clearData")
       App.alert("消息已成功发送")
@@ -234,7 +235,7 @@
 ]
 
 @secondstepCtrl = ["$scope", '$http', "$document",(scope, $http ,$document)->
-  $http.get('/user/authorized_organizations.json?actions[]=create_youxin').success((data) ->
+  $http.get('/account/authorized_organizations.json?actions[]=create_youxin').success((data) ->
     Organization.all = []
     for organization in data.authorized_organizations
       new Organization(organization)
@@ -314,10 +315,10 @@
   scope.selectresult = []
   scope.present_organizations = []
   scope.selected_organization_ids = []
-  $http.get("/user/recent_authorized_organizations.json").success((data)->
+  $http.get("/account/recent_authorized_organizations.json").success((data)->
     #data.organization_ids
     #data.organization_clan_ids
-    scope.commonly_used_organizations = data
+    scope.commonly_used_organizations = data.recent_authorized_organizations
     scope.present_commonly_used_organizations = (()->
       _result = []
       for _id in scope.commonly_used_organizations.organization_clan_ids

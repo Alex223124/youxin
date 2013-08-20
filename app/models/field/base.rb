@@ -8,7 +8,8 @@ class Field::Base
   field :identifier, type: String
   field :position, type: Integer
 
-  attr_accessible :label, :help_text, :required, :identifier, :position
+  attr_accessible :label, :help_text, :required, :identifier, :position, :_type,
+                  :default_value, :options_attributes
 
   default_scope asc(:position)
 

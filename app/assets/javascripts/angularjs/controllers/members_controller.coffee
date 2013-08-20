@@ -1,4 +1,4 @@
-@MembersController = ['$scope', '$http', '$route', '$routeParams', ($scope, $http, $route, $routeParams) ->
+@MembersController = ['$scope', '$http', '$route', '$routeParams', '$filter', ($scope, $http, $route, $routeParams, $filter) ->
   $scope.breadcrumbs = [
     {
       name: '首页'
@@ -18,13 +18,6 @@
     Organization.all = []
     for organization in data.organizations
       new Organization(organization)
-    # not_exists
-    org = {}
-    org.id = 'not_exists'
-    org.name = '所有用户'
-    org.members_count = '...'
-
-    new Organization(org)
     Organization.setIndex(false)
     $scope.organizations = Organization.all
     for _i in $scope.organizations
@@ -61,20 +54,28 @@
   # .error (_data,_status)->
   #   $scope.position_options = []
   $http.get("/help/roles.json").success (data)->
-    data.roles.unshift({ id: 'not_admin', name: '普通用户' })
+    data.roles.unshift({ id: '', name: '普通用户' })
     $scope.role_options = data.roles
   .error (_data,_status)->
     $scope.position_options = []
 
   $scope.callback = (newOption, member, oldOption)->
     if oldOption is null or (newOption.id isnt oldOption.id)
-      data = getData(member.id, newOption.id)
-      data.method = 'put'
-      $http.put("/organizations/#{organization_id}/members/role.json", data).success ()->
-        return true
-      .error ()->
-        App.alert("由于网络原因，您需要重新操作！", 'error')
-        return false
+      if newOption.id is ''
+        params = 
+          'member_ids[]': [member.id]
+        $http.delete("/organizations/#{organization_id}/members/role.json", { params: params }).success ()->
+          return true
+        .error ()->
+          App.alert("由于网络原因，您需要重新操作！", 'error')
+          return false
+      else
+        data = getData(member.id, newOption.id)
+        $http.put("/organizations/#{organization_id}/members/role.json", data).success ()->
+          return true
+        .error ()->
+          App.alert("由于网络原因，您需要重新操作！", 'error')
+          return false
     else
       return true
 
@@ -87,7 +88,7 @@
   $scope.activeFn = (org)->
     $("#org-list").find(".active").removeClass("active")
     $("#org-tree-container").children().eq(org.index).addClass("active")
-    $http.get("/organizations/#{org.id}/all_members.json").success (data) ->
+    $http.get("/organizations/#{org.id}/members.json").success (data) ->
       $scope.activeElementMembers = data.members
     .error (data)->
       App.alert("获取组织成员失败,请重新操作！", 'error')
@@ -110,9 +111,9 @@
     _result
 
   $scope.removeMember = (_id)->
-    data = getData(_id)
-    data.method = 'delete'
-    $http.put("/organizations/#{organization_id}/members.json", data).success ()->
+    params = 
+      'member_ids[]': [_id]
+    $http.delete("/organizations/#{organization_id}/members.json", { params: params }).success ()->
       thisIndex = $scope.members.indexOfProperty("id",_id)
       $scope.members.splice(thisIndex,1)
       if $scope.members.length is 0
@@ -132,12 +133,21 @@
       App.alert("修改失败!", 'error')
 
   $scope.removeAll = ()->
+    ids = while $scope.members.last() 
+      $scope.members.pop().id
+    params =
+      'member_ids[]': ids
+    $http.delete("/organizations/#{organization_id}/members.json", { params: params }).success ()->
+      App.alert("成功删除所有用户", 'success')
+    .error ()->
+      App.alert("删除失败", 'error')
+
     $scope.members = []
     $scope.hasOrgMember = false
 
   $scope.addNewOrgMember = ()->
     objCache =
-      user:
+      member:
         name: $scope.user_name
         email: $scope.user_email
         phone: $scope.user_tel
@@ -157,7 +167,6 @@
       App.alert("#{_obj.name} 已经在组织中了！", 'error')
     else
       data = getData(_id)
-      data.method = "put"
       $http.put("/organizations/#{organization_id}/members.json", data).success ()->
         $scope.members.push($scope.activeElementMembers.objOfProperty("id",_id))
         $scope.hasOrgMember = true
@@ -187,5 +196,5 @@
         submit_btn.html('提交').removeClass('disabled')
         $scope.$apply ->
           $scope.members = $scope.members.concat(data.members)
-          $scope.fail_memebers = data.meta.fail_members
+          $scope.fail_memebers = data.meta.unimported_members
 ]

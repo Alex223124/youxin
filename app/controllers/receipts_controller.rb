@@ -27,7 +27,7 @@ class ReceiptsController < ApplicationController
   def filtered_receipts
     case params[:status]
     when 'read' then paginate current_user.receipts.read
-    when 'unread' then current_user.receipts.unread
+    when 'unread' then range current_user.receipts.unread
     else paginate current_user.receipts
     end
   end

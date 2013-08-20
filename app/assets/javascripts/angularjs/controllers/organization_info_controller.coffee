@@ -12,7 +12,7 @@
 
   current_org_id = $routeParams["id"]
   getOrganizationsByUser = (callback, callbackerror)->
-    $http.get("/user/organizations.json").success (_data)->
+    $http.get("/account/organizations.json").success (_data)->
       callback(_data.organizations)
     .error (_data, _status)->
       callbackerror(_data, _status)
