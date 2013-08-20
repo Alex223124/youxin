@@ -48,7 +48,13 @@ Youxin::Application.routes.draw do
     get 'created_receipts' => 'accounts#created_receipts'
     get 'favorited_receipts' => 'accounts#favorited_receipts'
   end
-  devise_for :users
+  devise_for :users, path: 'account', skip: [:sessions]
+  as :user do
+    get 'sign_in' => 'devise/sessions#new', as: :new_user_session
+    post 'sign_in' => 'devise/sessions#create', as: :user_session
+    match 'sign_out' => 'devise/sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
+  end
+
   resources :users, only: [:update, :show] do
     member do
       get 'organizations' => 'users#organizations'
