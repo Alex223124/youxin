@@ -1,16 +1,27 @@
 @import "bootstrap/mixins";
 
 .post {
+  .wrapper:hover{
+    background: whitesmoke;
+  }
   background: white;
   margin: 20px 10px;
   border:  1px solid #d9d9d9;
-  & > .content {
-    position: relative;
-    padding: 10px;
-    border-bottom: 1px solid #d9d9d9;
-    &:hover {
-      background: whitesmoke;
+  .avatar {
+    text-align: center;
+    margin-top: 10px;
+    img {
+      margin: 4px;
+      border-radius: 2px;
     }
+  }
+  .content-wrap.span10{
+    margin-left: 0;
+    padding-top: 10px;
+  }
+  .content {
+    position: relative;
+    padding-bottom: 10px;
     .read-dot {
       position: absolute;
       right: 30px;
@@ -22,43 +33,37 @@
         color: #0d5d4d;
       }
     }
-    .avatar {
-        img {
-          margin: 4px;
-          border-radius: 2px;
-        }
+    .name {
+      display: inline-block;
+      vertical-align: top;
+    }
+    .organizations {
+      display: inline-block;
+      max-width: 74%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 0 7px;
+      .organization {
+        padding: 0 3px;
       }
-      .name {
-        display: inline-block;
-        vertical-align: top;
+    }
+    .details {
+      .title {
+        font-weight: bolder;
+        margin-right: 5px;
       }
-      .organizations {
-        display: inline-block;
-        max-width: 74%;
+      .body {
         word-wrap: break-word;
-        margin: 0 7px;
-        .organization {
-          padding: 0 3px;
-        }
       }
-      .details {
-        .title {
-          font-weight: bolder;
-          margin-right: 5px;
-        }
-        .body {
-          word-wrap: break-word;
-        }
-      }
+    }
 
-      .tools {
-        & > a {
-          padding: 0 5px;
-        }
+    .tools {
+      & > a {
+        padding: 0 5px;
       }
+    }
   }
   .additions {
-    background: #fcfcfc;
     .attachments-box, .forms-box, .recipients-box, .comments-box {
       border: none;
       margin-bottom: 0;
@@ -130,8 +135,9 @@
 
     .comments-box {
       .reply-box {
-        padding: 15px 10px 10px 24px;
+        padding: 15px 0px 10px 0px;
         border-bottom: 1px solid #d9d9d9;
+        margin-bottom: -1px;
         textarea {
           height: 20px;
           resize: none;
@@ -142,8 +148,9 @@
         }
       }
       .comment {
-        padding: 10px 10px 10px 24px;
+        padding: 10px 0px;
         border-bottom: 1px solid #d9d9d9;
+        margin-bottom: -1px;
         & > .content {
           margin-left: 45px;
           font-size: 12px;
@@ -184,7 +191,6 @@
             display: inline-block;
             max-width: 42px;
             margin-right: 5px;
-            overflow: hidden;
             white-space:nowrap;
             text-overflow: clip;
           }

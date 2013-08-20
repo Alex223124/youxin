@@ -85,12 +85,21 @@
     select: false
 
   $scope.activeFn = (org)->
-    $("#org-tree-container").children(".active").removeClass("active")
+    $("#org-list").find(".active").removeClass("active")
     $("#org-tree-container").children().eq(org.index).addClass("active")
     $http.get("/organizations/#{org.id}/all_members.json").success (data) ->
       $scope.activeElementMembers = data.members
     .error (data)->
       App.alert("获取组织成员失败,请重新操作！", 'error')
+
+  $scope.getUsers = ($event)->
+    $("#org-list").find(".active").removeClass("active")
+    $($event.target).addClass("active")
+    $http.get("url").success (data)->
+      $scope.activeElementMembers = data.members
+    .error (data, status)->
+      $scope.activeElementMembers = []
+      App.alert("获取所有成员失败,请重新操作！", 'error')
 
   getData = (_id1,_id2)->
     _result = {}

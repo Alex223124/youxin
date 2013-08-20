@@ -5,6 +5,9 @@
       href: '/'
     }
   ]
+
+
+
   $scope.max_receipt_id = '0'
   $scope.min_receipt_id = 'z'
 
@@ -106,7 +109,6 @@
           _result.push(input.options.objOfProperty("id", _i).value)
         return _result.join(",")
 
-
   $scope.set_form_collections = (receipt)->
     $scope.form = receipt.post.forms.first()
     $("#form_collections").show()
@@ -187,4 +189,5 @@
   $scope.hideTooltip = (event) ->
     $(event.target).tooltip('hide')
 
+  $scope
 ]

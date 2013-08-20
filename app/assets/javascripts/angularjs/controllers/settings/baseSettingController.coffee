@@ -33,13 +33,15 @@
       App.alert("提交失败", 'error')
 
   $scope.uploadAvatar = (ele) ->
+    $(ele).next().text("正在上传...")
     form = $(ele).parents('form')
     form.ajaxSubmit
       type: 'PUT'
       error: (event, statusText, responseText, form) ->
         App.alert("修改头像失败, 请重新操作", 'error')
+        $(ele).next().text("修改头像")
       success: (responseText, statusText, xhr, form) ->
         $scope.$apply ->
           $scope.user = responseText.user
-
+        $(ele).next().text("修改头像")
 ]

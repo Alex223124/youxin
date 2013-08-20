@@ -8,21 +8,15 @@
 
 <div id="org-manager" class="tab-pane row-fluid">
   <div class="span4 tabbable org-list">
-    <ul class="nav nav-tab">
-      <li class="active">
-        <a class="btn btn-link" href="javascript:;" data-target="#organizations_self_in" data-toggle="tab">我的组织</a>
-      </li>
-      <li>
-        <a class="btn btn-link" href="javascript:;" data-target="#all_organizations" data-toggle="tab">全部组织</a>
-      </li>
-    </ul>
     <div class="tab-content">
-      <div id="organizations_self_in" class="tab-pane active">
+      <label ng-click="toggle('#organizations_self_in')">我的组织</label>
+      <div id="organizations_self_in">
         <li ng-repeat="organization in organizations_self_in" ng-click="setActiveOrganization(organization)" class="{{organization.id == activeOrganization.id ? 'active' : ''}}">
           {{organization.name}}
         </li>
       </div>
-      <div id="all_organizations" class="tab-pane">
+      <label ng-click="toggle('#all_organizations')">全部组织</label>
+      <div id="all_organizations">
         <angulartree datas="organizations" options="options" activeele="activeOrganization" active-fn="setActiveOrganization(org)">
         </angulartree>
       </div>

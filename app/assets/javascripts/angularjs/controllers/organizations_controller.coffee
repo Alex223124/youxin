@@ -29,9 +29,9 @@
       callbackerror(_data, _status)
       App.alert("获取所有组织失败", 'error')
 
-  getMemberByOrganization = (org_id, _callback, callbackerror)->
+  getMemberByOrganization = (org_id, callback, callbackerror)->
     $http.get("/organizations/#{org_id}/members.json").success (_data)->
-      _callback(_data.members)
+      callback(_data.members)
     .error (_data, _status)->
       callbackerror(_data, _status)
       App.alert("获取组织成员失败", 'error')

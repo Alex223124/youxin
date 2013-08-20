@@ -22,6 +22,9 @@
   .when '/user/organizations',
     templateUrl: "<%= asset_path('organizations/show.html') %>",
     controller: OrganizationsShowController
+  .when '/user/organizations/:id',
+    templateUrl: "<%= asset_path('organizations/show.html') %>",
+    controller: OrganizationsShowController
   .when '/settings/profile',
     templateUrl: "<%= asset_path('settings/baseSetting.html') %>",
     controller: baseInfoController

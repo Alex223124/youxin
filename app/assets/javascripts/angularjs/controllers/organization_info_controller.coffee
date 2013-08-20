@@ -1,4 +1,4 @@
-@OrganizationsShowController = ["$scope", "$http",($scope, $http)->
+@OrganizationsShowController = ["$scope", "$http", "$location", "$routeParams",($scope, $http, $location, $routeParams)->
   $scope.breadcrumbs = [
     {
       name: '首页'
@@ -10,6 +10,7 @@
     }
   ]
 
+  current_org_id = $routeParams["id"]
   getOrganizationsByUser = (callback, callbackerror)->
     $http.get("/user/organizations.json").success (_data)->
       callback(_data.organizations)
@@ -48,7 +49,9 @@
 
   getAllOrganizations (organizations)->
     $scope.organizations = organizations
-    $scope.activeOrganization = setActive(organizations.first().id)
+    current_org_id = if current_org_id then current_org_id else organizations.first().id 
+    unless $scope.activeOrganization
+      $scope.activeOrganization = setActive(current_org_id)
 
   parents = (org)->
     _result = []
@@ -66,13 +69,18 @@
   setActive = (_id)->
     _result = $scope.organizations.objOfProperty("id", _id)
     _result.parents = []
-    getMemberByOrganization(_id, (data)->
+    getMemberByOrganization _id, (data)->
       _result.members = data
       _result.parents = parents(_result)
-    )
-    getOrganizationManagers(_id, (data)->
+
+    getOrganizationManagers _id, (data)->
       _result.managers = data
-    )
+
+    state = 
+      title: "title"
+      url: "url"
+
+    $location.path("/user/organizations/#{_id}")
     _result
 
   $scope.options=
@@ -89,7 +97,8 @@
     )
     getAllOrganizations((organizations)->
       $scope.organizations = organizations
-      $scope.activeOrganization = setActive(organizations.first().id)    
+      unless $scope.activeOrganization
+        $scope.activeOrganization = setActive(current_org_id)    
     ,()->
       $scope.$emit("refreshFail")
     )
@@ -97,6 +106,14 @@
   $scope.setActiveOrganization = (organization)->
     $scope.activeOrganization = setActive(organization.id)
     $("#all_organizations div").eq(organization.index).addClass("active").siblings().removeClass()
+
+  $scope.toggle = (selector)->
+    current_height = $(selector).height()
+    if current_height is 0
+      $(selector).css "height", "auto"
+    else
+      $(selector).css "height", "0px"
+    
 
   $scope.moreInfoShow = false
 ]

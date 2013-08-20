@@ -194,9 +194,7 @@
       self.closest(".js-steps").hide()
       targetele.fadeIn(200)
   
-  #$scope.$on "formReady",()->
   $scope.submit = ()->
-    # console.log($scope.youxindata)
     $http(
       url: "/posts.json"
       method: "POST"
@@ -216,12 +214,12 @@
   $scope.form_valid = true
   $scope.valid = ()->
     $scope.content = $("#wysihtml5-textarea").val()
-    $scope.form_valid = (not $scope.msgtitle) or (not $scope.content)
+    $scope.form_valid = not $scope.content
   $scope.collectData = ()->
     $scope.youxindata.title = this.msgtitle
     $scope.youxindata.body_html = $("#wysihtml5-textarea").val()
     self = $("#send-msg").find(".first-step")
-    # console.log $scope.youxindata 
+
     window.setTimeout(()->
       if (self.find(".nextStep").attr("disabled") is undefined)
         targetele = self.closest(".write-steps").find(".second-step")

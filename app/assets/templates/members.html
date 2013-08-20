@@ -20,37 +20,36 @@
         <span radioselect="true" class="position" ng-model="member.role" member="member" callback="callback(newOption, member, oldOption)" options="role_options">
           {{member.role.name || '普通用户'}}
         </span>
-<!--         <span radioselect="true" class="position" ng-model="member.position" member="member" callback="callback(newOption, member, oldOption)" options="position_options">
-          {{member.position.name == null ? "暂无身份" : member.position.name}}
-        </span>
- -->        <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
+        <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
         <li class="remove-all" ng-show="hasOrgMember">
           <span ng-click="removeAll()">删除全部</span>
           <i class="remove icon-remove-sign" ng-click="removeAll()"></i>
         </li>
       </ul>
-      <div class="span7 add-org-user" style="height: 100%;">
-        <div class="tabbable" style="height: 100%;">
+      <div class="span7 add-org-user">
+        <div class="tabbable">
           <ul class="nav nav-tab" id="add-user-tab">
             <li class="active"><a href="javascript:;" data-target="#import_org_user" data-toggle="tab">移入用户</a></li>
             <li><a href="javascript:;" data-target="#create_org_user" data-toggle="tab">新建用户</a></li>
           </ul>
-          <div class="tab-content" style="height: 100%;">
-            <div class="tab-pane active" id="import_org_user" style="height: 100%;">
+          <div class="tab-content">
+            <div class="tab-pane active" id="import_org_user">
               <div class="row-fluid">
-                <ul class="org-list top span6">
+                <ul class="org-list top span6" id="org-list">
                   <label>从组织中选择</label>
                   <div>
                     <angulartree id="org-tree-container" datas="organizations" options="org_tree_options" activeele="activeElement" active-fn="activeFn(org)">
                     </angulartree>
                   </div>
+                  <div class="dash"></div>
+                  <div class="all-users" ng-click="getUsers($event)">所有用户</div>
                 </ul>
-                <div class="span6 member-list" style="height: 90%; overflow-y: auto;">
+                <div class="span6 member-list">
                   <ul>
                     <li>
                       <input type="text" ng-model="searchInput" placeholder="姓名或电话">
                     </li>
-                    <li ng-repeat="member in activeElementMembers | filter:searchInput" ng-click="addToCurrentOrg(member.id)">
+                    <li class="member" ng-repeat="member in activeElementMembers | filter:searchInput" ng-click="addToCurrentOrg(member.id)">
                       <img ng-src="{{member.avatar | avatar_version:'normal'}}">
                       <span>
                         <span class="name">{{member.name}}</span>

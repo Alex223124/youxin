@@ -192,4 +192,5 @@
       .error () ->
         App.alert("发送失败", 'error')
 
+  $scope
 ]
