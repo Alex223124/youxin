@@ -194,6 +194,7 @@ GEM
     moped (1.4.5)
     multi_json (1.7.2)
     multi_xml (0.5.3)
+    newrelic_rpm (3.6.2.96)
     nokogiri (1.5.9)
     origin (1.0.11)
     orm_adapter (0.4.0)
@@ -385,6 +386,7 @@ DEPENDENCIES
   mongoid
   mongoid-rspec
   mongoid_colored_logger
+  newrelic_rpm
   nokogiri (~> 1.5.9)
   pry-nav
   pry-rails

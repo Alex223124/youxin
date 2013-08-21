@@ -24,5 +24,6 @@ pickle-email-*.html
 /config/youxin.yml
 /config/unicorn.rb
 /config/youxin.god
+/config/newrelic.yml
 
 /public/*/*

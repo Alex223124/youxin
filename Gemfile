@@ -58,6 +58,7 @@ group :development, :test do
 end
 group :production do
   gem 'unicorn'
+  gem 'newrelic_rpm'
 end
 
 gem 'slim-rails' # html template
