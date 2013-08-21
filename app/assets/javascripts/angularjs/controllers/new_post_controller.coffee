@@ -1,6 +1,6 @@
 @formcreateCtrl = ["$scope","$http", "$filter",(scope,http, $filter)->
   controllerElement = $("#table-edit")
-  scope.form_json = 
+  scope.form_json =
     title: "未命名"
     fieldlist: []
 
@@ -22,7 +22,7 @@
     barBlockHeight = viewHeight*viewHeight / scrollWrap.height()
 
   scope.addNewFiled = (type)->
-    fieldcache = 
+    fieldcache =
       _type: type
       label: "未命名"
       help_text: ""
@@ -107,7 +107,7 @@
       scope.error_flag = false
 
   scope.saveForm = ()->
-    form_json = 
+    form_json =
       form: $filter('format_form_json')(scope.form_json)
     # console.log form_json
     http(
@@ -118,8 +118,8 @@
       #hthnstnh
       form = data.form
       scope.formData.name = form.title
-      scope.formData.id = form.id 
-      scope.youxindata.form_ids = [form.id]     
+      scope.formData.id = form.id
+      scope.youxindata.form_ids = [form.id]
       controllerElement.hide(200)
       App.alert("表格 [#{scope.form_json.title}] 保存成功")
     ).error((data)->
@@ -165,20 +165,20 @@
       iconname: "icon-email"
       name: "radio"
       type: "radio"
-    }  
+    }
   ]
-  $scope.youxindata = 
-    title: ""
-    body_html: ""
+  $scope.youxindata =
+    title: null
+    body_html: null
     organization_ids: []
-    delayed_sms_at: ''
+    delayed_sms_at: null
     form_ids: []
     attachment_ids: []
 
   $scope.$on "attachment_change", (event,data)->
     $scope.youxindata.attachment_ids = []
     for _i in data.attachments
-      $scope.youxindata.attachment_ids.push _i.id 
+      $scope.youxindata.attachment_ids.push _i.id
 
   $scope.formData =
     name: ""
@@ -193,7 +193,7 @@
       targetele = self.closest(".write-steps").find(str2)
       self.closest(".js-steps").hide()
       targetele.fadeIn(200)
-  
+
   $scope.submit = ()->
     $http(
       url: "/posts.json"
@@ -258,7 +258,7 @@
               _result.push(_obj)
             else
               i = self.length
-            i += 1 
+            i += 1
             )() while i < self.length
           return _result
         _parent = (index,level)->
@@ -271,7 +271,7 @@
             if _obj.level is level-1
               _result = _obj
               i = 0
-            i -= 1 
+            i -= 1
             )() while i >= 0
           return _result
         _checkSelect = (flag,arr)->
@@ -345,7 +345,7 @@
     $("#select-org-container").children(".pr").toggle()
 
   $document.bind("click",()->
-    $("#select-org-container").children(".pr").hide()    
+    $("#select-org-container").children(".pr").hide()
   )
 
   ###scope.msgtitle = ""
@@ -353,13 +353,13 @@
     return (not this.msgtitle)###
   scope.collectData = ()->
     #for _id in scope.selected_organization_ids
-    scope.youxindata.organization_ids = scope.selected_organization_ids 
+    scope.youxindata.organization_ids = scope.selected_organization_ids
       #= scope.youxindata.organization_ids.concat($(org).attr("targetid").split(","))
     self = $("#send-msg").find(".second-step")
     if (self.find(".nextStep").attr("disabled") is undefined)
       targetele = self.closest(".write-steps").find(".third-step")
       self.closest(".js-steps").hide()
-      targetele.fadeIn(200)  
+      targetele.fadeIn(200)
   scope.$on "clearData",()->
     selected_orgs = $("#select-org-container").find(".selected-org-item")
     for org in selected_orgs
@@ -372,25 +372,25 @@
     true: ""
     false: "-alt"
 
-  $scope.msg_push = 
+  $scope.msg_push =
     active: true
     date: '5'
-    full_msg: false    
-  
+    full_msg: false
+
   $scope.collectData = ()->
     this.msg_push.date = this.msg_push.date.replace(///\s///,"")
     if this.msg_push.active
-      $scope.youxindata.delayed_sms_at = new Date().getTime()/1000 + parseFloat(this.msg_push.date) * 60 * 60    
+      $scope.youxindata.delayed_sms_at = new Date().getTime()/1000 + parseFloat(this.msg_push.date) * 60 * 60
     $scope.submit()
     self = $("#send-msg").find(".third-step")
     if (self.find(".nextStep").attr("disabled") is undefined)
       targetele = self.closest(".write-steps").find(".first-step")
       self.closest(".js-steps").hide()
-      targetele.fadeIn(200)      
-  
+      targetele.fadeIn(200)
+
   $scope.$on "clearData",()->
-    $scope.msg_push = 
+    $scope.msg_push =
       active: true
       date: '5'
-      full_msg: false    
+      full_msg: false
 ]

@@ -8,8 +8,8 @@
 
 
 
-  $scope.max_receipt_id = '0'
-  $scope.min_receipt_id = 'z'
+  $scope.max_receipt_id = new Array(24).join('0')
+  $scope.min_receipt_id = new Array(24).join('f')
 
   $http.get('/receipts.json?status=read').success (data) ->
     $scope.read_receipts = data.receipts
