@@ -13,8 +13,8 @@ ul.breadcrumb.sub-nav
           .user-pic
             img[ng-src="{{user.avatar | avatar_version:'retina_big'}}" alt="user"]
         .organization-self-in.block-info
-          label 
-            | 所在组织 
+          label
+            | 所在组织
           ul
             li[ng-repeat="organization in organizations"]
               a ng-href="#/user/organizations/{{organization.id}}"
@@ -23,7 +23,7 @@ ul.breadcrumb.sub-nav
       .row-wrap
         .block-info.base-info
           label
-            |  基本资料 
+            |  基本资料
             a ng-href="#/settings/profile"
               i.icon-pencil
           ul

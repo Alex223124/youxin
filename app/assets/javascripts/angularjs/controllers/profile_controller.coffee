@@ -42,7 +42,7 @@
   getCurrentUserOrganizations (_data)->
     $scope.organizations = _data
 
-  $scope.refreshFavoritedReceipts = ()->    
+  $scope.refreshFavoritedReceipts = ()->
     getFavoritedReceipts (_data)->
       $scope.favorited_receipts = _data
     ,(_data,_status)->
@@ -71,9 +71,8 @@
 
   $scope.fetch_unread_receipts = (receipt) ->
     post = receipt.post
-    unless post.unread_receipts
-      $http.get("/posts/#{post.id}/unread_receipts.json").success (data) ->
-        post.unread_receipts = data.unread_receipts
+    $http.get("/posts/#{post.id}/unread_receipts.json").success (data) ->
+      post.unread_receipts = data.unread_receipts
     $http.get("/posts/#{post.id}/last_sms_scheduler.json").success (data) ->
       post.sms_scheduler = data.sms_scheduler
 
@@ -105,7 +104,7 @@
 
       when "Field::RadioButton"
         option_id = collection.objOfProperty("key",input.identifier).value
-        return '' unless option_id? 
+        return '' unless option_id?
         input.options.objOfProperty("id", option_id).value
 
       when "Field::CheckBox"

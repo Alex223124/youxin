@@ -100,7 +100,7 @@
 
       when "Field::RadioButton"
         option_id = collection.objOfProperty("key",input.identifier).value
-        return '' unless option_id? 
+        return '' unless option_id?
         input.options.objOfProperty("id", option_id).value
 
       when "Field::CheckBox"
@@ -147,7 +147,7 @@
 
     read_form_collapse_ele = $("\##{receipt.id}-read_receipts-forms")
     unread_form_collapse_ele = $("\##{receipt.id}-unread_receipts-forms")
-    
+
     read_height = if read_form_collapse_ele.css("height") is "auto" then "0px" else "auto"
     unread_height = if unread_form_collapse_ele.css("height") is "auto" then "0px" else "auto"
     read_form_collapse_ele.css("height", read_height)
