@@ -74,7 +74,7 @@ gem 'settingslogic', '~> 2.0.9'
 # Authentication
 gem 'devise', '~> 2.2.3'
 gem 'devise-i18n'
-
+gem 'devise-async'
 # Authorization
 gem 'six', '~> 0.2.0'
 # Finite state machine

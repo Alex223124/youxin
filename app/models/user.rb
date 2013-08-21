@@ -8,7 +8,7 @@ class User
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable,
+  devise :database_authenticatable, :async,
          :recoverable, :rememberable, :trackable, :validatable,
          :token_authenticatable
 
