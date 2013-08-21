@@ -364,7 +364,8 @@
       position: relative;
       padding-top: 10px;
       height: 420px;
-      &>div>li{
+      overflow-y: auto;
+      li{
         padding: 0px 25px 2px;
         margin-bottom: 10px;
         &>label{

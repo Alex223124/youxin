@@ -23,7 +23,7 @@ class AccountsController < ApplicationController
 
   def update
     if current_user.update_attributes params[:user]
-      head :no_content
+      render json: current_user, serializer: UserSerializer, root: :user
     else
       render json: current_user.errors, status: :unprocessable_entity
     end

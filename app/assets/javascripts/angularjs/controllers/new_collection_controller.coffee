@@ -16,7 +16,7 @@
           for option in input.options
             if option.default_selected is true
               entities[input.identifier].push option.id
-    $http.post("/forms/#{form.id}/collection.json", { entities: entities })
+    $http.post("/forms/#{form.id}/collections.json", { entities: entities })
     .success (data) ->
       form.collectioned = true
     .error (data) ->

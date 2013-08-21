@@ -21,7 +21,7 @@
     <div class="span3">
       <div class="wrap">
         <img ng-src="{{user.avatar | avatar_version:'big'}}" alt="用户头像">
-        <form action="/user" id="avatarUploader" enctype="multipart/form-data">
+        <form action="/account.json" id="avatarUploader" enctype="multipart/form-data">
           <label class="inline fileinput-button">
             <input type="file" accept="image/*" name='user[avatar]' class="vh" onchange="angular.element(this).scope().uploadAvatar(this);">
             <a class="btn" onclick="$(this).prev().click()">修改头像</a>

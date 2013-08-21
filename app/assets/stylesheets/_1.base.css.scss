@@ -125,6 +125,13 @@ ul, ol, li {
   margin: 0;
   list-style: none;
 }
+::-webkit-scrollbar{
+  display: none;
+}
+
+textarea{
+  resize: none;
+}
 .radio-select{
   position: relative;
   width: 100px;
