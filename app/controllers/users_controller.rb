@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class UsersController < ApplicationController
   before_filter :ensure_user!, only: [:organizations, :authorized_organizations, :update, :show, :created_receipts]
   before_filter :authorize_edit_members!, only: [:update]
@@ -41,8 +43,8 @@ class UsersController < ApplicationController
 
   private
   def ensure_user!
-    @user = User.where(id: params[:id]).first
-    return not_found! unless @user
+    @user = current_namespace.users.where(id: params[:id]).first
+    raise Youxin::NotFound.new('用户') unless @user
   end
   def authorize_edit_members!
     return if current_user == @user

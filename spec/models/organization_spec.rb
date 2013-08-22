@@ -10,6 +10,7 @@ describe Organization do
     it { should have_many(:applications) }
     it { should have_many(:organization_notifications) }
     it { should have_many(:user_role_organization_relationships) }
+    it { should belong_to(:namespace) }
   end
 
   describe "Respond to" do
@@ -404,6 +405,14 @@ describe Organization do
         organization.avatar.url.should_not be_blank
       end
     end
+  end
 
+  describe "namespace" do
+    before(:each) do
+      @namespace = create :namespace
+      @organization = create :organization, namespace: @namespace
+    end
+    it { @organization.namespace.should == @namespace }
+    it { @namespace.organizations.should == [@organization] }
   end
 end

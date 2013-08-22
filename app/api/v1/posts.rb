@@ -4,7 +4,7 @@ class Posts < Grape::API
   resource :posts do
     desc "Create a post."
     post do
-      bulk_authorize! :create_youxin, Organization.where(:id.in => params[:organization_ids])
+      bulk_authorize! :create_youxin, current_namespace.organizations.where(:id.in => params[:organization_ids])
       required_attributes! [:body_html, :organization_ids]
 
       attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at]

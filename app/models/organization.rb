@@ -22,10 +22,12 @@ class Organization
   has_many :applications, dependent: :destroy
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
   has_many :user_role_organization_relationships, dependent: :destroy
+  belongs_to :namespace
 
   validates :name, presence: true
   validates :parent_id, presence: true, allow_nil: true
   validate :parent_exists, if: ->(organization) { organization.parent_id.present? }
+  validates :namespace_id, presence: true
 
   default_scope asc(:_id)
 

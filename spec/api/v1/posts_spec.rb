@@ -3,11 +3,13 @@ require 'spec_helper'
 describe Youxin::API, 'posts' do
   include ApiHelpers
 
+  let(:namespace) { create :namespace }
+
   before(:each) do
-    @user = create :user
-    @admin = create :user
-    @organization = create :organization
-    @organization_another = create :organization
+    @user = create :user, namespace: namespace
+    @admin = create :user, namespace: namespace
+    @organization = create :organization, namespace: namespace
+    @organization_another = create :organization, namespace: namespace
 
     @organization.add_member(@user)
     @actions = Action.options_array_for(:youxin)
@@ -188,7 +190,7 @@ describe Youxin::API, 'posts' do
           }
         ]
       }
-      @author = create :author
+      @author = create :author, namespace: namespace
       @post = create :post, author: @author, organization_ids: [@organization].map(&:id)
       @form = @author.forms.create(Form.clean_attributes_with_inputs(@form_json).merge({ post_id: @post.id }))
     end
@@ -208,10 +210,10 @@ describe Youxin::API, 'posts' do
 
   describe "GET /posts/:id" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @user_another = create :user
-      @organization = create :organization
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 
@@ -256,11 +258,11 @@ describe Youxin::API, 'posts' do
 
   describe "/posts/:id" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @user_another = create :user
-      @user_unauthoried = create :user
-      @organization = create :organization
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
+      @user_unauthoried = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 

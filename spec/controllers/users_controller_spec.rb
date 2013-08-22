@@ -3,13 +3,14 @@ require 'spec_helper'
 describe UsersController do
   include JsonParser
 
-  let(:current_user) { create :user }
-  let(:user) { create :user }
+  let(:namespace) { create :namespace }
+  let(:current_user) { create :user, namespace: namespace }
+  let(:user) { create :user, namespace: namespace }
 
   describe "GET organizations" do
     before(:each) do
-      organization_one = create :organization
-      organization_another = create :organization
+      organization_one = create :organization, namespace: namespace
+      organization_another = create :organization, namespace: namespace
       organization_one.add_member user
       organization_another.add_member user
       login_user current_user
@@ -32,9 +33,9 @@ describe UsersController do
   describe "GET authorized_organizations" do
     before(:each) do
       login_user current_user
-      organization_one = create :organization
-      organization_two = create :organization
-      organization_three = create :organization
+      organization_one = create :organization, namespace: namespace
+      organization_two = create :organization, namespace: namespace
+      organization_three = create :organization, namespace: namespace
       @action_one = Action.options_array[0]
       @action_two = Action.options_array[1]
       @action_three = Action.options_array[2]
@@ -63,7 +64,7 @@ describe UsersController do
   describe "PUT update" do
     before(:each) do
       login_user current_user
-      organization = create :organization
+      organization = create :organization, namespace: namespace
       actions = [:edit_member]
       organization.authorize(current_user, actions)
       organization.add_member(user)
@@ -94,7 +95,7 @@ describe UsersController do
       response.status.should == 422
     end
     it "should return 403" do
-      another_user = create :user
+      another_user = create :user, namespace: namespace
       login_user another_user
       put :update, id: user.id, user: @valid_attrs
       response.status.should == 403

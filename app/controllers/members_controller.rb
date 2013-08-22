@@ -21,7 +21,7 @@ class MembersController < ApplicationController
     attrs = params[:member]
     password = Devise.friendly_token.first(8)
     attrs.merge!({ password: password, password_confirmation: password })
-    member = User.new attrs
+    member = current_namespace.users.new attrs
     if member.save
       @organization.push_member(member)
       # TODO: need async
@@ -44,7 +44,7 @@ class MembersController < ApplicationController
     excel_praser.user_array.each do |member_attr|
       password = Devise.friendly_token.first(8)
       attrs = member_attr.merge({ password: password, password_confirmation: password })
-      member = User.new attrs
+      member = current_namespace.users.new attrs
       if member.save
         # TODO: need asyn
         member.send_reset_password_instructions
@@ -59,7 +59,7 @@ class MembersController < ApplicationController
   end
 
   def update
-    position = Position.where(id: params[:position_id]).first
+    position = current_namespace.positions.where(id: params[:position_id]).first
     @organization.push_members(@members, position)
     render json: @members, each_serializer: MemberSerializer, root: :members
   end
@@ -69,7 +69,7 @@ class MembersController < ApplicationController
   end
 
   def update_role
-    role = Role.where(id: params[:role_id]).first
+    role = current_namespace.roles.where(id: params[:role_id]).first
     raise Youxin::NotFound.new('权限') unless role
     @members.each do |member|
       relationship = member.user_role_organization_relationships.where(organization_id: @organization.id).first_or_initialize
@@ -91,12 +91,12 @@ class MembersController < ApplicationController
     @organization
   end
   def ensure_organization!
-    @organization = Organization.where(id: params[:organization_id]).first
+    @organization = current_namespace.organizations.where(id: params[:organization_id]).first
     raise Youxin::NotFound.new('组织') unless @organization
   end
   def prepare_members
     raise Youxin::InvalidParameters.new('成员') unless params[:member_ids].is_a?(Array)
-    @members = User.where(:id.in => params[:member_ids])
+    @members = current_namespace.users.where(:id.in => params[:member_ids])
     raise Youxin::NotFound if @members.blank?
   end
 end

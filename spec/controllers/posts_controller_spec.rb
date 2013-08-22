@@ -3,11 +3,12 @@ require 'spec_helper'
 describe PostsController do
   include JsonParser
 
-  let(:current_user) { create :user }
-  let(:admin) { create :user }
+  let(:namespace) { create :namespace }
+  let(:current_user) { create :user, namespace: namespace }
+  let(:admin) { create :user, namespace: namespace }
   before(:each) do
-    @parent = create :organization
-    @current = create :organization, parent: @parent
+    @parent = create :organization, namespace: namespace
+    @current = create :organization, parent: @parent, namespace: namespace
     @parent.add_member(current_user)
     actions_youxin = Action.options_array_for(:youxin)
     @parent.authorize_cover_offspring(admin, actions_youxin)
@@ -128,7 +129,7 @@ describe PostsController do
       json_response['forms'].size.should == 1
     end
     it "should return 403" do
-      another_uesr = create :user
+      another_uesr = create :user, namespace: namespace
       login_user another_uesr
       get :forms, id: @post.id
       response.status.should == 403
@@ -160,7 +161,7 @@ describe PostsController do
     end
     context "organization_ids" do
       it "should return 403" do
-        another_organization = create :organization
+        another_organization = create :organization, namespace: namespace
         attrs = @valid_attrs.merge({ organization_ids: [another_organization].map(&:id) })
         post :create, post: attrs
         response.status.should == 403

@@ -27,6 +27,7 @@ describe User do
     it { should have_many(:message_notifications) }
     it { should have_many(:schedulers) }
     it { should have_many(:user_role_organization_relationships) }
+    it { should belong_to(:namespace) }
   end
 
   describe "Respond to" do
@@ -432,7 +433,7 @@ describe User do
     context "unread" do
       it "should not create" do
         @author.receipts.unread.should be_blank
-      end      
+      end
     end
   end
 
@@ -518,7 +519,7 @@ describe User do
       body = 'body'
       conversation = user.send_message_to(user_another, body)
       conversation.should be_a_kind_of Conversation
-      
+
     end
     context "direct message" do
       before(:each) do
@@ -648,4 +649,14 @@ describe User do
       end
     end
   end
+
+  describe "namespace" do
+    before(:each) do
+      @namespace = create :namespace
+      @user = create :user, namespace: @namespace
+    end
+    it { @user.namespace.should == @namespace }
+    it { @namespace.users.should == [@user] }
+  end
+
 end

@@ -4,5 +4,6 @@ FactoryGirl.define do
   factory :role do
     name
     actions []
+    namespace
   end
 end

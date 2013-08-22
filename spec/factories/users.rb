@@ -11,6 +11,7 @@ FactoryGirl.define do
     phone
     password '12345678'
     password_confirmation '12345678'
+    namespace
   end
 
   factory :admin, parent: :user do

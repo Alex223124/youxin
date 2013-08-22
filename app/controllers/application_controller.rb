@@ -86,4 +86,12 @@ class ApplicationController < ActionController::Base
     subjects.each { |subject| authorize!(action, subject) }
   end
 
+  def current_namespace
+    begin
+      current_user.namespace
+    rescue
+      raise Youxin::Forbidden
+    end
+  end
+
 end

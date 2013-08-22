@@ -62,6 +62,7 @@ class User
   validates :phone, format: { with: /\A1\d{10}\Z/ }, uniqueness: true#, allow_nil: true
   validates :gender, inclusion: %w(男 女), allow_nil: true
   validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_nil: true
+  validates :namespace_id, presence: true
 
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
@@ -109,6 +110,7 @@ class User
   has_many :messages, dependent: :destroy
   has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
   has_many :user_role_organization_relationships, dependent: :destroy
+  belongs_to :namespace
 
   before_save :ensure_authentication_token!
   before_save :ensure_notification_channel!

@@ -3,12 +3,12 @@ class Organizations < Grape::API
 
   resource :organizations do
     get do
-      organizations = Organization.all
+      organizations = current_namespace.organizations
       present organizations, with: Youxin::Entities::AuthorizedOrganization
     end
     route_param :id do
       before do
-        @organization = Organization.find(params[:id])
+        @organization = current_namespace.organizations.find(params[:id])
       end
       get do
         present @organization, with: Youxin::Entities::OrganizationWithAuthorizedUsersAndProfile

@@ -3,5 +3,6 @@
 FactoryGirl.define do
   factory :position do
     sequence(:name) { |n| "position-#{n}" }
+    namespace
   end
 end

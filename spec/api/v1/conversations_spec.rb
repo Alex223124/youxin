@@ -3,11 +3,13 @@ require 'spec_helper'
 describe Youxin::API, 'conversations' do
   include ApiHelpers
 
+  let(:namespace) { create :namespace }
+
   describe "GET /conversations/:" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user.send_message_to([@user_one, @user_another], body)
       @message = @conversation.messages.first
@@ -78,7 +80,7 @@ describe Youxin::API, 'conversations' do
       response.status.should == 401
     end
     it "should return 404" do
-      user_three = create :user
+      user_three = create :user, namespace: namespace
       get api("/conversations/#{@conversation.id}", user_three)
       response.status.should == 404
     end
@@ -89,9 +91,9 @@ describe Youxin::API, 'conversations' do
   end
   describe "GET /conversations/:id/messages" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user.send_message_to([@user_one, @user_another], body)
       @message = @conversation.messages.first
@@ -116,16 +118,16 @@ describe Youxin::API, 'conversations' do
       ].as_json
     end
     it "should return 404" do
-      user_three = create :user
+      user_three = create :user, namespace: namespace
       get api("/conversations/#{@conversation.id}/messages", user_three)
       response.status.should == 404
     end
   end
   describe "POST /conversation/:id/messages" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       @body = 'body'
       @conversation = @user.send_message_to([@user_one, @user_another], @body)
       @message = @conversation.messages.first
@@ -153,16 +155,16 @@ describe Youxin::API, 'conversations' do
       response.status.should == 400
     end
     it "should return 404" do
-      user_three = create :user
+      user_three = create :user, namespace: namespace
       post api("/conversations/#{@conversation.id}/messages", user_three), body: @body
       response.status.should == 404
     end
   end
   describe "POST /conversations" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
     end
     it "should create a conversation" do
       post api("/conversations", @user), participant_ids: [@user_one, @user_another].map(&:id)
@@ -180,9 +182,9 @@ describe Youxin::API, 'conversations' do
   end
   describe "POST /conversations/:id/participants" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user.send_message_to(@user_one, body)
     end
@@ -230,9 +232,9 @@ describe Youxin::API, 'conversations' do
   end
   describe "DELETE /conversations/:id/participants" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user.send_message_to([@user_one, @user_another], body)
     end
@@ -252,9 +254,9 @@ describe Youxin::API, 'conversations' do
   end
   describe "DELETE /conversations/:id" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user.send_message_to([@user_one, @user_another], body)
     end
@@ -266,7 +268,7 @@ describe Youxin::API, 'conversations' do
       @user_another.conversations.count.should == 0
     end
     it "should return 404" do
-      user_three = create :user
+      user_three = create :user, namespace: namespace
       delete api("/conversations/#{@conversation.id}", user_three)
       response.status.should == 404
     end

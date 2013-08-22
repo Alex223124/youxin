@@ -3,11 +3,12 @@ require 'spec_helper'
 describe OrganizationsController do
   include JsonParser
 
-  let(:current_user) { create :user }
+  let(:namespace) { create :namespace }
+  let(:current_user) { create :user, namespace: namespace }
   before(:each) do
     login_user current_user
-    @parent = create :organization
-    @current = create :organization, parent: @parent
+    @parent = create :organization, namespace: namespace
+    @current = create :organization, parent: @parent, namespace: namespace
   end
   describe "GET index" do
     it "returns http success" do
@@ -25,10 +26,10 @@ describe OrganizationsController do
   end
   describe "POST create_children" do
     before(:each) do
-      @another_organization = create :organization
+      @another_organization = create :organization, namespace: namespace
       actions_organization = Action.options_array_for(:organization)
       @parent.authorize_cover_offspring(current_user, actions_organization)
-      member = create :user
+      member = create :user, namespace: namespace
       @parent.push_member(member)
       @valid_attrs = {
         name: 'new-name'
@@ -79,7 +80,7 @@ describe OrganizationsController do
       response.status.should == 422
     end
     it "should return 403" do
-      another_organization = create :organization
+      another_organization = create :organization, namespace: namespace
       put :update, id: another_organization.id, organization: { name: 'new-name', bio: 'new-bio' }
       response.status.should == 403
     end
@@ -104,7 +105,7 @@ describe OrganizationsController do
       end.to change { Organization.count }.by(-2)
     end
     it "should return 403" do
-      another_organization = create :organization
+      another_organization = create :organization, namespace: namespace
       delete :destroy, id: another_organization.id
       response.status.should == 403
     end

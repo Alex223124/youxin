@@ -4,6 +4,14 @@ module Youxin
       @current_user ||= User.where(authentication_token: params[:private_token] || env["HTTP_PRIVATE_TOKEN"]).first
     end
 
+    def current_namespace
+      begin
+        current_user.namespace
+      rescue
+        unauthorized!
+      end
+    end
+
     def authenticate!
       unauthorized! unless current_user
     end

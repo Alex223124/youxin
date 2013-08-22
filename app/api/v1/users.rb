@@ -101,7 +101,7 @@ class Users < Grape::API
   resource :users do
     route_param :id do
       before do
-        @user = User.find(params[:id])
+        @user = current_namespace.users.find(params[:id])
       end
       get do
         present @user, with: Youxin::Entities::UserProfile

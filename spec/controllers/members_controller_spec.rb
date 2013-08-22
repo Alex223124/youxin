@@ -5,11 +5,12 @@ require 'spec_helper'
 describe MembersController do
   include JsonParser
 
-  let(:current_user) { create :user }
-  let(:admin) { create :user }
+  let(:namespace) { create :namespace }
+  let(:current_user) { create :user, namespace: namespace }
+  let(:admin) { create :user, namespace: namespace }
   before(:each) do
-    @parent = create :organization
-    @current = create :organization, parent: @parent
+    @parent = create :organization, namespace: namespace
+    @current = create :organization, parent: @parent, namespace: namespace
     @parent.add_member(current_user)
     actions_user = Action.options_array_for(:user)
     @parent.authorize_cover_offspring(admin, actions_user)
@@ -18,7 +19,7 @@ describe MembersController do
     before(:each) do
       login_user current_user
       3.times do
-        @parent.add_member(create :user)
+        @parent.add_member(create :user, namespace: namespace)
       end
     end
     it "should return http success" do
@@ -47,7 +48,7 @@ describe MembersController do
       response.status.should == 422
     end
     it "should return 403" do
-      another_organization = create :organization
+      another_organization = create :organization, namespace: namespace
       post :create, organization_id: another_organization.id, member: @member_attrs
       response.status.should == 403
     end
@@ -65,7 +66,7 @@ describe MembersController do
       end.to change { @parent.members.count }.by(3)
     end
     it "should return the unimport_users" do
-      @parent.add_member create :user, name: '张三', email: 'zhangsan@y.x', phone: '18600000000'
+      @parent.add_member create :user, name: '张三', email: 'zhangsan@y.x', phone: '18600000000', namespace: namespace
       post :import, organization_id: @parent.id, file: @xls_file
       json_response['members'].size.should == 2
       json_response['meta']['unimported_members'].size.should == 1
@@ -75,7 +76,7 @@ describe MembersController do
       response.status.should == 400
     end
     it "should return 403" do
-      another_organization = create :organization
+      another_organization = create :organization, namespace: namespace
       post :import, organization_id: another_organization.id
       response.status.should == 403
     end
@@ -83,7 +84,7 @@ describe MembersController do
   describe "PUT update" do
     before(:each) do
       login_user admin
-      @member_one = create :user
+      @member_one = create :user, namespace: namespace
     end
     it "should add members to the organization" do
       expect do
@@ -92,12 +93,12 @@ describe MembersController do
       end.to change { @parent.members.count }.by(1)
     end
     it "should add member with position to the organization" do
-      position = create :position
+      position = create :position, namespace: namespace
       put :update, organization_id: @parent.id, member_ids: [@member_one].map(&:id), position_id: position.id
       @member_one.position_in_organization(@parent).should == position
     end
     it "should update position if user is in the organization" do
-      position = create :position
+      position = create :position, namespace: namespace
       @parent.add_member(@member_one)
       put :update, organization_id: @parent.id, member_ids: [@member_one].map(&:id), position_id: position.id
       @member_one.position_in_organization(@parent).should == position
@@ -119,7 +120,7 @@ describe MembersController do
   describe "DELETE destroy" do
     before(:each) do
       login_user admin
-      @member_one = create :user
+      @member_one = create :user, namespace: namespace
       @parent.add_member(@member_one)
     end
     it "should remove members from the organization" do
@@ -149,8 +150,8 @@ describe MembersController do
   describe "PUT update_role" do
     before(:each) do
       login_user admin
-      @member_one = create :user
-      @role = create :role, actions: Action.options_array
+      @member_one = create :user, namespace: namespace
+      @role = create :role, actions: Action.options_array, namespace: namespace
     end
     it "should update role of user in the organization" do
       expect do
@@ -186,8 +187,8 @@ describe MembersController do
   describe "DELETE destroy_role" do
     before(:each) do
       login_user admin
-      @member_one = create :user
-      @role = create :role, actions: Action.options_array
+      @member_one = create :user, namespace: namespace
+      @role = create :role, actions: Action.options_array, namespace: namespace
       @member_one.user_role_organization_relationships.create(organization_id: @parent.id, role_id: @role.id)
     end
     it "should remove role of members in the organization" do

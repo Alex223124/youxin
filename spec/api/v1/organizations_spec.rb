@@ -3,11 +3,13 @@ require 'spec_helper'
 describe Youxin::API, 'organizations' do
   include ApiHelpers
 
+  let(:namespace) { create :namespace }
+
   describe "GET /organizations" do
     before(:each) do
-      @organization_one = create :organization
-      @organization_another = create :organization, parent: @organization_one
-      @user = create :user
+      @organization_one = create :organization, namespace: namespace
+      @organization_another = create :organization, parent: @organization_one, namespace: namespace
+      @user = create :user, namespace: namespace
     end
     it "should return the array of organizations" do
       get api('/organizations', @user)
@@ -35,8 +37,8 @@ describe Youxin::API, 'organizations' do
 
   describe "PUT /organizations/:id" do
     before(:each) do
-      @organization = create :organization
-      @user = create :user
+      @organization = create :organization, namespace: namespace
+      @user = create :user, namespace: namespace
     end
     context "success" do
       before(:each) do
@@ -80,9 +82,9 @@ describe Youxin::API, 'organizations' do
 
   describe "GET /organizations/:id" do
     before(:each) do
-      @user = create :user
-      @author = create :user
-      @organization = create :organization
+      @user = create :user, namespace: namespace
+      @author = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
       @organization.push_member(@user)
     end
     context "/" do
@@ -112,7 +114,7 @@ describe Youxin::API, 'organizations' do
 
     context "/members" do
       it "should return the members of single organization" do
-        @user_another = create :user
+        @user_another = create :user, namespace: namespace
         @organization.push_members([@user, @user_another])
         get api("/organizations/#{@organization.id}/members", @user)
         response.status.should == 200
@@ -224,8 +226,8 @@ describe Youxin::API, 'organizations' do
 
     context "/children" do
       before(:each) do
-        @organization_one = create :organization, parent: @organization
-        @organization_another = create :organization, parent: @organization
+        @organization_one = create :organization, parent: @organization, namespace: namespace
+        @organization_another = create :organization, parent: @organization, namespace: namespace
       end
       it "should return children of the organization" do
         get api("/organizations/#{@organization.id}/children", @user)
@@ -253,7 +255,7 @@ describe Youxin::API, 'organizations' do
     context "/authorized_users" do
       before(:each) do
         @actions = Action.options_array
-        @organization_one = create :organization, parent: @organization
+        @organization_one = create :organization, parent: @organization, namespace: namespace
         @organization.authorize_cover_offspring(@user, @actions)
         @organization.reload
         @organization_one.reload

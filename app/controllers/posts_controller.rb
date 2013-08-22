@@ -68,7 +68,7 @@ class PostsController < ApplicationController
   end
   def authorized_create_post!
     if @organization_ids
-      bulk_authorize! :create_youxin, Organization.where(:id.in => @organization_ids)
+      bulk_authorize! :create_youxin, current_namespace.organizations.where(:id.in => @organization_ids)
     else
       raise Youxin::NotFound.new('组织')
     end

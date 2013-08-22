@@ -6,7 +6,7 @@ class Conversations < Grape::API
       required_attributes! [:participant_ids]
       participants = Array.new
       params[:participant_ids].each do |participant_id|
-        participant = User.find(participant_id)
+        participant = current_namespace.users.find(participant_id)
         not_found!("participant with id #{participant_id}") unless participant
         participants << participant
       end
@@ -57,7 +57,7 @@ class Conversations < Grape::API
         required_attributes! [:participant_ids]
         participants = Array.new
         params[:participant_ids].each do |participant_id|
-          participant = User.find(participant_id)
+          participant = current_namespace.users.find(participant_id)
           not_found!("participant with id #{participant_id}") unless participant
           participants << participant
         end

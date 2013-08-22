@@ -5,9 +5,11 @@ require 'spec_helper'
 describe Youxin::API, 'users' do
   include ApiHelpers
 
+  let(:namespace) { create :namespace }
+
   describe "GET /user" do
     before(:each) do
-      @user = create :user
+      @user = create :user, namespace: namespace
     end
     it "should return current user" do
       get api('/user', @user)
@@ -23,7 +25,7 @@ describe Youxin::API, 'users' do
 
   describe "PUT /user" do
     before(:each) do
-      @user = create :user
+      @user = create :user, namespace: namespace
     end
     context "header" do
       before(:each) do
@@ -121,9 +123,9 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/authorized_organizations" do
     before(:each) do
-      @admin = create :user
-      @organization = create :organization
-      @organization_another = create :organization
+      @admin = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
+      @organization_another = create :organization, namespace: namespace
       @actions_one = Action.options_array_for(:youxin)
       @actions_other = Action.options_array_for(:organization)
 
@@ -166,12 +168,12 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/receipt_organizations" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @organization_1 = create :organization
-      @organization_2 = create :organization, parent: @organization_1
-      @organization_3 = create :organization, parent: @organization_1
-      @organization_4 = create :organization, parent: @organization_2
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @organization_1 = create :organization, namespace: namespace
+      @organization_2 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_3 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_4 = create :organization, parent: @organization_2, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 
@@ -297,12 +299,12 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/receipt_users" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @organization_1 = create :organization
-      @organization_2 = create :organization, parent: @organization_1
-      @organization_3 = create :organization, parent: @organization_1
-      @organization_4 = create :organization, parent: @organization_2
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @organization_1 = create :organization, namespace: namespace
+      @organization_2 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_3 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_4 = create :organization, parent: @organization_2, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 
@@ -350,12 +352,12 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/receipts" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @organization_1 = create :organization
-      @organization_2 = create :organization, parent: @organization_1
-      @organization_3 = create :organization, parent: @organization_1
-      @organization_4 = create :organization, parent: @organization_2
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @organization_1 = create :organization, namespace: namespace
+      @organization_2 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_3 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_4 = create :organization, parent: @organization_2, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 
@@ -408,12 +410,12 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/unread_receipts" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @organization_1 = create :organization
-      @organization_2 = create :organization, parent: @organization_1
-      @organization_3 = create :organization, parent: @organization_1
-      @organization_4 = create :organization, parent: @organization_2
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @organization_1 = create :organization, namespace: namespace
+      @organization_2 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_3 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_4 = create :organization, parent: @organization_2, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 
@@ -466,12 +468,12 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/favorite_receipts" do
     before(:each) do
-      @admin = create :user
-      @user = create :user
-      @organization_1 = create :organization
-      @organization_2 = create :organization, parent: @organization_1
-      @organization_3 = create :organization, parent: @organization_1
-      @organization_4 = create :organization, parent: @organization_2
+      @admin = create :user, namespace: namespace
+      @user = create :user, namespace: namespace
+      @organization_1 = create :organization, namespace: namespace
+      @organization_2 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_3 = create :organization, parent: @organization_1, namespace: namespace
+      @organization_4 = create :organization, parent: @organization_2, namespace: namespace
       @actions_youxin = Action.options_array_for(:youxin)
       @actions_organization = Action.options_array_for(:organization)
 
@@ -526,7 +528,7 @@ describe Youxin::API, 'users' do
 
   describe "POST /user/ios_device_token" do
     before(:each) do
-      @user = create :user
+      @user = create :user, namespace: namespace
     end
     it "should create ios_device_token" do
       ios_device_token = 'ios_device_token_string'
@@ -536,7 +538,7 @@ describe Youxin::API, 'users' do
   end
   describe "DELETE /user/ios_device_token" do
     before(:each) do
-      @user = create :user
+      @user = create :user, namespace: namespace
     end
     it "should remove ios_device_token of user" do
       ios_device_token = 'ios_device_token_string'
@@ -548,7 +550,7 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/notifications" do
     before(:each) do
-      @user = create :user
+      @user = create :user, namespace: namespace
     end
     it "should return the correct notification_channel and notification counters" do
       get api('/user/notifications', @user)
@@ -564,9 +566,9 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/comment_notifications" do
     before(:each) do
-      @user = create :user
-      @admin = create :user
-      organization = create :organization
+      @user = create :user, namespace: namespace
+      @admin = create :user, namespace: namespace
+      organization = create :organization, namespace: namespace
       organization.push_member(@user)
       actions_youxin = Action.options_array_for(:youxin)
       organization.authorize_cover_offspring(@admin, actions_youxin)
@@ -609,9 +611,9 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/organization_notifications" do
     before(:each) do
-      @user = create :user
-      admin = create :user
-      @organization = create :organization
+      @user = create :user, namespace: namespace
+      admin = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
       @organization.add_member(@user)
       @add_notification = @user.notifications.first
       @organization.remove_member(@user)
@@ -651,8 +653,8 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/message_notifications" do
     before(:each) do
-      @user_one = create :user
-      @user_another = create :user
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user_one.send_message_to([@user_another], body)
       @message = @conversation.messages.first
@@ -691,9 +693,9 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/comment_notifications/unread" do
     before(:each) do
-      @user = create :user
-      @admin = create :user
-      organization = create :organization
+      @user = create :user, namespace: namespace
+      @admin = create :user, namespace: namespace
+      organization = create :organization, namespace: namespace
       organization.push_member(@user)
       actions_youxin = Action.options_array_for(:youxin)
       organization.authorize_cover_offspring(@admin, actions_youxin)
@@ -745,9 +747,9 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/organization_notifications/unread" do
     before(:each) do
-      @user = create :user
-      admin = create :user
-      @organization = create :organization
+      @user = create :user, namespace: namespace
+      admin = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
       @organization.add_member(@user)
       @add_notification = @user.notifications.first
       @organization.remove_member(@user)
@@ -781,8 +783,8 @@ describe Youxin::API, 'users' do
   end
   describe "GET /user/message_notifications/unread" do
     before(:each) do
-      @user_one = create :user
-      @user_another = create :user
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user_one.send_message_to([@user_another], body)
       @message_one = @conversation.messages.first
@@ -832,7 +834,7 @@ describe Youxin::API, 'users' do
   describe "GET /users/:id" do
     context "/" do
       before(:each) do
-        @user = create :user
+        @user = create :user, namespace: namespace
       end
       it "should return the info of a single user" do
         get api("/users/#{@user.id}", @user)
@@ -856,8 +858,8 @@ describe Youxin::API, 'users' do
 
     context "/organizations" do
       before(:each) do
-        @user = create :user
-        @organization = create :organization
+        @user = create :user, namespace: namespace
+        @organization = create :organization, namespace: namespace
         @organization.push_member(@user)
       end
       it "should return the array of organizations which the user is in" do
@@ -876,9 +878,9 @@ describe Youxin::API, 'users' do
 
     context "/receipts" do
       before(:each) do
-        @admin = create :user
-        @user = create :user
-        @organization = create :organization
+        @admin = create :user, namespace: namespace
+        @user = create :user, namespace: namespace
+        @organization = create :organization, namespace: namespace
         @actions_youxin = Action.options_array_for(:youxin)
         @actions_organization = Action.options_array_for(:organization)
 
@@ -929,9 +931,9 @@ describe Youxin::API, 'users' do
 
     context "/unread_receipts" do
       before(:each) do
-        @admin = create :user
-        @user = create :user
-        @organization = create :organization
+        @admin = create :user, namespace: namespace
+        @user = create :user, namespace: namespace
+        @organization = create :organization, namespace: namespace
         @actions_youxin = Action.options_array_for(:youxin)
         @actions_organization = Action.options_array_for(:organization)
 
@@ -983,9 +985,9 @@ describe Youxin::API, 'users' do
 
   describe "GET /user/conversations" do
     before(:each) do
-      @user = create :user
-      @user_one = create :user
-      @user_another = create :user
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       @body = 'body'
     end
     it "should return conversations of current user" do
