@@ -149,8 +149,17 @@ http {
 
     # Rails error pages
     error_page 500 502 503 504 /500.html;
-    location = /500.html {
+    location = /50x.html {
       root youxin_server/public;
     }
+
+    # Cache assets
+    location ~ ^/assets/ {
+      expires 1y;
+      add_header Cache-Control public;
+      add_header ETag "";
+      break;
+    }
+
   }
 }
