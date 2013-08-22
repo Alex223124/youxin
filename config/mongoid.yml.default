@@ -2,20 +2,25 @@ defaults: &defaults
   options:
     identity_map_enabled: true
     raise_not_found_error: false
+
 development:
   <<: *defaults
   sessions:
     default:
+      username: username
+      password: password
       hosts:
-        - 127.0.0.1:27017
+        - 127.0.0.1:30290
       database: youxin_dev
 
 test:
   <<: *defaults
   sessions:
     default:
+      username: username
+      password: password
       hosts:
-        - 127.0.0.1:27017
+        - 127.0.0.1:30290
       database: youxin_test
 
 # set these environment variables on your prod server
@@ -23,6 +28,8 @@ production:
   <<: *defaults
   sessions:
     default:
+      username: username
+      password: password
       hosts:
-        - 127.0.0.1:27017
+        - 127.0.0.1:30290
       database: youxin
