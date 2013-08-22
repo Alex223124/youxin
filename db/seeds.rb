@@ -10,16 +10,16 @@
 
 organization1 = Organization.create name: 'uestc', bio: 'bio-usetc'
 
-organization2 = Organization.create name: 'scie', parent_id: organization1.id, bio: 'bio-scie'
-organization3 = Organization.create name: 'networking', parent_id: organization2.id, bio: 'bio-networking'
-organization4 = Organization.create name: 'information', parent_id: organization2.id, bio: 'bio-information'
-organization5 = Organization.create name: 'communication', parent_id: organization2.id, bio: 'bio-communication'
+organization2 = organization1.children.create name: 'scie', bio: 'bio-scie'
+organization3 = organization2.children.create name: 'networking', bio: 'bio-networking'
+organization4 = organization2.children.create name: 'information', bio: 'bio-information'
+organization5 = organization2.children.create name: 'communication', bio: 'bio-communication'
 
-organization6 = Organization.create name: 'see', parent_id: organization1.id, bio: 'bio-see'
-organization7 = Organization.create name: 'eie', parent_id: organization6.id, bio: 'bio-eie'
-organization8 = Organization.create name: 'efrt', parent_id: organization6.id, bio: 'bio-efrt'
-organization9 = Organization.create name: 'ewta', parent_id: organization6.id, bio: 'bio-ewta'
-organization10 = Organization.create name: 'ict', parent_id: organization6.id, bio: 'bio-ict'
+organization6 = organization1.children.create name: 'see', bio: 'bio-see'
+organization7 = organization6.children.create name: 'eie', bio: 'bio-eie'
+organization8 = organization6.children.create name: 'efrt', bio: 'bio-efrt'
+organization9 = organization6.children.create name: 'ewta', bio: 'bio-ewta'
+organization10 = organization6.children.create name: 'ict', bio: 'bio-ict'
 
 password = '12345678'
 
