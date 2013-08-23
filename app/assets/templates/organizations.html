@@ -1,9 +1,3 @@
-<!-- <div class="sub-nav">
-  <li ng-repeat="breadcrumb in breadcrumbs">
-    <a class="btn btn-link" ng-href='\#{{breadcrumb.url}}'>{{breadcrumb.name}}</a>
-    <span ng-hide="$last">&gt;</span>
-  </li>
-</div> -->
 <ul class="breadcrumb sub-nav">
   <li ng-repeat="breadcrumb in breadcrumbs" class="{{$last ? 'active' : ''}}">
     <a ng-href="\#{{breadcrumb.url}}" ng-hide="$last">{{breadcrumb.name}}</a>
@@ -16,12 +10,7 @@
   <div id="orgInfoManager">
     <div id="create-org" class="row-fluid">
       <div class="span4 tabbable" id="org_list">
-<!--         <ul class="tab">
-          <li class="active">
-            <a class="btn btn-link" data-target="#all-organizations">所有组织</a>
-          </li>
-        </ul>
- -->        <div class="tab-content">
+        <div class="tab-content">
           <angulartree id="all-organizations" datas="orgs" options="userOptions" selectresult="selectresult" activeele="defaultActiveEle" active-fn="setActiveElement(org)" insert-url="/organizations/" remove-url="/organizations/">
           </angulartree>
         </div>
@@ -56,11 +45,7 @@
               <span class="line-tips">人数</span>
               <span>{{defaultActiveEle.members_count}}</span>
             </label>
-<!--             <label>
-              <span class="line-tips">简介</span>
-              <span contenteditable="true" class="bio" ng-blur="put_info({bio: defaultActiveEle.bio})" ng-model="defaultActiveEle.bio">{{defaultActiveEle.bio}}</span>
-            </label>
- -->          </div>
+          </div>
         </div>
         <div class="more-info clearfix">
           <label>简介</label>

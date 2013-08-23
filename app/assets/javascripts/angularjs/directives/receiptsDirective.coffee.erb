@@ -1,0 +1,13 @@
+@app.directive "receipts", ["$document",($document)->
+  directiveCache = 
+    restrict: "A"
+    scope:
+      receipts: "=receipts"
+      flag: "@receipts"
+    require: "^ngController"
+    link: (scope, element, attrs, ctrl)->
+      scope.ctrl = ctrl
+    replace: false
+    templateUrl: "<%= asset_path('receipt.html') %>"
+  directiveCache
+]

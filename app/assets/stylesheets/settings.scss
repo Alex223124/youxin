@@ -57,6 +57,60 @@
       }
     }
   }
+  .push-setting{
+    .push-time-setting{
+      span{
+        vertical-align: middle;
+        color: white;
+        margin-bottom: 0;
+        font-size: 14px;
+      }
+      .delay-unit{
+        display: inline-block;
+        margin-left: 20px;
+        width: 120px;
+        height: 20px;
+        padding: 4px 0;
+        vertical-align: top;
+        background-color: #1abc9c;
+        border-radius: 4px;
+        span{
+          padding-left: 14px;
+        }
+        .caret-up{
+          padding-left: 0; 
+        }
+      }
+      .add-on{
+        background-color: #3E5771;
+        font-size: 18px;
+        font-weight: bold;
+        text-shadow: none;
+        cursor: pointer;
+        margin-right: 0;
+        border: none;
+        &.prev{
+          border-right: 2px solid darken(#3E5771,5%); 
+        }
+        &.next{
+          border-left: 2px solid darken(#3E5771,5%); 
+        }
+      }
+      .delay-time{
+        color: white;
+        display: inline-block;
+        height: 24px;
+        min-width: 60px;
+        line-height: 24px;
+        vertical-align: middle;
+        background-color: #3E5771;
+        &:hover,&:focus{
+          outline: none;
+        }
+        text-align: center;
+      }
+    }
+  }
 }
 
 input.ng-invalid,input.ng-invalid:focus{

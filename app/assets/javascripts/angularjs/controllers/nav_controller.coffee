@@ -2,8 +2,8 @@
   $scope.isActive = (route_info) ->
     return 'active' if route_info is $location.path()
     if route_info is '/user/organizations'
-    	reg = ////user/organizations/[a-f0-9]+$///
-    	return 'active' if reg.test $location.path()
+      reg = ////user/organizations/[a-f0-9]+$///
+      return 'active' if reg.test $location.path()
     if route_info is '/organizations'
       reg = ///^/organizations/[a-f0-9]+$///
       return 'active' if reg.test $location.path()

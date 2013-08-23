@@ -28,6 +28,15 @@
   .when '/settings/profile',
     templateUrl: "<%= asset_path('settings/baseSetting.html') %>",
     controller: baseInfoController
+  .when '/settings/push',
+    templateUrl: "<%= asset_path('settings/system_setting_push.html') %>",
+    controller: SystemSettingPushController
+  .when '/settings/logo',
+    templateUrl: "<%= asset_path('settings/system_logo.html') %>",
+    controller: SystemSettingsLogoController
+  .when '/settings/position',
+    templateUrl: "<%= asset_path('settings/system_position.html') %>",
+    controller: SystemSettingsPositionController
   .when '/settings/password',
     templateUrl: "<%= asset_path('settings/password.html') %>",
     controller: changePasswordController
