@@ -96,7 +96,7 @@
   $scope.getUsers = ($event)->
     $("#org-list").find(".active").removeClass("active")
     $($event.target).addClass("active")
-    $http.get("url").success (data)->
+    $http.get("/organizations/members.json").success (data)->
       $scope.activeElementMembers = data.members
     .error (data, status)->
       $scope.activeElementMembers = []

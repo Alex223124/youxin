@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class OrganizationsController < ApplicationController
   before_filter :ensure_organization, only: [:create_children, :update, :destroy, :authorized_users, :receipts]
   before_filter :authorize_create_organization!, only: [:create_children]
@@ -44,19 +42,9 @@ class OrganizationsController < ApplicationController
     render json: receipts, serialize: ReceiptSerializer, root: :receipts
   end
 
-  # OPTIMIZE: need refactory
-  def all_members
-    @organization = current_namespace.organizations.find(params[:id])
-    if params[:id] == 'not_exists'
-      members = current_namespace.users
-    else
-      if @organization
-        members = @organization.members
-      else
-        raise Youxin::NotFound.new('组织')
-      end
-    end
-    render json: members, each_serializer: CustomMemberSerializer, root: :members
+  def members
+    members = current_namespace.users
+    render json: members, each_serializer: BasicUserSerializer, root: :members
   end
 
   private

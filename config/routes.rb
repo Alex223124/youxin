@@ -8,6 +8,9 @@ Youxin::Application.routes.draw do
     end
   end
   resources :organizations, only: [:index, :update, :destroy] do
+    collection do
+      get 'members' => 'organizations#members'
+    end
     member do
       post 'children' => 'organizations#create_children'
       get 'authorized_users' => 'organizations#authorized_users'

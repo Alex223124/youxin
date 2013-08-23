@@ -130,4 +130,14 @@ describe OrganizationsController do
       json_response.should have_key('receipts')
     end
   end
+  describe "GET members" do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @parent.add_member @user
+    end
+    it "should return all members" do
+      get :members
+      json_response['members'].size.should == 2
+    end
+  end
 end
