@@ -114,13 +114,13 @@ describe UsersController do
       json_response['user']['name'].should == user.name
     end
   end
-  describe "GET created_receipts" do
+  describe "GET receipts" do
     before(:each) do
       login_user current_user
     end
     it "should return receipts created by current user" do
-      get :created_receipts, id: user.id
-      json_response.should have_key('created_receipts')
+      get :receipts, id: user.id
+      json_response.should have_key('receipts')
     end
   end
 end

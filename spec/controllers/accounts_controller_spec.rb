@@ -131,7 +131,7 @@ describe AccountsController do
     before(:each) do
       login_user current_user
     end
-    it "should return receipts created by current user" do
+    it "should return receipts favorited by current user" do
       get :favorited_receipts
       json_response.should have_key('favorited_receipts')
     end

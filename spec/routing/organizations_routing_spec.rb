@@ -13,4 +13,7 @@ describe OrganizationsController do
   it "to #authorized_users" do
     get('/organizations/123/authorized_users').should route_to('organizations#authorized_users', id: '123')
   end
+  it "to #receipts" do
+    get('/organizations/123/receipts').should route_to('organizations#receipts', id: '123')
+  end
 end

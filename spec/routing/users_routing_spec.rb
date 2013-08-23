@@ -13,7 +13,7 @@ describe UsersController do
   it "to #show" do
     get('/users/123').should route_to('users#show', id: '123')
   end
-  it "to #created_receipts" do
-    get('/users/123/created_receipts').should route_to('users#created_receipts', id: '123')
+  it "to #receipts" do
+    get('/users/123/receipts').should route_to('users#receipts', id: '123')
   end
 end

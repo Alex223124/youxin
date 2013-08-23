@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class UsersController < ApplicationController
-  before_filter :ensure_user!, only: [:organizations, :authorized_organizations, :update, :show, :created_receipts]
+  before_filter :ensure_user!, only: [:organizations, :authorized_organizations, :update, :show, :receipts]
   before_filter :authorize_edit_members!, only: [:update]
 
   def organizations
@@ -32,13 +32,9 @@ class UsersController < ApplicationController
     render json: @user, serializer: UserSerializer, root: :user
   end
 
-  def created_receipts
-    if current_user == @user
-      created_receipts = current_user.receipts.where(origin: true)
-    else
-      created_receipts = current_user.receipts.from_user(@user)
-    end
-    render json: created_receipts, serialize: ReceiptSerializer, root: :created_receipts
+  def receipts
+    receipts = current_user.receipts.from_user(@user)
+    render json: receipts, serialize: ReceiptSerializer, root: :receipts
   end
 
   private

@@ -11,6 +11,7 @@ Youxin::Application.routes.draw do
     member do
       post 'children' => 'organizations#create_children'
       get 'authorized_users' => 'organizations#authorized_users'
+      get 'receipts' => 'organizations#receipts'
     end
     resources :members, only: [:index, :create] do
       collection do
@@ -59,7 +60,7 @@ Youxin::Application.routes.draw do
     member do
       get 'organizations' => 'users#organizations'
       get 'authorized_organizations' => 'users#authorized_organizations'
-      get 'created_receipts' => 'users#created_receipts'
+      get 'receipts' => 'users#receipts'
     end
   end
 

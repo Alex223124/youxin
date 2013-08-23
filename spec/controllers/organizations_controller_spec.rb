@@ -124,4 +124,10 @@ describe OrganizationsController do
       json_response['authorized_users'].count.should == 1
     end
   end
+  describe "GET receipts" do
+    it "should return receipts from the organization" do
+      get :receipts, id: @parent.id
+      json_response.should have_key('receipts')
+    end
+  end
 end

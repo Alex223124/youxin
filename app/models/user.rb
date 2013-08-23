@@ -81,12 +81,12 @@ class User
   has_many :posts, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :receipts, dependent: :destroy, inverse_of: :user do
     def from_user(user)
-      user = User.find(user) unless user.is_a?(User)
+      user = User.where(id: user).first unless user.is_a?(User)
       where(author_id: user.id)
     end
     def from_organization(organization)
-      organization = Organization.find(organization) unless organization.is_a?(Organization)
-      where(:organization_ids => organization.id)
+      organization = Organization.where(id: organization).first unless organization.is_a?(Organization)
+      where(organization_ids: organization.id)
     end
   end
   has_many :created_receipts, dependent: :destroy, foreign_key: 'author_id', class_name: 'Receipt', inverse_of: :author

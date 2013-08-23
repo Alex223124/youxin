@@ -1,7 +1,7 @@
 # encoding: utf-8
 
 class OrganizationsController < ApplicationController
-  before_filter :ensure_organization, only: [:create_children, :update, :destroy, :authorized_users]
+  before_filter :ensure_organization, only: [:create_children, :update, :destroy, :authorized_users, :receipts]
   before_filter :authorize_create_organization!, only: [:create_children]
   before_filter :authorize_delete_organization!, only: [:destroy]
   before_filter :authorize_edit_organization!, only: [:update]
@@ -37,6 +37,11 @@ class OrganizationsController < ApplicationController
   def authorized_users
     authorized_users = @organization.authorized_users
     render json: authorized_users, each_serializer: BasicUserSerializer, root: :authorized_users
+  end
+
+  def receipts
+    receipts = current_user.receipts.from_organization(@organization)
+    render json: receipts, serialize: ReceiptSerializer, root: :receipts
   end
 
   # OPTIMIZE: need refactory
