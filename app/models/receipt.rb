@@ -7,10 +7,12 @@ class Receipt
   field :read_at, type: DateTime
   field :origin, type: Boolean, default: false
   field :author_id
+  field :short_key, type: String
 
   before_save do
     self.author = self.post.author
   end
+  before_create :ensure_short_key!
 
   belongs_to :user, inverse_of: :receipts
   belongs_to :author, class_name: 'User', inverse_of: :created_receipts
@@ -35,6 +37,16 @@ class Receipt
   private
   def mark_self_read(favorite)
     favorite.favoriteable.read!
+  end
+
+  def ensure_short_key!
+    begin
+      self.short_key = generate_key
+    end while Receipt.where(short_key: self.short_key).exists?
+  end
+
+  def generate_key
+    SecureRandom.base64(7).tr('+/=', 'fAh')
   end
 
 end
