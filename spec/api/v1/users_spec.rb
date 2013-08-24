@@ -870,7 +870,9 @@ describe Youxin::API, 'users' do
             id: @organization.id,
             name: @organization.name,
             created_at: @organization.created_at,
-            avatar: @organization.avatar.url
+            avatar: @organization.avatar.url,
+            parent_id: @organization.parent_id,
+            members: @organization.members.size
           }
         ].as_json
       end

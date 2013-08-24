@@ -108,7 +108,7 @@ class Users < Grape::API
       end
       get 'organizations' do
         organizations = @user.organizations
-        present organizations, with: Youxin::Entities::OrganizationBasic
+        present organizations, with: Youxin::Entities::AuthorizedOrganization
       end
       get 'receipts' do
         receipts = paginate current_user.receipts.from_user(@user)
