@@ -84,6 +84,14 @@ class Users < Grape::API
       current_user.ensure_notification_channel!
       present current_user, with: Youxin::Entities::UserWithNotifications
     end
+    get 'notifications_timeline' do
+      notifications = paginate current_user.notifications
+      present notifications, with: Youxin::Entities::Notification
+    end
+    get 'notifications_timeline/unread' do
+      notifications = paginate current_user.notifications.unread
+      present notifications, with: Youxin::Entities::Notification
+    end
 
     %w{comment organization message}.each do |notificationable|
       notificationables = "#{notificationable}_notifications"

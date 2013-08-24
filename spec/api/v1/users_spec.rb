@@ -564,6 +564,183 @@ describe Youxin::API, 'users' do
       }.as_json
     end
   end
+  describe "GET /user/notifications_timeline" do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @another_user = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
+      @organization.push_members([@user, @another_user])
+      @organization_notification = @user.notifications.first
+
+      @post = create :post, author: @user, organization_ids: [@organization].map(&:id)
+      @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @another_user.id })
+      @comment_notification = @user.notifications.first
+
+      @conversation = @another_user.send_message_to([@user], 'body')
+      @message = @conversation.messages.first
+      @message_notification = @user.notifications.first
+    end
+    it "should return the notifications" do
+      get api('/user/notifications_timeline', @user)
+      json_response.should == [
+        {
+          id: @message_notification.id,
+          created_at: @message_notification.created_at,
+          read: @message_notification.read,
+          notificationable_type: @message_notification._type,
+          notificationable: {
+            id: @message.id,
+            created_at: @message.created_at,
+            body: @message.body,
+            conversation: {
+              id: @conversation.id,
+              created_at: @conversation.created_at,
+              updated_at: @conversation.updated_at
+            },
+            user: {
+              id: @another_user.id,
+              name: @another_user.name,
+              avatar: @another_user.avatar.url,
+              email: @another_user.email,
+              created_at: @another_user.created_at,
+              phone: @another_user.phone
+            }
+          }
+        },
+        {
+          id: @comment_notification.id,
+          created_at: @comment_notification.created_at,
+          read: false,
+          notificationable_type: @comment_notification._type,
+          notificationable: {
+            id: @comment.id,
+            body: @comment.body,
+            created_at: @comment.created_at,
+            user: {
+              id: @another_user.id,
+              name: @another_user.name,
+              avatar: @another_user.avatar.url,
+              email: @another_user.email,
+              created_at: @another_user.created_at,
+              phone: @another_user.phone
+            },
+            commentable_type: @comment.commentable_type,
+            commentable: {
+              id: @post.id,
+              title: @post.title,
+              body: @post.body,
+              body_html: @post.body_html,
+              created_at: @post.created_at
+            }
+          }
+        },
+        {
+          id: @organization_notification.id,
+          created_at: @organization_notification.created_at,
+          read: false,
+          notificationable_type: @organization_notification._type,
+          notificationable: {
+            id: @organization.id,
+            name: @organization.name,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          },
+          status: @organization_notification.status
+        }
+      ].as_json
+    end
+  end
+  describe "GET /user/notifications_timeline/unread" do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @another_user = create :user, namespace: namespace
+      @organization = create :organization, namespace: namespace
+      @organization.push_members([@user, @another_user])
+      @organization_notification = @user.notifications.first
+
+      @post = create :post, author: @user, organization_ids: [@organization].map(&:id)
+      @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @another_user.id })
+      @comment_notification = @user.notifications.first
+
+      @conversation = @another_user.send_message_to([@user], 'body')
+      @message = @conversation.messages.first
+      @message_notification = @user.notifications.first
+    end
+    it "should return the unread notifications" do
+      get api('/user/notifications_timeline/unread', @user)
+      json_response.should == [
+        {
+          id: @message_notification.id,
+          created_at: @message_notification.created_at,
+          read: @message_notification.read,
+          notificationable_type: @message_notification._type,
+          notificationable: {
+            id: @message.id,
+            created_at: @message.created_at,
+            body: @message.body,
+            conversation: {
+              id: @conversation.id,
+              created_at: @conversation.created_at,
+              updated_at: @conversation.updated_at
+            },
+            user: {
+              id: @another_user.id,
+              name: @another_user.name,
+              avatar: @another_user.avatar.url,
+              email: @another_user.email,
+              created_at: @another_user.created_at,
+              phone: @another_user.phone
+            }
+          }
+        },
+        {
+          id: @comment_notification.id,
+          created_at: @comment_notification.created_at,
+          read: false,
+          notificationable_type: @comment_notification._type,
+          notificationable: {
+            id: @comment.id,
+            body: @comment.body,
+            created_at: @comment.created_at,
+            user: {
+              id: @another_user.id,
+              name: @another_user.name,
+              avatar: @another_user.avatar.url,
+              email: @another_user.email,
+              created_at: @another_user.created_at,
+              phone: @another_user.phone
+            },
+            commentable_type: @comment.commentable_type,
+            commentable: {
+              id: @post.id,
+              title: @post.title,
+              body: @post.body,
+              body_html: @post.body_html,
+              created_at: @post.created_at
+            }
+          }
+        },
+        {
+          id: @organization_notification.id,
+          created_at: @organization_notification.created_at,
+          read: false,
+          notificationable_type: @organization_notification._type,
+          notificationable: {
+            id: @organization.id,
+            name: @organization.name,
+            created_at: @organization.created_at,
+            avatar: @organization.avatar.url
+          },
+          status: @organization_notification.status
+        }
+      ].as_json
+    end
+    it "should return the correct unread notifications when read" do
+      @comment_notification.read!
+      get api('/user/notifications_timeline/unread', @user)
+      json_response.size.should == 2
+    end
+  end
   describe "GET /user/comment_notifications" do
     before(:each) do
       @user = create :user, namespace: namespace
