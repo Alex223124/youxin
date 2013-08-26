@@ -4,15 +4,33 @@ window.Youxin =
   notifier: new Object
 
   initNotificationSubscribe : () ->
-    @notifier = new window.Notifier
+    Youxin.notifier = new window.Notifier
     if CURRENT_USER_NOTIFICATION_CHANNEL isnt ''
       faye = new Faye.Client(FAYE_SERVER_URL)
       channel = "/#{SUBSCRIPTION_PREFIX}/#{CURRENT_USER_NOTIFICATION_CHANNEL}"
       faye.subscribe channel, (data) ->
         json = data.json
-        url = @fixUrlDash("#{ROOT_URL}#{json.content_path}")
-        avatar = @fixUrlDash("#{ROOT_URL}#{json.avatar}")
-        @notifier.notify(avatar, json.title, json.content, url)
+        if json.message?
+          data = json.message
+          title = "#{data.user.name}向您发送了一条私信"
+          body = "#{data.body}"
+          avatar_url = data.user.avatar_url
+          url = Youxin.fixUrlDash("#{ROOT_URL}/conversations/#{data.conversation.id}")
+        else if json.post?
+          data = json.post
+          title = data.title
+          avatar_url = data.author.avatar_url
+          body = "#{data.author.name}:\n#{data.body}"
+          url = Youxin.fixUrlDash("#{ROOT_URL}/posts/#{data.id}")
+
+        avatar = Youxin.fixUrlDash("#{ROOT_URL}#{Youxin.getAvatarVersion(avatar_url, 'small')}")
+        Youxin.notifier.notify(avatar, title, body, url)
 
   fixUrlDash : (url) ->
     url.replace(/\/\//g,"/").replace(/:\//,"://")
+
+  getAvatarVersion : (url, version) ->
+    return '' unless url
+    array = url.split('/')
+    array[array.length - 1] = "#{version}_#{array.last()}"
+    array.join('/')

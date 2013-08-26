@@ -26,6 +26,7 @@ class Post
   end
   after_create do
     create_receipts
+    send_notifications
   end
 
   belongs_to :author, class_name: 'User'
@@ -66,6 +67,13 @@ class Post
   end
   def organization_clans
     Organization.where(:id.in => self.organization_clan_ids)
+  end
+
+  def faye_payload
+    self.as_json(only: [:created_at, :body, :title], methods: [:id], root: true,
+                  include: {
+                    author: { only: [:name], methods: [:id, :avatar_url] }
+                  })
   end
 
   private
@@ -120,6 +128,11 @@ class Post
                          read: true,
                          origin: true)
     self.save
+  end
+
+  def send_notifications
+    Notification::Notifier.publish_post_to_ios_device_async(self.id)
+    Notification::Notifier.publish_post_to_faye_client_async(self.id)
   end
 
   def mark_receipt_read(comment)

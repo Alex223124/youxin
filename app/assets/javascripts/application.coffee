@@ -31,7 +31,7 @@ window.App =
         if _body.data("radio-select") isnt undefined
           _body.data("radio-select").animate({marginTop: "-10px",opacity:"hide"},300)
         _body.data("radio-select",_list)
-      ev.stopPropagation() 
+      ev.stopPropagation()
 
     _body.on "click",".radio-select ul>li",()->
       _self = $(this)
@@ -68,28 +68,28 @@ window.App =
       targetEle = self.closest(scope)
       if self.hasClass("open")
         targetEle.hide()
-      else 
+      else
         targetEle.hide(200)
       false
   richText : ()->
     myCustomTemplates =
       "font-styles" : (locale,options)->
         return "<li class='dropdown'>" +
-        "<a class='dropdown-toggle' data-toggle='dropdown' href='javascript:;'>" +              
+        "<a class='dropdown-toggle' data-toggle='dropdown' href='javascript:;'>" +
         "<i class='icon-font'></i>&nbsp;<span class='current-font'>" + locale.font_styles.normal + "</span>&nbsp;<i class='icon icon-caret-down'></i>" + "</a>" +
         "<ul class='dropdown-menu dropdown-left'>" +
             "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='div' tabindex='-1'>" + locale.font_styles.normal + "</a></li>" +
             "<li><a data-wysihtml5-command='formatBlock' data-wysihtml5-command-value='h4'>" + locale.font_styles.h3 + "</a></li>" +
           "</ul>" +
         "</li>"
-        
+
       "emphasis" : (locale,options)->
         return "<li>" +
                 "<a data-wysihtml5-command='bold' title='CTRL+B' tabindex='-1'>" + locale.emphasis.bold + "</a>" +
                 "<a data-wysihtml5-command='italic' title='CTRL+I' tabindex='-1'>" + locale.emphasis.italic + "</a>" +
                 "<a data-wysihtml5-command='underline' title='CTRL+U' tabindex='-1'>" + locale.emphasis.underline + "</a>" +
             "</li>"
-      
+
       "lists" : (locale,options)->
         return "<li>" +
                 "<a data-wysihtml5-command='insertUnorderedList' title='" + locale.lists.unordered + "' tabindex='-1'><i class='icon-list'></i></a>" +
@@ -97,8 +97,8 @@ window.App =
                 "<a data-wysihtml5-command='Outdent' title='" + locale.lists.outdent + "' tabindex='-1'><i class='icon-indent-right'></i></a>" +
                 "<a data-wysihtml5-command='Indent' title='" + locale.lists.indent + "' tabindex='-1'><i class='icon-indent-left'></i></a>" +
              "</li>"
-      
-    defaultOptions = 
+
+    defaultOptions =
       "font-styles": true
       "color": false
       "emphasis": true
@@ -120,7 +120,7 @@ window.App =
 
 $(document).ready ->
   App.enableReplyBox()
-  # Youxin.initNotificationSubscribe()
+  Youxin.initNotificationSubscribe()
   App.open()
   App.close()
   App.selectComponent()

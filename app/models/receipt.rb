@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 class Receipt
   include Mongoid::Document
   include Mongoid::Timestamps # Add created_at and updated_at fields
@@ -32,6 +34,18 @@ class Receipt
     self.read_at = Time.now
     self.read = true
     self.save
+  end
+
+  def ios_payload
+    ios_payload_body = "#{self.post.title} #{self.post.body}"
+    {
+      alert: "【#{self.post.author.name}】:\n#{ios_payload_body[0...25]}...",
+      custom: {
+        type: :receipt,
+        id: self.id.to_s,
+      },
+      badge: self.user.receipts.unread.count
+    }
   end
 
   private
