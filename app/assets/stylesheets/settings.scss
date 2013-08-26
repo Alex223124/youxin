@@ -1,4 +1,4 @@
-#setting{
+#adapter_view{
   position: absolute;
   top: 36px;
   left: 0;
@@ -7,21 +7,20 @@
   &>div{
     height: 100%;
   }
-  .setting-option-wrap{
-    border-right: 1px solid #D9d9d9;
+  .settings-nav{
     background-color: #e9e9e9;
-    height: 100%;
-    .setting-option{
+    border-right: 1px solid #D9d9d9;
+    .nav{
+      margin-bottom: 0;
       cursor: pointer;
-      &.active{
-        padding: 5px 20px;
-        cursor: default;
-        background-color: #d9d9d9;
-      }
       a{
         padding: 5px 20px;
         display: block;
         text-decoration: none;
+        &.active{
+          cursor: default;
+          background-color: #d9d9d9;
+        }
         &:hover{
           background-color: #e0e0e0;
         }

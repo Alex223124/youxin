@@ -1,0 +1,62 @@
+<div class="span9 push-setting">
+  <form class="info-wrap">
+    <label>
+      <strong>推送设置</strong>
+    </label>
+    <p class="push-time-setting">
+      <label>默认邮件推送延时：</label>
+      <span class="input-prepend input-append">
+        <span class="add-on prev" ng-click="changeDelay('emailPush', -1)">
+          -
+        </span><span contenteditable="true" ng-blur="check('emailPush')" ng-model="pushSettings.emailPush.delayTime" class="delay-time">{{pushSettings.emailPush.delayTime}}</span><span class="add-on next" ng-click="changeDelay('emailPush', 1)">
+          +
+        </span>
+      </span>
+      <span radioselect="true" options="delayUnitOptions" callback="callback(newOption,member,oldOption)" ng-model="pushSettings.emailPush.delayUnit" class="delay-unit input-append">
+        <span>{{pushSettings.emailPush.delayUnit.name}}</span>
+      </span>
+    </p>
+    <p class="push-time-setting">
+      <label>默认短信推送延时：</label>
+      <span class="input-prepend input-append">
+        <span class="add-on prev" ng-click="changeDelay('smsPush', -1)">
+          -
+        </span><span contenteditable="true" ng-blur="check('smsPush')" ng-model="pushSettings.smsPush.delayTime" class="delay-time">{{pushSettings.smsPush.delayTime}}</span><span class="add-on next" ng-click="changeDelay('smsPush', 1)">
+          +
+        </span>
+      </span>
+      <span radioselect="true" options="delayUnitOptions" callback="callback(newOption,member,oldOption)" ng-model="pushSettings.smsPush.delayUnit" class="delay-unit">{{pushSettings.smsPush.delayUnit.name}}</span>
+    </p>
+    <p class="push-time-setting">
+      <label>默认电话推送延时：</label>
+      <span class="input-prepend input-append">
+        <span class="add-on prev" ng-click="changeDelay('phonePush', -1)">
+          -
+        </span><span contenteditable="true" ng-blur="check('phonePush')" ng-model="pushSettings.phonePush.delayTime" class="delay-time">{{pushSettings.phonePush.delayTime}}</span><span class="add-on next" ng-click="changeDelay('phonePush', 1)">
+          +
+        </span>
+      </span>
+      <span radioselect="true" options="delayUnitOptions" callback="callback(newOption,member,oldOption)" ng-model="pushSettings.phonePush.delayUnit" class="delay-unit">{{pushSettings.phonePush.delayUnit.name}}</span>
+    </p>
+    <p>
+      <label>默认推送方式：</label>
+      <label class="checkbox">
+        <input type="checkbox" ng-model="pushSettings.pushmethods.webBrowser">
+        <span>网页，客户端</span>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" ng-model="pushSettings.pushmethods.email">
+        <span>邮件</span>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" ng-model="pushSettings.pushmethods.sms">
+        <span>短信</span>
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" ng-model="pushSettings.pushmethods.phone">
+        <span>电话</span>
+      </label>
+    </p>
+    <div class="btn btn-primary" ng-click="update()">保存设置</div>
+  </form>
+</div>

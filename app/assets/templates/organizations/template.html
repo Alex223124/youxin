@@ -1,0 +1,29 @@
+<ul class="breadcrumb sub-nav">
+  <li ng-repeat="breadcrumb in breadcrumbs" class="{{$last ? 'active' : ''}}">
+    <a ng-href="\#{{breadcrumb.url}}" ng-hide="$last">{{breadcrumb.name}}</a>
+    <span ng-show="$last">{{breadcrumb.name}}</span>
+    <span class="divider" ng-hide="$last">/</span>
+  </li>
+</ul>
+
+<div id="org-manager" class="tab-pane row-fluid">
+  <div class="span4 tabbable org-list">
+    <div class="tab-content">
+      <label ng-click="toggle('#organizations_self_in')">我的组织</label>
+      <div id="organizations_self_in">
+        <li ng-repeat="organization in organizations_self_in" ng-click="setActiveOrganization(organization)" class="{{organization.id == activeEle.id ? 'active' : ''}}">
+          {{organization.name}}
+        </li>
+      </div>
+      <label ng-click="toggle('#all_organizations')">全部组织</label>
+      <div id="all_organizations">
+        <angulartree datas="organizations" options="options" activeele="activeEle" active-fn="setActiveOrganization(org)" showmembercount="false">
+        </angulartree>
+      </div>
+    </div>
+  </div>
+
+  <div id="detail_view" class="span8" ui-view="detail">
+    
+  </div>
+</div>

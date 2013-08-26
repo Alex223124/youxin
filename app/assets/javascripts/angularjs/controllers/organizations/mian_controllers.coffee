@@ -1,11 +1,153 @@
-@MembersController = ['$scope', '$http', '$route', '$routeParams', '$filter', ($scope, $http, $route, $routeParams, $filter) ->
+@OrganizationsController = ["$scope", "$http", "$location", "$stateParams",($scope, $http, $location, $stateParams)->
+  $scope.breadcrumbs = [
+    {
+      name: '首页'
+      url: '/'
+    }
+    {
+      name: '组织展示'
+      url: '/user/organizations'
+    }
+  ]
+
+  current_org_id = $stateParams["id"]
+  getOrganizationsByUser = (callback, callbackerror)->
+    $http.get("/account/organizations.json").success (_data)->
+      callback(_data.organizations)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取我所在的组织失败", 'error')
+
+  getAllOrganizations = (callback, callbackerror)->
+    Organization.all = []
+    $http.get('/organizations.json').success (_data)->
+      for organization in _data.organizations
+        new Organization(organization)
+      Organization.setIndex(false)
+      Organization.setExpandFlag(true)
+      callback(Organization.all)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取所有组织失败", 'error')
+
+  getMemberByOrganization = (org_id, _callback, callbackerror)->
+    $http.get("/organizations/#{org_id}/members.json").success (_data)->
+      _callback(_data.members)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取成员信息失败", 'error')
+
+  getOrganizationManagers = (org_id, callback, callbackerror)->
+    $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
+      callback(data.authorized_users)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取管理员信息失败", 'error')
+
+  getOrganizationsByUser (data)->
+    $scope.organizations_self_in = data
+    if $location.path() is "/organizations"
+      $location.path("/organizations/#{data[0].id}")
+      $scope.activeEle = data[0]
+
+  getAllOrganizations (organizations)->
+    $scope.organizations = organizations
+    $scope.$broadcast("gotOrganizations")
+
+  $scope.options=
+    select: false
+    expand: true
+    insert: false
+    remove: false
+
+  $scope.setActiveOrganization = (organization)->
+    $location.path("/organizations/#{organization.id}")
+
+
+  $scope.setActiveEle = (org)->
+    $scope.activeEle = org
+
+  $scope.toggle = (selector)->
+    current_height = $(selector).height()
+    if current_height is 0
+      $(selector).css "height", "auto"
+    else
+      $(selector).css "height", "0px"
+    
+  $scope.moreInfoShow = false
+]
+
+@OrganizationsProfileController = ["$scope", "$http", "$location", "$stateParams",($scope, $http, $location, $stateParams)->
+  current_org_id = $stateParams["id"]
+  getOrganizationsByUser = (callback, callbackerror)->
+    $http.get("/account/organizations.json").success (_data)->
+      callback(_data.organizations)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取我所在的组织失败", 'error')
+
+  getAllOrganizations = (callback, callbackerror)->
+    Organization.all = []
+    $http.get('/organizations.json').success (_data)->
+      for organization in _data.organizations
+        new Organization(organization)
+      Organization.setIndex(false)
+      Organization.setExpandFlag(true)
+      callback(Organization.all)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取所有组织失败", 'error')
+
+  getMemberByOrganization = (org_id, _callback, callbackerror)->
+    $http.get("/organizations/#{org_id}/members.json").success (_data)->
+      _callback(_data.members)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取成员信息失败", 'error')
+
+  getOrganizationManagers = (org_id, callback, callbackerror)->
+    $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
+      callback(data.authorized_users)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取管理员信息失败", 'error')
+
+  parents = (org, allOrganizations)->
+    _result = []
+    if typeof org.getAncestors isnt "Function" 
+      org = allOrganizations.objOfProperty("id", org.id)
+    ((org)->
+      if org.parent
+        _result.unshift(org.parent)
+        arguments.callee(org.parent)
+      else
+        return false
+    )(org)
+    _result  
+
+  getOrganizationInfo = (id)->
+    if $scope.organizations
+      $scope.activeOrganization = $scope.organizations.objOfProperty("id", id)
+      getOrganizationManagers id, (data)->
+        $scope.activeOrganization.managers = data
+      getMemberByOrganization id, (data)->
+        $scope.activeOrganization.parents = parents($scope.activeOrganization, $scope.organizations)
+        $scope.activeOrganization.members = data
+      $scope.setActiveEle($scope.activeOrganization)
+  getOrganizationInfo(current_org_id)
+  $scope.$on "gotOrganizations", ()->
+    getOrganizationInfo(current_org_id)
+
+]
+
+@OrganizationMembersController = ['$scope', '$http', '$route', '$stateParams', '$filter', ($scope, $http, $route, $stateParams, $filter) ->
   $scope.breadcrumbs = [
     {
       name: '首页'
       url: '/'
     }
   ]
-  organization_id = $routeParams['id']
+  organization_id = $stateParams['id']
   $scope.members = []
   $scope.fail_memebers = []
   $http.get("/organizations/#{organization_id}/members.json")

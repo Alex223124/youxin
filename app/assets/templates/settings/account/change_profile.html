@@ -1,0 +1,82 @@
+<div class="span3">
+  <div class="wrap">
+    <img ng-src="{{user.avatar | avatar_version:'big'}}" alt="用户头像">
+    <form action="/account.json" id="avatarUploader" enctype="multipart/form-data">
+      <label class="inline fileinput-button">
+        <input type="file" accept="image/*" name='user[avatar]' class="vh" onchange="angular.element(this).scope().uploadAvatar(this);">
+        <a class="btn" onclick="$(this).prev().click()">修改头像</a>
+      </label>
+    </form>
+  </div>
+</div>
+<div class="span9">
+  <form class="info-wrap" name="baseInfoForm">
+    <label>基本信息</label>
+    <ul>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span class="red">*</span><span>姓名:</span>
+        </div>
+        <div class="pull-left span9">
+          <input type="text" required onclick="this.select()" ng-model="user.name">
+        </div>
+      </li>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span class="red">*</span><span>电话:</span>
+        </div>
+        <div class="pull-left span9">
+          <input type="text" required onclick="this.select()" ng-pattern="/^\d+$/" ng-model="user.phone">
+        </div>
+      </li>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span class="red">*</span><span>邮箱:</span>
+        </div>
+        <div class="pull-left span9">
+          <input type="email" required onclick="this.select()" ng-model="user.email">
+        </div>
+      </li>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span class="red">*</span><span>性别:</span>
+        </div>
+        <div class="pull-left span9">
+          <span>
+            <label class="radio inline">
+              <input type="radio" name="radio-gender" ng-model="user.gender" value="男">男
+            </label>
+            <label class="radio inline">
+              <input type="radio" name="radio-gender" ng-model="user.gender" value="女">女
+            </label>
+          </span>
+        </div>
+      </li>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span>学号或工号:</span>
+        </div>
+        <div class="pull-left span9">
+          <input type="text" onclick="this.select()" ng-pattern="/^\d+$/" ng-model="user.uid">
+        </div>
+      </li>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span>QQ:</span>
+        </div>
+        <div class="pull-left span9">
+          <input type="text" onclick="this.select()" ng-model="user.qq" ng-pattern="/^\d*$/">
+        </div>
+      </li>
+      <li class="row-fluid">
+        <div class="pull-left span3">
+          <span>简介:</span>
+        </div>
+        <div class="pull-left span9">
+          <textarea ng-model="user.bio" onclick="this.select()" placeholder="介绍一下你的身份吧 ..."></textarea>
+        </div>
+      </li>
+    </ul>
+    <button class="btn btn-primary offset3" ng-click="submit()" ng-disabled="!baseInfoForm.$valid">save</button>
+  </form>
+</div>

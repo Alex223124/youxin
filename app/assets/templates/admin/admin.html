@@ -1,0 +1,11 @@
+<ul class="breadcrumb sub-nav">
+  <li ng-repeat="breadcrumb in breadcrumbs" class="{{$last ? 'active' : ''}}">
+    <a ng-href="\#{{breadcrumb.url}}" ng-hide="$last">{{breadcrumb.name}}</a>
+    <span ng-show="$last">{{breadcrumb.name}}</span>
+    <span class="divider" ng-hide="$last">/</span>
+  </li>
+</ul>
+
+<div id="adapter_view" class="tab-pane row-fluid" ui-view="adapter">
+  
+</div>

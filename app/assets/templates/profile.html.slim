@@ -17,7 +17,7 @@ ul.breadcrumb.sub-nav
             | 所在组织
           ul
             li[ng-repeat="organization in organizations"]
-              a ng-href="#/user/organizations/{{organization.id}}"
+              a href="#/organizations/{{organization.id}}"
                 | {{organization.name}}
     .span7
       .row-wrap

@@ -1,0 +1,7 @@
+<div class="span3 settings-nav">
+  <div class="nav" ng-repeat="nav in navs">
+    <a href="#{{nav.url}}" ng-class="nav.class">{{nav.title}}</a>
+  </div>
+</div>
+<div class="span9 detail" ui-view="detail">
+</div>
