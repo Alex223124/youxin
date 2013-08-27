@@ -37,7 +37,7 @@
 
 @app.filter('file_size', ->
   (size) ->
-    _B = parseFloat(size) / 8
+    _B = parseFloat(size)
     _KB = (_B / 1000).toFixed(2)
     _MB = (_KB / 1024).toFixed(2)
     _GB = (_MB / 1024).toFixed(2)
