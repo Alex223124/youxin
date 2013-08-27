@@ -51,12 +51,66 @@
 
 @SystemPositionController = ["$scope", "systemSettingService",($scope, systemSettingService)->
   $scope.setActive($scope.navs, 'position')
+  #private
+  getwidth = (str)->
+    cache =
+      px3: ///[ijl]///g
+      px4: ///[ftI]///g
+      px7: ///[ckrsvxyzJ]///g
+      px8: ///[abdeghnopquL0-9]///g
+      px9: ///[ABEKPSTVXYZ]///g
+      px10: ///[wUDCHNFGR]///g
+      px11: ///[OQ]///g
+      px12: ///[mM]///g
+      px13: ///[W]///g
+      px14: ///[\u4e00-\u9fa5]///g
+    _result = 0
+    for key,val of cache
+      _a = str.match(val)
+      if _a
+        _result += _a.length * parseInt(key.match(///\d+///)[0])
+    _result
 
   $scope.prepare_breadcrumbs(2)
   $scope.breadcrumbs = $scope.breadcrumbs.push
     name: '身份设置'
     url: '/settings/system/position'
 
+  $scope.option = ""
+  $scope.checkWidth = ($event)->
+    if $event.keyCode is 13
+      $scope.addNewPosition()
+      $($event.target).width(10)
+    else
+      _width = getwidth($scope.option) + 10 
+      $($event.target).width(_width)
+
+  $scope.positions = [
+    {
+      name: "普通成员"
+      id: "1"
+    }
+    {
+      name: "管理员"
+      id: "2"
+    }
+  ]
+  $scope.addNewPosition = ()->
+    unless $scope.option
+      return false
+    else
+      cache =
+        name: $scope.option
+        id: undefined
+      $scope.positions.push(cache)
+      $scope.option = ""
+
+  $scope.removePosition = (index)->
+    $scope.positions.splice(index, 1)
+
+  $scope.defaultPosition = $scope.positions[0]
+  $scope.setDefaultPosition = (newOption, member, oldOption)->
+    false
 ]
 
 @SystemPushController = ["$scope", "$http", "systemSettingService", ($scope, $http, systemSettingService)->
@@ -99,3 +153,4 @@
     #   App.alert("保存失败")
 
 ]
+

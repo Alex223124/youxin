@@ -1,19 +1,26 @@
-<div class="span9 push-setting">
+<div class="position-setting">
   <div class="info-wrap">
     <label>
-      <strong>系统logo设置</strong>
+      <strong>身份设置</strong>
     </label>
-    <p>
-      <form enctype="multipart/form-data">
-        <input type="file" accept="image/*">
-        <div class="btn btn-primary" onclick="$(this).prev().click()">选择图片</div>
-        <span>(建议宽高不超过180像素*76像素,无背景颜色)</span>
-      </form>
-    </p>
-    <p class="logo-preview pr">
-      <h5>预览效果:</h5>
-      <%= image_tag('logo_previewer.png') %>
-      <h5>刷新或点击<a href="javascript: window.location.reload();" >这里</a>查看效果</h5>
-    </p>
+    <div>
+      <p>成员可选身份:</p>
+      <div class="tags">
+        <span class="tag" ng-repeat="position in positions">
+          <span>{{position.name}}</span><i class="icon-remove" ng-click="removePosition($index)"></i>
+        </span>
+        <div class="tags-add-container">
+          <i class="icon-plus-sign-alt" onclick="$(this).next().focus()"></i>
+          <input type="text" class="no-style" ng-model="option" ng-keyup="checkWidth($event)" on-blur="addNewPosition()">
+        </div>
+      </div>
+    </div>
+    <div class="default-position">
+      <p>设置默认值:</p>
+      <!-- callback="callback(newOption,member,oldOption)" -->
+      <span radioselect="true" options="positions" ng-model="defaultPosition" class="input-append">
+        <span>{{defaultPosition.name}}</span>
+      </span>
+    </div>
   </div>
 </div>

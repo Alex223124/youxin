@@ -1,16 +1,20 @@
 @app.factory "systemSettingService", ["$http", ($http)->
   serviceCache = {}
-  serviceCache.getPushSetting = (callback, callbackError)->
-    $http.get("url").success (data, status)->
-      callback(data, status)
+  #private
+  initial = (method, url, data, success, error)->
+    $http[method](url, data).success (data, status)->
+      if success
+        success(data, status)
     .error (data, status)->
-      callbackError(data, status)
+      if error
+        error(data, status)
 
-  serviceCache.updatePushSetting = (update_data, callback, callbackError)->
-    $http.update("url", update_data).success (data, status)->
-      callback(data, status)
-    .error (data, status)->
-      callbackError(data, status)
+  serviceCache.getPushSetting = (success, error)->
+    initial("get", "url", false, success, error)
+
+  serviceCache.updatePushSetting = (update_data, success, error)->
+    initial("update", "url", update_data, success, error)
+
 
   serviceCache.delayUnitOptions = [
     {
@@ -39,17 +43,17 @@
       sms: true
       phone: false
 
-  serviceCache.getSystemLogo = (callback, callbackError)->
-    $http.get("url").success (data, status)->
-      callback(data, status)
-    .error (data, status)->
-      callbackError(data, status)
+  serviceCache.getSystemLogo = (success, error)->
+    initial("get", "url", false, success, error)
 
-  serviceCache.setSystemLogo = (update_data, callback, callbackError)->
-    $http.update("url", data).success (data, status)->
-      callback(data, status)
-    .error (data, status)->
-      callbackError(data, status)
+  serviceCache.setSystemLogo = (update_data, success, error)->
+    initial("update", "url", update_data, success, error)
+
+  serviceCache.getPositions = (success, error)->
+    initial("get", "url", false, success, error)
+
+  serviceCache.updatePositions = (update_data, success, error)->
+    initial("update","url", update_data, success, error)
 
   return serviceCache
 ]
