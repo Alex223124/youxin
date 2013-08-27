@@ -104,9 +104,14 @@ describe Youxin::API, 'posts' do
           delayed_sms_at: Time.now.to_i
         })
         Resque.should_receive(:enqueue_at)
-        expect do
-          post api('/posts', @admin), attrs
-        end.to change { Post.count }.by(1)
+        post api('/posts', @admin), attrs
+      end
+      it "should not enqueue scheduler" do
+        attrs = attributes_for(:post).merge!({
+          organization_ids: [@organization].map(&:id)
+        })
+        Resque.should_not_receive(:enqueue_at)
+        post api('/posts', @admin), attrs
       end
     end
   end
