@@ -13,16 +13,16 @@ html
         = link_to image_tag('logo.png'), root_path
       ul.nav.nav-pills.nav-stacked ng-controller="navController"
         li ng-class="isActive('/')"
-          a ng-href='/'
+          a ng-href='#/'
             i.icon-location-arrow
             span  优信
-        li ng-class="isActive('/user/organizations')"
-          a ng-href='#/user/organizations'
+        li ng-class="isActive('/organizations')"
+          a href='#/organizations'
             i.icon-sitemap
             span 组织展示
         - unless current_user.authorized_organizations.count.zero?
-          li ng-class="isActive('/organizations')"
-            a ng-href='#/organizations'
+          li ng-class="isActive('/admin/organizations')"
+            a href='#/admin/organizations'
               i.icon-cogs
               span 组织管理
           li ng-class="isActive('/organization_members')"
@@ -43,9 +43,11 @@ html
                 b.caret
               ul.dropdown-menu
                 li
-                  a ng-href='#/user/profile' tabindex='-1' 我的主页
+                  a ng-href='#/account/profile' tabindex='-1' 我的主页
                 li
-                  a ng-href='#/settings/profile' tabindex='-1' 个人设置
+                  a ng-href='#/settings/account/profile' tabindex='-1' 个人设置
+                li
+                  a ng-href='#/settings/system/logo' tabindex='-1' 系统设置
                 li
                   =link_to '退出', destroy_user_session_path, method: :delete, tabindex: '-1'
 

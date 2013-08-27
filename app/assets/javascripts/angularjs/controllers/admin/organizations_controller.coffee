@@ -1,16 +1,4 @@
-@OrganizationsController = ['$scope', '$http', '$route', '$routeParams', '$location', ($scope, $http, $route, $routeParams, $location) ->
-  $scope.breadcrumbs = [
-    {
-      name: '首页'
-      url: '/'
-    }
-    {
-      name: '组织管理'
-      url: '/user/organizations'
-    }
-  ]
-  organization_id = $routeParams['id']
-
+@AdminOrganizationsController = ['$scope', '$http', '$route', '$stateParams', '$location', ($scope, $http, $route, $stateParams, $location) ->
   getOrganizationsByUser = (callback, callbackerror)->
     $http.get("/account/organizations.json").success (_data)->
       callback(_data.organizations)
@@ -36,30 +24,15 @@
       callbackerror(_data, _status)
       App.alert("获取组织成员失败", 'error')
 
-  getOrganizationManagers = (org_id, callback, callbackerror)->
-    $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
-      callback(data.authorized_users)
-    .error (_data, _status)->
-      callbackerror(_data, _status)
-      App.alert("获取管理员信息失败", 'error')
-
   unless $scope.orgs
     getAllOrganizations((data)->
       $scope.orgs = data
       for _i in $scope.orgs
         _i.expandFlag = true
-        if _i.id is organization_id
-          actived_organization = _i
-      actived_organization = actived_organization or data[0]
-
-      if actived_organization
-        $scope.defaultActiveEle = actived_organization
-        $scope.setActiveElement actived_organization
-        $scope.defaultActiveEle.parents = parents($scope.defaultActiveEle)
-
-        getOrganizationManagers($scope.defaultActiveEle.id, (managers)->
-          $scope.defaultActiveEle.managers = managers
-        )
+      if $location.path() is "/admin/organizations"
+        $location.path("/admin/organizations/#{$scope.orgs[0].id}")
+        $scope.activeEle = $scope.orgs[0]
+      $scope.$broadcast("gotAllOrganizations")
     )
 
   $scope.userOptions =
@@ -67,6 +40,24 @@
     insert: true
     remove: true
     select: false
+
+  $scope.setActiveEle = (org)->
+    $scope.activeEle = org
+
+  $scope.setActiveElement = (org)->
+    if org and org.id
+      $location.path("/admin/organizations/#{org.id}")
+]
+
+
+@AdminOrganizationsProfileController = ['$scope', '$http', '$route', '$stateParams', '$location', ($scope, $http, $route, $stateParams, $location) ->
+  organization_id = $stateParams['id']
+  getOrganizationManagers = (org_id, callback, callbackerror)->
+    $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
+      callback(data.authorized_users)
+    .error (_data, _status)->
+      callbackerror(_data, _status)
+      App.alert("获取管理员信息失败", 'error')
 
   parents = (org)->
     _result = []
@@ -81,20 +72,19 @@
     )(org)
     _result
 
-  $scope.setActiveElement = (org)->
-    if org and org.id
+  getOrgInfo = (id)->
+    if $scope.orgs
+      $scope.defaultActiveEle = $scope.orgs.objOfProperty("id", id)
       $scope.defaultActiveEle.managers = []
-      $scope.defaultActiveEle = org
-
-      $scope.defaultActiveEle.name_was = org.name
-      $scope.defaultActiveEle.bio_was = org.bio
-
+      $scope.defaultActiveEle.name_was = $scope.defaultActiveEle.name
+      $scope.defaultActiveEle.bio_was = $scope.defaultActiveEle.bio
       $scope.defaultActiveEle.parents = parents($scope.defaultActiveEle)
-      $location.path("/organizations/#{org.id}")
-      $("#all-organizations").children(".active").removeClass("active")
-      $("#all-organizations").children().eq(org.index).addClass("active")
       getOrganizationManagers $scope.defaultActiveEle.id, (managers)->
         $scope.defaultActiveEle.managers = managers
+      $scope.setActiveEle($scope.defaultActiveEle)
+  getOrgInfo(organization_id)
+  $scope.$on "gotAllOrganizations", ()->
+    getOrgInfo(organization_id)
 
   $scope.put_info = (data)->
     for _k, _v of data

@@ -1,0 +1,26 @@
+<div class="position-setting">
+  <div class="info-wrap">
+    <label>
+      <strong>身份设置</strong>
+    </label>
+    <div>
+      <p>成员可选身份:</p>
+      <div class="tags">
+        <span class="tag" ng-repeat="position in positions">
+          <span>{{position.name}}</span><i class="icon-remove" ng-click="removePosition($index)"></i>
+        </span>
+        <div class="tags-add-container">
+          <i class="icon-plus-sign-alt" onclick="$(this).next().focus()"></i>
+          <input type="text" class="no-style" ng-model="option" ng-keyup="checkWidth($event)" on-blur="addNewPosition()">
+        </div>
+      </div>
+    </div>
+    <div class="default-position">
+      <p>设置默认值:</p>
+      <!-- callback="callback(newOption,member,oldOption)" -->
+      <span radioselect="true" options="positions" ng-model="defaultPosition" class="input-append">
+        <span>{{defaultPosition.name}}</span>
+      </span>
+    </div>
+  </div>
+</div>

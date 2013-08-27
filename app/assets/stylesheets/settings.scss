@@ -1,4 +1,4 @@
-#setting{
+#adapter_view{
   position: absolute;
   top: 36px;
   left: 0;
@@ -7,21 +7,20 @@
   &>div{
     height: 100%;
   }
-  .setting-option-wrap{
-    border-right: 1px solid #D9d9d9;
+  .settings-nav{
     background-color: #e9e9e9;
-    height: 100%;
-    .setting-option{
+    border-right: 1px solid #D9d9d9;
+    .nav{
+      margin-bottom: 0;
       cursor: pointer;
-      &.active{
-        padding: 5px 20px;
-        cursor: default;
-        background-color: #d9d9d9;
-      }
       a{
         padding: 5px 20px;
         display: block;
         text-decoration: none;
+        &.active{
+          cursor: default;
+          background-color: #d9d9d9;
+        }
         &:hover{
           background-color: #e0e0e0;
         }
@@ -57,12 +56,137 @@
       }
     }
   }
+  .push-setting{
+    .push-time-setting{
+      span{
+        vertical-align: middle;
+        color: white;
+        margin-bottom: 0;
+        font-size: 14px;
+      }
+      .delay-unit{
+        display: inline-block;
+        margin-left: 20px;
+        width: 120px;
+        height: 20px;
+        padding: 4px 0;
+        vertical-align: top;
+        background-color: #1abc9c;
+        border-radius: 4px;
+        span{
+          padding-left: 14px;
+        }
+        .caret-up{
+          padding-left: 0; 
+        }
+      }
+      .add-on{
+        background-color: #3E5771;
+        font-size: 18px;
+        font-weight: bold;
+        text-shadow: none;
+        cursor: pointer;
+        margin-right: 0;
+        border: none;
+        &.prev{
+          border-right: 2px solid darken(#3E5771,5%); 
+        }
+        &.next{
+          border-left: 2px solid darken(#3E5771,5%); 
+        }
+      }
+      .delay-time{
+        color: white;
+        display: inline-block;
+        height: 24px;
+        min-width: 60px;
+        line-height: 24px;
+        vertical-align: middle;
+        background-color: #3E5771;
+        &:hover,&:focus{
+          outline: none;
+        }
+        text-align: center;
+      }
+    }
+  }
+  .position-setting{
+    .tags{
+      display: inline-block;
+      max-width:  300px;
+      padding: 5px;
+      border-radius: 4px;
+      border: 2px solid #1abc9c;
+      margin-bottom: 15px;
+      i{
+        cursor: pointer;
+      }
+      .tag{
+        padding: 4px 12px;
+        border-radius: 4px;
+        margin: 3px;
+        background-color: #1abc9c;
+        color: white;
+        display: inline-block;
+        -webkit-transition: all .3s ease-out;
+        -o-transition: all .3s ease-out;
+        -ms-transition: all .3s ease-out;
+        -moz-transition: all .3s ease-out;
+        transition: all .3s ease-out;
+        span,i{
+          -webkit-transition: all .3s ease-out;
+          -o-transition: all .3s ease-out;
+          -ms-transition: all .3s ease-out;
+          -moz-transition: all .3s ease-out;
+          transition: all .3s ease-out;
+        }
+        &:hover{
+          padding: 4px 9px;
+          background-color: darken(#1abc9c, 5%);
+          span{
+            margin-right: 3px;
+          }
+          i{
+            margin-left: 3px; 
+          }
+        }
+      }
+      .tags-add-container{
+        display: inline-block;
+        input{
+          width: 10px;
+        }
+        i{
+          font-size: 34px;
+          vertical-align: middle;
+          color: #d6dbdf;
+          -webkit-transition: all .25s ease-out;
+          -o-transition: all .25s ease-out;
+          -ms-transition: all .25s ease-out;
+          -moz-transition: all .25s ease-out;
+          transition: all .25s ease-out;
+          &:hover{
+            color: #1abc9c;
+          }
+        }
+      }
+    }
+    .default-position{
+      .input-append{
+        font-size: 14px;
+        width: 120px;
+        background-color: #1abc9c;
+        color: white;
+        padding: 3px 0;
+        border-radius: 4px;
+        span{
+          padding-left: 1em;
+        }
+        .caret-up{
+          padding: 0;
+        }
+      }
+    }
+  }
 }
 
-input.ng-invalid,input.ng-invalid:focus{
-  border-color: rgba(250, 21, 11, 0.8);
-  -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(233, 95, 83, 0.6);
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(233, 95, 83, 0.6);
-  -ms-box-shadsow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(233, 95, 83, 0.6);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(233, 95, 83, 0.6);
-}

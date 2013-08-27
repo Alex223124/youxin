@@ -55,6 +55,8 @@
           .collapse id="{{receipt.id}}-{{flag}}-forms"
             .forms
               div ng-repeat="form in receipt.post.forms" ng-controller="newCollectionController"
+                .formname
+                  strong {{form.title}}
                 .field ng-repeat="input in form.inputs | orderBy: 'position'"
                   label
                     | {{$index+1}}.{{input.label}}

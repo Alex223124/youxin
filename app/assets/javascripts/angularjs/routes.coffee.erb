@@ -1,39 +1,114 @@
-@app.config(['$routeProvider', '$locationProvider', ($routeProvider, $locationProvider) ->
+@app.config(['$stateProvider', '$urlRouterProvider', ($stateProvider, $urlRouterProvider)->
+  $urlRouterProvider.otherwise("/")
 
-  $routeProvider
-  .when '/',
-    templateUrl: "<%= asset_path('receipts.html') %>",
-    controller: ReceiptsController
-  .when '/receipts',
-    templateUrl: "<%= asset_path('receipts.html') %>",
-    controller: ReceiptsController
-  .when '/posts/new',
-    templateUrl: "<%= asset_path('new_posts.html') %>",
-    controller: NewPostsController
-  .when '/organizations/:id',
-    templateUrl: "<%= asset_path('organizations.html') %>",
-    controller: OrganizationsController
-  .when '/organizations',
-    templateUrl: "<%= asset_path('organizations.html') %>",
-    controller: OrganizationsController
-  .when '/organizations/:id/members',
-    templateUrl: "<%= asset_path('members.html') %>",
-    controller: MembersController
-  .when '/user/organizations',
-    templateUrl: "<%= asset_path('organizations/show.html') %>",
-    controller: OrganizationsShowController
-  .when '/user/organizations/:id',
-    templateUrl: "<%= asset_path('organizations/show.html') %>",
-    controller: OrganizationsShowController
-  .when '/settings/profile',
-    templateUrl: "<%= asset_path('settings/baseSetting.html') %>",
-    controller: baseInfoController
-  .when '/settings/password',
-    templateUrl: "<%= asset_path('settings/password.html') %>",
-    controller: changePasswordController
-  .when '/user/profile',
-    templateUrl: "<%= asset_path('profile.html') %>",
-    controller: profileController
+  $stateProvider
+    .state 'home',
+      url: "/"
+      views: 
+        "mainView":
+          templateUrl: "<%= asset_path('receipts.html') %>"
+          controller: ReceiptsController
 
-  # $locationProvider.html5Mode(true)
+    .state 'admin',
+      url: '/admin'
+      views:
+        'mainView':
+          templateUrl: "<%= asset_path('admin/admin.html') %>"
+          controller: AdminController
+    .state 'admin.organizations',
+      url: "/organizations"
+      views:
+        "adapter":
+          templateUrl: "<%= asset_path('admin/organizations/organization.html') %>"
+          controller: AdminOrganizationsController
+    .state 'admin.organizations.profile',
+      url: "/:id"
+      views:
+        'detail':
+          templateUrl: "<%= asset_path('admin/organizations/profile.html') %>"
+          controller: AdminOrganizationsProfileController
+    .state 'organizations',
+      url: "/organizations"
+      views:
+        "mainView":
+          templateUrl: "<%= asset_path('organizations/template.html') %>"
+          controller: OrganizationsController
+    .state 'organizations.profile',
+      url: "/:id"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('organizations/profile.html') %>"
+          controller: OrganizationsProfileController
+
+    .state 'member_manager',
+      url: "/organizations/:id/members"
+      views:
+        "mainView":
+          templateUrl: "<%= asset_path('organizations/members.html') %>"
+          controller: OrganizationMembersController
+
+    .state 'post_new',
+      url: "/posts/new"
+      views:
+        "mainView":
+          templateUrl: "<%= asset_path('new_posts.html') %>"
+          controller: NewPostsController
+
+    .state 'self_page',
+      url: "/account/profile"
+      views:
+        "mainView":
+          templateUrl: "<%= asset_path('profile.html') %>"
+          controller: profileController
+
+
+    .state 'settings',
+      url: '/settings'
+      views:
+        'mainView':
+          templateUrl: "<%= asset_path('settings/template.html') %>"
+          controller: SettingsController
+    .state 'settings.account',
+      url: "/account"
+      views:
+        "adapter":
+          templateUrl: "<%= asset_path('settings/adapter.html') %>"
+          controller: AccountController
+    .state 'settings.account.password',
+      url: "/password"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('settings/account/change_password.html') %>"
+          controller: ChangePasswordController
+    .state 'settings.account.profile',
+      url: "/profile"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('settings/account/change_profile.html') %>"
+          controller: ChangeProfileController
+    .state 'settings.system',
+      url: '/system'
+      views:
+        "adapter":
+          templateUrl: "<%= asset_path('settings/adapter.html') %>"
+          controller: SystemController
+    .state 'settings.system.logo',
+      url: '/logo'
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('settings/system/logo.html') %>"
+          controller: SystemLogoController
+    .state 'settings.system.position',
+      url: '/position'
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('settings/system/position.html') %>"
+          controller: SystemPositionController
+    .state 'settings.system.push',
+      url: '/push'
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('settings/system/push.html') %>"
+          controller: SystemPushController
+
 ])

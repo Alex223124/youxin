@@ -1,8 +1,9 @@
 #= require unstable/angular
+#= require angular-ui/ui-router.min
 #= require_self
 #= require_tree ./angularjs
 
-@app = angular.module('youxin', [])
+@app = angular.module('youxin', ['ui.state'])
 @app.config(["$httpProvider", (provider) ->
   provider.defaults.headers.common['X-CSRF-Token'] = $('meta[name=csrf-token]').attr('content')
 ])

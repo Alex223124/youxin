@@ -9,13 +9,14 @@
       activeFn: "&"
       insertUrl: "@"
       removeUrl: "@"
+      showmembercount: "@"
     template: """
       <div ng-repeat="data in datas" ng-animate="animate" node-level="{{data.level}}" class="{{$index == activeele.index ? 'active' : ''}}" ng-click="bindActive(data, $event)" ng-style="{paddingLeft: data.level + \'em\'}">
         <i class="icon-{{_cache[data.selectFlag]}}" ng-show="options.select" ng-click="datas.changeSelectFlag(data, $event)"></i>
         <i class="expand-{{data.expandFlag}} visible-{{!data.isLeafNode}}" ng-show="options.expand" ng-click="bindExpand(data, $event)"></i>
-        <span ng-click="bindActive(data, $event)">{{data.name}}<span>({{data.members_count}})</span></span>
+        <span ng-click="bindActive(data, $event)">{{data.name}}<span ng-show="showmembercount">({{data.members_count}})</span></span>
         <i class="icon-plus-sign pull-right" ng-show="options.insert" ng-click="bindInsert(data, $event)"></i>
-        <i class="icon-remove-sign pull-right" ng-show="options.remove" ng-click="bindRemove(data, $event)"></i>
+        <i class="icon-remove-sign pull-right" ng-show="options.remove && data.level" ng-click="bindRemove(data, $event)"></i>
       </div>
     """
     link: (scope,element,attrs)->

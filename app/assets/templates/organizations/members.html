@@ -1,0 +1,115 @@
+<ul class="breadcrumb sub-nav">
+  <li ng-repeat="breadcrumb in breadcrumbs" class="{{$last ? 'active' : ''}}">
+    <a ng-href="\#{{breadcrumb.url}}" ng-hide="$last">{{breadcrumb.name}}</a>
+    <span ng-show="$last">{{breadcrumb.name}}</span>
+    <span class="divider" ng-hide="$last">/</span>
+  </li>
+</ul>
+
+<div class="tab-pane" id="addOrgMember">
+  <div class="row-fluid">
+    <ul class="span5 orglist">
+      <li class="org-name">
+        {{current_organization.name}} 的成员
+      </li>
+      <li ng-repeat="member in members" member-id="{{member.id}}">
+        <img ng-src="{{member.avatar | avatar_version:'normal'}}" alt="pic">
+        <span class="user-name">{{member.name}}</span>
+        <span contenteditable="true" ng-model="member.phone" ng-blur="updatePhone(member)" class="user-tel">{{member.phone}}</span>
+
+        <span radioselect="true" class="position" ng-model="member.role" member="member" callback="callback(newOption, member, oldOption)" options="role_options">
+          {{member.role.name || '普通用户'}}
+        </span>
+        <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
+        <li class="remove-all" ng-show="hasOrgMember">
+          <span ng-click="removeAll()">删除全部</span>
+          <i class="remove icon-remove-sign" ng-click="removeAll()"></i>
+        </li>
+      </li>
+    </ul>
+    <div class="span7 add-org-user">
+      <div class="tabbable">
+        <ul class="nav nav-tab" id="add-user-tab">
+          <li class="active"><a href="javascript:;" data-target="#import_org_user" data-toggle="tab">移入用户</a></li>
+          <li><a href="javascript:;" data-target="#create_org_user" data-toggle="tab">新建用户</a></li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active" id="import_org_user">
+            <div class="row-fluid">
+              <ul class="org-list top span6" id="org-list">
+                <label>从组织中选择</label>
+                <div>
+                  <angulartree id="org-tree-container" datas="organizations" options="org_tree_options" activeele="activeElement" active-fn="activeFn(org)" showmembercount="true">
+                  </angulartree>
+                </div>
+                <div class="dash"></div>
+                <div class="all-users" ng-click="getUsers($event)">所有用户</div>
+              </ul>
+              <div class="span6 member-list">
+                <ul>
+                  <li>
+                    <input type="text" ng-model="searchInput" placeholder="姓名或电话">
+                  </li>
+                  <li class="member" ng-repeat="member in activeElementMembers | filter:searchInput" ng-click="addToCurrentOrg(member.id)">
+                    <img ng-src="{{member.avatar | avatar_version:'normal'}}">
+                    <span>
+                      <span class="name">{{member.name}}</span>
+                    </span>
+                    <span class="tel">{{member.phone}}</span>
+                    <i class="add pull-right icon-plus-sign"></i>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="tab-pane" id="create_org_user">
+            <li>
+              <label>单个添加</label>
+              <p>
+                <input class="input-small" type="text" ng-model="user_name" placeholder="姓名">
+                <input class="input-medium" type="text" ng-model="user_email" placeholder="邮箱">
+                <input class="input-medium" type="text" ng-model="user_tel" placeholder="电话号码">
+                <span ng-click="addNewOrgMember()">
+                  <i class="icon icon-plus-sign"></i>
+                </span>
+                <label>
+                  系统将会邮件通知该用户加入该组织
+                </label>
+              </p>
+            </li>
+            <li>
+              <label>批量导入</label>
+              <p>
+                <form enctype="multipart/form-data">
+                  <label class="inline fileinput-button">
+                    <input type="file" accept="application/vnd.ms-excel" name='file' class="vh" onchange="angular.element(this).scope().showFileName(this);">
+                    <a class="btn" onclick="$(this).prev().click()">选择文件</a>
+                    <span>{{fileName}}</span>
+                  </label>
+                </form>
+                <a class="submit btn btn-success" ng-click="importUsers($event);">提交</a>
+                <a class="btn btn-primary" ng-href="/downloads/批量导入用户模板.xls">下载表格模板</a>
+              </p>
+            </li>
+            <hr />
+            <div class="fail-header" ng-show="fail_memebers.length">
+              <h3>未成功添加的用户列表<small class="label label-important">红色标记部分表示不符合规定的地方</small></h3>
+            </div>
+            <table class="table table-striped fail-memebers" ng-show="fail_memebers.length">
+              <thead>
+                <th>姓名</th>
+                <th>邮箱</th>
+                <th>电话</th>
+              </thead>
+              <tbody ng-repeat="user in fail_memebers">
+                <td ng-class="user.errors.getIndex('name') == -1 ? '' : 'error'">{{user.name}}</td>
+                <td ng-class="user.errors.getIndex('email') == -1 ? '' : 'error'">{{user.email}}</td>
+                <td ng-class="user.errors.getIndex('phone') == -1 ? '' : 'error'">{{user.phone}}</td>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
