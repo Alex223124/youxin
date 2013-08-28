@@ -4,14 +4,14 @@ class Organizations < Grape::API
   resource :organizations do
     get do
       organizations = current_namespace.organizations
-      present organizations, with: Youxin::Entities::AuthorizedOrganization
+      present organizations, with: Youxin::Entities::Organization
     end
     route_param :id do
       before do
         @organization = current_namespace.organizations.find(params[:id])
       end
       get do
-        present @organization, with: Youxin::Entities::OrganizationWithAuthorizedUsersAndProfile
+        present @organization, with: Youxin::Entities::OrganizationWithProfile
       end
       put do
         authorize! :edit_organization, @organization
@@ -36,7 +36,7 @@ class Organizations < Grape::API
       end
       get 'children' do
         children = @organization.children
-        present children, with: Youxin::Entities::OrganizationWithAuthorizedUsers
+        present children, with: Youxin::Entities::Organization
       end
       get 'authorized_users' do
         authorized_users = @organization.authorized_users

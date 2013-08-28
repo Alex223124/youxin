@@ -100,14 +100,8 @@ describe Youxin::API, 'organizations' do
           avatar: @organization.avatar.url,
           header: @organization.header.url,
           bio: @organization.bio,
-          bio: nil,
-          authorized_users: [
-            {
-              id: @user.id,
-              name: @user.name,
-              avatar: @user.avatar.url
-            }
-          ]
+          parent_id: @organization.parent_id,
+          members: @organization.members.count
         }.as_json
       end
     end
@@ -237,16 +231,16 @@ describe Youxin::API, 'organizations' do
             name: @organization_one.name,
             created_at: @organization_one.created_at,
             avatar: @organization_one.avatar.url,
-            bio: nil,
-            authorized_users: []
+            parent_id: @organization_one.parent_id,
+            members: @organization_one.members.count
           },
           {
             id: @organization_another.id,
             name: @organization_another.name,
             created_at: @organization_another.created_at,
             avatar: @organization_another.avatar.url,
-            bio: nil,
-            authorized_users: []
+            parent_id: @organization_another.parent_id,
+            members: @organization_another.members.count
           }
         ].as_json
       end
@@ -267,6 +261,9 @@ describe Youxin::API, 'organizations' do
             id: @user.id,
             name: @user.name,
             avatar: @user.avatar.url,
+            email: @user.email,
+            created_at: @user.created_at,
+            phone: @user.phone,
             actions: @actions
           }
         ].as_json
@@ -278,6 +275,9 @@ describe Youxin::API, 'organizations' do
             id: @user.id,
             name: @user.name,
             avatar: @user.avatar.url,
+            email: @user.email,
+            created_at: @user.created_at,
+            phone: @user.phone,
             actions: @actions
           }
         ].as_json

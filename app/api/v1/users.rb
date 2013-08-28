@@ -30,7 +30,7 @@ class Users < Grape::API
         authorized_organizations = current_user.authorized_organizations
       end
 
-      present authorized_organizations, with: Youxin::Entities::AuthorizedOrganization
+      present authorized_organizations, with: Youxin::Entities::Organization
     end
 
     desc 'Get recent organizations who have sent post to user'
@@ -116,7 +116,7 @@ class Users < Grape::API
       end
       get 'organizations' do
         organizations = @user.organizations
-        present organizations, with: Youxin::Entities::AuthorizedOrganization
+        present organizations, with: Youxin::Entities::Organization
       end
       get 'receipts' do
         receipts = paginate current_user.receipts.from_user(@user)

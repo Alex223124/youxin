@@ -37,7 +37,7 @@ module Youxin
       expose :private_token
     end
 
-    class AuthorizedUser < UserSimple
+    class AuthorizedUser < UserBasic
       expose :actions do |user, options|
         options[:organization].user_actions_organization_relationships.where(user_id: user.id).first.try(:actions)
       end
@@ -97,11 +97,14 @@ module Youxin
       end
     end
 
-    class OrganizationWithAuthorizedUsers < OrganizationBasic
-      expose :bio
-      expose :authorized_users, using: Entities::UserSimple
+    class Organization < OrganizationBasic
+      expose :parent_id
+      expose :members do |organization, options|
+        organization.member_ids.count
+      end
     end
-    class OrganizationWithAuthorizedUsersAndProfile < OrganizationWithAuthorizedUsers
+    class OrganizationWithProfile < Organization
+      expose :bio
       expose :header do |organization|
         organization.header.url
       end
@@ -137,13 +140,6 @@ module Youxin
       end
       expose :last_receipt, using: Entities::ReceiptSimple do |user, options|
         options[:current_user].receipts.from_user(user).first
-      end
-    end
-
-    class AuthorizedOrganization < OrganizationBasic
-      expose :parent_id
-      expose :members do |organization, options|
-        organization.members.count
       end
     end
 
