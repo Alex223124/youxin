@@ -44,6 +44,21 @@ class Notification::Notifier
         end
       end
     end
+    def publish_message_to_ios_device(message)
+      ios_pusher = pusher
+      message = Message.where(id: message).first unless message.is_a?(Message)
+      message.message_notifications.each do |message_notification|
+        user = message_notification.user
+        if user.ios_device_token?
+          notification = Grocer::Notification.new(
+            grocer_message(
+              user.ios_device_token,
+              message_notification.ios_payload)
+          )
+          ios_pusher.push(notification)
+        end
+      end
+    end
 
     def publish_to_phone(receipt)
       receipt = Receipt.find(receipt) unless receipt.is_a? Receipt

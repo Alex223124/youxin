@@ -16,6 +16,10 @@ module Notification
       def publish_post_to_faye_client_async(post_id)
         ::Resque.enqueue(PublishPostToFayeClientJob, post_id)
       end
+
+      def publish_message_to_ios_device_async(message_id)
+        ::Resque.enqueue(PublishMessageToIosDeviceJob, message_id)
+      end
     end
 
     def self.included(receiver)

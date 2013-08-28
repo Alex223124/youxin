@@ -30,10 +30,10 @@ class Message
   def send_message_notifications
     other_participants = self.conversation.participants - [self.user]
     Notification::Notifier.publish_to_faye_client_async(other_participants.map(&:id), faye_payload)
-    Notification::Notifier.publish_to_ios_device_async(other_participants.map(&:id), ios_payload)
     other_participants.each do |participant|
       participant.message_notifications.create(message_id: self.id)
     end
+    Notification::Notifier.publish_message_to_ios_device_async(self.id)
   end
   def ios_payload
     {
