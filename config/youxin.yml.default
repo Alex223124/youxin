@@ -25,15 +25,10 @@ defaults: &defaults
     user_name: user_name
     password: password
   help:
-    terms:
-      text: Terms of Service
-      url: '/help/terms'
-    privacy:
-      text: privacy
-      url: '/help/privacy'
-    about_us:
-      text: About us
-      url: '/help/about_us'
+    terms: '/help/terms'
+    privacy: '/help/privacy'
+    about_us: '/help/about_us'
+    ios_tips_and_tricks: '/help/ios_tips_and_tricks'
     contact_email: combee.co@gmail.com
   devise:
     reset_sms_token_within: 3
