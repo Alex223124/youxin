@@ -9,7 +9,7 @@ class Posts < Grape::API
 
       attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at]
       attachment_ids = attrs.delete(:attachment_ids)
-      delayed_at = attrs[:delayed_sms_at] and Time.at(attrs.delete(:delayed_sms_at).to_i)
+      delayed_sms_at = attrs.delete(:delayed_sms_at).to_i
       post = current_user.posts.new attrs
 
       attachments = []
@@ -27,7 +27,7 @@ class Posts < Grape::API
       end if attachment_ids
       if post.save
         attachments.map { |attachment| post.attachments << attachment } if attachments.present?
-        post.sms_schedulers.create delayed_at: delayed_at if delayed_at
+        post.sms_schedulers.create delayed_at: Time.at(delayed_sms_at) unless delayed_sms_at.zero?
         present post, with: Youxin::Entities::Post
       else
         fail!(post.errors)
