@@ -9,25 +9,34 @@ defaults: &defaults
   smtp_settings:
     address: smtp.gmail.com
     port: 587
-    domain: u-xin.com
-    user_name: youxin.beta@gmail.com
-    password: 'hdtyzxyouxin#'
+    domain: combee.co
+    user_name: user_name
+    password: password
     authentication: :plain
     enable_starttls_auto: true
   faye:
     subscription_prefix: subscription
     token: 123456
-    server: 'http://localhost:9292/faye'
+    server: 'http://192.168.2.173:9292/faye'
   apn:
     passphrase: hdtyzx
     cert_file: development.pem
   smsbao:
-    user_name: youxin
-    password: 'combee&smsbao#'
+    user_name: user_name
+    password: password
   help:
-    tos: tos_text
-    privacy: privacy_text
-    contact_email: youxin.beta@gmail.com
+    terms:
+      text: Terms of Service
+      url: '/help/terms'
+    privacy:
+      text: privacy
+      url: '/help/privacy'
+    about_us:
+      text: About us
+      url: '/help/about_us'
+    contact_email: combee.co@gmail.com
+  devise:
+    reset_sms_token_within: 3
 
 development:
   <<: *defaults
@@ -43,7 +52,7 @@ production:
   faye:
     subscription_prefix: subscription
     token: secret
-    server: 'http://u-xin.com:9292/faye'
+    server: 'http://combee.co:9292/faye'
   apn:
     passphrase: hdtyzx
     cert_file: production.pem

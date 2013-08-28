@@ -25,12 +25,21 @@ describe Youxin::API, 'help' do
       }.as_json
     end
   end
-  describe "GET /help/tos" do
-    it "should return the tos" do
-      get api('/help/tos')
+  describe "GET /help/terms" do
+    it "should return the terms" do
+      get api('/help/terms')
       response.status.should == 200
       json_response.should == {
-        tos: Youxin.config.help.tos
+        terms: Youxin.config.help.terms
+      }.as_json
+    end
+  end
+  describe "GET /help/about_us" do
+    it "should return the about_us" do
+      get api('/help/about_us')
+      response.status.should == 200
+      json_response.should == {
+        about_us: Youxin.config.help.about_us
       }.as_json
     end
   end
