@@ -108,6 +108,9 @@ module Youxin
       expose :header do |organization|
         organization.header.url
       end
+      expose :joined_at do |organization, options|
+        options[:current_user].user_organization_position_relationships.where(organization_id: organization.id).first.try(:created_at)
+      end
     end
 
     class ReceiptBasic < Grape::Entity

@@ -11,7 +11,7 @@ class Organizations < Grape::API
         @organization = current_namespace.organizations.find(params[:id])
       end
       get do
-        present @organization, with: Youxin::Entities::OrganizationWithProfile
+        present @organization, with: Youxin::Entities::OrganizationWithProfile, current_user: current_user
       end
       put do
         authorize! :edit_organization, @organization

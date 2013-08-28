@@ -95,6 +95,7 @@ describe Youxin::API, 'organizations' do
         response.status.should == 200
         json_response.should == {
           id: @organization.id,
+          joined_at: @user.user_organization_position_relationships.where(organization_id: @organization.id).first.try(:created_at),
           name: @organization.name,
           created_at: @organization.created_at,
           avatar: @organization.avatar.url,
