@@ -1,5 +1,3 @@
-# encoding: utf-8
-
 class Message
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -34,15 +32,6 @@ class Message
       participant.message_notifications.create(message_id: self.id)
     end
     Notification::Notifier.publish_message_to_ios_device_async(self.id)
-  end
-  def ios_payload
-    {
-      alert: "#{self.user.name}:\n(私信) #{self.body[0...20]}...",
-      custom: {
-        type: :conversation,
-        id: self.conversation_id.to_s,
-      }
-    }
   end
   def faye_payload
     self.as_json(only: [:created_at, :body], methods: [:id], root: true,
