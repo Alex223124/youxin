@@ -8,6 +8,9 @@
         "mainView":
           templateUrl: "<%= asset_path('receipts.html') %>"
           controller: ReceiptsController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
 
     .state 'admin',
       url: '/admin'
@@ -15,6 +18,10 @@
         'mainView':
           templateUrl: "<%= asset_path('admin/admin.html') %>"
           controller: AdminController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
+
     .state 'admin.organizations',
       url: "/organizations"
       views:
@@ -33,6 +40,10 @@
         "mainView":
           templateUrl: "<%= asset_path('organizations/template.html') %>"
           controller: OrganizationsController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
+
     .state 'organizations.profile',
       url: "/:id"
       views:
@@ -46,6 +57,9 @@
         "mainView":
           templateUrl: "<%= asset_path('organizations/members.html') %>"
           controller: OrganizationMembersController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
 
     .state 'post_new',
       url: "/posts/new"
@@ -53,6 +67,9 @@
         "mainView":
           templateUrl: "<%= asset_path('new_posts.html') %>"
           controller: NewPostsController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
 
     .state 'self_page',
       url: "/account/profile"
@@ -60,7 +77,9 @@
         "mainView":
           templateUrl: "<%= asset_path('profile.html') %>"
           controller: profileController
-
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
 
     .state 'settings',
       url: '/settings'
@@ -68,6 +87,10 @@
         'mainView':
           templateUrl: "<%= asset_path('settings/template.html') %>"
           controller: SettingsController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
+
     .state 'settings.account',
       url: "/account"
       views:
@@ -110,5 +133,4 @@
         "detail":
           templateUrl: "<%= asset_path('settings/system/push.html') %>"
           controller: SystemPushController
-
 ])

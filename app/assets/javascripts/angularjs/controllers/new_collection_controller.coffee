@@ -1,4 +1,4 @@
-@newCollectionController =  ["$scope", "$http",($scope, $http)->
+@newCollectionController =  ["$scope", "receiptService",($scope, receiptService)->
   $scope.submit = (receipt)->
     form = receipt.post.forms.first()
     entities = {}
@@ -16,8 +16,7 @@
           for option in input.options
             if option.default_selected is true
               entities[input.identifier].push option.id
-    $http.post("/forms/#{form.id}/collections.json", { entities: entities })
-    .success (data) ->
+    receiptService.submitForms form.id, { entities: entities }, (data)->
       form.collectioned = true
       receipt.forms_filled = true
       $scope.read_receipt(receipt)

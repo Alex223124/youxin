@@ -1,6 +1,123 @@
-p#notice = notice
+doctype html
+html
+  head
+    title Combee | 组织消息通知中心
+    meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    link rel="shortcut icon" href="#{image_path('favicon.png')}"
+    = stylesheet_link_tag "single_receipt", media: "all"
+    = javascript_include_tag "single_receipt"
+    = csrf_meta_tags
 
+.wrapper
+  .nav
+  .post
+    .header.clearfix
+      .avatar.tac.pull-left
+        = image_tag(@receipt.author.avatar.big, alt: 'user-picture')
+      .post-info-wrap.pull-left
+        span.name #{@receipt.author.name}
+        span.timeago.pull-right 5天前
+        h4.tac
+          span 优信标题
+    .content-wrap
+      .content
+        div 优信内容:外部因素要求必须切换场景。在发布版本中突然蹦出个严重缺陷。某个特性完 成的截至日期就要来临。在项目关键部分可以提供帮助的一个开发正打算离职。所有情 况逼迫你停下所有手头工作，全力扑到到这个完全不同的任务上。
+      .additions
+        .additions-pane
+          .attachments.clearfix
+            .attachment.inline-block
+              a href="javascript:;" 
+                | 补考名单补考名单.xls&nbsp;
+                small (512KB)
+            .attachment.inline-block
+              a href="javascript:;"
+                | 补考名单.xls&nbsp;
+                small (512KB)
+            .attachment.inline-block
+              a href="javascript:;"
+                | 补考名单.xls&nbsp;
+                small (512KB)
+            .attachment.inline-block
+              a href="javascript:;"
+                | 1.xls&nbsp;
+                small (5KB)
+            .attachment.inline-block
+              a href="javascript:;"
+                | 2.xls&nbsp;
+                small (5B)
+            .attachment.inline-block
+              a href="javascript:;"
+                | 3.xls&nbsp;
+                small (2KB)
+            .attachment.inline-block
+              a href="javascript:;"
+                | 4.xls&nbsp;
+                small (3B)
+          .form
+            .error-wrap
+              .error-item 姓名&nbsp;必须填写
+              .error-item 手机号&nbsp;必须填写
+            h4 离校登记表
+            .form-wrap
+              .field.text
+                label
+                  | 单行文本
+                  span (提示)
+                  small.require *
+                .input-wrap
+                  input type="text" onfocus="this.className='';" placeholder="输入文本..."
+              .field.textarea
+                label
+                  | 多行文本
+                  span (提示)
+                  small.require *
+                .input-wrap
+                  textarea onfocus="this.className='';" class="error" placeholder="输入文本..."
+              .field.checkbox
+                label 
+                  | 多选
+                  span (提示)
+                  small.require *
+                .input-wrap
+                  .option.inline-block
+                    input type="checkbox"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项1
+                  .option.inline-block
+                    input type="checkbox"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项2
+                  .option.inline-block
+                    input type="checkbox"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项3
+              
+              /input的name属性必须有，且不同radio的name必须不同
+              .field.radio
+                label
+                  | 单选
+                  span (提示)
+                  small.require *
+                .input-wrap
+                  .option.inline-block
+                    input type="radio" name="radio1"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项1
+                  .option.inline-block
+                    input type="radio" name="radio1"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项2
+                  .option.inline-block
+                    input type="radio" name="radio1"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项3
+                  .option.inline-block
+                    input type="radio" name="radio1"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项4
+                  .option.inline-block
+                    input type="radio" name="radio1"
+                    span onclick="this.previousSibling.checked = !this.previousSibling.checked;" 选项5
 
-= link_to 'Edit', edit_receipt_path(@receipt)
-'|
-= link_to 'Back', receipts_path
+            .submit-wrap
+              button type="submit" 提&nbsp;&nbsp;交
+          .broadcast-wrap.tac
+            | 更多信息请登录
+            a href="http://combee.co" combee.co
+            |，或下载客户端:
+            a href="combee.co" iOS
+            |，
+            a href="combee.co" Android

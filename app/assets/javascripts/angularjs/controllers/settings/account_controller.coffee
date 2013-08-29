@@ -49,7 +49,6 @@
     name: '基本信息'
     url: '/settings/account/password'
 
-
   # getUserInformations = (callback, callbackerror)->
   #   $http.get("/account.json").success (data, _status)->
   #     callback(data.user, _status)

@@ -1,0 +1,32 @@
+#singleReceiptView{
+  background-color: #f3f3f3;
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  top: 36px;
+  .main-wrap{
+    max-width: 580px;
+    margin: 0 auto;
+    height: 100%;
+    overflow-y: auto;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    background-color: #fff;
+    .post{
+      border: none;
+      margin: 0;
+      .wrapper:hover{
+        background-color: #fff;
+      }
+      .details .title{
+        display: block;
+        margin: 0;
+        letter-spacing: 5px;
+        margin-top: 5px;
+        text-align: center;
+      }
+    }
+  }
+}

@@ -169,7 +169,7 @@
     $scope.breadcrumbs = $scope.breadcrumbs.concat [
       {
         name: $scope.current_organization.name
-        url: "/organizations/#{$scope.current_organization.id}"
+        url: "/admin/organizations/#{$scope.current_organization.id}"
       }
       {
         name: '成员管理'

@@ -15,16 +15,18 @@ window.Youxin =
           title = "#{data.user.name}向您发送了一条私信"
           body = "#{data.body}"
           avatar_url = data.user.avatar_url
-          url = Youxin.fixUrlDash("#{ROOT_URL}/conversations/#{data.conversation.id}")
+          id = data.conversation.id
+          # url = Youxin.fixUrlDash("#{ROOT_URL}/conversations/#{data.conversation.id}")
         else if json.post?
           data = json.post
           title = data.title
           avatar_url = data.author.avatar_url
           body = "#{data.author.name}:\n#{data.body}"
-          url = Youxin.fixUrlDash("#{ROOT_URL}/posts/#{data.id}")
+          id = data.id
+          # url = Youxin.fixUrlDash("#{ROOT_URL}/posts/#{data.id}")
 
         avatar = Youxin.fixUrlDash("#{ROOT_URL}#{Youxin.getAvatarVersion(avatar_url, 'small')}")
-        Youxin.notifier.notify(avatar, title, body, url)
+        Youxin.notifier.notify(avatar, title, body, id)
 
   fixUrlDash : (url) ->
     url.replace(/\/\//g,"/").replace(/:\//,"://")

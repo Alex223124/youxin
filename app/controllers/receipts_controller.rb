@@ -1,8 +1,12 @@
 class ReceiptsController < ApplicationController
-  before_filter :ensure_receipt, only: [:read, :favorite, :unfavorite]
+  before_filter :ensure_receipt, only: [:read, :favorite, :unfavorite, :show]
   def index
     @receipts = filtered_receipts
     render json: @receipts
+  end
+
+  def show
+    render layout: false
   end
 
   def read

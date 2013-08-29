@@ -1,6 +1,6 @@
 Youxin::Application.routes.draw do
   root to: 'home#index'
-  resources :receipts, only: [:index] do
+  resources :receipts, only: [:index, :show] do
     member do
       put 'read' => 'receipts#read'
       post 'favorite' =>  'receipts#favorite'

@@ -1,74 +1,122 @@
-@ReceiptsController = ['$scope', 'receiptService', ($scope, receiptService) ->
+@YouxinProfileController = ["$scope", 'receiptService', ($scope, receiptService)->
   $scope.breadcrumbs = [
     {
       name: '首页'
-      href: '/'
+      url: '/'
+    }
+    {
+      name: '组织管理'
+      url: '/user/organizations'
     }
   ]
 
-  $scope.max_receipt_id = new Array(24).join('0')
-  $scope.min_receipt_id = new Array(24).join('f')
+  receiptId = $("#single_receipt").attr("receiptId")
+  data =
+    author:
+      name: "test"
+      avatar: "../images/avatar/user/default.png"
+    id: "5214ca1fc23bf77a3900001c"
+    created_at: "2013-07-08T19:56:03+0800"
+    read: true
+    organizations:[
+      {
+        name: "UESTC"
+      }
+    ]
+    organization_clans: [
+      {
+        name: "电工"
+      }
+    ]
+    post:
+      title: "标题"
+      id: "test"
+      body_html: "<h6>内容</h6>"
+      body: "test"
+      attachmentted: true
+      formed: true
+      sms_scheduler:
+        ran_at: "4h"
+        delayed_at: "2h"
+      attachments: [
+        {
+          dimension: "360"
+          src: "test"
+          file_name: "attachment"
+          file_size: "512KB"
+        }
+      ]
+      forms: [
+        {
+          title: "表格标题"
+          collectioned: true
+          inputs: [
+            {
+              label: "字段1"
+              help_text: "提示"
+              required: true
+              type: "Field::TextField"
+              default_value: "1"
+            }
+          ]
+        }
+      ]
+      unread_receipts: [
+        read: true
+        user:
+          name: "张三"
+      ]
+      commentBody: "tony"
+      comments: [
+        {
+          user: 
+            avatar: "src"
+            name: "李四"
+            id: "788787878"
+          created_at: "2013-08-28T15:9:56+0800"
+          body: "如果不介意把屏幕空白区域都用起来的话，倒是可以考虑把附件、表格什么的放在内容旁边展示"
+        }
+      ]
+    origin: true
+    expanded: true
+    favorited: true
+    attachments_loading: false
 
+  $scope.receipt = []
+  data.read = true
+  collapseIN = if data.post.attachmentted then "attachments" else (if data.post.formed then "forms" else "comments")
+  data.expanded = true
+  $scope.receipt.push(data)
 
-  receiptService.getReceipts {params: {status: "read" }}, (data)->
-    $scope.read_receipts = data.receipts
-    set_receipt_range_for_array(data.receipts)
+  showDefaultAddition = ()->
+    unless $("\##{receiptId}-receipt-#{collapseIN}").length
+      setTimeout(showDefaultAddition, 500)
+    else
+      $("\##{receiptId}-receipt-#{collapseIN}").removeClass().addClass("in collapse")
+      return $("\##{receiptId}-receipt-#{collapseIN}")
+  showDefaultAddition()
 
-
-  receiptService.getReceipts {params: {status: "unread"}}, (data)->
-    $scope.unread_receipts = data.receipts
-    set_receipt_range_for_array(data.receipts)
-    
-  set_receipt_range = (receipt) ->
-    return unless receipt
-    $scope.max_receipt_id = receipt.id if receipt.id > $scope.max_receipt_id
-    $scope.min_receipt_id = receipt.id if receipt.id < $scope.min_receipt_id
-
-  set_receipt_range_for_array = (array) ->
-    set_receipt_range(array.first())
-    set_receipt_range(array.last())
-
-  move_reads = () ->
-    compensatory_index = 0
-    for receipt, index in $scope.unread_receipts
-      current_index = index - compensatory_index
-      if $scope.unread_receipts[current_index].read
-        $scope.read_receipts = $scope.read_receipts.concat $scope.unread_receipts.splice(current_index, 1)
-        compensatory_index += 1
-
-  $scope.refresh = () ->
-    params =
-      params:
-        status: "unread"
-        since_id: $scope.max_receipt_id
-    receiptService.getReceipts params, (data)->
-      if data.receipts.length
-        $scope.unread_receipts = $scope.unread_receipts.concat data.receipts
-        set_receipt_range_for_array(data.receipts)
-      else
-        App.alert('暂时没有未读消息', 'info')
-    , (data, status)->
-      App.alert "加载失败", "error"
-    move_reads()
-
-  $scope.load_more = (event) ->
-    params: 
-      params:
-        status: "read"
-        max_id: $scope.min_receipt_id
-
-    receiptService.getReceipts params, (data)->
-      if data.receipts.length
-        $scope.read_receipts = $scope.read_receipts.concat data.receipts
-        set_receipt_range_for_array(data.receipts)
-        App.alert("加载了 #{data.receipts.length} 条消息")
-      else
-        angular.element(event.target).attr('disabled', true).html('没有更多了')
-        App.alert('没有更多了')
-    , (data, status)->
-      App.alert "加载失败", "error"
-      
-
+  #trigger: angular.element(document.getElementById("single_receipt")).scope().getReceipt()
+  $scope.getReceipt = (id)->
+    receiptId = $("#single_receipt").attr("receiptId")
+    if not not receiptId
+      $scope.receipt = []
+      receiptService.getFullPost receiptId, (data)->
+        data.read = true
+        collapseIN = ""
+        if data.post.attachmentted
+          collapseIN = "attachments"
+        else if data.post.formed
+          collapseIN = "forms"
+        else
+          collapseIN = "comments"
+        data.expanded = true
+        $scope.receipt.push(data)
+        $("#{receiptId}-receipt-#{collapseIN}").removeClass().addClass("in collapse")
+      , (data, status)->
+        App.alert "获取消息失败", "error"
+    showDefaultAddition()
+   
 
   $scope.fetch_attachments = (receipt) ->
     $scope.read_receipt(receipt)
@@ -85,8 +133,6 @@
       post.unread_receipts = data.unread_receipts
     receiptService.getSmsScheduler post.id, (data)->
       post.sms_scheduler = data.sms_scheduler
-    $http.get("/posts/#{post.id}/last_call_scheduler.json").success (data) ->
-      post.call_scheduler = data.call_scheduler
 
   $scope.fetch_comments = (receipt) ->
     $scope.read_receipt(receipt)
@@ -143,43 +189,12 @@
         self.attr("disabled","disabled")
       , ()->
         App.alert("发送失败", 'error')
-  $scope.send_call_notifications = (receipt,$event)->
-    post = receipt.post
-    self = $($event.target)
-    unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/run_call_notifications_now.json").success () ->
-        App.alert("系统已经发送电话通知")
-        self.html("系统已经发送电话通知")
-        self.attr("disabled","disabled")
-      .error () ->
-        App.alert("发送失败", 'error')
-
-  $scope.send_sms_notifications_to_unfilleds = (receipt,$event)->
-    post = receipt.post
-    self = $($event.target)
-    unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/run_sms_notifications_to_unfilleds_now.json").success () ->
-        App.alert("系统已经发送短信通知")
-        self.html("已发送短信通知")
-        self.attr("disabled","disabled")
-      .error () ->
-        App.alert("发送失败", 'error')
-  $scope.send_call_notifications_to_unfilleds = (receipt,$event)->
-    post = receipt.post
-    self = $($event.target)
-    unless self.attr("disabled")
-      $http.post("/posts/#{post.id}/run_call_notifications_to_unfilleds_now.json").success () ->
-        App.alert("系统已经发送电话通知")
-        self.html("已发送电话通知")
-        self.attr("disabled","disabled")
-      .error () ->
-        App.alert("发送失败", 'error')
 
   $scope.fetch_forms = (receipt) ->
     $scope.read_receipt(receipt)
     post = receipt.post
-    if receipt.origin or not post.forms
-      $http.get("/posts/#{post.id}/forms.json").success (data) ->
+    unless post.forms
+      receiptService.getForms post.id, (data)->
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
@@ -232,15 +247,9 @@
     receipt.expanded = !receipt.expanded
 
   $scope.read_receipt = (receipt) ->
-    if !receipt.read and receipt.forms_filled
-      $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
-        receipt.read = true
-
-  $scope.mark_receipt_as_read = (receipt) ->
-    if receipt.forms_filled
-      $scope.read_receipt(receipt)
-    else
-      App.alert('请先填写表单', 'error')
+    unless receipt.read
+      receipt.read = true
+      receiptService.putReadFlag receipt.id
 
   $scope.showTooltip = (event) ->
     $(event.target).tooltip('show')
