@@ -31,7 +31,8 @@ defaults: &defaults
     ios_tips_and_tricks: '/help/ios_tips_and_tricks'
     contact_email: combee.co@gmail.com
   devise:
-    reset_sms_token_within: 3
+    reset_sms_token_within: 10
+    reset_sms_token_length: 4
 
 development:
   <<: *defaults

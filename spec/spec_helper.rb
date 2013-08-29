@@ -56,6 +56,7 @@ require 'rspec/autorun'
 require 'database_cleaner'
 require 'capybara/rspec'
 require 'resque_spec/scheduler'
+require 'capybara/email/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.

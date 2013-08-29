@@ -35,6 +35,7 @@ group :test do
   gem 'webmock'
   gem 'resque_spec'
   gem 'rack-test', require: 'rack/test', github: 'brynary/rack-test'
+  gem 'capybara-email'
 
   gem 'guard-rspec', '~> 2.5.4'
   # Notification

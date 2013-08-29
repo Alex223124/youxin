@@ -49,6 +49,8 @@ describe User do
     it { should respond_to(:ios_device_token) }
     it { should respond_to(:phone) }
     it { should respond_to(:send_message_to) }
+    it { should respond_to(:reset_sms_token) }
+    it { should respond_to(:reset_sms_sent_at) }
   end
 
   it "should create a new instance given a valid attributes" do

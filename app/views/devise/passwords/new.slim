@@ -12,10 +12,10 @@
       = image_tag 'logo.png'
     = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'login-box' }) do |f|
       label
-        = f.email_field :email, autofocus: true, class: '', placeholder: '请输入邮箱', required: true
+        = f.text_field :reset_password_key, autofocus: true, class: '', placeholder: '请输入邮箱或手机号', required: true
         i.icon-envelope
       label
-        = f.button '找回密码', class: 'btn btn-primary submit'
+        = f.button '找回密码', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
       label.last
         = link_to '返回登录', new_session_path(resource_name)
       i.caret-left

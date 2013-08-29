@@ -25,3 +25,6 @@ RSpec.configure do |config|
   config.include DeviseControllerMacros, type: :controller
   config.include DeviseFeatureMacros, type: :feature
 end
+
+# disable async for test email
+Devise::Async.enabled = false

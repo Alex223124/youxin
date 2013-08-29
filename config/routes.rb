@@ -52,11 +52,14 @@ Youxin::Application.routes.draw do
     get 'created_receipts' => 'accounts#created_receipts'
     get 'favorited_receipts' => 'accounts#favorited_receipts'
   end
-  devise_for :users, path: 'account', skip: [:sessions]
+  devise_for :users, path: 'account', skip: [:sessions], controllers: { passwords: :passwords }
   as :user do
     get 'sign_in' => 'devise/sessions#new', as: :new_user_session
     post 'sign_in' => 'devise/sessions#create', as: :user_session
     match 'sign_out' => 'devise/sessions#destroy', as: :destroy_user_session, via: Devise.mappings[:user].sign_out_via
+
+    get 'account/reset_password_by_sms/new' => 'passwords#new_by_sms', as: :new_user_password_by_sms
+    post 'account/reset_password_by_sms/edit' => 'passwords#edit_by_sms', as: :edit_user_password_by_sms
   end
 
   resources :users, only: [:update, :show] do

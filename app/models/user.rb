@@ -4,6 +4,7 @@ class User
   include Mongoid::Document
   include Mongoid::Paranoia # Soft delete
   include Mongoid::Timestamps # Add created_at and updated_at fields
+  include SmsRecoverable
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
@@ -44,6 +45,10 @@ class User
   ## Token authenticatable
   field :authentication_token, type: String
 
+  ## SmsRecoverable
+  field :reset_sms_token,   type: String
+  field :reset_sms_sent_at, type: Time
+
   field :name, type: String
   field :organization_ids, type: Array, default: []
   field :receipt_organization_ids, type: Array, default: []
@@ -67,12 +72,12 @@ class User
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
 
-  attr_accessor :login
+  attr_accessor :login, :reset_password_key
   attr_accessible :phone, :name, :email, :password, :password_confirmation,
                   :bio, :gender, :qq, :blog,:uid,
                   :avatar, :avatar_cache, :remove_avatar,
                   :header, :header_cache, :remove_header,
-                  :login
+                  :login, :reset_password_key
 
   has_many :user_organization_position_relationships, dependent: :destroy
   has_many :user_actions_organization_relationships, dependent: :destroy
