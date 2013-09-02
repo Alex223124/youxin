@@ -8,6 +8,7 @@ describe CommunicationRecord::Call do
 
   describe "Respond to" do
     it { should respond_to(:human_status) }
+    it { should respond_to(:call_sid) }
   end
 
   describe "#human_status" do

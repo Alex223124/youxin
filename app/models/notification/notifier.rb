@@ -71,6 +71,18 @@ class Notification::Notifier
       end
     end
 
+    def make_landing_call_to_phone(receipt)
+      receipt = Receipt.find(receipt) unless receipt.is_a? Receipt
+      if receipt && receipt.user.phone?
+        post = receipt.post
+        content = "您好！您收到了#{post.author.name}通过combee给您的电话留言：您有一条重要组织消息#{post.title}，请尽快登陆combee网站或移动客户端查看详细信息。留言已结束，感谢您的收听，再见。"
+
+        landing_call = cloopen_account.calls.landing_calls.create to: receipt.user.phone, media_txt: content
+        call_sid = landing_call.response.body[:landing_call][:call_sid] rescue nil
+        CommunicationRecord::Call.create receipt: receipt, status: landing_call.response.status_code, call_sid: call_sid
+      end
+    end
+
     private
     def pusher
       certificate_file = File.join(Rails.root, 'push_server', 'grocer', 'certs', Youxin.config.apn.cert_file)
@@ -102,6 +114,15 @@ class Notification::Notifier
         message[:data][:json] = data
       end
       message
+    end
+
+    def cloopen_account
+      account_sid = Youxin.config.cloopen.account_sid
+      auth_token = Youxin.config.cloopen.auth_token
+      app_id = Youxin.config.cloopen.app_id
+
+      client = Cloopen::REST::Client.new(account_sid, auth_token, app_id)
+      client.account
     end
 
   end

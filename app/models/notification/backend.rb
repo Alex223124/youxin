@@ -20,6 +20,10 @@ module Notification
       def publish_message_to_ios_device_async(message_id)
         ::Resque.enqueue(PublishMessageToIosDeviceJob, message_id)
       end
+
+      def make_landing_call_to_phone_async(receipt_ids)
+        ::Resque.enqueue(MakeLandingCallToPhoneJob, receipt_ids)
+      end
     end
 
     def self.included(receiver)

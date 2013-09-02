@@ -90,7 +90,7 @@ GEM
     childprocess (0.3.9)
       ffi (~> 1.0, >= 1.0.11)
     china_sms (0.0.4)
-    cloopen_rest (0.1.0)
+    cloopen_rest (0.1.1)
       builder (>= 2.0)
       httparty (>= 0.11.0)
     coderay (1.0.9)
@@ -375,7 +375,7 @@ DEPENDENCIES
   capybara-email
   carrierwave-mongoid (~> 0.5.0)
   china_sms
-  cloopen_rest (~> 0.1.0)
+  cloopen_rest (~> 0.1.1)
   coffee-rails (~> 3.2.1)
   database_cleaner
   devise (~> 2.2.3)

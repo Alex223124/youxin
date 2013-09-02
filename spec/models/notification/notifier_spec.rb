@@ -68,7 +68,6 @@ describe Notification::Notifier do
     it "should update status" do
       Notification::Notifier.publish_to_phone(@receipt)
       @author.sms_communication_records.last.status.should == '0'
-
     end
   end
   describe ".publish_to_phone_async" do
@@ -78,6 +77,50 @@ describe Notification::Notifier do
     it "should do notifier.publish_to_phone to youxin_notification_queue" do
       Notification::Notifier.publish_to_phone_async(@receipt)
       PublishToPhoneJob.should have_queued(@receipt).in(:youxin_notification_queue)
+    end
+  end
+
+  describe ".make_landing_call_to_phone" do
+    describe "succeeds" do
+      before(:each) do
+        raw_response_file = File.new(Rails.root.join("spec/factories/data/landing_call.xml"))
+        stub_request(:any, /.*localhost:8883.*/)
+          .to_return(status: 200, body: raw_response_file, headers: { 'Content-Type' => 'application/xml;charset=utf-8' })
+      end
+      it "should add a new call record" do
+        expect do
+          Notification::Notifier.make_landing_call_to_phone(@receipt)
+        end.to change { @author.call_communication_records.count }.by(1)
+      end
+
+      it "should add call_sid and status_code" do
+        Notification::Notifier.make_landing_call_to_phone(@receipt)
+        record = @author.call_communication_records.first
+        record.status.should == '000000'
+        record.call_sid.should == 'a346467ca321c71dbd5e12f627123456'
+      end
+    end
+    describe "fails" do
+      before(:each) do
+        raw_response_file = File.new(Rails.root.join("spec/factories/data/landing_call_failure.xml"))
+        stub_request(:any, /.*localhost:8883.*/)
+          .to_return(status: 200, body: raw_response_file, headers: { 'Content-Type' => 'application/xml;charset=utf-8' })
+      end
+      it "should not add call_sid" do
+        Notification::Notifier.make_landing_call_to_phone(@receipt)
+        record = @author.call_communication_records.first
+        record.status.should_not be_blank
+        record.call_sid.should be_blank
+      end
+    end
+  end
+  describe ".make_landing_call_to_phone_async" do
+    before do
+      ResqueSpec.reset!
+    end
+    it "should do notifier.publish_to_faye_client to youxin_notification_queue" do
+      Notification::Notifier.make_landing_call_to_phone_async([@receipt].map(&:id))
+      MakeLandingCallToPhoneJob.should have_queued([@receipt].map(&:id)).in(:youxin_notification_queue)
     end
   end
 

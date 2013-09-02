@@ -91,7 +91,7 @@ gem 'grape-entity', github: 'fahchen/grape-entity', branch: :master
 
 gem 'grocer' # APNs
 gem 'china_sms' # smsbao
-gem 'cloopen_rest', '~> 0.1.0' # Calls
+gem 'cloopen_rest', '~> 0.1.1' # Calls
 
 # Background jobs
 gem 'resque-scheduler', require: 'resque_scheduler'

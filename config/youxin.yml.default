@@ -33,6 +33,10 @@ defaults: &defaults
   devise:
     reset_sms_token_within: 10
     reset_sms_token_length: 4
+  cloopen:
+    account_sid: account_sid
+    auth_token: auth_token
+    app_id: app_id
 
 development:
   <<: *defaults
