@@ -20,7 +20,9 @@ class Receipt
   belongs_to :author, class_name: 'User', inverse_of: :created_receipts
   belongs_to :post
   has_many :favorites, as: :favoriteable, dependent: :destroy, after_add: :mark_self_read
+  has_many :communication_records, class_name: 'CommunicationRecord::Base'
   has_many :sms_communication_records, class_name: 'CommunicationRecord::Sms'
+  has_many :call_communication_records, class_name: 'CommunicationRecord::Call'
 
   scope :read, where(read: true)
   scope :unread, where(read: false)

@@ -21,7 +21,9 @@ describe User do
     it { should have_many(:notifications) }
     it { should have_many(:comment_notifications) }
     it { should have_many(:organization_notifications) }
+    it { should have_many(:communication_records) }
     it { should have_many(:sms_communication_records) }
+    it { should have_many(:call_communication_records) }
     it { should have_and_belong_to_many(:conversations) }
     it { should have_many(:messages) }
     it { should have_many(:message_notifications) }
