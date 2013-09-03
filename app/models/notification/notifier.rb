@@ -75,7 +75,7 @@ class Notification::Notifier
       receipt = Receipt.find(receipt) unless receipt.is_a? Receipt
       if receipt && receipt.user.phone?
         post = receipt.post
-        content = "您好！您收到了#{post.author.name}通过combee给您的电话留言：您有一条重要组织消息#{post.title}，请尽快登陆combee网站或移动客户端查看详细信息。留言已结束，感谢您的收听，再见。"
+        content = "您好！您收到了#{post.author.name}通过combee给您的电话留言：您有一条优信，#{post.title}，请尽快登陆combee网站或移动客户端查看详细信息。留言已结束，感谢您的收听，再见。"
 
         landing_call = call receipt.user.phone, media_txt: content
         call_sid = landing_call.response.body[:landing_call][:call_sid] rescue nil
