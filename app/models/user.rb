@@ -268,4 +268,8 @@ class User
   end
   # Message
 
+  def send_welcome_instructions
+    send_devise_notification(:welcome_instructions)
+  end
+
 end

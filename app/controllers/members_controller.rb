@@ -25,7 +25,7 @@ class MembersController < ApplicationController
     if member.save
       @organization.push_member(member)
       # TODO: need async
-      member.send_reset_password_instructions
+      member.send_welcome_instructions
       render json: member, status: :created, serializer: MemberSerializer
     else
       render json: member.errors, status: :unprocessable_entity
@@ -47,7 +47,7 @@ class MembersController < ApplicationController
       member = current_namespace.users.new attrs
       if member.save
         # TODO: need asyn
-        member.send_reset_password_instructions
+        member.send_welcome_instructions
         created_members.push member
         @organization.push_member(member)
       else

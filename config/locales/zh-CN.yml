@@ -9,3 +9,6 @@ zh-CN:
       updated_not_active: 您的密码已修改成功.
       send_sms: 很快，您将收到一条重置密码的验证码短信.
       send_paranoid_sms: 如果您的手机号存在于我们的数据库中，您将收到一条重置密码的验证码短信.
+    mailer:
+      welcome_instructions:
+        subject: 欢迎加入
