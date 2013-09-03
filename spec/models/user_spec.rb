@@ -28,6 +28,8 @@ describe User do
     it { should have_many(:messages) }
     it { should have_many(:message_notifications) }
     it { should have_many(:schedulers) }
+    it { should have_many(:sms_schedulers) }
+    it { should have_many(:call_schedulers) }
     it { should have_many(:user_role_organization_relationships) }
     it { should belong_to(:namespace) }
   end

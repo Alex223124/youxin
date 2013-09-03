@@ -116,6 +116,8 @@ class User
   has_and_belongs_to_many :conversations, inverse_of: :participant
   has_many :messages, dependent: :destroy
   has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
+  has_many :sms_schedulers, class_name: 'Scheduler::Sms', dependent: :destroy
+  has_many :call_schedulers, class_name: 'Scheduler::Call', dependent: :destroy
   has_many :user_role_organization_relationships, dependent: :destroy
   belongs_to :namespace
 
