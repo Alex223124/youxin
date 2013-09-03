@@ -30,7 +30,7 @@
                 <label for="uploader" class="inline">
                   <i class="icon-paper-clip" title="添加附件"></i>
                 </label>
-                <i class="icon icon-table" style="cursor: pointer;" ng-click="toggleTableEdit()"  title="创建表格"></i>
+                <i class="icon icon-table" style="cursor: pointer;" ng-click="toggleTableEdit()"  title="创建表单"></i>
                 <div class="form inline" ng-hide="formData.id.length == 0">
                   <span>{{formData.name}}</span>
                   <i class="icon-remove" ng-click="remove_form()"></i>
@@ -118,7 +118,7 @@
   </div>
   <div id="table-edit" class="table-edit pull-left" ng-controller="formcreateCtrl">
     <label>
-      <i class="icon icon-write"></i>编辑表格
+      <i class="icon icon-write"></i>编辑表单
       <span scope="#table-edit" class="close">×</span>
     </label>
     <ul class="table-edit-scope" scroll-with-scroll-bar>

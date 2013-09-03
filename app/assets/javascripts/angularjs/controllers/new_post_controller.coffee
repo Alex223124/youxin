@@ -121,9 +121,9 @@
       scope.formData.id = form.id
       scope.youxindata.form_ids = [form.id]
       controllerElement.hide(200)
-      App.alert("表格 [#{scope.form_json.title}] 保存成功")
+      App.alert("表单 [#{scope.form_json.title}] 保存成功")
     ).error((data)->
-      App.alert("表格 [#{scope.form_json.title}] 保存失败!", 'error')
+      App.alert("表单 [#{scope.form_json.title}] 保存失败!", 'error')
     )
   scope.$on "clearData",()->
     scope.formData.name = ""

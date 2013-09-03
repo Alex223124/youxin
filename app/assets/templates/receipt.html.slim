@@ -23,12 +23,12 @@
           a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-attachments" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.attachmentted" ng-click="ctrl.fetch_attachments(receipt);"
             i.icon-file-alt
             | 附件
-          a.forms-btn.btn.btn-link.red title='表格未填写' data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-forms" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.formed && (receipt.read && !receipt.forms_filled)" ng-click="ctrl.fetch_forms(receipt);"
+          a.forms-btn.btn.btn-link.red title='表单未填写' data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-forms" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.formed && (receipt.read && !receipt.forms_filled)" ng-click="ctrl.fetch_forms(receipt);"
             i.icon-table
-            | 表格
+            | 表单
           a.forms-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-forms" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.formed && !(receipt.read && !receipt.forms_filled)" ng-click="ctrl.fetch_forms(receipt);"
             i.icon-table
-            | 表格
+            | 表单
           a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-recipients" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.origin" ng-click="ctrl.fetch_unread_receipts(receipt);"
             i.icon-eye-open
             | 未读名单
@@ -83,8 +83,8 @@
                           input type="checkbox" ng-model="option.default_selected"
                           span {{option.value}}
                 li
-                  .btn.btn-primary data-toggle="tooltip" title="向未填写表格用户发送电话通知" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 电话提醒
-                  .btn.btn-primary data-toggle="tooltip" title="向未填写表格用户发送短信通知" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 短信提醒
+                  .btn.btn-primary data-toggle="tooltip" title="向未填写表单用户发送电话通知" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 电话提醒
+                  .btn.btn-primary data-toggle="tooltip" title="向未填写表单用户发送短信通知" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 短信提醒
 
                   .btn.btn-info data-toggle="tooltip" title="共{{form.filleds + form.unfilleds}}人，未填写{{form.unfilleds}}人(不含自己)" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.set_form_collections(receipt)" ng-show="receipt.origin" 填写情况
                   .btn.btn-disabled ng-click="ctrl.submit(receipt);" ng-disabled="form.collectioned" ng-show="form.collectioned" 已填写
