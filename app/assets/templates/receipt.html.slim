@@ -92,9 +92,14 @@
                   i.icon-ok.pull-right ng-show="unread_receipt.read"
                   span.name {{unread_receipt.user.name}}
                   / i.icon-envelope
-            span.btn.btn-primary.pull-right ng-click="ctrl.send_sms_notifications(receipt,$event)" 立即短信通知
-            span.muted.disabled.sms_scheduler.label.label-success ng-show="receipt.post.sms_scheduler && receipt.post.sms_scheduler.ran_at" 短信已在 {{receipt.post.sms_scheduler.ran_at | utc2local}} 向未读用户发送
-            span.muted.disabled.sms_scheduler.label.label-info ng-show="receipt.post.sms_scheduler && !receipt.post.sms_scheduler.ran_at" 短信将在 {{receipt.post.sms_scheduler.delayed_at | utc2local}} 向未读用户发送
+            .scheduler-btn.text-right
+              span.btn.btn-primary ng-click="ctrl.send_call_notifications(receipt,$event)" 立即电话通知
+              span.btn.btn-primary ng-click="ctrl.send_sms_notifications(receipt,$event)" 立即短信通知
+            .scheduler-info-box.text-right
+              span.muted.disabled.call_scheduler.label.label-success ng-show="receipt.post.call_scheduler && receipt.post.call_scheduler.ran_at" 电话已在 {{receipt.post.call_scheduler.ran_at | utc2local}} 向未读用户发送
+              span.muted.disabled.call_scheduler.label.label-info ng-show="receipt.post.call_scheduler && !receipt.post.call_scheduler.ran_at" 电话将在 {{receipt.post.call_scheduler.delayed_at | utc2local}} 向未读用户发送
+              span.muted.disabled.sms_scheduler.label.label-success ng-show="receipt.post.sms_scheduler && receipt.post.sms_scheduler.ran_at" 短信已在 {{receipt.post.sms_scheduler.ran_at | utc2local}} 向未读用户发送
+              span.muted.disabled.sms_scheduler.label.label-info ng-show="receipt.post.sms_scheduler && !receipt.post.sms_scheduler.ran_at" 短信将在 {{receipt.post.sms_scheduler.delayed_at | utc2local}} 向未读用户发送
 
         .accordion-group.comments-box
           .collapse id="{{receipt.id}}-{{flag}}-comments"

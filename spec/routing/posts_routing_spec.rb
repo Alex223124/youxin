@@ -16,4 +16,10 @@ describe PostsController do
   it "to #last_sms_scheduler" do
     get('/posts/123/last_sms_scheduler').should route_to('posts#last_sms_scheduler', id: '123')
   end
+  it "to #run_call_notifications_now" do
+    post('/posts/123/run_call_notifications_now').should route_to('posts#run_call_notifications_now', id: '123')
+  end
+  it "to #last_call_scheduler" do
+    get('/posts/123/last_call_scheduler').should route_to('posts#last_call_scheduler', id: '123')
+  end
 end

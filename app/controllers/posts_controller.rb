@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 class PostsController < ApplicationController
-  before_filter :ensure_post!, only: [:unread_receipts, :forms, :run_sms_notifications_now, :last_sms_scheduler]
-  before_filter :authorized_manage_post!, only: [:unread_receipts, :run_sms_notifications_now, :last_sms_scheduler]
+  before_filter :ensure_post!, only: [:unread_receipts, :forms, :run_sms_notifications_now, :last_sms_scheduler, :run_call_notifications_now, :last_call_scheduler]
+  before_filter :authorized_manage_post!, only: [:unread_receipts, :run_sms_notifications_now, :last_sms_scheduler, :run_call_notifications_now, :last_call_scheduler]
   before_filter :authorized_read_post!, only: [:forms]
 
   before_filter :prepare_post_params, only: [:create]
@@ -44,7 +44,22 @@ class PostsController < ApplicationController
 
   def last_sms_scheduler
     last_sms_scheduler = @post.sms_schedulers.where(ran_at: nil).first || @post.sms_schedulers.first
-    render json: last_sms_scheduler, serializer: SmsSchedulerSerializer, root: :sms_scheduler
+    render json: last_sms_scheduler, serializer: SchedulerSerializer, root: :sms_scheduler
+  end
+
+  def run_call_notifications_now
+    scheduler = @post.call_schedulers.where(ran_at: nil).first
+    if scheduler
+      scheduler.run_now!
+    else
+      @post.call_schedulers.create delayed_at: Time.now
+    end
+    head :no_content
+  end
+
+  def last_call_scheduler
+    last_call_scheduler = @post.call_schedulers.where(ran_at: nil).first || @post.call_schedulers.first
+    render json: last_call_scheduler, serializer: SchedulerSerializer, root: :call_scheduler
   end
 
   private

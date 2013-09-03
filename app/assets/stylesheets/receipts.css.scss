@@ -211,9 +211,11 @@
       .btn{
         margin: 10px 15px;
       }
-      .sms_scheduler {
-        margin: 10px 15px;
-        padding: 5px 12px;
+      .scheduler-info-box {
+        padding: 10px;
+        span {
+          margin: 2px 5px;
+        }
       }
     }
   }

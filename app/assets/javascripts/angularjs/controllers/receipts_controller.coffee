@@ -71,6 +71,8 @@
       post.unread_receipts = data.unread_receipts
     $http.get("/posts/#{post.id}/last_sms_scheduler.json").success (data) ->
       post.sms_scheduler = data.sms_scheduler
+    $http.get("/posts/#{post.id}/last_call_scheduler.json").success (data) ->
+      post.call_scheduler = data.call_scheduler
 
   $scope.fetch_comments = (receipt) ->
     $scope.read_receipt(receipt)
@@ -127,6 +129,16 @@
       $http.post("/posts/#{post.id}/run_sms_notifications_now.json").success () ->
         App.alert("系统已经发送短信通知")
         self.html("系统已经发送短信通知")
+        self.attr("disabled","disabled")
+      .error () ->
+        App.alert("发送失败", 'error')
+  $scope.send_call_notifications = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/run_call_notifications_now.json").success () ->
+        App.alert("系统已经发送电话通知")
+        self.html("系统已经发送电话通知")
         self.attr("disabled","disabled")
       .error () ->
         App.alert("发送失败", 'error')
@@ -190,8 +202,8 @@
 
   $scope.read_receipt = (receipt) ->
     unless receipt.read
-      receipt.read = true
-      $http.put("/receipts/#{receipt.id}/read.json")
+      $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
+        receipt.read = true
 
   $scope.showTooltip = (event) ->
     $(event.target).tooltip('show')

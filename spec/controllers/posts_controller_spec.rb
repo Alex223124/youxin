@@ -275,4 +275,40 @@ describe PostsController do
       response.status.should == 403
     end
   end
+  describe "POST run_call_notifications_now" do
+    before(:each) do
+      login_user admin
+      @post = create :post, author: admin, organization_ids: [@parent, @current].map(&:id)
+    end
+    it "should return 204" do
+      post :run_call_notifications_now, id: @post.id
+      response.status.should == 204
+    end
+    it "should create a call_notification for the post" do
+      expect do
+        post :run_call_notifications_now, id: @post.id
+      end.to change { @post.call_schedulers.count }.by(1)
+    end
+    it "should return 403" do
+      login_user current_user
+      post :run_call_notifications_now, id: @post.id
+      response.status.should == 403
+    end
+  end
+  describe "GET last_call_scheduler" do
+    before(:each) do
+      login_user admin
+      @post = create :post, author: admin, organization_ids: [@parent, @current].map(&:id)
+      @post.call_schedulers.create delayed_at: 1.days.from_now
+    end
+    it "should return last call_scheduler" do
+      get :last_call_scheduler, id: @post.id
+      json_response['call_scheduler'].should_not be_blank
+    end
+    it "should return 403" do
+      login_user current_user
+      get :last_call_scheduler, id: @post.id
+      response.status.should == 403
+    end
+  end
 end
