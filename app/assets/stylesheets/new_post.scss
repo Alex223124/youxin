@@ -39,7 +39,7 @@
             .wrap{
               &:hover{
                 display: inline-block;
-              }       
+              }
               position: absolute;
               top: 0;
               left: 0;
@@ -142,7 +142,7 @@
       }
       .btn.nextStep{
         margin: 0 20px 20px auto;
-      } 
+      }
     }
     .second-step{
       display: none;
@@ -160,7 +160,7 @@
             border: 1px solid #d9d9d9;
             padding: 5px;
             background-color: white;
-            @include border-radius(4px 4px 4px 4px); 
+            @include border-radius(4px 4px 4px 4px);
             margin-bottom: 2px;
             min-height: 20px;
             .selected-org-item{
@@ -213,8 +213,8 @@
         }
       }
       angulartree{
-        .animate-enter, 
-        .animate-leave{ 
+        .animate-enter,
+        .animate-leave{
           -webkit-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
           -moz-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
           -ms-transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
@@ -222,13 +222,13 @@
           transition: 400ms cubic-bezier(0.250, 0.250, 0.750, 0.750) all;
           position: relative;
           display: block;
-        }          
-        .animate-enter.animate-enter-active, 
+        }
+        .animate-enter.animate-enter-active,
         .animate-leave {
           opacity: 1;
           top: 0;
           height: 30px;
-        }         
+        }
         .animate-leave.animate-leave-active,
         .animate-enter {
           opacity: 0;
@@ -236,7 +236,7 @@
           height: 0px;
         }
         display: block;
-        &>div{  
+        &>div{
           height: 20px;
           padding: 5px;
           position: relative;
@@ -249,7 +249,7 @@
           visibility: hidden;
         }
         .visible-true{
-          visibility: visible; 
+          visibility: visible;
         }
         i{
           cursor: pointer;
@@ -275,7 +275,7 @@
           border-bottom: 6px solid transparent;
           border-right: none;
           margin: 4px 6px;
-        }       
+        }
         input{
           padding: 1px 2px;
           height: 16px;
@@ -299,10 +299,14 @@
           margin: 9px 4px;
         }
         i{
-          margin-top: 6px; 
+          margin-top: 6px;
+          color: #cccccc;
+          &.active-true {
+            color: #53a63f;
+          }
         }
       }
-      .msg-push{
+      .msg-push, .call-push{
         @include opacity(60);
         width: 300px;
         margin-top: 5px;
@@ -332,7 +336,7 @@
           box-shadow: none;
         }
       }
-    }  
+    }
     .control{
       .btn{
         margin: 5px 20px;
@@ -415,7 +419,7 @@
           .input-small{
             padding: 2px 3px;
           }
-          margin-bottom: 5px; 
+          margin-bottom: 5px;
         }
         .btn-danger{
           background-color: #e74c3c;
@@ -434,7 +438,7 @@
       border-left: 1px solid #d9d9d9;
       .pr{
         &>label{
-          margin-left: 5px; 
+          margin-left: 5px;
         }
       }
       .save-module{

@@ -3,7 +3,8 @@ class ReceiptSerializer < ActiveModel::Serializer
              :read,
              :origin,
              :favorited,
-             :created_at
+             :created_at,
+             :forms_filled
 
   has_one :post, serializer: BasicPostSerializer
   has_one :author, serializer: BasicUserSerializer

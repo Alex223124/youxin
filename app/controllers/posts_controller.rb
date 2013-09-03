@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 class PostsController < ApplicationController
-  before_filter :ensure_post!, only: [:unread_receipts, :forms, :run_sms_notifications_now, :last_sms_scheduler, :run_call_notifications_now, :last_call_scheduler]
-  before_filter :authorized_manage_post!, only: [:unread_receipts, :run_sms_notifications_now, :last_sms_scheduler, :run_call_notifications_now, :last_call_scheduler]
+  before_filter :ensure_post!, only: [:unread_receipts, :forms, :run_sms_notifications_now, :last_sms_scheduler, :run_call_notifications_now, :last_call_scheduler, :run_call_notifications_to_unfilleds_now, :run_sms_notifications_to_unfilleds_now]
+  before_filter :authorized_manage_post!, only: [:unread_receipts, :run_sms_notifications_now, :last_sms_scheduler, :run_call_notifications_now, :last_call_scheduler, :run_call_notifications_to_unfilleds_now, :run_sms_notifications_to_unfilleds_now]
   before_filter :authorized_read_post!, only: [:forms]
 
   before_filter :prepare_post_params, only: [:create]
@@ -26,6 +26,7 @@ class PostsController < ApplicationController
       @attachments.each { |attachment| post.attachments << attachment }
       @forms.each { |form| post.forms << form }
       post.sms_schedulers.create delayed_at: Time.at(@delayed_sms_at.to_i) if @delayed_sms_at
+      post.call_schedulers.create delayed_at: Time.at(@delayed_call_at.to_i) if @delayed_call_at
       render json: post, status: :created
     else
       render json: post.errors, status: :unprocessable_entity
@@ -62,6 +63,15 @@ class PostsController < ApplicationController
     render json: last_call_scheduler, serializer: SchedulerSerializer, root: :call_scheduler
   end
 
+  def run_call_notifications_to_unfilleds_now
+    Resque.enqueue(MakeCallsToUnfilledsJob, @post.id)
+    head :no_content
+  end
+  def run_sms_notifications_to_unfilleds_now
+    Resque.enqueue(SendSmsToUnfilledsJob, @post.id)
+    head :no_content
+  end
+
   private
   def ensure_post!
     @post = Post.where(id: params[:id]).first
@@ -78,6 +88,7 @@ class PostsController < ApplicationController
     @attachment_ids = params[:post].delete(:attachment_ids)
     @form_ids = params[:post].delete(:form_ids)
     @delayed_sms_at = params[:post].delete(:delayed_sms_at)
+    @delayed_call_at = params[:post].delete(:delayed_call_at)
 
     params[:post]
   end

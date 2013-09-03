@@ -42,7 +42,7 @@ class Post
     end
   end
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
-  has_many :forms, dependent: :destroy
+  has_many :forms, dependent: :destroy, after_add: :update_receipts
   has_many :comments, as: :commentable, dependent: :destroy, after_add: :mark_receipt_read
   has_many :schedulers, class_name: 'Scheduler::Base', dependent: :destroy
   has_many :sms_schedulers, class_name: 'Scheduler::Sms', dependent: :destroy
@@ -138,6 +138,10 @@ class Post
 
   def mark_receipt_read(comment)
     comment.user.receipts.where(post_id: self.id).map(&:read!)
+  end
+
+  def update_receipts(form)
+    receipts.all.update_all(forms_filled: false)
   end
 
 end

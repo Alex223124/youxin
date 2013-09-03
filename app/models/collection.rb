@@ -14,6 +14,8 @@ class Collection
 
   accepts_nested_attributes_for :entities
 
+  after_save :update_receipt
+
   class << self
     def clean_attributes_with_entities(attrs = {}, reference_form)
       nested_attrs = {}
@@ -35,6 +37,14 @@ class Collection
       end
       nested_attrs
     end
+  end
+
+  private
+  def update_receipt
+    post = form.post
+    return unless post
+    receipt = post.receipts.where(user_id: user_id).first
+    receipt.update_attributes(forms_filled: true)
   end
 
 end

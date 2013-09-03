@@ -171,7 +171,6 @@
     title: null
     body_html: null
     organization_ids: []
-    delayed_sms_at: null
     form_ids: []
     attachment_ids: []
 
@@ -374,13 +373,20 @@
 
   $scope.msg_push =
     active: true
-    date: '5'
+    date: '2'
+    full_msg: false
+  $scope.call_push =
+    active: false
+    date: '4'
     full_msg: false
 
   $scope.collectData = ()->
     this.msg_push.date = this.msg_push.date.replace(///\s///,"")
     if this.msg_push.active
       $scope.youxindata.delayed_sms_at = new Date().getTime()/1000 + parseFloat(this.msg_push.date) * 60 * 60
+    this.call_push.date = this.call_push.date.replace(///\s///,"")
+    if this.call_push.active
+      $scope.youxindata.delayed_call_at = new Date().getTime()/1000 + parseFloat(this.call_push.date) * 60 * 60
     $scope.submit()
     self = $("#send-msg").find(".third-step")
     if (self.find(".nextStep").attr("disabled") is undefined)

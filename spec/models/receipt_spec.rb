@@ -17,6 +17,7 @@ describe Receipt do
     it { should respond_to(:read_at) }
     it { should respond_to(:origin) }
     it { should respond_to(:short_key) }
+    it { should respond_to(:forms_filled) }
   end
 
   describe "#author" do
@@ -97,4 +98,5 @@ describe Receipt do
       another_receipt.short_key.should_not == @receipt.short_key
     end
   end
+
 end

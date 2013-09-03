@@ -9,9 +9,9 @@
     <div class="first-step js-steps" ng-controller="firststepCtrl" ng-mousemove="valid()">
       <div class="form-horizontal form-first">
         <div class="control-group">
-          <label class="control-label">标题</label>
+          <label class="control-label"><span class="red">*</span>标题</label>
           <div class="controls">
-            <input type="text" class="input-xlarge" ng-model="msgtitle" placeholder='title'>
+            <input type="text" class="input-xlarge" ng-model="msgtitle" placeholder='title' ng-required="true" ng-maxlength="20">
           </div>
         </div>
         <div class="control-group">
@@ -80,7 +80,8 @@
         <label>选择推送方式:</label>
         <div>
           <span class="push-method">
-            <input type="checkbox" ng-model="msg_push.active"><i class="icon-envelope{{icon_map1[msg_push.active]}}" ng-click="msg_push.active=!msg_push.active" style="color: #53a63f;"></i>
+            <input type="checkbox" ng-model="msg_push.active">
+            <i class="icon-envelope active-{{msg_push.active}}" ng-click="msg_push.active=!msg_push.active"></i>
           </span>
           <div class="inline-block pull-right msg-push active-{{msg_push.active}}">
             <span>
@@ -88,6 +89,22 @@
               <span class="timeSet" ng-model="msg_push.date" contenteditable="true">
                 {{msg_push.date}}
               </span>小时后向仍未确认已读的用户发送短信提醒
+            </span>
+          </div>
+          <div class="clearfix"></div>
+        </div>
+
+        <div>
+          <span class="push-method">
+            <input type="checkbox" ng-model="call_push.active">
+            <i class="icon-phone-sign active-{{call_push.active}}" ng-click="call_push.active=!call_push.active"></i>
+          </span>
+          <div class="inline-block pull-right call-push active-{{call_push.active}}">
+            <span>
+              优信将在消息发出
+              <span class="timeSet" ng-model="call_push.date" contenteditable="true">
+                {{call_push.date}}
+              </span>小时后向仍未确认已读的用户拨打电话提醒
             </span>
           </div>
           <div class="clearfix"></div>

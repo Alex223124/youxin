@@ -143,10 +143,31 @@
       .error () ->
         App.alert("发送失败", 'error')
 
+  $scope.send_sms_notifications_to_unfilleds = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/run_sms_notifications_to_unfilleds_now.json").success () ->
+        App.alert("系统已经发送短信通知")
+        self.html("已发送短信通知")
+        self.attr("disabled","disabled")
+      .error () ->
+        App.alert("发送失败", 'error')
+  $scope.send_call_notifications_to_unfilleds = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/run_call_notifications_to_unfilleds_now.json").success () ->
+        App.alert("系统已经发送电话通知")
+        self.html("已发送电话通知")
+        self.attr("disabled","disabled")
+      .error () ->
+        App.alert("发送失败", 'error')
+
   $scope.fetch_forms = (receipt) ->
     $scope.read_receipt(receipt)
     post = receipt.post
-    unless post.forms
+    if receipt.origin or not post.forms
       $http.get("/posts/#{post.id}/forms.json").success (data) ->
         post.forms = data.forms
         form = post.forms.first()
@@ -201,7 +222,7 @@
     receipt.expanded = !receipt.expanded
 
   $scope.read_receipt = (receipt) ->
-    unless receipt.read
+    if !receipt.read and receipt.forms_filled
       $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
         receipt.read = true
 

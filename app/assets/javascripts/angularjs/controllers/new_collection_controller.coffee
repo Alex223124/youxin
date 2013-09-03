@@ -19,6 +19,13 @@
     $http.post("/forms/#{form.id}/collections.json", { entities: entities })
     .success (data) ->
       form.collectioned = true
+      receipt.forms_filled = true
+      $scope.read_receipt(receipt)
     .error (data) ->
       App.alert('提交失败，请检查填写内容', 'error')
+
+  $scope.read_receipt = (receipt) ->
+    if !receipt.read and receipt.forms_filled
+      $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
+        receipt.read = true
 ]

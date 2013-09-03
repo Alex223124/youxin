@@ -10,6 +10,7 @@ class Receipt
   field :origin, type: Boolean, default: false
   field :author_id
   field :short_key, type: String
+  field :forms_filled, type: Boolean, default: true
 
   before_save do
     self.author = self.post.author
@@ -26,6 +27,8 @@ class Receipt
 
   scope :read, where(read: true)
   scope :unread, where(read: false)
+  scope :unfilled, where(forms_filled: false, origin: false)
+  scope :filled, where(forms_filled: true, origin: false)
   default_scope desc(:_id)
 
   def organizations

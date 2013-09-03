@@ -41,6 +41,8 @@ Youxin::Application.routes.draw do
       get 'last_sms_scheduler' => 'posts#last_sms_scheduler'
       post 'run_call_notifications_now' => 'posts#run_call_notifications_now'
       get 'last_call_scheduler' => 'posts#last_call_scheduler'
+      post 'run_call_notifications_to_unfilleds_now' => 'posts#run_call_notifications_to_unfilleds_now'
+      post 'run_sms_notifications_to_unfilleds_now' => 'posts#run_sms_notifications_to_unfilleds_now'
     end
     resources :comments, only: [:index, :create]
     resources :attachments, only: [:index]

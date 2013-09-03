@@ -89,8 +89,8 @@ describe CollectionsController do
         }
       ]
     }
-    post = create :post, author: admin, organization_ids: [@parent].map(&:id)
-    @form = post.forms.create(Form.clean_attributes_with_inputs(@form_json).merge({ user_id: admin.id }))
+    @post = create :post, author: admin, organization_ids: [@parent].map(&:id)
+    @form = @post.forms.create(Form.clean_attributes_with_inputs(@form_json).merge({ user_id: admin.id }))
     @entities_json = {
       field_1: 'text_field test',
       field_2: 'text_area test',
@@ -119,6 +119,13 @@ describe CollectionsController do
       login_user another_user
       post :create, form_id: @form.id, entities: @entities_json
       response.status.should == 403
+    end
+    it "should update forms_filled of receipt" do
+      receipt = @post.receipts.where(user_id: current_user.id).first
+      receipt.forms_filled.should be_false
+      post :create, form_id: @form.id, entities: @entities_json
+      receipt.reload
+      receipt.forms_filled.should be_true
     end
   end
   describe "GET index" do

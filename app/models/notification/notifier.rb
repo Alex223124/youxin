@@ -66,7 +66,7 @@ class Notification::Notifier
         post = receipt.post
         content = "#{post.title}，#{post.body}"
         content = "#{post.author.name}: #{content[0..35]}...【combee.co】"
-        res = ChinaSMS.to(receipt.user.phone, content)
+        res = message(receipt.user.phone, content)
         CommunicationRecord::Sms.create receipt: receipt, status: res[:code]
       end
     end
@@ -77,10 +77,17 @@ class Notification::Notifier
         post = receipt.post
         content = "您好！您收到了#{post.author.name}通过combee给您的电话留言：您有一条重要组织消息#{post.title}，请尽快登陆combee网站或移动客户端查看详细信息。留言已结束，感谢您的收听，再见。"
 
-        landing_call = cloopen_account.calls.landing_calls.create to: receipt.user.phone, media_txt: content
+        landing_call = call receipt.user.phone, media_txt: content
         call_sid = landing_call.response.body[:landing_call][:call_sid] rescue nil
         CommunicationRecord::Call.create receipt: receipt, status: landing_call.response.status_code, call_sid: call_sid
       end
+    end
+
+    def message(phone, content)
+      ChinaSMS.to(phone, content)
+    end
+    def call(phone, params)
+      cloopen_account.calls.landing_calls.create params.merge(to: phone)
     end
 
     private
