@@ -4,7 +4,7 @@
       img ng-src="{{receipt.author.avatar | avatar_version:'small'}}"
     .content-wrap.pull-left.span10
       .content
-        .read-dot data-toggle="tooltip" title="标记为已读" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.read_receipt(receipt);" ng-show="!receipt.read"
+        .read-dot data-toggle="tooltip" title="标记为已读" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.mark_receipt_as_read(receipt);" ng-show="!receipt.read"
           i.icon-circle
         .created_at.pull-right
           small.timeago.muted timeago="receipt.created_at"

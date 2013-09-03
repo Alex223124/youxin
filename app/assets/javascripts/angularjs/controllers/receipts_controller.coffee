@@ -226,6 +226,12 @@
       $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
         receipt.read = true
 
+  $scope.mark_receipt_as_read = (receipt) ->
+    if receipt.forms_filled
+      $scope.read_receipt(receipt)
+    else
+      App.alert('请先填写表单', 'error')
+
   $scope.showTooltip = (event) ->
     $(event.target).tooltip('show')
   $scope.hideTooltip = (event) ->

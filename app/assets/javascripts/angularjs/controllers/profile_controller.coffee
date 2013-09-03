@@ -186,6 +186,12 @@
       receipt.read = true
       $http.put("/receipts/#{receipt.id}/read.json")
 
+  $scope.mark_receipt_as_read = (receipt) ->
+    if receipt.forms_filled
+      $scope.read_receipt(receipt)
+    else
+      App.alert('请先填写表单', 'error')
+
   $scope.send_sms_notifications = (receipt,$event)->
     post = receipt.post
     self = $($event.target)
