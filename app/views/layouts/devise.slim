@@ -3,10 +3,12 @@ html
   head
     title Combee | 组织消息通知中心
     meta name='viewport' content='width=device-width, initial-scale=1.0'
+    meta name="keywords" content="combee，优信，组织，消息推送，消息反馈"
+    meta name="description" content="Combee是组织的消息通知中心，在这里你可以快速建立组织主页，导入组织成员，向组织成员发送消息，系统会通过Web、移动客户端以及短信、电话留言自动向成员推送消息，提高组织内部消息传递的效率"
+    meta name="baidu-site-verification" content="Z5mSaex35X"
     link rel="shortcut icon" href="#{image_path('favicon.png')}"
     = stylesheet_link_tag 'application', media: 'all'
     = stylesheet_link_tag 'login', media: 'all'
-    = javascript_include_tag "application"
     = yield :styles
     = yield :scripts
     = csrf_meta_tags
@@ -25,8 +27,15 @@ html
 
     = yield
 
+    = javascript_include_tag "application"
+
     javascript:
       ROOT_URL = "#{root_url}";
       FAYE_SERVER_URL = "#{Youxin.config.faye.server}";
       SUBSCRIPTION_PREFIX = "#{Youxin.config.faye.subscription_prefix}"
       CURRENT_USER_NOTIFICATION_CHANNEL = "#{current_user && current_user.notification_channel || ''}";
+
+    javascript:
+      var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+      document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe2e047ba2a262d9d93cb452fd93f05c9' type='text/javascript'%3E%3C/script%3E"));
+

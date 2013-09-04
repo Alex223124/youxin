@@ -67,22 +67,3 @@ html
     javascript:
       var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
       document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe2e047ba2a262d9d93cb452fd93f05c9' type='text/javascript'%3E%3C/script%3E"));
-
-    / .viewer-wrap
-    /   .viewer-backdrop style='position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1040; background-color: #000; opacity: 0.8;'
-    /   .viewer-container style='position: absolute; z-index: 1050;'
-    /     = image_tag('rails.png', id: 'abcd', 'data-origin-src' => 'http://localhost:3000/assets/rails.png', 'data-origin-size' => '100,100')
-    /     .optain
-    /       span.name a.jpg
-    /       | [
-    /       a href="#" target="_blank" view original
-    /       | ]
-
-    / .container
-    /   .alert #{alert}
-    /   .info
-    /     p #{flash[:notice]}
-    /     - if flash[:unimported_users].present?
-    /       strong Unimported users
-    /       - flash[:unimported_users].each do |user|
-    /         p #{user.name}, #{user.email}, #{user.errors.messages}
