@@ -83,6 +83,16 @@ http {
   }
 
   server {
+    server_name www.combee.co;
+    rewrite ^ http://combee.co$uri permanent;
+  }
+
+  server {
+    server_name www.u-xin.com u-xin.com;
+    rewrite ^ http://combee.co$uri permanent;
+  }
+
+  server {
     # enable one of the following if you're on Linux or FreeBSD
     listen 80 default deferred; # for Linux
     # listen 80 default accept_filter=httpready; # for FreeBSD
@@ -96,7 +106,7 @@ http {
     # listen [::]:80 ipv6only=on; # deferred or accept_filter recommended
 
     client_max_body_size 4G;
-    server_name combee.co www.combee.co;
+    server_name combee.co;
 
     # ~2 seconds is often enough for most folks to parse HTML/CSS and
     # retrieve needed images/icons/frames, connections are cheap in
