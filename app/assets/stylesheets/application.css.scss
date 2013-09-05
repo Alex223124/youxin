@@ -1,6 +1,7 @@
 /*
  *= require bootstrap-wysihtml5
  *= require bootstrap-notify
+ *= require bootstrap-datepicker
  */
 
 @import '0.variables';
@@ -15,3 +16,4 @@
 @import 'settings';
 @import 'profile';
 @import 'youxin_profile';
+@import 'notifications';

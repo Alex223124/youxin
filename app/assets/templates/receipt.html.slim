@@ -115,7 +115,7 @@
               .tools
                 a.btn.btn-link.btn-small.btn-cancel 取消
                 a.btn.btn-success.btn-small ng-click="ctrl.createComments(receipt, $event);" 回复
-            .comment ng-repeat="comment in receipt.post.comments" ng-animate=" 'animate' "
+            .comment ng-repeat="comment in receipt.post.comments" id="{{comment.id}}-{{flag}}-comment" ng-animate=" 'animate' "
               .avatar
                 img.pull-left height="32px" width="32px" ng-src="{{comment.user.avatar | avatar_version:'small'}}"
               .content
@@ -127,3 +127,4 @@
                 span.created_at style="padding-left: 7px;"
                   small.timeago.muted timeago="comment.created_at"
                 .body {{comment.body}}
+              textarea.hidden

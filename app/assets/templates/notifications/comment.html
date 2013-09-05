@@ -1,0 +1,31 @@
+<div id="comment-notifications">
+  <div class="comments-wrap">
+    <li ng-repeat="notification in comment_notifications" class="notification-item" ng-switch="notification.type">
+      <div class="notification-wrap clearfix row-fluid" ng-switch-when="Notification::Comment">
+        <div class="avatar-wrap pull-left tac">
+          <img ng-src="{{notification.comment.user.avatar | avatar_version:'small'}}" alt="user-picture">
+        </div>
+        <div class="content-wrap pull-left">
+          <span class="notification-from">
+            <a href="javascript:;">
+              {{notification.comment.user.name}}
+            </a>
+          </span>
+          在优信
+          <h5 class="inline">
+            <a href="javascript:;" ng-click="showSinglePost(notification)">
+              {{notification.notificationable.title}}
+            </a>
+          </h5>
+          中评论了你:
+          <div class="reply-content">
+            {{notification.comment.body}}
+          </div>
+        </div>
+        <span class="db created-at pull-right">
+          {{notification.comment.created_at}}
+        </span>
+      </div>
+    </li>
+  </div>
+</div>

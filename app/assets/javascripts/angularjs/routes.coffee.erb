@@ -133,4 +133,50 @@
         "detail":
           templateUrl: "<%= asset_path('settings/system/push.html') %>"
           controller: SystemPushController
+
+    .state 'notifications',
+      abstract: true
+      url: "/notifications"
+      views:
+        "mainView":
+          templateUrl: "<%= asset_path('notifications/nav_template.html') %>"
+          controller: NotificationsController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
+    .state 'notifications.comments',
+      url: "/comments"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('notifications/comment.html') %>"
+          controller: NotificationsCommentsController
+    .state 'notifications.system',
+      url: "/system"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('notifications/system.html') %>"
+          controller: NotificationsSystemProfileController
+
+    .state 'bills',
+      url: "/bills"
+      abstract: true
+      views:
+        "mainView":
+          templateUrl: "<%= asset_path('notifications/nav_template.html') %>"
+          controller: BillsController
+        "singleReceiptView":
+          templateUrl: "<%= asset_path('youxin_profile.html') %>"
+          controller: YouxinProfileController
+    .state 'bills.sms',
+      url: "/sms"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('notifications/sms.html') %>"
+          controller: BillsSmsController
+    .state 'bills.phone',
+      url: "/phone"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('notifications/phone.html') %>"
+          controller: BillsPhoneController
 ])

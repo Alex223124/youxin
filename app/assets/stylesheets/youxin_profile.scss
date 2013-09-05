@@ -17,6 +17,22 @@
     .post{
       border: none;
       margin: 0;
+      .avatar{
+        margin-top: 0;
+      }
+      .content{
+        padding-bottom: 0;
+      }
+      .comment{
+        margin-top: 10px;
+        border-top: 1px solid #d9d9d9;
+        border-bottom: none;
+        &[id$='-comment-receipt-comment']{
+          background-color: #f3f3f3;
+          border-top: none;
+          margin-top: 0;
+        }
+      }
       .wrapper:hover{
         background-color: #fff;
       }
@@ -28,5 +44,9 @@
         text-align: center;
       }
     }
+  }
+  .close-receipt{
+    top: 10px;
+    right: 10px;
   }
 }

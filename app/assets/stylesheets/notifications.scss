@@ -1,0 +1,51 @@
+#comment-notifications{
+  height: 100%;
+  overflow: auto;
+  .comments-wrap{
+    padding: 10px 10px 10px 0;
+  }
+  li{
+    padding: 8px 12px;
+    border-top: 1px solid #d9d9d9;
+    margin: 8px 0;
+    .avatar-wrap{
+      width: 10%;
+      img{      
+        height: 60px; 
+        max-height: 100%;
+      }
+    }
+    .content-wrap{
+      max-width: 80%;
+      margin-left: 2%;
+    }
+  }
+}
+
+#notifications-push{
+  height: 100%;
+  overflow: auto;
+  .push_profile-wrap{
+    padding: 10px 10px 10px 0;
+    .date-input{
+      *{
+        vertical-align: baseline;
+      }
+      .btn{
+        margin-bottom: 10px;
+      }
+    } 
+  }
+  table{
+    background-color: #ffffff;
+    .content{
+      max-width: 220px;
+    } 
+    thead{
+      background-color: #d9edf7;
+      th{
+        text-align: center;
+      }
+    }
+  }
+}

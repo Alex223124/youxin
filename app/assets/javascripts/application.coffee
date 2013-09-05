@@ -13,6 +13,9 @@
 #= require bootstrap-wysihtml5
 #= require bootstrap-wysihtml5/locales/zh-CN
 #= require bootstrap-notify
+#= require bootstrap-datepicker/core
+#= require bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN
+
 #= require jquery.form
 #= require_self
 
@@ -118,9 +121,13 @@ window.App =
       type: type
     .show()
 
+  closePostProfile: ()->
+    element = angular.element(document.getElementById("single_receipt"))
+    element.scope().ctrl.closeReceipt()
+
 $(document).ready ->
   App.enableReplyBox()
-  Youxin.initNotificationSubscribe()
+  # Youxin.initNotificationSubscribe()
   App.open()
   App.close()
   App.selectComponent()

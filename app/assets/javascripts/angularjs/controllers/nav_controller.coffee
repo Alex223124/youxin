@@ -10,4 +10,7 @@
     if route_info is '/organization_members'
       reg = ////organizations/[a-f0-9]+/members$///
       return 'active' if reg.test $location.path()
+    if route_info is "/notifications"
+      reg = ////notifications|/bills///
+      return "active" if reg.test $location.path()
 ]

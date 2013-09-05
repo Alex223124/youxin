@@ -8,7 +8,6 @@
       if error
         error(data, status)
 
-
   #public
   serviceCache =
     #根据消息id获取完整的消息

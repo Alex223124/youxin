@@ -69,6 +69,7 @@ gem 'simple_form'
 gem 'font-awesome-sass-rails', github: 'pduersteler/font-awesome-sass-rails', branch: :master
 # gem 'font-awesome-sass-rails'
 gem 'bootstrap-wysihtml5-rails'
+gem 'bootstrap-datepicker-rails'
 
 # Youxin settings
 gem 'settingslogic', '~> 2.0.9'

@@ -65,6 +65,8 @@ GEM
       erubis (>= 2.6.6)
     binding_of_caller (0.7.1)
       debug_inspector (>= 0.0.1)
+    bootstrap-datepicker-rails (1.1.1.7)
+      railties (>= 3.0)
     bootstrap-sass (2.3.1.0)
       sass (~> 3.2)
     bootstrap-wysihtml5-rails (0.3.1.21)
@@ -369,6 +371,7 @@ DEPENDENCIES
   angularjs-rails (~> 1.0.7)
   better_errors
   binding_of_caller
+  bootstrap-datepicker-rails
   bootstrap-sass (~> 2.3.1.0)
   bootstrap-wysihtml5-rails
   capybara
