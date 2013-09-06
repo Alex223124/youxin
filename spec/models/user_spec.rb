@@ -32,6 +32,7 @@ describe User do
     it { should have_many(:call_schedulers) }
     it { should have_many(:user_role_organization_relationships) }
     it { should belong_to(:namespace) }
+    it { should belong_to(:creator) }
   end
 
   describe "Respond to" do
@@ -55,6 +56,7 @@ describe User do
     it { should respond_to(:send_message_to) }
     it { should respond_to(:reset_sms_token) }
     it { should respond_to(:reset_sms_sent_at) }
+    it { should respond_to(:creator_id) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -296,6 +298,42 @@ describe User do
     end
   end
 
+  describe "attributes" do
+    context 'email' do
+      before { user.email = '' }
+      its(:valid?) { should be_true }
+    end
+
+    context 'creator_id' do
+      before(:each) do
+        @admin = create :user
+      end
+
+      it 'should be valid with creator_id' do
+        user.creator_id = @admin.id
+        user.should be_valid
+      end
+
+      it 'should set creator to the admin' do
+        user.creator = @admin.id
+        user.save
+        user.reload
+        user.creator.should == @admin
+      end
+
+      it 'should be valid with nil creator_id' do
+        user.creator_id = nil
+        user.should be_valid
+      end
+
+      it 'should have one error on creator_id' do
+        user.creator_id = 'not_found'
+        user.save
+        user.should have(1).error_on(:creator_id)
+      end
+    end
+  end
+
   describe "invalid attributes" do
     context "name" do
       context "is blank" do
@@ -317,12 +355,12 @@ describe User do
       it "should create with blank phone" do
         user.save.should be_true
       end
-      it "should have error on blank" do
+      it "should have error when blank" do
         user.phone = ''
         user.save
-        user.should have(1).error_on(:phone)
+        user.should have_at_least(1).error_on(:phone)
       end
-      it "should have error on format" do
+      it "should have error on length" do
         user.phone = '123456789'
         user.save
         user.should have(1).error_on(:phone)

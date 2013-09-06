@@ -990,10 +990,10 @@ describe Youxin::API, 'users' do
             },
             user: {
               id: @user_one.id,
-              email: @user_one.email,
               name: @user_one.name,
-              created_at: @user_one.created_at,
               avatar: @user_one.avatar.url,
+              email: @user_one.email,
+              created_at: @user_one.created_at,
               phone: @user_one.phone
             }
           }

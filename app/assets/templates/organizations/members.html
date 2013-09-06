@@ -66,9 +66,9 @@
             <li>
               <label>单个添加</label>
               <p>
-                <input class="input-small" type="text" ng-model="user_name" placeholder="姓名">
+                <input class="input-small" type="text" ng-model="user_name" placeholder="姓名(必填)">
+                <input class="input-medium" type="text" ng-model="user_tel" placeholder="手机号码(必填)">
                 <input class="input-medium" type="text" ng-model="user_email" placeholder="邮箱">
-                <input class="input-medium" type="text" ng-model="user_tel" placeholder="电话号码">
                 <span ng-click="addNewOrgMember()">
                   <i class="icon icon-plus-sign"></i>
                 </span>
@@ -98,13 +98,13 @@
             <table class="table table-striped fail-memebers" ng-show="fail_memebers.length">
               <thead>
                 <th>姓名</th>
-                <th>邮箱</th>
                 <th>电话</th>
+                <th>邮箱</th>
               </thead>
               <tbody ng-repeat="user in fail_memebers">
                 <td ng-class="user.errors.getIndex('name') == -1 ? '' : 'error'">{{user.name}}</td>
-                <td ng-class="user.errors.getIndex('email') == -1 ? '' : 'error'">{{user.email}}</td>
                 <td ng-class="user.errors.getIndex('phone') == -1 ? '' : 'error'">{{user.phone}}</td>
+                <td ng-class="user.errors.getIndex('email') == -1 ? '' : 'error'">{{user.email}}</td>
               </tbody>
             </table>
           </div>

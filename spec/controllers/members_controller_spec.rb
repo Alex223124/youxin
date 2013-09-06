@@ -42,6 +42,18 @@ describe MembersController do
         @parent.reload
       end.to change { @parent.members.count }.by(1)
     end
+    it 'should add a member to organization' do
+      @member_attrs.delete(:email)
+      expect do
+        post :create, organization_id: @parent.id, member: @member_attrs
+        @parent.reload
+      end.to change { @parent.members.count }.by(1)
+    end
+    it 'should set creator of member to current user' do
+      post :create, organization_id: @parent.id, member: @member_attrs
+      member = admin.namespace.users.where(id: json_response['member']['id']).first
+      member.creator.should == admin
+    end
     it "should return 422" do
       @member_attrs.delete(:name)
       post :create, organization_id: @parent.id, member: @member_attrs
@@ -64,6 +76,11 @@ describe MembersController do
         post :import, organization_id: @parent.id, file: @xls_file
         @parent.reload
       end.to change { @parent.members.count }.by(3)
+    end
+    it 'should set creator to the admin' do
+      post :import, organization_id: @parent.id, file: @xls_file
+      member = User.where(id: json_response['members'].first['id']).first
+      member.creator.should == admin
     end
     it "should return the unimport_users" do
       @parent.add_member create :user, name: '张三', email: 'zhangsan@y.x', phone: '18600000000', namespace: namespace

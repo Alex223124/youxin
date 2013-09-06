@@ -24,6 +24,10 @@ module Notification
       def make_landing_call_to_phone_async(receipt_ids)
         ::Resque.enqueue(MakeLandingCallToPhoneJob, receipt_ids)
       end
+
+      def send_welcome_message_async(user_id)
+        ::Resque.enqueue(SendWelcomeMessageJob, user_id)
+      end
     end
 
     def self.included(receiver)

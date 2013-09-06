@@ -22,8 +22,8 @@ module Youxin
       sheet.each 1 do |row|
         @user_array << {
           name: row[0],
-          email: row[1],
-          phone: row[2].is_a?(Float) ? row[2].to_i.to_s : row[2]
+          phone: row[1].is_a?(Float) ? row[1].to_i.to_s : row[1],
+          email: row[2]
         }
       end
       self

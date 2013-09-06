@@ -22,9 +22,9 @@ class MembersController < ApplicationController
     password = Devise.friendly_token.first(8)
     attrs.merge!({ password: password, password_confirmation: password })
     member = current_namespace.users.new attrs
+    member.creator = current_user
     if member.save
       @organization.push_member(member)
-      # TODO: need async
       member.send_welcome_instructions
       render json: member, status: :created, serializer: MemberSerializer
     else
@@ -43,13 +43,13 @@ class MembersController < ApplicationController
     created_members = Array.new
     excel_praser.user_array.each do |member_attr|
       password = Devise.friendly_token.first(8)
-      attrs = member_attr.merge({ password: password, password_confirmation: password })
+      attrs = member_attr.merge({ password: password, password_confirmation: password})
       member = current_namespace.users.new attrs
+      member.creator = current_user
       if member.save
-        # TODO: need asyn
-        member.send_welcome_instructions
         created_members.push member
         @organization.push_member(member)
+        member.send_welcome_instructions
       else
         member_attr[:errors] = member.errors.keys
         unimported_members.push member_attr

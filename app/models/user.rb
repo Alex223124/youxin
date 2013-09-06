@@ -63,11 +63,15 @@ class User
   field :blog, type: String
   field :uid, type: String
 
+  field :creator_id
+
   validates :name, presence: true, length: 2..10
-  validates :phone, format: { with: /\A1\d{10}\Z/ }, uniqueness: true#, allow_nil: true
+  validates :phone, format: { with: /\A1\d+\Z/ }, length: { is: 11 }, uniqueness: true, presence: true
   validates :gender, inclusion: %w(男 女), allow_nil: true
   validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_nil: true
   validates :namespace_id, presence: true
+  validates :creator_id, presence: true, allow_nil: true
+  validate :creator_exists , if: ->(user) { user.creator_id.present? }
 
   mount_uploader :avatar, AvatarUploader
   mount_uploader :header, HeaderUploader
@@ -120,6 +124,7 @@ class User
   has_many :call_schedulers, class_name: 'Scheduler::Call', dependent: :destroy
   has_many :user_role_organization_relationships, dependent: :destroy
   belongs_to :namespace
+  belongs_to :creator, class_name: 'User'
 
   before_save :ensure_authentication_token!
   before_save :ensure_notification_channel!
@@ -269,7 +274,20 @@ class User
   # Message
 
   def send_welcome_instructions
-    send_devise_notification(:welcome_instructions)
+    send_devise_notification(:welcome_instructions) if self.email?
+    Notification::Notifier.send_welcome_message_async(self.id)
+  end
+
+  protected
+  def email_required?
+    false
+  end
+
+  private
+  def creator_exists
+    if User.where(id: self.creator_id).blank?
+      self.errors.add :creator_id, :not_exist
+    end
   end
 
 end
