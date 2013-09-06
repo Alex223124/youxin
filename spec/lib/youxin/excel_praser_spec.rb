@@ -77,9 +77,9 @@ describe Youxin::ExcelPraser do
     end
 
     it "should return correct user_hash" do
-      user_array = [ { name: '张三', email: 'zhangsan@y.x', phone: '18600000000'},
-                     { name: '李四', email: 'lisi@y.x', phone: '18600000001'},
-                     { name: '王五', email: 'wangwu@y.x', phone: '18600000002'} ]
+      user_array = [ { name: '张三', phone: '18600000000', email: 'zhangsan@y.x'},
+                     { name: '李四', phone: '18600000001', email: 'lisi@y.x'},
+                     { name: '王五', phone: '18600000002', email: 'wangwu@y.x'} ]
       excel_praser.user_array.should == user_array
     end
   end
