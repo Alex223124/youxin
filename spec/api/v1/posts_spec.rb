@@ -522,6 +522,58 @@ describe Youxin::API, 'posts' do
         response.status.should == 403
       end
     end
+    context "POST /call_notifications" do
+      before do
+        ResqueSpec.reset!
+      end
+      it "should return 204" do
+      post api("/posts/#{@post.id}/call_notifications", @admin)
+      response.status.should == 204
+      end
+      it "should create a call_scheduler" do
+        expect do
+          post api("/posts/#{@post.id}/call_notifications", @admin)
+        end.to change { @post.call_schedulers.count }.by(1)
+      end
+      it "should update current call_scheduler if it doesnt be executed" do
+        call_scheduler = @post.call_schedulers.create delayed_at: 1.days.from_now
+        post api("/posts/#{@post.id}/call_notifications", @admin)
+        MakeCallsToUnreadsJob.should have_scheduled(call_scheduler.id)
+      end
+      it "should return 403 if user cannt manage this post" do
+        post api("/posts/#{@post.id}/call_notifications", @user)
+        response.status.should == 403
+      end
+    end
+    context "GET /call_scheduler" do
+      before do
+        ResqueSpec.reset!
+      end
+      it "should return nothing" do
+        get api("/posts/#{@post.id}/call_scheduler", @admin)
+        response.status.should == 200
+      end
+      it "should return the last call_scheduler" do
+        call_scheduler = @post.call_schedulers.create delayed_at: 1.days.from_now
+        get api("/posts/#{@post.id}/call_scheduler", @admin)
+        json_response.should == {
+          delayed_at: call_scheduler.delayed_at,
+          ran_at: call_scheduler.ran_at
+        }.as_json
+      end
+      it "should return the last ran call_scheduler" do
+        timestamp = 1.days.from_now
+        call_scheduler = @post.call_schedulers.create delayed_at: timestamp
+        call_scheduler.ran_at = Time.now
+        call_scheduler.save
+        get api("/posts/#{@post.id}/call_scheduler", @admin)
+        json_response['ran_at'].should_not be_nil
+      end
+      it "should return 403" do
+        get api("/posts/#{@post.id}/call_scheduler", @user)
+        response.status.should == 403
+      end
+    end
   end
 
 end

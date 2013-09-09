@@ -92,7 +92,22 @@ class Posts < Grape::API
       get :sms_scheduler do
         authorize! :manage, @post
         sms_scheduler = @post.sms_schedulers.where(ran_at: nil).first || @post.sms_schedulers.first
-        present sms_scheduler, with: Youxin::Entities::SmsScheduler
+        present sms_scheduler, with: Youxin::Entities::Scheduler
+      end
+      post :call_notifications do
+        authorize! :manage, @post
+        scheduler = @post.call_schedulers.where(ran_at: nil).first
+        if scheduler
+          scheduler.run_now!
+        else
+          @post.call_schedulers.create delayed_at: Time.now
+        end
+        status(204)
+      end
+      get :call_scheduler do
+        authorize! :manage, @post
+        call_scheduler = @post.call_schedulers.where(ran_at: nil).first || @post.call_schedulers.first
+        present call_scheduler, with: Youxin::Entities::Scheduler
       end
     end
   end

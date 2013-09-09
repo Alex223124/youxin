@@ -209,7 +209,7 @@ module Youxin
       expose :organization, as: :notificationable, using: Entities::OrganizationBasic
       expose :status
     end
-    class SmsScheduler < Grape::Entity
+    class Scheduler < Grape::Entity
       expose :delayed_at, :ran_at
     end
   end
