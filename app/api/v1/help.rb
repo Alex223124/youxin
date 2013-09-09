@@ -15,5 +15,11 @@ class Help < Grape::API
         contact_email: Youxin.config.help.contact_email
       }
     end
+    get :last_android_version do
+      {
+        version: Youxin.config.help.android.version,
+        url: Youxin.config.help.android.url
+      }
+    end
   end
 end

@@ -20,7 +20,23 @@ describe Youxin::API, 'help' do
     it "should return the about" do
       get api('/help/about')
       response.status.should == 200
-      json_response.should == Youxin.config.help.as_json
+      json_response.should == {
+        terms: Youxin.config.help.terms,
+        privacy: Youxin.config.help.privacy,
+        about_us: Youxin.config.help.about_us,
+        ios_tips_and_tricks: Youxin.config.help.ios_tips_and_tricks,
+        contact_email: Youxin.config.help.contact_email
+      }.as_json
+    end
+  end
+  describe 'GET /help/last_android_version' do
+    it 'should return the last android version and url' do
+      get api('/help/last_android_version')
+      response.status.should == 200
+      json_response.should == {
+        version: Youxin.config.help.android.version,
+        url: Youxin.config.help.android.url
+      }.as_json
     end
   end
 end

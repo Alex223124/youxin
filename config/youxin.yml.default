@@ -30,6 +30,9 @@ defaults: &defaults
     about_us: '/help/about_us'
     ios_tips_and_tricks: '/help/ios_tips_and_tricks'
     contact_email: support@combee.co
+    android:
+      version: 2.0.0
+      url: '/downloads/combee.2.0.0.apk'
   devise:
     reset_sms_token_within: 10
     reset_sms_token_length: 4
