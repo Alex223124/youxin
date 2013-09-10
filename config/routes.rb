@@ -74,6 +74,11 @@ Youxin::Application.routes.draw do
     end
   end
 
+  # Billing
+  get 'billing/sms' => 'billing#sms'
+  get 'billing/call' => 'billing#call'
+  get 'billing/bill_summary' => 'billing#bill_summary'
+
   # help
   get 'help/positions' => 'help#positions'
   get 'help/roles' => 'help#roles'

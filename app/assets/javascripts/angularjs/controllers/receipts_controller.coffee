@@ -1,4 +1,4 @@
-@ReceiptsController = ['$scope', 'receiptService', ($scope, receiptService) ->
+@ReceiptsController = ['$scope', 'receiptService', '$http', ($scope, receiptService, $http) ->
   $scope.breadcrumbs = [
     {
       name: '首页'
@@ -18,7 +18,7 @@
   receiptService.getReceipts {params: {status: "unread"}}, (data)->
     $scope.unread_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
-    
+
   set_receipt_range = (receipt) ->
     return unless receipt
     $scope.max_receipt_id = receipt.id if receipt.id > $scope.max_receipt_id
@@ -52,7 +52,7 @@
     move_reads()
 
   $scope.load_more = (event) ->
-    params: 
+    params = 
       params:
         status: "read"
         max_id: $scope.min_receipt_id
@@ -67,7 +67,7 @@
         App.alert('没有更多了')
     , (data, status)->
       App.alert "加载失败", "error"
-      
+
 
 
   $scope.fetch_attachments = (receipt) ->

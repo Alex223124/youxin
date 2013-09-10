@@ -1,4 +1,4 @@
-@newCollectionController =  ["$scope", "receiptService",($scope, receiptService)->
+@newCollectionController =  ["$scope", "receiptService", '$http', ($scope, receiptService, $http)->
   $scope.submit = (receipt)->
     form = receipt.post.forms.first()
     entities = {}

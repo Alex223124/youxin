@@ -60,6 +60,20 @@ Array.prototype.first = () ->
 Array.prototype.last = () ->
   @[@.length - 1]
 
+Date.prototype.beginning_of_week = () ->
+  day = @getDay()
+  day = if day == 0 then 7 else day
+  current_day = @getDate() - day + 1
+  @setDate(current_day)
+  @
+
+pad = (str, length) ->
+  str = str.toString()
+  if str.length < length
+    pad("0#{str}", length)
+  else
+    str
+
 class Organization
   @all: []
 
@@ -181,3 +195,4 @@ class Organization
     @setIndex()
 
 window.Organization = Organization
+window.pad = pad

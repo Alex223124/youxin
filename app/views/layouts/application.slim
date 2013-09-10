@@ -33,10 +33,6 @@ html
             a ng-href='#/organizations/#{current_user.authorized_organizations.first.id}/members'
               i.icon-group
               span 成员管理
-        li ng-class="isActive('/notifications')"
-          a href='#/notifications/comments'
-            i.icon-sitemap
-            span 通知
     .others
 
     .main-container
@@ -56,10 +52,9 @@ html
                   a ng-href='#/account/profile' tabindex='-1' 我的主页
                 li
                   a ng-href='#/settings/account/profile' tabindex='-1' 个人设置
-                li
-                  a ng-href='#/settings/system/logo' tabindex='-1' 系统设置
-                li
-                  a ng-href='#/bills/sms' tabindex='-1' 账单
+                - unless current_user.authorized_organizations.count.zero?
+                  li
+                    a ng-href='#/billing/sms' tabindex='-1' 账单
                 li
                   =link_to '退出', destroy_user_session_path, method: :delete, tabindex: '-1'
 

@@ -13,7 +13,7 @@
           nav.class = 'active'
         else
           nav.class = ''
-          
+
   $scope.prepare_breadcrumbs = (n) ->
     $scope.breadcrumbs.splice(n)
 

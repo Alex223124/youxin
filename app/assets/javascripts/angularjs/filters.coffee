@@ -117,4 +117,9 @@
     timeStr = timeStr.replace(/T/," ").replace(/Z/," UTC")
     timeStr = timeStr.replace(/([\+\-]\d\d)\:?(\d\d)/," $1$2")
     local = new Date(timeStr)
-    "#{local.getMonth()}月#{local.getDate()}日#{local.getHours()}时#{local.getMinutes()}分"
+    "#{local.getMonth() + 1}月#{local.getDate()}日#{local.getHours()}时#{local.getMinutes()}分"
+
+@app.filter 'date_for_datepicker', ->
+  (date) ->
+    "#{date.getFullYear()}-#{pad(date.getMonth() + 1, 2)}-#{pad(date.getDate(), 2)}"
+

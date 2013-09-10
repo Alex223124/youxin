@@ -157,26 +157,26 @@
           templateUrl: "<%= asset_path('notifications/system.html') %>"
           controller: NotificationsSystemProfileController
 
-    .state 'bills',
-      url: "/bills"
+    .state 'billing',
+      url: "/billing"
       abstract: true
       views:
         "mainView":
-          templateUrl: "<%= asset_path('notifications/nav_template.html') %>"
-          controller: BillsController
+          templateUrl: "<%= asset_path('billing/nav_template.html') %>"
+          controller: BillingController
         "singleReceiptView":
           templateUrl: "<%= asset_path('youxin_profile.html') %>"
           controller: YouxinProfileController
-    .state 'bills.sms',
+    .state 'billing.sms',
       url: "/sms"
       views:
         "detail":
-          templateUrl: "<%= asset_path('notifications/sms.html') %>"
-          controller: BillsSmsController
-    .state 'bills.phone',
-      url: "/phone"
+          templateUrl: "<%= asset_path('billing/sms.html') %>"
+          controller: BillingSmsController
+    .state 'billing.call',
+      url: "/call"
       views:
         "detail":
-          templateUrl: "<%= asset_path('notifications/phone.html') %>"
-          controller: BillsPhoneController
+          templateUrl: "<%= asset_path('billing/call.html') %>"
+          controller: BillingCallController
 ])
