@@ -83,8 +83,8 @@
                           input type="checkbox" ng-model="option.default_selected"
                           span {{option.value}}
                 li
-                  .btn.btn-primary data-toggle="tooltip" title="向未填写表单用户发送电话通知" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 电话提醒
-                  .btn.btn-primary data-toggle="tooltip" title="向未填写表单用户发送短信通知" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 短信提醒
+                  .btn.btn-primary data-toggle="tooltip" title="向未填写表单用户发送电话提醒" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 电话提醒
+                  .btn.btn-primary data-toggle="tooltip" title="向未填写表单用户发送短信提醒" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications_to_unfilleds(receipt, $event)" ng-show="receipt.origin && !!form.unfilleds" 短信提醒
 
                   .btn.btn-info data-toggle="tooltip" title="共{{form.filleds + form.unfilleds}}人，未填写{{form.unfilleds}}人(不含自己)" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.set_form_collections(receipt)" ng-show="receipt.origin" 填写情况
                   .btn.btn-disabled ng-click="ctrl.submit(receipt);" ng-disabled="form.collectioned" ng-show="form.collectioned" 已填写
@@ -100,8 +100,8 @@
                   span.name {{unread_receipt.user.name}}
                   / i.icon-envelope
             .scheduler-btn.text-right ng-show="!!receipt.post.unread_receipts.length"
-              span.btn.btn-primary data-toggle="tooltip" title="电话通知{{receipt.post.unread_receipts.length}}个未读用户" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications(receipt,$event)" 电话通知
-              span.btn.btn-primary data-toggle="tooltip" title="短信通知{{receipt.post.unread_receipts.length}}个未读用户" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications(receipt,$event)" 短信通知
+              span.btn.btn-primary data-toggle="tooltip" title="电话提醒{{receipt.post.unread_receipts.length}}个未读用户" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications(receipt,$event)" 电话提醒
+              span.btn.btn-primary data-toggle="tooltip" title="短信提醒{{receipt.post.unread_receipts.length}}个未读用户" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications(receipt,$event)" 短信提醒
             .scheduler-info-box.text-right
               span.muted.disabled.call_scheduler.label.label-success ng-show="receipt.post.call_scheduler && receipt.post.call_scheduler.ran_at" 电话已在 {{receipt.post.call_scheduler.ran_at | utc2local}} 向未读用户发送
               span.muted.disabled.call_scheduler.label.label-info ng-show="receipt.post.call_scheduler && !receipt.post.call_scheduler.ran_at" 电话将在 {{receipt.post.call_scheduler.delayed_at | utc2local}} 向未读用户发送
