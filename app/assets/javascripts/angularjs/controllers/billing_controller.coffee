@@ -31,6 +31,11 @@
   $scope.prepare_breadcrumbs = (n) ->
     $scope.breadcrumbs.splice(n)
 
+  $scope.showSinglePost = (record)->
+    viewEle = angular.element(document.getElementById("singleReceiptView"))
+    container = angular.element(document.getElementById("single_receipt"))
+    viewEle.show(300)
+    container.scope().ctrl.getReceipt(record.origin_receipt_id, 'recipients')
 ]
 
 #private

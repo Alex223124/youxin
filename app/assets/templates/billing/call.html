@@ -30,7 +30,7 @@
       <tbody>
         <tr ng-repeat="record in call_records | orderBy:'-created_at'">
           <td>{{record.receipt.user.name}}</td>
-          <td><a href="javascript:;" data-toggle="tooltip" title="{{record.receipt.post.body}}" ng-mouseenter="showTooltip($event);" ng-mouseleave="hideTooltip($event);">{{record.receipt.post.title}}</a></td>
+          <td><a href="javascript:;" data-toggle="tooltip" title="{{record.receipt.post.body}}" ng-mouseenter="showTooltip($event);" ng-mouseleave="hideTooltip($event);" ng-click="showSinglePost(record)">{{record.receipt.post.title}}</a></td>
           <td>{{record.receipt.user.phone}}</td>
           <td>{{record.human_status}}</td>
           <td>{{record.created_at | utc2local}}</td>

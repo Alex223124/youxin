@@ -6,7 +6,7 @@ class ReceiptsController < ApplicationController
   end
 
   def show
-    render layout: false
+    render json: @receipt, root: :receipt
   end
 
   def read

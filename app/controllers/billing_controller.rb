@@ -13,11 +13,11 @@ class BillingController < ApplicationController
   end
   def sms
     records = date_range_filted current_user.sms_communication_records
-    render json: records, each_serializer: SmsBillSerializer, root: :sms_communication_records
+    render json: records, each_serializer: BillSerializer, root: :sms_communication_records
   end
   def call
     records = date_range_filted current_user.call_communication_records
-    render json: records, each_serializer: CallBillSerializer, root: :call_communication_records
+    render json: records, each_serializer: BillSerializer, root: :call_communication_records
   end
 
   private
