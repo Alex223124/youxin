@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :authenticate_user!
   before_filter :add_abilities
 
-  helper_method :abilities, :can?
+  helper_method :abilities, :can?, :current_namespace
 
   rescue_from Youxin::Forbidden do |exception|
     log_exception(exception)

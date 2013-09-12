@@ -84,5 +84,14 @@ class Version
         }
       ]
     end
+    def logos
+      [
+        {
+          name: :normal,
+          process: :resize_to_fill,
+          dimension: [270, 100]
+        }
+      ]
+    end
   end
 end

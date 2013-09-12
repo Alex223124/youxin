@@ -43,6 +43,12 @@
       sms: true
       phone: false
 
+  serviceCache.getSystemSettings = (success, error)->
+    initial("get", "/namespace.json", false, success, error)
+
+  serviceCache.setSystemSettings = (update_data, success, error)->
+    initial("update", "/namespace.json", { namespace: update_data }, success, error)
+
   serviceCache.getSystemLogo = (success, error)->
     initial("get", "url", false, success, error)
 

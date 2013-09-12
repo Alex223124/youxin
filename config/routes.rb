@@ -74,6 +74,8 @@ Youxin::Application.routes.draw do
     end
   end
 
+  resource :namespace, only: [:show, :update]
+
   # Billing
   get 'billing/sms' => 'billing#sms'
   get 'billing/call' => 'billing#call'
@@ -85,6 +87,7 @@ Youxin::Application.routes.draw do
 
   get '/uploads/avatar/*path' => 'gridfs#serve'
   get '/uploads/header/*path' => 'gridfs#serve'
+  get '/uploads/logo/*path' => 'gridfs#serve'
 
   require 'api'
   mount Youxin::API => '/'

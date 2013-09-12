@@ -14,7 +14,7 @@ html
   body ng-app="youxin"
     .sidebar
       .brand
-        = link_to image_tag('logo.png'), root_path
+        = link_to image_tag(current_namespace.logo.normal), root_path
       ul.nav.nav-pills.nav-stacked ng-controller="navController"
         li ng-class="isActive('/')"
           a ng-href='#/'
@@ -55,6 +55,8 @@ html
                 - unless current_user.authorized_organizations.count.zero?
                   li
                     a ng-href='#/billing/sms' tabindex='-1' 账单
+                  li
+                    a ng-href='#/settings/system/logo' tabindex='-1' 系统设置
                 li
                   =link_to '退出', destroy_user_session_path, method: :delete, tabindex: '-1'
 

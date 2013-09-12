@@ -4,16 +4,6 @@
       name: 'logo',
       title: '系统 LOGO',
       url: '/settings/system/logo'
-    },
-    {
-      name: 'position',
-      title: '身份设置',
-      url: '/settings/system/position'
-    },
-    {
-      name: 'push',
-      title: '推送设置',
-      url: '/settings/system/push'
     }
   ]
 
@@ -35,18 +25,26 @@
     name: '修改系统 LOGO'
     url: '/settings/system/logo'
 
-  systemSettingService.getSystemLogo (data, status)->
-    $scope.systemLogo = data
+  systemSettingService.getSystemSettings (data, status)->
+    $scope.namespace = data.namespace
   ,(data, status)->
-    $scope.systemLogo = ""
+    $scope.namespace = {}
     App.alert("获取系统图标失败")
 
-  $scope.updateLogo = ()->
-    update_data = ""
-    systemSettingService.setSystemLogo update_data, (data, status)->
-      $scope.systemLogo = data
-    ,(data, status)->
-      App.alert("修改系统图标失败")
+  $scope.uploadLogo = (ele)->
+    form = $(ele).parents('form')
+    form.attr(action: "/namespace.json")
+    uploader_btn = form.find('.uploader-btn')
+    uploader_btn.attr('disabled', true).html('上传中 ...')
+    form.ajaxSubmit
+      type: 'PUT'
+      error: (event, statusText, responseText, form) ->
+        uploader_btn.attr('disabled', false).html('选择图片')
+        App.alert("修改 LOGO 失败, 请重新操作!", 'error')
+      success: (responseText, statusText, xhr, form) ->
+        $scope.$apply ->
+          $scope.namespace.logo = responseText.namespace.logo
+        uploader_btn.attr('disabled', false).html('选择图片')
 ]
 
 @SystemPositionController = ["$scope", "systemSettingService",($scope, systemSettingService)->

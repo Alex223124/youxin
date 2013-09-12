@@ -56,6 +56,14 @@
       }
     }
   }
+  .logo-setting {
+    img.current-logo {
+      position: absolute;
+      width: 164px;
+      height: 61px;
+      padding: 20px;
+    }
+  }
   .push-setting{
     .push-time-setting{
       span{

@@ -1,19 +1,20 @@
 <div class="logo-setting">
   <div class="info-wrap">
     <label>
-      <strong>系统logo设置</strong>
+      <strong>系统 LOGO 设置</strong>
     </label>
     <p>
       <form enctype="multipart/form-data">
-        <input type="file" accept="image/*">
-        <div class="btn btn-primary" onclick="$(this).prev().click()">选择图片</div>
-        <span>(建议宽高不超过180像素*76像素,无背景颜色)</span>
+        <input type="file" name="namespace[logo]" accept="image/*" onchange="angular.element(this).scope().uploadLogo(this);">
+        <div class="btn btn-primary uploader-btn" onclick="$(this).prev().click()">选择图片</div>
+        <span>(建议宽高为270像素*100像素,无背景颜色)</span>
       </form>
     </p>
-    <p class="logo-preview pr">
+    <div class="logo-preview pr">
       <h5>预览效果:</h5>
+      <img class="current-logo" alt="logo" ng-src="{{namespace.logo | avatar_version:'normal'}}"/>
       <%= image_tag('logo_previewer.png') %>
       <h5>刷新或点击<a href="javascript: window.location.reload();" >这里</a>查看效果</h5>
-    </p>
+    </div>
   </div>
 </div>

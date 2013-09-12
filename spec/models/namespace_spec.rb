@@ -11,6 +11,11 @@ describe Namespace do
     it { should have_many(:roles) }
   end
 
+  describe 'Respond to' do
+    it { should respond_to(:name) }
+    it { should respond_to(:logo) }
+  end
+
   describe "organizations" do
     before(:each) do
       @organization = create :organization, namespace: namespace
@@ -43,4 +48,12 @@ describe Namespace do
     it { namespace.roles.should == [@role] }
   end
 
+  describe "logo" do
+    it "return url of logo" do
+      logo_path = Rails.root.join("spec/factories/images/logo.png")
+      namespace = create :namespace, logo: Rack::Test::UploadedFile.new(logo_path)
+      namespace.logo.file.should_not be_blank
+      namespace.logo.url.should_not be_blank
+    end
+  end
 end
