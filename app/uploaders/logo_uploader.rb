@@ -6,7 +6,7 @@ class LogoUploader < CarrierWave::Uploader::Base
   storage :grid_fs
 
   def store_dir
-    "/uploads/logo/#{model.class.to_s.underscore}"
+    "/uploads/logo"
   end
 
   def default_url
