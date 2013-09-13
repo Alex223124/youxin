@@ -33,7 +33,9 @@ html
             a ng-href='#/organizations/#{current_user.authorized_organizations.first.id}/members'
               i.icon-group
               span 成员管理
-    .others
+      .others
+        = link_to image_tag("iOS.png", class: "youxin-tooltip", "data-toggle" => "tooltip", title: "即将上线"), 'javascript:;'
+        = link_to image_tag("android.png", class: "youxin-tooltip", "data-toggle" => "tooltip", title: "点击下载"), Youxin.config.help.android.url, target: '_blank'
 
     .main-container
       .navbar.navbar-inverse

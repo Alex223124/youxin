@@ -2,11 +2,22 @@
 
 .sidebar {
   width: 200px;
+  height: 100%;
   position: fixed;
   top: 0;
   left: 0;
   .brand {
     padding: 18px;
+  }
+  .others {
+    text-align: center;
+    bottom: 0;
+    position: absolute;
+    width: 100%;
+    img {
+      width: 40px;
+      margin: 20px 15px;
+    }
   }
 }
 .main-container {

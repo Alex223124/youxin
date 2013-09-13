@@ -125,9 +125,12 @@ window.App =
     element = angular.element(document.getElementById("single_receipt"))
     element.scope().ctrl.closeReceipt()
 
+  enableTooltip: () ->
+    $('.youxin-tooltip').tooltip()
 $(document).ready ->
   App.enableReplyBox()
-  # Youxin.initNotificationSubscribe()
+  Youxin.initNotificationSubscribe()
   App.open()
   App.close()
   App.selectComponent()
+  App.enableTooltip()
