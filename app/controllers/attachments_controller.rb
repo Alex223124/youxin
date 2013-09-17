@@ -36,9 +36,11 @@ class AttachmentsController < ApplicationController
         raise Youxin::NotFound
       end
       @file_name = "#{params['version']}_#{@attachment.file_name}"
+      headers["Content-Length"] = @attachment.storage.send(params[:version]).size.to_s
     else
       @path = @attachment.storage.path
       @file_name = @attachment.file_name
+      headers["Content-Length"] = @attachment.file_size
     end
     @file_type = @attachment.file_type
   end
