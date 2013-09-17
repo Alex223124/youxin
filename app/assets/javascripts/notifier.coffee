@@ -51,7 +51,7 @@ class Notifier
       popup = window.webkitNotifications.createNotification(avatar, title, content)
       popup.onclick = ->
         window.parent.focus()
-        alert id
+        # alert id
 
       # if url
       #   popup.onclick = ->

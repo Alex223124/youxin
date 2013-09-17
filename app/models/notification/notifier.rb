@@ -65,7 +65,7 @@ class Notification::Notifier
       if receipt && receipt.user.phone?
         post = receipt.post
         content = "#{post.title}，#{post.body}"
-        content = "#{post.author.name}: #{content[0..35]}...【combee.co】"
+        content = "#{post.author.name}: #{content[0..25]}... combee.co/r/#{receipt.short_key}"
         res = message(receipt.user.phone, content)
         CommunicationRecord::Sms.create receipt: receipt, status: res[:code]
       end

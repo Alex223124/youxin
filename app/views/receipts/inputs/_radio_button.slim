@@ -1,0 +1,4 @@
+- input.options.each do |option|
+  span.option
+    = radio_button_tag "collection[#{input.identifier}]", option.id, option.default_selected?
+    = label_tag "collection_#{input.identifier}_#{option.id}", option.value

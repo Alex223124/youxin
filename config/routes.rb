@@ -7,6 +7,8 @@ Youxin::Application.routes.draw do
       delete 'favorite' => 'receipts#unfavorite'
     end
   end
+  get 'r/:short_key' => 'receipts#mobile_show', as: :mobile_receipt
+  post 'r/:short_key/c' => 'receipts#mobile_collection_create', as: :mobile_collection
   resources :organizations, only: [:index, :update, :destroy] do
     collection do
       get 'members' => 'organizations#members'

@@ -1,0 +1,45 @@
+doctype html
+html
+  head
+    title Combee | 组织消息通知中心
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    meta name="keywords" content="combee，优信，组织，消息推送，消息反馈"
+    meta name="description" content="Combee是组织的消息通知中心，在这里你可以快速建立组织主页，导入组织成员，向组织成员发送消息，系统会通过Web、移动客户端以及短信、电话留言自动向成员推送消息，提高组织内部消息传递的效率"
+    meta name="baidu-site-verification" content="Z5mSaex35X"
+    link rel="shortcut icon" href="#{image_path('favicon.png')}"
+    link rel="apple-touch-icon-precomposed" href="#{image_path('apple-touch-icon.png')}"
+    = stylesheet_link_tag "single_receipt", media: "all"
+    = javascript_include_tag "single_receipt"
+    = csrf_meta_tags
+
+.container
+  - if flash[:notice]
+    .notice #{flash[:notice]}
+  - if flash[:error]
+    .notice #{flash[:error]}
+  .post
+    .header
+      span.avatar.pull-right
+        = image_tag(@receipt.author.avatar.small, alt: 'author-avatar')
+      .info
+        .title #{@post.title}
+        .author
+          span.name #{@receipt.author.name}
+          | 在
+          span #{time_ago_in_words(@receipt.created_at)}
+          | 发布
+    .content
+      .body #{@post.body_html.html_safe}
+
+    - if @form
+      - if @receipt.forms_filled?
+        .form
+          small.form-error 表单已提交
+      - else
+        = render partial: "receipts/inputs/form", locals: { form: @form }
+.footer
+  | Powered by
+  a href="http://combee.co" combee.co
+  |, APP:
+  a href="#{Youxin.config.help.ios.url}" iOS
+  a href="#{Youxin.config.help.android.url}" Android

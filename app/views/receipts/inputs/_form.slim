@@ -1,0 +1,16 @@
+= form_tag "/r/#{@receipt.short_key}/c.json", class: 'form', onsubmit: 'validate(this);' do
+  a name='form' href='#form'
+  .title #{form.title}
+  - form.inputs.each do |input|
+    .field
+      label
+        .label-text
+          span #{input.label}
+          - if input.required?
+            small.required (必填)
+        .help-text
+          - if input.help_text?
+            small.help_text #{input.help_text}
+      .input-wrap class="#{input.class.to_s.split('::').last.underscore}"
+        = render partial: "receipts/inputs/#{input.class.to_s.split('::').last.underscore}", locals: { input: input }
+  = submit_tag '提交', class: 'submit-btn'

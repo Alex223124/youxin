@@ -33,6 +33,9 @@ defaults: &defaults
     android:
       version: 2.0.0
       url: '/downloads/combee.2.0.0.apk'
+    ios:
+      version: 2.0.0
+      url: 'javascript:;'
   devise:
     reset_sms_token_within: 10
     reset_sms_token_length: 4

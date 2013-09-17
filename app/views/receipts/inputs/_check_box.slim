@@ -1,0 +1,4 @@
+- input.options.each do |option|
+  span.option
+    = check_box_tag "collection[#{input.identifier}][]", option.id, option.default_selected?, id: "collection_#{input.identifier}_#{option.id}"
+    = label_tag "collection_#{input.identifier}_#{option.id}", option.value

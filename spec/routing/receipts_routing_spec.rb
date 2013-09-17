@@ -13,4 +13,10 @@ describe ReceiptsController do
   it "to #read" do
     delete('/receipts/123/favorite').should route_to('receipts#unfavorite', id: '123')
   end
+  it "to #mobile_show" do
+    get('/r/123').should route_to('receipts#mobile_show', short_key: '123')
+  end
+  it "to #mobile_collection_create" do
+    post('/r/123/c').should route_to('receipts#mobile_collection_create', short_key: '123')
+  end
 end
