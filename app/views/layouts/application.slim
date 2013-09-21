@@ -7,73 +7,9 @@ html
     meta name="description" content="Combee是组织的消息通知中心，在这里你可以快速建立组织主页，导入组织成员，向组织成员发送消息，系统会通过Web、移动客户端以及短信、电话留言自动向成员推送消息，提高组织内部消息传递的效率"
     meta name="baidu-site-verification" content="Z5mSaex35X"
     meta name="apple-itunes-app" content="app-id=590224935"
-
     link rel="shortcut icon" href="#{image_path('favicon.png')}"
     link rel="apple-touch-icon-precomposed" href="#{image_path('apple-touch-icon.png')}"
     = stylesheet_link_tag "application", media: "all"
     = javascript_include_tag "application"
     = csrf_meta_tags
-  body ng-app="youxin"
-    .sidebar
-      .brand
-        = link_to image_tag(current_namespace.logo.normal), root_path
-      ul.nav.nav-pills.nav-stacked ng-controller="navController"
-        li ng-class="isActive('/')"
-          a ng-href='#/'
-            i.icon-location-arrow
-            span  优信
-        li ng-class="isActive('/organizations')"
-          a href='#/organizations'
-            i.icon-sitemap
-            span 组织展示
-        - unless current_user.authorized_organizations.count.zero?
-          li ng-class="isActive('/admin/organizations')"
-            a href='#/admin/organizations'
-              i.icon-cogs
-              span 组织管理
-          li ng-class="isActive('/organization_members')"
-            a ng-href='#/organizations/#{current_user.authorized_organizations.first.id}/members'
-              i.icon-group
-              span 成员管理
-      .others
-        = link_to image_tag("iOS.png", class: "youxin-tooltip", "data-toggle" => "tooltip", title: "点击下载"), Youxin.config.help.ios.url, target: 'itunes_store'
-        = link_to image_tag("android.png", class: "youxin-tooltip", "data-toggle" => "tooltip", title: "点击下载"), Youxin.config.help.android.url, target: '_blank'
-
-    .main-container
-      .navbar.navbar-inverse
-        .navbar-inner
-          ul.nav.pull-right
-            - unless current_user.authorized_organizations.count.zero?
-              a.btn.btn-primary.pull-left ng-href="#/posts/new"
-                i.icon-edit
-                | 发优信
-            li.dropdown
-              a.dropdown-toggle href='javascript:;' data-toggle='dropdown'
-                | #{current_user.name}
-                b.caret
-              ul.dropdown-menu
-                li
-                  a ng-href='#/account/profile' tabindex='-1' 我的主页
-                li
-                  a ng-href='#/settings/account/profile' tabindex='-1' 个人设置
-                - unless current_user.authorized_organizations.count.zero?
-                  li
-                    a ng-href='#/billing/sms' tabindex='-1' 账单
-                  li
-                    a ng-href='#/settings/system/logo' tabindex='-1' 系统设置
-                li
-                  =link_to '退出', destroy_user_session_path, method: :delete, tabindex: '-1'
-
-      .main-content
-        = yield
-
-    .notifications.center
-    javascript:
-      ROOT_URL = "#{root_url}";
-      FAYE_SERVER_URL = "#{Youxin.config.faye.server}";
-      SUBSCRIPTION_PREFIX = "#{Youxin.config.faye.subscription_prefix}"
-      CURRENT_USER_NOTIFICATION_CHANNEL = "#{current_user && current_user.notification_channel || ''}";
-
-    javascript:
-      var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-      document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Fe2e047ba2a262d9d93cb452fd93f05c9' type='text/javascript'%3E%3C/script%3E"));
+  = yield

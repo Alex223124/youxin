@@ -1,13 +1,14 @@
 Array.prototype.objOfProperty = (_property,_value,_hasChildren)->
   _result = undefined
-  for _item in this
-    if _item[_property] is _value
-      _result = _item
-      break
-    if _hasChildren isnt undefined and _hasChildren isnt null
-      _children = _item[_hasChildren]
-      if _children isnt undefined and _children isnt null
-        _result = arguments.callee.call(_children,_property,_value,_hasChildren)
+  if this
+    for _item in this
+      if _item[_property] is _value
+        _result = _item
+        break
+      if _hasChildren isnt undefined and _hasChildren isnt null
+        _children = _item[_hasChildren]
+        if _children isnt undefined and _children isnt null
+          _result = arguments.callee.call(_children,_property,_value,_hasChildren)
   _result
 
 Array.prototype.indexOfProperty = (_property,_value)->

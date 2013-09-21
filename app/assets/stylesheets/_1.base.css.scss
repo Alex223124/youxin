@@ -50,17 +50,35 @@ i {
   position: relative;
   height: 100%;
 }
-.on,.show,.show-true{
+.on,.db,.show,.show-true{
   display: block;
 }
-.off,.hidden,.show-false{
+.off,.dn,.hidden,.show-false{
   display: none;
+}
+.inline{
+  display: inline;
+}
+.dib{
+  display: inline-block;
 }
 .vs{
   visibility: visible;
 }
 .vh{
   visibility: hidden;
+}
+.vat{
+  vertical-align: top;
+}
+.vam{
+  vertical-align: middle;
+}
+.vab{
+  vertical-align: bottom;
+}
+.vabl{
+  vertical-align: baseline;
 }
 .fs12{
   font-size: 12px;
@@ -71,9 +89,6 @@ i {
 input[type="file"]{
   width: 0;
   height: 0;
-}
-.inline{
-  display: inline;
 }
 .fs13{
   font-size: 13px;

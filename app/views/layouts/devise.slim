@@ -11,11 +11,58 @@ html
     link rel="shortcut icon" href="#{image_path('favicon.png')}"
     link rel="apple-touch-icon-precomposed" href="#{image_path('apple-touch-icon.png')}"
     = stylesheet_link_tag 'application', media: 'all'
+    = stylesheet_link_tag '_1.base', media: 'all'
     = stylesheet_link_tag 'login', media: 'all'
     = yield :styles
     = yield :scripts
     = csrf_meta_tags
   body
+    | <!--[if lte IE 8]>
+      <div class="alert-container">
+        <div class="alert alert-danger">
+          <button type='button' class='close' data-dismiss='alert'>&times;</button>
+          <div class="dib vat" style="margin-left: 10px;">
+            <img src="#{image_path('icon/warning.png')}" alt="picture">
+          </div>
+          <div class="dib vat" style="margin-left: 10px;">
+            <h4>您的浏览器版本过低!</h4>
+            <span>为了更好体验网站的服务，</span>
+            <br>
+            <span>请您使用主流的现代浏览器.</span>
+          </div>
+          <div class="dib vat">
+            <a href="http://www.google.cn/intl/zh-CN/chrome/"><img src="#{image_path('icon/chrome.png')}" alt="chrome"></a>
+            <a href=""><img src="" alt="firefox"></a>
+            <a href=""><img src="" alt="IE8"></a>
+            <a href=""><img src="" alt="safari"></a>
+          </div>
+          <span>您的浏览器版本过低，请升级您的浏览器，为了获得更佳的体验，建议使用Chrome，firefox浏览器</span>
+        </div>
+      </div>
+    <![endif]-->
+    .alert-container
+      .alert.alert-danger
+        button type="button" class="close" data-dismiss="alert" &times;
+        .dib.vat style="margin-left: 10px;display: inline-block;vertical-align: top;"
+          img src="#{image_path('icon/warning.png')}"
+        .dib.vat style="margin-left: 10px;display: inline-block;vertical-align: top;text-align:left;"
+          h4 本产品暂不支持您的浏览器!
+          span 为了更好的体验网站的服务，请您
+          br
+          span 使用主流的现代浏览器。
+        .dib.vat style="margin-left: 10px;display: inline-block;vertical-align: top;"
+          a href="http://www.google.cn/intl/zh-CN/chrome/" style="margin-left: 10px;"
+            img src="#{image_path('icon/chrome.png')}"
+          a href="http://firefox.com.cn/" style="margin-left: 10px;"
+            img src="#{image_path('icon/firefox.png')}"
+          / a href="http://www.microsoft.com/zh-cn/download/internet-explorer-8-details.aspx" style="margin-left: 10px;"
+          /   img src="#{image_path('icon/ie8.png')}"
+          a href="http://support.apple.com/kb/DL1531?viewlocale=zh_CN" style="margin-left: 10px;"
+            img src="#{image_path('icon/safari.png')}"
+        .dib.vat style="margin-left: 10px;display: inline-block;vertical-align: top;"
+          h4 style="line-height: 60px;" 
+           | 或安装
+           a href="http://www.google.com/chromeframe" 插件
     .alert-container
       - if flash[:alert]
         .alert.alert-danger

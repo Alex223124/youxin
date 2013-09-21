@@ -139,13 +139,10 @@
           for entity in collection.entities
             $scope.update_form(form, entity.key, entity.value)
 
-    read_form_collapse_ele = $("\##{receipt.id}-read_receipts-forms")
-    unread_form_collapse_ele = $("\##{receipt.id}-unread_receipts-forms")
+    form_collapse_ele = $("\##{receipt.id}-receipt-forms")
 
-    read_height = if read_form_collapse_ele.css("height") is "auto" then "0px" else "auto"
-    unread_height = if unread_form_collapse_ele.css("height") is "auto" then "0px" else "auto"
-    read_form_collapse_ele.css("height", read_height)
-    unread_form_collapse_ele.css("height", unread_height)
+    height = if form_collapse_ele.css("height") is "auto" then "0px" else "auto"
+    form_collapse_ele.css("height", height)
 
   $scope.update_form = (form, key, value) ->
     for input in form.inputs

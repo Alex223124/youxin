@@ -15,6 +15,7 @@
 #= require bootstrap-notify
 #= require bootstrap-datepicker/core
 #= require bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN
+#= require features
 
 #= require jquery.form
 #= require_self

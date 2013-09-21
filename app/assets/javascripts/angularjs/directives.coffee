@@ -45,28 +45,21 @@
         top: "60%"
         left: "0"
         opacity: 0
-        filter: "alpha(opacity=0)"
-        MsFilter: "alpha(opacity=0)"
         width: element.width()
-        MozTransition: "all .3s ease-in-out"
-        WebkitTransition: "all .3s ease-in-out"
-        MsTransition: "all .3s ease-in-out"
-        OTransition: "all .3s ease-in-out"
-        transition: "all .3s ease-in-out"
       showContainer = ()->
-        optionsContainer.css
+        optionsContainer.css 
+          zIndex: "10000"
+         
+        optionsContainer.animate {          
           top: "125%"
           opacity: 1
-          filter: "alpha(opacity=100)"
-          MsFilter: "alpha(opacity=100)"
-          zIndex: "10000"
+        }, 300
       hideContainer = ()->
-        optionsContainer.css
+        optionsContainer.animate {
           top: "60%"
-          filter: "alpha(opacity=0)"
-          MsFilter: "alpha(opacity=0)"
           opacity: 0
           zIndex: "-1"
+        }, 300
         $document.unbind "click", hideContainer
       initialize = ()->
         value = scope.model
@@ -87,13 +80,14 @@
           scope.model = option
           optionsContainer.children(".active").removeClass("active")
           optionsContainer.children("div").eq(index).addClass("active")
+
       element.bind "click", ($event)->
-        $event.stopPropagation()
-        if optionsContainer.css("z-index") is "-1"
+        if optionsContainer.css("opacity") is "0"
           showContainer()
           $document.bind "click",hideContainer
         else
           hideContainer()
+        $event.stopPropagation()
       element.bind "click",initialize
   directiveCache
 ]

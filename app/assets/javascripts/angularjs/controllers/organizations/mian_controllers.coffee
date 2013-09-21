@@ -44,6 +44,7 @@
       callbackerror(_data, _status)
       App.alert("获取管理员信息失败", 'error')
 
+
   getOrganizationsByUser (data)->
     $scope.organizations_self_in = data
     if $location.path() is "/organizations"
@@ -53,6 +54,9 @@
   getAllOrganizations (organizations)->
     $scope.organizations = organizations
     $scope.$broadcast("gotOrganizations")
+    current_org_id = if current_org_id then current_org_id else organizations.first().id
+    $location.path("/organizations/#{current_org_id}")
+
 
   $scope.options=
     select: false
@@ -75,6 +79,8 @@
       $(selector).css "height", "0px"
     
   $scope.moreInfoShow = false
+
+  $scope
 ]
 
 @OrganizationsProfileController = ["$scope", "$http", "$location", "$stateParams",($scope, $http, $location, $stateParams)->

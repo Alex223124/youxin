@@ -8,7 +8,7 @@
   setActiveFiled = (index)->
     if activeEle isnt undefined
       activeEle.removeClass("active")
-    activeEle = controllerElement.children("ul").find("._scroll-wrap").children().eq(index).addClass("active")
+    activeEle = controllerElement.children("ul").children().eq(index).addClass("active")
 
   scope.setFocusFiled = ()->
     scrollWrap = controllerElement.children("ul").find("._scroll-wrap")
