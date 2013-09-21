@@ -1,9 +1,16 @@
 class Namespace
   include Mongoid::Document
   include Mongoid::Timestamps # Add created_at and updated_at fields
-  field :name, type: String, default: ""
+
+  SUBDOMAIN_REGEXP = %r(\A(?=[a-z])[a-z0-9-]*(?<=[^-])\z)
+
+  field :name, type: String
+  field :subdomain, type: String
+  field :subdomain_enabled, type: Boolean, default: false
 
   mount_uploader :logo, LogoUploader
+
+  validates :subdomain, uniqueness: true, format: { with: SUBDOMAIN_REGEXP }, length: { maximum: 20 }, if: ->(namespace) { namespace.subdomain.present? or namespace.subdomain_enabled? }
 
   attr_accessible :name,
                   :logo, :logo_cache, :remove_logo

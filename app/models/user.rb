@@ -274,6 +274,7 @@ class User
   # Message
 
   def send_welcome_instructions
+    self.send :generate_reset_password_token! if self.send :should_generate_reset_token?
     send_devise_notification(:welcome_instructions) if self.email?
     Notification::Notifier.send_welcome_message_async(self.id)
   end

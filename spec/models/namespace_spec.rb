@@ -14,6 +14,52 @@ describe Namespace do
   describe 'Respond to' do
     it { should respond_to(:name) }
     it { should respond_to(:logo) }
+    it { should respond_to(:subdomain) }
+    it { should respond_to(:subdomain_enabled) }
+  end
+
+  describe 'Attributes' do
+    context '#subdomain' do
+      it 'should be valid if subdomain blank' do
+        namespace.subdomain = ''
+        namespace.should be_valid
+      end
+      it 'should be invalid if subdomain blank when subdomain_enabled is true' do
+        namespace.subdomain_enabled = true
+        namespace.subdomain = ''
+        namespace.should_not be_valid
+      end
+      it 'should be invalid when starting with number' do
+        namespace.subdomain = '9abc'
+        namespace.should_not be_valid
+      end
+      it 'should be invalid when starting with -' do
+        namespace.subdomain = '-abc'
+        namespace.should_not be_valid
+      end
+      it 'should be invalid when endding with -' do
+        namespace.subdomain = 'abc-'
+        namespace.should_not be_valid
+      end
+      it 'should be invalid when subdomain is not uniqueness' do
+        namespace.subdomain = 'abc'
+        namespace.save
+        namespace_another = build :namespace, subdomain: 'abc'
+        namespace_another.should_not be_valid
+      end
+      it 'should be valid when endding with number' do
+        namespace.subdomain = 'abc9'
+        namespace.should be_valid
+      end
+      it 'should be valid when starting with letter' do
+        namespace.subdomain = 'abc9'
+        namespace.should be_valid
+      end
+      it 'should be valid when contains more than one -' do
+        namespace.subdomain = 'ab--c-9'
+        namespace.should be_valid
+      end
+    end
   end
 
   describe "organizations" do

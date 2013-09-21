@@ -9,7 +9,7 @@
   .position
   .wrapper
     .logo
-      = image_tag 'logo.png'
+      = image_tag current_logo
     = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'login-box' }) do |f|
       - if resource.reset_sms_token
         = f.hidden_field :reset_sms_token

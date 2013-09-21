@@ -9,7 +9,7 @@
   .position
   .wrapper
     .logo
-      = image_tag 'logo.png'
+      = image_tag current_logo
     = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'login-box' }) do |f|
       label
         = f.text_field :reset_password_key, autofocus: true, class: '', placeholder: '请输入邮箱或手机号', required: true

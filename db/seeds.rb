@@ -1,6 +1,10 @@
 # encoding: utf-8
 
 namespace1 = Namespace.create name: 'namespace-one'
+namespace1.subdomain_enabled = true
+namespace1.subdomain = 'uestc'
+namespace1.save
+
 namespace2 = Namespace.create name: 'namespace-two'
 
 p '-'*70

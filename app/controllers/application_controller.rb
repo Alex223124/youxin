@@ -2,8 +2,11 @@
 
 require_dependency 'youxin'
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
+
   protect_from_forgery
 
+  before_filter :ensure_namespace!, if: :subdomain_request?
   before_filter :authenticate_user!
   before_filter :add_abilities
 
@@ -86,11 +89,10 @@ class ApplicationController < ActionController::Base
     subjects.each { |subject| authorize!(action, subject) }
   end
 
-  def current_namespace
-    begin
-      current_user.namespace
-    rescue
-      raise Youxin::Forbidden
+  def ensure_namespace!
+    unless current_namespace and current_namespace.subdomain_enabled?
+      sign_out current_user
+      redirect_to main_url and return
     end
   end
 

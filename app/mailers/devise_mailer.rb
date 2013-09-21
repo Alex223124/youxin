@@ -7,7 +7,6 @@ class DeviseMailer < Devise::Mailer
   end
 
   def welcome_instructions(record, opts={})
-    record.send :generate_reset_password_token! if record.send :should_generate_reset_token?
     devise_mail(record, :welcome_instructions, opts)
   end
 end

@@ -13,6 +13,28 @@ module ApplicationHelper
     @devise_mapping ||= Devise.mappings[:user]
   end
 
+  def current_namespace
+    if subdomain_request?
+      Namespace.where(subdomain: request.subdomain).first
+    else
+      current_user.try(:namespace)
+    end
+  end
+  def current_logo
+    (current_namespace and current_namespace.logo.normal) or 'logo.png'
+  end
+  def main_url
+    "#{request.protocol}#{request.domain}:#{request.port}"
+  end
+  def subdomain_request?
+    case request.subdomain
+    when 'www', '', nil
+      false
+    else
+      true
+    end
+  end
+
   def time_ago_in_words(time)
     distance = (Time.now - time).to_i
     # seconds ago

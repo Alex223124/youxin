@@ -9,7 +9,7 @@
   .position
   .wrapper
     .logo
-      = image_tag 'logo.png'
+      = image_tag current_logo
     = form_for(resource, as: resource_name, url: edit_user_password_by_sms_path, html: { method: :post, class: 'login-box' }) do |f|
       = f.hidden_field :phone
       label
