@@ -109,6 +109,22 @@ class Posts < Grape::API
         call_scheduler = @post.call_schedulers.where(ran_at: nil).first || @post.call_schedulers.first
         present call_scheduler, with: Youxin::Entities::Scheduler
       end
+      # TODO: need delete next version
+      post :phone_notifications do
+        authorize! :manage, @post
+        scheduler = @post.call_schedulers.where(ran_at: nil).first
+        if scheduler
+          scheduler.run_now!
+        else
+          @post.call_schedulers.create delayed_at: Time.now
+        end
+        status(204)
+      end
+      get :phone_scheduler do
+        authorize! :manage, @post
+        call_scheduler = @post.call_schedulers.where(ran_at: nil).first || @post.call_schedulers.first
+        present call_scheduler, with: Youxin::Entities::Scheduler
+      end
     end
   end
 end
