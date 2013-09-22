@@ -88,7 +88,7 @@ http {
   }
 
   server {
-    server_name www.u-xin.com u-xin.com;
+    server_name www.u-xin.com u-xin.com www.combee.cn combee.cn;
     rewrite ^ http://combee.co$uri permanent;
   }
 
