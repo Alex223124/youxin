@@ -1,6 +1,5 @@
 Youxin::Application.routes.draw do
   root to: 'home#index'
-  get 'features' => 'home#features'
   get 'privacy' => 'home#privacy'
   get 'terms' => 'home#terms'
   resources :receipts, only: [:index, :show] do

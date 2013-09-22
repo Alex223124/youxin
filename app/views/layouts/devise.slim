@@ -47,7 +47,26 @@ html
           strong 提示：
           | #{flash[:notice]}
 
-    = yield
+
+    .alert-container
+      - if resource.errors.any?
+        .alert.alert-danger
+          button type="button" class="close" data-dismiss="alert" &times;
+          strong 错误：
+          | #{resource.errors.full_messages.join(", ")}
+
+    #login-background
+      .position
+
+      = yield
+
+      .others
+        | Copyright © 2013 &nbsp
+        i.icon-heart
+        | &nbsp Combee
+        a href="/terms" target='_blank' 服务条款
+        a href="/privacy" target='_blank' 隐私政策
+        a href="mailto:#{Youxin.config.help.contact_email}" target='_blank' 联系我们
 
     = javascript_include_tag "application"
 

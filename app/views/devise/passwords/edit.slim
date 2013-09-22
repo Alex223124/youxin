@@ -1,32 +1,18 @@
-.alert-container
-  - if resource.errors.any?
-    .alert.alert-danger
-      button type="button" class="close" data-dismiss="alert" &times;
-      strong 错误：
-      | #{resource.errors.full_messages.join(", ")}
+.wrapper
+  .logo
+    = image_tag current_logo
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'login-box' }) do |f|
+    - if resource.reset_sms_token
+      = f.hidden_field :reset_sms_token
+    - else
+      = f.hidden_field :reset_password_token
+    label
+      = f.password_field :password, autofocus: true, placeholder: '请输入新密码'
+    label
+      = f.password_field :password_confirmation, placeholder: '请再次输入密码'
+    label
+      = f.button '修改密码', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
+    label.last
+      = link_to '返回登录', new_session_path(resource_name)
+    i.caret-left
 
-#login-background
-  .position
-  .wrapper
-    .logo
-      = image_tag current_logo
-    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put, class: 'login-box' }) do |f|
-      - if resource.reset_sms_token
-        = f.hidden_field :reset_sms_token
-      - else
-        = f.hidden_field :reset_password_token
-      label
-        = f.password_field :password, autofocus: true, placeholder: '请输入新密码'
-      label
-        = f.password_field :password_confirmation, placeholder: '请再次输入密码'
-      label
-        = f.button '修改密码', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
-      label.last
-        = link_to '返回登录', new_session_path(resource_name)
-      i.caret-left
-
-  .others
-    | Copyright © 2013 &nbsp
-    i.icon-heart
-    | &nbsp Combee
-    a.contact_us href="mailto:#{Youxin.config.help.contact_email}" 联系我们

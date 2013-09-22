@@ -1,30 +1,15 @@
-.alert-container
-  - if resource.errors.any?
-    .alert.alert-danger
-      button type="button" class="close" data-dismiss="alert" &times;
-      strong 错误：
-      | #{resource.errors.full_messages.join(", ")}
-
-#login-background
-  .position
-  .wrapper
-    .logo
-      = image_tag current_logo
-    = form_for(resource, as: resource_name, url: edit_user_password_by_sms_path, html: { method: :post, class: 'login-box' }) do |f|
-      = f.hidden_field :phone
-      label
-        = f.text_field :reset_sms_token, autofocus: true, class: '', placeholder: '请输入短信验证码', required: true
-        i.icon-password
-      label
-        = f.button '确认', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
-      label.last
-        = link_to '重发验证码', user_password_path(resource_name => { reset_password_key: resource.phone }), method: :post, disable_with: '发送中 ...', class: 'pull-left'
-        = link_to '返回登录', new_session_path(resource_name), class: 'pull-right'
-      i.caret-left
-
-  .others
-    | Copyright © 2013 &nbsp
-    i.icon-heart
-    | &nbsp Combee
-    a.contact_us href="mailto:#{Youxin.config.help.contact_email}" 联系我们
+.wrapper
+  .logo
+    = image_tag current_logo
+  = form_for(resource, as: resource_name, url: edit_user_password_by_sms_path, html: { method: :post, class: 'login-box' }) do |f|
+    = f.hidden_field :phone
+    label
+      = f.text_field :reset_sms_token, autofocus: true, class: '', placeholder: '请输入短信验证码', required: true
+      i.icon-password
+    label
+      = f.button '确认', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
+    label.last
+      = link_to '重发验证码', user_password_path(resource_name => { reset_password_key: resource.phone }), method: :post, disable_with: '发送中 ...', class: 'pull-left'
+      = link_to '返回登录', new_session_path(resource_name), class: 'pull-right'
+    i.caret-left
 

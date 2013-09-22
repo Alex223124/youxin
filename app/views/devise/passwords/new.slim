@@ -1,28 +1,13 @@
-.alert-container
-  - if resource.errors.any?
-    .alert.alert-danger
-      button type="button" class="close" data-dismiss="alert" &times;
-      strong 错误：
-      | #{resource.errors.full_messages.join(", ")}
-
-#login-background
-  .position
-  .wrapper
-    .logo
-      = image_tag current_logo
-    = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'login-box' }) do |f|
-      label
-        = f.text_field :reset_password_key, autofocus: true, class: '', placeholder: '请输入邮箱或手机号', required: true
-        i.icon-envelope
-      label
-        = f.button '找回密码', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
-      label.last
-        = link_to '返回登录', new_session_path(resource_name)
-      i.caret-left
-
-  .others
-    | Copyright © 2013 &nbsp
-    i.icon-heart
-    | &nbsp Combee
-    a.contact_us href="mailto:#{Youxin.config.help.contact_email}" 联系我们
+.wrapper
+  .logo
+    = image_tag current_logo
+  = form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: 'login-box' }) do |f|
+    label
+      = f.text_field :reset_password_key, autofocus: true, class: '', placeholder: '请输入邮箱或手机号', required: true
+      i.icon-envelope
+    label
+      = f.button '找回密码', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
+    label.last
+      = link_to '返回登录', new_session_path(resource_name)
+    i.caret-left
 
