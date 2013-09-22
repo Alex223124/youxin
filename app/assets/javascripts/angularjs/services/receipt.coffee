@@ -66,5 +66,8 @@
     getFormCollections: (id, success, error)->
       initial("get", "/forms/#{id}/collections.json", false, success, error)
 
+    getFormCollection: (id, success, error)->
+      initial("get", "/forms/#{id}/collection.json", false, success, error)
+
   serviceCache
 ]

@@ -133,7 +133,7 @@
         post.forms = data.forms
         form = post.forms.first()
         form.collectioned = false
-        receiptService.getFormCollections post.id, (data)->
+        receiptService.getFormCollection form.id, (data)->
           form.collectioned = true
           collection = data.collection
           for entity in collection.entities
