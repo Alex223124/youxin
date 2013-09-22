@@ -142,3 +142,51 @@
     }
   }
 }
+
+.privacy-wrapper,.terms-wrapper{
+  .wrapper{
+    width: 100%;
+    overflow: hidden;
+    max-width: 600px;
+    margin: 60px auto 30px;
+    background-color: white;
+    border-radius: 6px;
+  }
+  .title{
+    padding: 10px 30px 6px;
+    background-color: #3b8686;
+    color: white;
+    span{
+      margin-right: 10px;
+      font-size: 24px;
+    }
+    .btn{
+      color: white;
+      text-decoration: none;
+      margin-top: -5px;
+      &:hover{
+        color: darken(#ffffff, 10%);
+      }
+    }
+  }
+  .content-box{
+    padding: 10px 30px;
+    h4{
+      margin: 20px 0 5px;
+    }
+    p{
+      text-indent: 2em;
+      text-align: left;
+      margin-bottom: 0; 
+    }
+    .foot{
+      margin-top: 10px;
+      p{
+        text-align: right;
+      }
+    }
+  }
+  .position{
+    height: 1px;
+  }
+}
