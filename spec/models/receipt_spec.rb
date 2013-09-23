@@ -18,6 +18,7 @@ describe Receipt do
     it { should respond_to(:origin) }
     it { should respond_to(:short_key) }
     it { should respond_to(:forms_filled) }
+    it { should respond_to(:short_url) }
   end
 
   describe "#author" do
@@ -96,6 +97,20 @@ describe Receipt do
       another_receipt = build :receipt, post: @post, user: another_user, short_key: @receipt.short_key
       another_receipt.save
       another_receipt.short_key.should_not == @receipt.short_key
+    end
+  end
+
+  describe '#short_url' do
+    before(:each) do
+      @author = create :user
+      @user = create :user
+      @organization = create :organization
+      @organization.add_member(@user)
+      @post = create :post, author: @author, organization_ids: [@organization].map(&:id)
+      @receipt = @user.receipts.first
+    end
+    it 'should return the short_url' do
+      @receipt.short_url.should == "#{Youxin.config.shorten_server}/#{@receipt.short_key}"
     end
   end
 

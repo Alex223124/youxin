@@ -53,6 +53,10 @@ class Receipt
     }
   end
 
+  def short_url
+    "#{Youxin.config.shorten_server}/#{short_key}"
+  end
+
   private
   def mark_self_read(favorite)
     favorite.favoriteable.read!
@@ -65,7 +69,7 @@ class Receipt
   end
 
   def generate_key
-    SecureRandom.base64(7).tr('+/=', 'fAh')
+    SecureRandom.base64(4).tr('+/=', 'fAh')
   end
 
 end

@@ -14,7 +14,7 @@ class SendSmsToUnfilledsJob
 
       unfilled_receipts = post.receipts.unfilled
       unfilled_receipts.each do |receipt|
-        content = "#{content} combee.co/r/#{receipt.short_key}#form"
+        content = "#{content} #{receipt.short_url}#form"
         Notification::Notifier.message(receipt.user.phone, content) if receipt.user.phone?
       end
     end
