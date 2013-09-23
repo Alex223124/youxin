@@ -54,9 +54,6 @@
   getAllOrganizations (organizations)->
     $scope.organizations = organizations
     $scope.$broadcast("gotOrganizations")
-    current_org_id = if current_org_id then current_org_id else organizations.first().id
-    $location.path("/organizations/#{current_org_id}")
-
 
   $scope.options=
     select: false
@@ -77,7 +74,7 @@
       $(selector).css "height", "auto"
     else
       $(selector).css "height", "0px"
-    
+
   $scope.moreInfoShow = false
 
   $scope
