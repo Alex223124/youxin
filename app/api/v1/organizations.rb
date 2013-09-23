@@ -23,7 +23,7 @@ class Organizations < Grape::API
         end
       end
       get 'members' do
-        members = paginate @organization.members
+        members = @organization.members
         present members, with: Youxin::Entities::UserBasic
       end
       get 'receipts' do
