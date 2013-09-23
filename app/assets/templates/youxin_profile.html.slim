@@ -1,3 +1,15 @@
 
 .main-wrap id="single_receipt" receipts="receipt"
 .close-receipt.pa.btn.btn-danger ng-click="closeReceipt()" 返回
+#form_collections
+  .wrap
+    .content
+      table.formdata.table.table-striped
+        tr
+          th 姓名
+          th ng-repeat="input in form.inputs" {{input.label}}
+        tr ng-repeat="collection in form.collections"
+          td {{collection.user.name}}
+          td ng-repeat="input in form.inputs" {{getValueInObj(input,collection.entities)}}
+      .cancel.btn onclick="$('#form_collections').hide()" 关闭
+      a.btn.btn-primary ng-href="/forms/{{form.id}}/download" 导出成Excel表格

@@ -17,21 +17,3 @@
   </div>
 </div>
 
-<div id='form_collections'>
-  <div class='wrap'>
-    <div class='content'>
-      <table class='formdata table table-striped'>
-        <tr>
-          <th>姓名</th>
-          <th ng-repeat="input in form.inputs">{{input.label}}</th>
-        </tr>
-        <tr ng-repeat="collection in form.collections">
-          <td>{{collection.user.name}}</td>
-          <td ng-repeat="input in form.inputs">{{getValueInObj(input,collection.entities)}}</td>
-        </tr>
-      </table>
-    </div>
-    <div class='cancel btn' onclick="$('#form_collections').hide()">关闭</div>
-    <a class='btn btn-primary' ng-href="/forms/{{form.id}}/download">导出成Excel表格</a>
-  </div>
-</div>
