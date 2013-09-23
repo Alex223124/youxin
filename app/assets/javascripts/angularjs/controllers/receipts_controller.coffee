@@ -138,8 +138,8 @@
     self = $($event.target)
     unless self.attr("disabled")
       receiptService.runNotificationNow post.id, ()->
-        App.alert("系统已经发送短信通知")
-        self.html("系统已经发送短信通知")
+        App.alert("系统已发送短信提醒")
+        self.html("系统已发送短信提醒")
         self.attr("disabled","disabled")
       , ()->
         App.alert("发送失败", 'error')
@@ -148,8 +148,8 @@
     self = $($event.target)
     unless self.attr("disabled")
       $http.post("/posts/#{post.id}/run_call_notifications_now.json").success () ->
-        App.alert("系统已经发送电话通知")
-        self.html("系统已经发送电话通知")
+        App.alert("系统已发送电话提醒")
+        self.html("系统已发送电话提醒")
         self.attr("disabled","disabled")
       .error () ->
         App.alert("发送失败", 'error')
@@ -159,8 +159,8 @@
     self = $($event.target)
     unless self.attr("disabled")
       $http.post("/posts/#{post.id}/run_sms_notifications_to_unfilleds_now.json").success () ->
-        App.alert("系统已经发送短信通知")
-        self.html("已发送短信通知")
+        App.alert("系统已发送短信提醒")
+        self.html("已发送短信提醒")
         self.attr("disabled","disabled")
       .error () ->
         App.alert("发送失败", 'error')
@@ -169,8 +169,8 @@
     self = $($event.target)
     unless self.attr("disabled")
       $http.post("/posts/#{post.id}/run_call_notifications_to_unfilleds_now.json").success () ->
-        App.alert("系统已经发送电话通知")
-        self.html("已发送电话通知")
+        App.alert("系统已发送电话提醒")
+        self.html("已发送电话提醒")
         self.attr("disabled","disabled")
       .error () ->
         App.alert("发送失败", 'error')
