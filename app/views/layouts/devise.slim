@@ -21,20 +21,20 @@ html
       .alert-container
         .alert.alert-danger
           button type="button" class="close" data-dismiss="alert" &times;
-          .dib.vat style="display: inline-block; vertical-align: top;"
+          .dib.vat style="display: inline-block; vertical-align: top; padding: 0 5px;"
             = image_tag('icon/warning.png')
           .dib.vat style="display: inline-block; vertical-align: top; text-align:left;"
             h4 您的浏览器不能完美地支持本产品
-            span 为了更好的体验本产品，请您
+            span 为了更好的体验本产品，推荐您
             br
-            span 下载使用现代浏览器（点击图标下载）。
-          .dib.vat style="display: inline-block; vertical-align: top;"
-            a href="https://www.google.cn/intl/zh-CN/chrome/"
+            span 使用谷歌浏览器（点击图标下载）。
+          .dib.vat style="display: inline-block; vertical-align: top; padding: 0 15px;"
+            a href="https://www.google.cn/intl/zh-CN/chrome/" target='_blank'
               = image_tag('icon/chrome.png', style: 'max-width: 60px;')
           .dib.vat style="display: inline-block; vertical-align: top;"
             h4 style="line-height: 60px;" 
-             | 或安装
-             a href="https://www.google.com/chromeframe" 插件
+             | 或
+             a href="https://www.google.com/chromeframe" target='_blank' 点击安装插件
     .alert-container
       - if flash[:alert]
         .alert.alert-danger
