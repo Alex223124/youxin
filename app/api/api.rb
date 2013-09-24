@@ -15,6 +15,7 @@ module Youxin
     helpers Youxin::APIHelpers
 
     mount Session
+    mount Password
     mount Users
     mount Posts
     mount Attachments

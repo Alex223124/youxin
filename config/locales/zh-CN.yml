@@ -12,3 +12,6 @@ zh-CN:
     mailer:
       welcome_instructions:
         subject: 欢迎加入
+  errors:
+    messages:
+      expired: 已过期，请重新申请
