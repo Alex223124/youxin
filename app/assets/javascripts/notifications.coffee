@@ -29,7 +29,6 @@ window.Youxin =
         Youxin.notifier.notify(avatar, title, body, id)
         Youxin.updateNotificationsCounter()
 
-
   fixUrlDash : (url) ->
     url.replace(/\/\//g,"/").replace(/:\//,"://")
 

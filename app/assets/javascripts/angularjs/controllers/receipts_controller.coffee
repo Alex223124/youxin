@@ -49,6 +49,7 @@
         App.alert('暂时没有未读消息', 'info')
     , (data, status)->
       App.alert "加载失败", "error"
+    Youxin.updateNotificationsCounter()
     move_reads()
 
   $scope.load_more = (event) ->
