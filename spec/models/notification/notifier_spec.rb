@@ -3,7 +3,9 @@ require 'timeout'
 
 describe Notification::Notifier do
   before(:each) do
-    @user = create :user, ios_device_token: 'ios_device_token_string', phone: '18600000000'
+    ios_device_token_string = 'a' * 64
+    @user = create :user, phone: '18600000000'
+    @user.push_ios_device_token ios_device_token_string
     @faye_data = { avatar: 'avatar.png', title: 'title', body: 'body' }
     @ios_data = { alert: 'alert', badge: 12 }
 

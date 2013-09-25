@@ -64,16 +64,22 @@ class Users < Grape::API
 
     desc 'Create ios_device_token to user'
     post 'ios_device_token' do
-      current_user.ios_device_token = params[:device_token]
-      current_user.save(validate: false)
-      status(204)
+      current_user.push_ios_device_token params[:device_token]
+      if current_user.errors.empty?
+        status(204)
+      else
+        fail!(current_user.errors)
+      end
     end
 
     desc 'Delete ios_device_token of user'
     delete 'ios_device_token' do
-      current_user.ios_device_token = nil
-      current_user.save(validate: false)
-      status(204)
+      current_user.pull_ios_device_token params[:device_token]
+      if current_user.errors.empty?
+        status(204)
+      else
+        fail!(current_user.errors)
+      end
     end
 
     get 'conversations' do

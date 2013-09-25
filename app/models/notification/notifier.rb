@@ -27,9 +27,11 @@ class Notification::Notifier
       ios_pusher = pusher
       users.each do |user|
         user = User.find(user) unless user.is_a? User
-        if user && user.ios_device_token?
-          notification = Grocer::Notification.new(grocer_message(user.ios_device_token, data))
-          ios_pusher.push(notification)
+        if user && user.ios_device_tokens?
+          user.ios_device_tokens.each do |ios_device_token|
+            notification = Grocer::Notification.new(grocer_message(ios_device_token, data))
+            ios_pusher.push(notification)
+          end
         end
       end
     end
@@ -38,9 +40,15 @@ class Notification::Notifier
       post = Post.where(id: post).first unless post.is_a?(Post)
       post.receipts.all.each do |receipt|
         user = receipt.user
-        if user.ios_device_token?
-          notification = Grocer::Notification.new(grocer_message(user.ios_device_token, receipt.ios_payload))
-          ios_pusher.push(notification)
+        if user.ios_device_tokens?
+          user.ios_device_tokens.each do |ios_device_token|
+            notification = Grocer::Notification.new(
+              grocer_message(
+                ios_device_token,
+                receipt.ios_payload)
+            )
+            ios_pusher.push(notification)
+          end
         end
       end
     end
@@ -49,13 +57,15 @@ class Notification::Notifier
       message = Message.where(id: message).first unless message.is_a?(Message)
       message.message_notifications.each do |message_notification|
         user = message_notification.user
-        if user.ios_device_token?
-          notification = Grocer::Notification.new(
-            grocer_message(
-              user.ios_device_token,
-              message_notification.ios_payload)
-          )
-          ios_pusher.push(notification)
+        if user.ios_device_tokens?
+          user.ios_device_tokens.each do |ios_device_token|
+            notification = Grocer::Notification.new(
+              grocer_message(
+                ios_device_token,
+                message_notification.ios_payload)
+            )
+            ios_pusher.push(notification)
+          end
         end
       end
     end

@@ -529,22 +529,39 @@ describe Youxin::API, 'users' do
   describe "POST /user/ios_device_token" do
     before(:each) do
       @user = create :user, namespace: namespace
+      @ios_device_token = 'a' * 64
+    end
+    it 'should return 204' do
+      post api('/user/ios_device_token', @user), device_token: @ios_device_token
+      response.status.should == 204
     end
     it "should create ios_device_token" do
-      ios_device_token = 'ios_device_token_string'
-      post api('/user/ios_device_token', @user), device_token: ios_device_token
-      @user.reload.ios_device_token.should == ios_device_token
+      ios_device_token = 'a' * 64
+      post api('/user/ios_device_token', @user), device_token: @ios_device_token
+      @user.reload.ios_device_tokens.should include(@ios_device_token)
+    end
+    it 'should return errors' do
+      post api('/user/ios_device_token', @user), device_token: 'invalid'
+      json_response.should have_key('ios_device_tokens')
     end
   end
   describe "DELETE /user/ios_device_token" do
     before(:each) do
       @user = create :user, namespace: namespace
+      @ios_device_token = 'a' * 64
+      @user.add_ios_device_token @ios_device_token
+    end
+    it 'should return 204' do
+      delete api('/user/ios_device_token', @user), device_token: @ios_device_token
+      response.status.should == 204
     end
     it "should remove ios_device_token of user" do
-      ios_device_token = 'ios_device_token_string'
-      post api('/user/ios_device_token', @user), device_token: ios_device_token
-      delete api('/user/ios_device_token', @user)
-      @user.reload.ios_device_token.should be_blank
+      delete api('/user/ios_device_token', @user), device_token: @ios_device_token
+      @user.reload.ios_device_tokens.should be_blank
+    end
+    it 'should return errors' do
+      delete api('/user/ios_device_token', @user), device_token: 'invalid'
+      json_response.should have_key('ios_device_tokens')
     end
   end
 

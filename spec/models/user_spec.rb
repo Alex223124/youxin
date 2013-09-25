@@ -51,12 +51,15 @@ describe User do
     it { should respond_to(:receipt_users) }
     it { should respond_to(:notification_channel) }
     it { should respond_to(:ensure_notification_channel!) }
-    it { should respond_to(:ios_device_token) }
+    it { should respond_to(:ios_device_tokens) }
     it { should respond_to(:phone) }
     it { should respond_to(:send_message_to) }
     it { should respond_to(:reset_sms_token) }
     it { should respond_to(:reset_sms_sent_at) }
-    it { should respond_to(:creator_id) }
+    it { should respond_to(:push_ios_device_token) }
+    it { should respond_to(:add_ios_device_token) }
+    it { should respond_to(:pull_ios_device_token) }
+    it { should respond_to(:remove_ios_device_token) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -329,7 +332,7 @@ describe User do
       it 'should have one error on creator_id' do
         user.creator_id = 'not_found'
         user.save
-        user.should have(1).error_on(:creator_id)
+        user.should have(1).errors_on(:creator_id)
       end
     end
   end
@@ -358,27 +361,27 @@ describe User do
       it "should have error when blank" do
         user.phone = ''
         user.save
-        user.should have_at_least(1).error_on(:phone)
+        user.should have_at_least(1).errors_on(:phone)
       end
       it "should have error on length" do
         user.phone = '123456789'
         user.save
-        user.should have(1).error_on(:phone)
+        user.should have(1).errors_on(:phone)
       end
       it "should have error on format" do
         user.phone = '28600000000'
         user.save
-        user.should have(1).error_on(:phone)
+        user.should have(1).errors_on(:phone)
       end
       it "should have one error on format" do
         user.phone = '186000000000'
         user.save
-        user.should have(1).error_on(:phone)
+        user.should have(1).errors_on(:phone)
       end
       it "should have no error on format" do
         user.phone = '18600000000'
         user.save
-        user.should have(0).error_on(:phone)
+        user.should have(0).errors_on(:phone)
       end
     end
 
@@ -386,34 +389,34 @@ describe User do
       it "should have an error on format" do
         user.qq = 'abcdefg'
         user.save
-        user.should have(1).error_on(:qq)
+        user.should have(1).errors_on(:qq)
       end
       it "should have an error on format when length less than 5" do
         user.qq = '1234'
         user.save
-        user.should have(1).error_on(:qq)
+        user.should have(1).errors_on(:qq)
       end
       it "should have an error on format when length more than 11" do
         user.qq = '012345678901'
         user.save
-        user.should have(1).error_on(:qq)
+        user.should have(1).errors_on(:qq)
       end
       it "should have no error on format" do
         user.qq = '123456789'
         user.save
-        user.should have(0).error_on(:qq)
+        user.should have(0).errors_on(:qq)
       end
     end
     context "gender" do
       it "should have an error when gender not inclusion" do
         user.gender = 'male'
         user.save
-        user.should have(1).error_on(:gender)
+        user.should have(1).errors_on(:gender)
       end
       it "should have no error on gender" do
         user.gender = '男'
         user.save
-        user.should have(0).error_on(:gender)
+        user.should have(0).errors_on(:gender)
       end
     end
   end
@@ -703,4 +706,57 @@ describe User do
     it { @namespace.users.should == [@user] }
   end
 
+  describe '#push_ios_device_token' do
+    before(:each) do
+      user.save
+      @valid_token = 'a' * 64
+    end
+    it 'should add ios_device_token to user' do
+      user.push_ios_device_token @valid_token
+      user.ios_device_tokens.should include(@valid_token)
+    end
+    it 'should not add ios_device_token to user if exist' do
+      user.push_ios_device_token @valid_token
+      user.push_ios_device_token @valid_token
+      user.ios_device_tokens.size.should == 1
+    end
+    it 'should not add ios_device_token if too short' do
+      token = 'a'
+      user.push_ios_device_token token
+      user.should have(1).error
+    end
+    it 'should not add ios_device_token if too long' do
+      token = @valid_token * 2
+      user.push_ios_device_token token
+      user.should have(1).error
+    end
+  end
+  describe '#pull_ios_device_token' do
+    before(:each) do
+      user.save
+      @valid_token = 'a' * 64
+      user.ios_device_tokens = [@valid_token]
+      user.save
+    end
+    it 'should remove ios_device_token from user' do
+      user.pull_ios_device_token @valid_token
+      user.reload
+      user.ios_device_tokens.should_not include(@valid_token)
+    end
+    it 'should not add ios_device_token to user if exist' do
+      user.pull_ios_device_token @valid_token
+      user.reload
+      user.ios_device_tokens.size.should == 0
+    end
+    it 'should not add ios_device_token if too short' do
+      token = 'a'
+      user.pull_ios_device_token token
+      user.should have(1).errors
+    end
+    it 'should not add ios_device_token if too long' do
+      token = @valid_token * 2
+      user.pull_ios_device_token token
+      user.should have(1).errors
+    end
+  end
 end

@@ -6,6 +6,8 @@ class User
   include Mongoid::Timestamps # Add created_at and updated_at fields
   include SmsRecoverable
 
+  IOS_DEVICE_TONKEN_REGEXP = %r(\A[a-z0-9]{64}\z)
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
@@ -54,7 +56,7 @@ class User
   field :receipt_organization_ids, type: Array, default: []
   field :receipt_user_ids, type: Array, default: []
   field :notification_channel, type: String
-  field :ios_device_token, type: String
+  field :ios_device_tokens, type: Array, default: []
   field :phone, type: String
 
   field :bio, type: String
@@ -279,12 +281,35 @@ class User
     Notification::Notifier.send_welcome_message_async(self.id)
   end
 
+  # iOS APNs
+  def push_ios_device_token(token)
+    if validate_ios_device_token(token)
+      self.add_to_set(:ios_device_tokens, token)
+    end
+  end
+  def pull_ios_device_token(token)
+    if validate_ios_device_token(token)
+      self.pull(:ios_device_tokens, token)
+    end
+  end
+
+  alias_method :add_ios_device_token, :push_ios_device_token
+  alias_method :remove_ios_device_token, :pull_ios_device_token
+
   protected
   def email_required?
     false
   end
 
   private
+  def validate_ios_device_token(token)
+    if token.match IOS_DEVICE_TONKEN_REGEXP
+      true
+    else
+      self.errors.add :ios_device_tokens, :invalid
+      false
+    end
+  end
   def creator_exists
     if User.where(id: self.creator_id).blank?
       self.errors.add :creator_id, :not_exist
