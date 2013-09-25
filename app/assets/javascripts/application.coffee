@@ -17,6 +17,7 @@
 #= require bootstrap-datepicker/locales/bootstrap-datepicker.zh-CN
 
 #= require jquery.form
+#= require unread_bubble
 #= require_self
 
 window.App =

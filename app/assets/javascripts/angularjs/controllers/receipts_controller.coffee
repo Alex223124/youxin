@@ -235,6 +235,7 @@
     if !receipt.read and receipt.forms_filled
       $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
         receipt.read = true
+        UnreadBubble.setBubble(UnreadBubble.getCurrentCount() - 1)
 
   $scope.mark_receipt_as_read = (receipt) ->
     if receipt.forms_filled

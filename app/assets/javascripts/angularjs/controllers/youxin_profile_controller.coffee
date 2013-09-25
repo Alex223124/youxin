@@ -182,6 +182,7 @@
     unless receipt.read
       receipt.read = true
       receiptService.putReadFlag receipt.id
+      UnreadBubble.setBubble(UnreadBubble.getCurrentCount() - 1)
 
   $scope.showTooltip = (event) ->
     $(event.target).tooltip('show')

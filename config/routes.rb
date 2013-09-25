@@ -54,6 +54,7 @@ Youxin::Application.routes.draw do
   resources :attachments, only: [:show, :create]
 
   resource :account, only: [:show, :update] do
+    get 'notifications_counter' => 'accounts#notifications_counter'
     get 'organizations' => 'accounts#organizations'
     get 'authorized_organizations' => 'accounts#authorized_organizations'
     get 'recent_authorized_organizations' => 'accounts#recent_authorized_organizations'

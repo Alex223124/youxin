@@ -27,6 +27,8 @@ window.Youxin =
 
         avatar = Youxin.fixUrlDash("#{ROOT_URL}#{Youxin.getAvatarVersion(avatar_url, 'small')}")
         Youxin.notifier.notify(avatar, title, body, id)
+        Youxin.updateNotificationsCounter()
+
 
   fixUrlDash : (url) ->
     url.replace(/\/\//g,"/").replace(/:\//,"://")
@@ -36,3 +38,10 @@ window.Youxin =
     array = url.split('/')
     array[array.length - 1] = "#{version}_#{array.last()}"
     array.join('/')
+
+  # update Title and Bubble
+  updateNotificationsCounter : () ->
+    $.get '/account/notifications_counter', (data) ->
+      receipts = data.receipts
+      UnreadBubble.setBubble(receipts)
+

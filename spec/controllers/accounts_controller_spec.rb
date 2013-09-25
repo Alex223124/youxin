@@ -136,4 +136,32 @@ describe AccountsController do
       json_response.should have_key('favorited_receipts')
     end
   end
+
+  describe 'GET notifications_counter' do
+    before(:each) do
+      @admin = create :user
+      @organization = create :organization
+      @actions_youxin = Action.options_array_for(:youxin)
+      @organization.authorize_cover_offspring(@admin, @actions_youxin)
+      @organization.push_member(current_user)
+      3.times do
+        create :post, author: @admin, organization_ids: [@organization].map(&:id)
+      end
+
+      login_user current_user
+    end
+    it 'should return the counter of unread notifications' do
+      get :notifications_counter
+      json_response.should == {
+        receipts: 3
+      }.as_json
+    end
+    it 'should return the correct counter of unread notifications' do
+      current_user.receipts.unread.first.read!
+      get :notifications_counter
+      json_response.should == {
+        receipts: 2
+      }.as_json
+    end
+  end
 end

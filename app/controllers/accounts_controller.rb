@@ -1,4 +1,10 @@
 class AccountsController < ApplicationController
+  def notifications_counter
+    counter = {
+      receipts: current_user.receipts.unread.count
+    }
+    render json: counter, root: :notifications_counter
+  end
   def organizations
     organizations = current_user.organizations
     render json: organizations, each_serializer: AuthorizedOrganizationSerializer, root: :organizations

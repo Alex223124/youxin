@@ -27,4 +27,5 @@
     if !receipt.read and receipt.forms_filled
       $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
         receipt.read = true
+        UnreadBubble.setBubble(UnreadBubble.getCurrentCount() - 1)
 ]

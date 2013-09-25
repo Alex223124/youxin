@@ -1,6 +1,9 @@
 require 'spec_helper'
 
 describe AccountsController do
+  it "to #notifications_counter" do
+    get('/account/notifications_counter').should route_to('accounts#notifications_counter')
+  end
   it "to #organizations" do
     get('/account/organizations').should route_to('accounts#organizations')
   end

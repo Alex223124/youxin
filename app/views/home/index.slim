@@ -7,6 +7,7 @@ body ng-app="youxin"
         a ng-href='#/'
           i.icon-location-arrow
           span  优信
+          span.label.label-important.pull-right.js-unread-bubble
       li ng-class="isActive('/organizations')"
         a href='#/organizations'
           i.icon-sitemap
@@ -59,6 +60,7 @@ body ng-app="youxin"
     FAYE_SERVER_URL = "#{Youxin.config.faye.server}";
     SUBSCRIPTION_PREFIX = "#{Youxin.config.faye.subscription_prefix}"
     CURRENT_USER_NOTIFICATION_CHANNEL = "#{current_user && current_user.notification_channel || ''}";
+    Youxin.updateNotificationsCounter()
 
   javascript:
     var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
