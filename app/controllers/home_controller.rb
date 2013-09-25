@@ -4,7 +4,9 @@ class HomeController < ApplicationController
   def index
   end
   def privacy
+    render layout: 'features'
   end
   def terms
+    render layout: 'features'
   end
 end
