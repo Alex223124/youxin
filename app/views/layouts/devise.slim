@@ -55,18 +55,17 @@ html
           | #{resource.errors.full_messages.join(", ")}
 
     #login-background
-      .position
-
-      = yield
-
       .others
-        | Copyright © 2013 &nbsp
+        | Copyright © 2013 &nbsp;
         i.icon-heart
-        | &nbsp Combee
+        | &nbsp; Combee
         a href="/terms" target='_blank' 服务条款
         a href="/privacy" target='_blank' 隐私政策
         a href="mailto:#{Youxin.config.help.contact_email}" target='_blank' 联系我们
 
+      = yield
+
+      .position
     = javascript_include_tag "application"
 
     javascript:
