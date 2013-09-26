@@ -64,7 +64,7 @@ end
 
 gem 'slim-rails' # html template
 gem 'bootstrap-sass', '~> 2.3.1.0' # bootstrap
-gem 'angularjs-rails', '~> 1.0.7' # angularjs
+gem 'angularjs-rails', '~> 1.2.0.rc2' # angularjs
 gem 'simple_form'
 gem 'font-awesome-sass-rails', github: 'pduersteler/font-awesome-sass-rails', branch: :master
 # gem 'font-awesome-sass-rails'
