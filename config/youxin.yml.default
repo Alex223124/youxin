@@ -44,6 +44,7 @@ defaults: &defaults
     auth_token: auth_token
     app_id: app_id
   shorten_server: http://76.lc
+  welcome_post_id: 5243b043734576ad8a00000d
 
 development:
   <<: *defaults

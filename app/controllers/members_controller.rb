@@ -26,6 +26,7 @@ class MembersController < ApplicationController
     if member.save
       @organization.push_member(member)
       member.send_welcome_instructions
+      member.send_welcome_receipt
       render json: member, status: :created, serializer: MemberSerializer
     else
       render json: member.errors, status: :unprocessable_entity
@@ -50,6 +51,7 @@ class MembersController < ApplicationController
         created_members.push member
         @organization.push_member(member)
         member.send_welcome_instructions
+        member.send_welcome_receipt
       else
         member_attr[:errors] = member.errors.keys
         unimported_members.push member_attr

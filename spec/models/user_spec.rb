@@ -759,4 +759,32 @@ describe User do
       user.should have(1).errors
     end
   end
+
+  describe '#send_welcome_receipt' do
+    before(:each) do
+      @namespace = create :namespace
+      @organization = create :organization, namespace: @namespace
+      @user = create :user, namespace: @namespace
+      @author = create :user, namespace: @namespace
+      @organization.push_member(@user)
+      @post = create(:post, author: @author,
+                            organization_ids: [@organization.id],
+                            body_html: '<div>test</div>')
+      Youxin.config['welcome_post_id'] = @post.id
+    end
+    it 'should create welcome receipt to user' do
+      user.namespace = @namespace
+      user.save
+      user.send_welcome_receipt
+      user.receipts.unread.count.should == 1
+      user.receipts.first.post.should == @post
+    end
+    it 'should create welcome receipt though diffrent namespaces' do
+      ns = create :namespace
+      user.save
+      user.send_welcome_receipt
+      user.receipts.unread.count.should == 1
+      user.receipts.first.post.should == @post
+    end
+  end
 end

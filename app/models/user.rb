@@ -281,6 +281,16 @@ class User
     Notification::Notifier.send_welcome_message_async(self.id)
   end
 
+  def send_welcome_receipt
+    welcome_post = Post.find(Youxin.config.welcome_post_id)
+    if welcome_post
+      welcome_receipt = welcome_post.receipts.new
+      welcome_receipt.user = self
+      welcome_receipt.organization_ids = welcome_post.organization_ids
+      welcome_receipt.save
+    end
+  end
+
   # iOS APNs
   def push_ios_device_token(token)
     if validate_ios_device_token(token)
