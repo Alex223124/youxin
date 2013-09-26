@@ -1,23 +1,25 @@
 .wrapper
   .logo
     = image_tag current_logo
-  = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'login-box' }) do |f|
-    label
-      = f.text_field :login, autofocus: true, class: 'username', placeholder: '请输入邮箱/手机号'
-      i.icon-user
-    label
-      = f.password_field :password, class: 'password', placeholder: '请输入密码'
-      i.icon-lock
+  = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'login-box form' }) do |f|
+    .control-group
+      label.control-label for='user_login' 手机号或邮箱
+      .controls
+        = f.text_field :login, autofocus: true, placeholder: '请输入邮箱/手机号', class: 'input-block-level'
+    .control-group
+      label.control-label for='user_password' 密码
+      .controls
+        = f.password_field :password, class: 'input-block-level', placeholder: '请输入密码'
     - if devise_mapping.rememberable?
-      label
-        = f.check_box :remember_me, class: 'check_box'
-        | 记住登陆状态
-    label
+      .control-group
+        .controls
+          label.checkbox
+            = f.check_box :remember_me, class: 'check_box'
+            | 记住登陆状态
+    .control-group
       = f.button '登录', class: 'btn btn-primary submit', data: { disable_with: '登录中 ...' }
-    label.last
-      = link_to "忘记密码?", new_password_path(resource_name)
-    i.caret-left
-    div style='text-align: left; margin-top: 10px'
+      = link_to "忘记密码?", new_password_path(resource_name), class: 'action'
+    .tips
       strong 提示：
       span.label.label-important
         | 初次登陆，请点击忘记密码使用

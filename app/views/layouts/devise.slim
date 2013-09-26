@@ -2,7 +2,7 @@ doctype html
 html
   head
     title Combee | 组织消息通知中心
-    meta name='viewport' content='width=device-width, initial-scale=1.0'
+    meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=no'
     meta name="keywords" content="combee，优信，组织，消息推送，消息反馈"
     meta name="description" content="Combee是组织的消息通知中心，在这里你可以快速建立组织主页，导入组织成员，向组织成员发送消息，系统会通过Web、移动客户端以及短信、电话留言自动向成员推送消息，提高组织内部消息传递的效率"
     meta name="baidu-site-verification" content="Z5mSaex35X"
@@ -55,17 +55,17 @@ html
           | #{resource.errors.full_messages.join(", ")}
 
     #login-background
-      .others
-        | Copyright © 2013 &nbsp;
-        i.icon-heart
-        | &nbsp; Combee
-        a href="/terms" target='_blank' 服务条款
-        a href="/privacy" target='_blank' 隐私政策
-        a href="mailto:#{Youxin.config.help.contact_email}" target='_blank' 联系我们
-
       = yield
 
       .position
+      .footer
+        .copyright
+          | Copyright © 2013 &nbsp;❤&nbsp; Combee
+        .links
+          a href="/terms" target='_blank' 服务条款
+          a href="/privacy" target='_blank' 隐私政策
+          a href="mailto:#{Youxin.config.help.contact_email}" target='_blank' 联系我们
+
     = javascript_include_tag "application"
 
     javascript:
