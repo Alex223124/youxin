@@ -117,8 +117,13 @@ class Notification::Notifier
 
     def publish_faye_message(message)
       Thread.new do
-        uri = URI.parse(Youxin.config.faye.server)
-        Net::HTTP.post_form(uri, message: message.to_json)
+        url = URI.parse(Youxin.config.faye.server)
+        form = Net::HTTP::Post.new(url.path.empty? ? '/' : url.path)
+        form.set_form_data(message: message.to_json)
+
+        http = Net::HTTP.new(url.host, url.port)
+        http.use_ssl = url.scheme == "https"
+        http.start {|h| h.request(form)}
       end
     end
 

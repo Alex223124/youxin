@@ -12,3 +12,7 @@ environment: development
 # environment: production
 servers: 1
 daemonize: true
+
+# ssl: true
+# ssl_key_file: /home/fahchen/.ssl/server.key
+# ssl_cert_file: /home/fahchen/.ssl/server.crt
