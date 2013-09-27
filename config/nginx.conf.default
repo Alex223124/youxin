@@ -84,23 +84,29 @@ http {
 
   server {
     server_name www.combee.co;
-    rewrite ^ http://combee.co$uri permanent;
+    rewrite ^ https://combee.co$uri permanent;
   }
 
   server {
     server_name www.u-xin.com u-xin.com www.combee.cn combee.cn;
-    rewrite ^ http://combee.co$uri permanent;
+    rewrite ^ https://combee.co$uri permanent;
   }
 
   server {
     server_name www.76.lc 76.lc;
-    rewrite ^ http://combee.co/r$uri permanent;
+    rewrite ^ https://combee.co/r$uri permanent;
   }
 
   server {
     # enable one of the following if you're on Linux or FreeBSD
-    listen 80 default deferred; # for Linux
+    # listen 80 default deferred; # for Linux
     # listen 80 default accept_filter=httpready; # for FreeBSD
+
+    listen 80 default deferred;
+    listen 443;
+
+    ssl_certificate certificate_file_path;
+    ssl_certificate_key certificate_key_file_path;
 
     # If you have IPv6, you'll likely want to have two separate listeners.
     # One on IPv4 only (the default), and another on IPv6 only instead
@@ -110,7 +116,7 @@ http {
     # some software.
     # listen [::]:80 ipv6only=on; # deferred or accept_filter recommended
 
-    client_max_body_size 4G;
+    client_max_body_size 20M;
     server_name combee.co;
 
     # ~2 seconds is often enough for most folks to parse HTML/CSS and
@@ -137,7 +143,7 @@ http {
 
       # enable this if you forward HTTPS traffic to unicorn,
       # this helps Rack set the proper URL scheme for doing redirects:
-      # proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-Proto $scheme;
 
       # pass the Host: header from the client right along so redirects
       # can be set properly within the Rack application

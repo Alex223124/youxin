@@ -2,17 +2,17 @@
 address: 0.0.0.0
 pid: tmp/pids/thin.pid
 timeout: 120
-port: 9292
+port: 4443
 log: log/thin.log
 max_conns: 20480
 require: []
 
 max_persistent_conns: 14048
-environment: development
-# environment: production
+# environment: development
+environment: production
 servers: 1
 daemonize: true
 
-# ssl: true
-# ssl_key_file: /home/fahchen/.ssl/server.key
-# ssl_cert_file: /home/fahchen/.ssl/server.crt
+ssl: true
+ssl_key_file: key_file_path
+ssl_cert_file: cert_file_path
