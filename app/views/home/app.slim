@@ -1,0 +1,15 @@
+.wrapper
+  .logo
+    = image_tag('icon/download-logo.png')
+  h1 Combee
+  h3 #{Youxin.config.slogan}
+
+  .download-links
+    = link_to Youxin.config.help.android.url, class: 'android link' do
+      = image_tag('icon/download-android.png')
+      div 下载
+      .bd Android 版本
+    = link_to Youxin.config.help.ios.url, class: 'iphone link' do
+      = image_tag('icon/download-iphone.png')
+      div 立即下载
+      .bd App Store

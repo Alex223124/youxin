@@ -10,4 +10,7 @@ describe HomeController do
   it "to #index" do
     get('/terms').should route_to('home#terms')
   end
+  it "to #app" do
+    get('/app').should route_to('home#app')
+  end
 end

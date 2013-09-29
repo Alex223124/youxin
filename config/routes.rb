@@ -2,6 +2,9 @@ Youxin::Application.routes.draw do
   root to: 'home#index'
   get 'privacy' => 'home#privacy'
   get 'terms' => 'home#terms'
+  # For mobile
+  get 'app' => 'home#app'
+
   resources :receipts, only: [:index, :show] do
     member do
       put 'read' => 'receipts#read'

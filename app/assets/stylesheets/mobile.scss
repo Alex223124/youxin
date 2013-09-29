@@ -1,0 +1,87 @@
+* {
+  margin:0;
+}
+html {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.9em;
+  background-color: hsl(192, 15%, 94%);
+}
+a {
+  text-decoration: none;
+}
+
+.wrapper {
+  margin: 0 auto;
+  max-width: 600px;
+  text-align: center;
+  .logo {
+    margin: 3em;
+    margin-bottom: 2em;
+    img {
+      width: 10em;
+      height: 10em;
+    }
+  }
+  h1 {
+    color: hsl(0, 0%, 20%);
+    margin-bottom: 1em;
+  }
+  h3 {
+    font-weight: normal;
+    display: inline;
+    padding: 0 0 0 0.7em;
+    border-left: 0.3em solid hsl(0, 0%, 83%);
+    color: hsl(168, 76%, 36%);
+    text-shadow: 0 1px 0 hsla(0, 0%, 100%, 0.37);
+  }
+
+  .download-links {
+    margin-top: 7em;
+    .link {
+      text-align: right;
+      width: 12em;
+      display: inline-block;
+      padding: 0.7em;
+      margin: 0.7em;
+      background-color: hsl(176, 75%, 30%);
+      border-radius: 0.3em;
+      color: hsl(0, 0%, 100%);
+      position: relative;
+      -webkit-box-shadow: 0 0.3em 0 0 hsl(176, 75%, 25%);
+      -moz-box-shadow: 0 0.3em 0 0 hsl(176, 75%, 25%);
+      box-shadow: 0 0.3em 0 0 hsl(176, 75%, 25%);
+      text-shadow: 0 1px 0 hsla(0, 0%, 0%, 0.17);
+      &:hover {
+        background-color: hsl(176, 75%, 34%);
+      }
+      &:active {
+        background-color: hsl(176, 75%, 34%);
+        top: 0.3em;
+        -webkit-box-shadow: 0 0.2em 0 0 hsl(176, 75%, 25%);
+        -moz-box-shadow: 0 0.2em 0 0 hsl(176, 75%, 25%);
+        box-shadow: 0 0.2em 0 0 hsl(176, 75%, 25%);
+      }
+      img {
+        width: 3em;
+        height: 3em;
+        float: left;
+      }
+      .bd {
+        padding-top: 0.1em;
+        font-weight: bold;
+        font-size: 1.3em;
+      }
+    }
+  }
+}
+.footer {
+  text-align: center;
+  padding: 1em;
+  color: hsl(168, 76%, 36%);
+  a {
+    color: hsl(168, 76%, 36%);
+    &:hover {
+      color: hsl(168, 76%, 16%);
+    }
+  }
+}

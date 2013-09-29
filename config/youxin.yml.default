@@ -4,6 +4,7 @@
 
 defaults: &defaults
   app_name: youxin
+  slogan: 让消息通知更有效率
   admin_emails:
     - admin@y.x
   smtp_settings:
