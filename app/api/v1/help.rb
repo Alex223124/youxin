@@ -12,7 +12,8 @@ class Help < Grape::API
         privacy: Youxin.config.help.privacy,
         about_us: Youxin.config.help.about_us,
         ios_tips_and_tricks: Youxin.config.help.ios_tips_and_tricks,
-        contact_email: Youxin.config.help.contact_email
+        contact_email: Youxin.config.help.contact_email,
+        faq: Youxin.config.help.faq
       }
     end
     get :last_android_version do

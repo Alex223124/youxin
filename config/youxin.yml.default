@@ -29,6 +29,7 @@ defaults: &defaults
     terms: '/help/terms'
     privacy: '/help/privacy'
     about_us: '/help/about_us'
+    faq: '/help/faq'
     ios_tips_and_tricks: '/help/ios_tips_and_tricks'
     contact_email: support@combee.co
     android:
