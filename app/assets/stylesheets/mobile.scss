@@ -36,6 +36,9 @@ a {
   }
 
   .download-links {
+    @media all and (max-width: 600px) {
+      margin-top: 3em;
+    }
     margin-top: 7em;
     .link {
       text-align: right;
