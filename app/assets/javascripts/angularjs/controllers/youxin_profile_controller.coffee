@@ -1,4 +1,4 @@
-@YouxinProfileController = ["$scope", 'receiptService', "$rootScope",($scope, receiptService, $rootScope)->
+@YouxinProfileController = ["$scope", 'receiptService', "$rootScope", "$http", ($scope, receiptService, $rootScope, $http)->
   $scope.breadcrumbs = [
     {
       name: '首页'
@@ -123,6 +123,37 @@
         self.html("系统已发送短信提醒")
         self.attr("disabled","disabled")
       , ()->
+        App.alert("发送失败", 'error')
+  $scope.send_call_notifications = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/run_call_notifications_now.json").success () ->
+        App.alert("系统已发送电话提醒")
+        self.html("系统已发送电话提醒")
+        self.attr("disabled","disabled")
+      .error () ->
+        App.alert("发送失败", 'error')
+
+  $scope.send_sms_notifications_to_unfilleds = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/run_sms_notifications_to_unfilleds_now.json").success () ->
+        App.alert("系统已发送短信提醒")
+        self.html("已发送短信提醒")
+        self.attr("disabled","disabled")
+      .error () ->
+        App.alert("发送失败", 'error')
+  $scope.send_call_notifications_to_unfilleds = (receipt,$event)->
+    post = receipt.post
+    self = $($event.target)
+    unless self.attr("disabled")
+      $http.post("/posts/#{post.id}/run_call_notifications_to_unfilleds_now.json").success () ->
+        App.alert("系统已发送电话提醒")
+        self.html("已发送电话提醒")
+        self.attr("disabled","disabled")
+      .error () ->
         App.alert("发送失败", 'error')
 
   $scope.fetch_forms = (receipt) ->
