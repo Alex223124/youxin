@@ -2,6 +2,7 @@ Youxin::Application.routes.draw do
   root to: 'home#index'
   get 'privacy' => 'home#privacy'
   get 'terms' => 'home#terms'
+  get 'welcome' => 'home#welcome'
   # For mobile
   get 'app' => 'home#app'
 

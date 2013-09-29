@@ -13,4 +13,7 @@ class HomeController < ApplicationController
   def app
     render layout: 'mobile'
   end
+  def welcome
+    render layout: 'features'
+  end
 end

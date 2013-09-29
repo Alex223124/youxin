@@ -8,7 +8,8 @@
       .controls
         = f.text_field :reset_sms_token, autofocus: true, placeholder: '请输入短信验证码', class: 'input-block-level', required: true
     .control-group
-      = f.button '确认', class: 'btn btn-primary submit', disable_with: '请稍后 ...'
+      = f.button '确认', class: 'btn btn-primary btn-block submit', disable_with: '请稍后 ...'
+    .tips
       = link_to '重发验证码', user_password_path(resource_name => { reset_password_key: resource.phone }), method: :post, disable_with: '发送中 ...', class: 'action'
-      = link_to '返回登录', new_session_path(resource_name), class: 'action'
+      = link_to '返回登录', new_session_path(resource_name), class: 'action pull-right'
 
