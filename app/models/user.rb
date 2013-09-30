@@ -69,8 +69,8 @@ class User
 
   validates :name, presence: true, length: 2..10
   validates :phone, format: { with: /\A1\d+\Z/ }, length: { is: 11 }, uniqueness: true, presence: true
-  validates :gender, inclusion: %w(男 女), allow_nil: true
-  validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_nil: true
+  validates :gender, inclusion: %w(男 女), allow_blank: true
+  validates :qq, format: { with: /\A\d{5,11}\Z/ }, allow_blank: true
   validates :namespace_id, presence: true
   validates :creator_id, presence: true, allow_nil: true
   validate :creator_exists , if: ->(user) { user.creator_id.present? }

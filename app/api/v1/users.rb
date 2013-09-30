@@ -8,7 +8,7 @@ class Users < Grape::API
     end
 
     put do
-      attrs = attributes_for_keys [:avatar, :header, :phone, :name, :bio, :gender, :qq, :blog, :uid]
+      attrs = attributes_for_keys [:avatar, :header, :phone, :name, :bio, :gender, :qq, :blog, :uid, :email]
       if current_user.update_attributes attrs
         status(204)
       else

@@ -101,11 +101,25 @@ describe Youxin::API, 'users' do
         @user.reload
       end.to change { @user.gender }
     end
-    it "should update qq" do
-      expect do
-        put api('/user', @user), { qq: '12345' }
-        @user.reload
-      end.to change { @user.qq }
+    context 'qq' do
+      before(:each) do
+        @user.qq = '123456789'
+        @user.save
+      end
+      it "should update qq" do
+        expect do
+          put api('/user', @user), { qq: '12345' }
+          @user.reload
+        end.to change { @user.qq }
+      end
+    end
+    context 'email' do
+      it 'should update email' do
+        expect do
+          put api('/user', @user), { email: 'test@test.com' }
+          @user.reload
+        end.to change { @user.email }
+      end
     end
     it "should update blog" do
       expect do

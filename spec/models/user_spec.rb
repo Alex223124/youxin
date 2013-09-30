@@ -406,6 +406,10 @@ describe User do
         user.save
         user.should have(0).errors_on(:qq)
       end
+      it 'should be valid if blank' do
+        user.qq = ''
+        user.should be_valid
+      end
     end
     context "gender" do
       it "should have an error when gender not inclusion" do
