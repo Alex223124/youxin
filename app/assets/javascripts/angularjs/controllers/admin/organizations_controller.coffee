@@ -1,4 +1,4 @@
-@AdminOrganizationsController = ['$scope', '$http', '$route', '$stateParams', '$location', ($scope, $http, $route, $stateParams, $location) ->
+@AdminOrganizationsController = ['$scope', '$http', '$location', '$stateParams', ($scope, $http, $location, $stateParams) ->
   getOrganizationsByUser = (callback, callbackerror)->
     $http.get("/account/organizations.json").success (_data)->
       callback(_data.organizations)
@@ -50,7 +50,7 @@
 ]
 
 
-@AdminOrganizationsProfileController = ['$scope', '$http', '$route', '$stateParams', '$location', ($scope, $http, $route, $stateParams, $location) ->
+@AdminOrganizationsProfileController = ['$scope', '$http', '$location', '$stateParams', ($scope, $http, $location, $stateParams) ->
   organization_id = $stateParams['id']
   getOrganizationManagers = (org_id, callback, callbackerror)->
     $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->

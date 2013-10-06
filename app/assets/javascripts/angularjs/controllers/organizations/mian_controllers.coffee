@@ -143,7 +143,7 @@
 
 ]
 
-@OrganizationMembersController = ['$scope', '$http', '$route', '$stateParams', '$filter', ($scope, $http, $route, $stateParams, $filter) ->
+@OrganizationMembersController = ['$scope', '$http', '$stateParams', '$filter', ($scope, $http, $stateParams, $filter) ->
   $scope.breadcrumbs = [
     {
       name: '首页'
@@ -210,6 +210,7 @@
         params = 
           'member_ids[]': [member.id]
         $http.delete("/organizations/#{organization_id}/members/role.json", { params: params }).success ()->
+          member.role = newOption
           return true
         .error ()->
           App.alert("由于网络原因，您需要重新操作！", 'error')
@@ -217,6 +218,7 @@
       else
         data = getData(member.id, newOption.id)
         $http.put("/organizations/#{organization_id}/members/role.json", data).success ()->
+          member.role = newOption
           return true
         .error ()->
           App.alert("由于网络原因，您需要重新操作！", 'error')
