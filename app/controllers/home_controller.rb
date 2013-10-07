@@ -16,4 +16,8 @@ class HomeController < ApplicationController
   def welcome
     render layout: 'features'
   end
+
+  def introduction
+    render layout: 'features'
+  end
 end

@@ -16,4 +16,7 @@ describe HomeController do
   it "to #welcome" do
     get('/welcome').should route_to('home#welcome')
   end
+  it "to #introduction" do
+    get('/introduction').should route_to('home#introduction')
+  end
 end

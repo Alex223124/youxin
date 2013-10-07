@@ -36,4 +36,10 @@ describe HomeController do
       response.should be_success
     end
   end
+  describe "GET introduction" do
+    it "should return http success" do
+      get :introduction
+      response.should be_success
+    end
+  end
 end
