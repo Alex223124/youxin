@@ -16,9 +16,10 @@ class Notification::Notifier
     end
     def publish_post_to_faye_client(post_id)
       post = Post.where(id: post_id).first unless post.is_a?(Post)
-      post.recipients.each do |recipient|
-        if recipient.notification_channel?
-          publish_faye_message(faye_message(recipient.notification_channel, post.faye_payload)).join
+      post.receipts.all.each do |receipt|
+        user = receipt.user
+        if user.notification_channel?
+          publish_faye_message(faye_message(user.notification_channel, receipt.faye_payload)).join
         end
       end
     end

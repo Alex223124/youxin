@@ -46,11 +46,17 @@ class Notifier
   visitUrl: (url) ->
     window.location.href = url
 
-  notify: (avatar, title, content, id = null) ->
+  notify: (avatar, title, content, id) ->
     if @enableNotification
       popup = window.webkitNotifications.createNotification(avatar, title, content)
       popup.onclick = ->
         window.parent.focus()
+        if id
+          viewEle = angular.element(document.getElementById("singleReceiptView"))
+          container = angular.element(document.getElementById("single_receipt"))
+          viewEle.show(300)
+          container.scope().$apply ()->
+            container.scope().ctrl.getReceipt(id)
         # alert id
 
       # if url

@@ -17,16 +17,33 @@ window.Youxin =
           avatar_url = data.user.avatar_url
           id = data.conversation.id
           # url = Youxin.fixUrlDash("#{ROOT_URL}/conversations/#{data.conversation.id}")
-        else if json.post?
-          data = json.post
-          title = data.title
+        else if json.receipt?
+          data = json.receipt
+          title = data.post.title
           avatar_url = data.author.avatar_url
           body = "#{data.author.name}:\n#{data.body}"
           id = data.id
           # url = Youxin.fixUrlDash("#{ROOT_URL}/posts/#{data.id}")
+        else if json.comment_notification?
+          data = json.comment_notification
+          title = "#{data.comment.user.name} 评论了你的优信 【#{data.comment.commentable.body}】"
+          body = "#{data.comment.body}"
+          avatar_url = data.comment.user.avatar_url
+        else if json.organization_notification?
+          data = json.organization_notification
+          title = "组织状态改变"
+          if data.status is 'in'
+            body = "你被移入了 #{data.organization.name}"
+          else
+            body = "你被移除了 #{data.organization.name}"
+          avatar_url = data.organization.avatar_url
 
-        avatar = Youxin.fixUrlDash("#{ROOT_URL}#{Youxin.getAvatarVersion(avatar_url, 'small')}")
-        Youxin.notifier.notify(avatar, title, body, id)
+        if title
+          avatar = Youxin.fixUrlDash("#{ROOT_URL}#{Youxin.getAvatarVersion(avatar_url, 'small')}")
+          if id
+            Youxin.notifier.notify(avatar, title, body, id)
+          else
+            Youxin.notifier.notify(avatar, title, body)
         Youxin.updateNotificationsCounter()
 
   fixUrlDash : (url) ->

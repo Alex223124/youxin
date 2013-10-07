@@ -52,6 +52,13 @@ class Receipt
       badge: self.user.receipts.unread.count
     }
   end
+  def faye_payload
+    self.as_json(only: [:created_at], methods: [:id], root: true,
+                    include: {
+                      author: { only: [:name], methods: [:avatar_url]},
+                      post: { only: [:title, :body]}
+                    })
+  end
 
   def short_url
     "#{Youxin.config.shorten_server}/#{short_key}"

@@ -28,7 +28,7 @@ class Notification::Comment < Notification::Base
                       methods: [:id],
                       include: {
                         comment: {
-                          only: [:commentable_type],
+                          only: [:commentable_type, :body],
                           include: {
                             commentable: {
                               only: [:title, :body, :created_at],
