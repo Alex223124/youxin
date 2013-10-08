@@ -14,13 +14,12 @@
 
       p 请点击下面的按钮使用你的手机号码设置你在 Combee 的登录密码。
 
+      .text-center-wrapper
+        = link_to '设置密码', '/account/password/new', class: 'bd btn btn-big', target: '_blank'
+
       p
         | 设置后请用电脑登录
         = link_to 'https://combee.co', root_path, class: 'bd'
         | 或下载
         = link_to '移动客户端', '/app', class: 'bd'
         | 使用。
-
-      .text-center-wrapper
-        = link_to '设置密码', '/account/password/new', class: 'bd btn', target: '_blank'
-

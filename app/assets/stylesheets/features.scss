@@ -64,6 +64,10 @@ img {
     box-shadow: 0 0.1em 0 0 hsl(176, 75%, 25%);
   }
 }
+.btn-big {
+  font-size: 1.3em;
+  letter-spacing: 0.3em;
+}
 .clearfix{
   *zoom: 1;
   &:before,&:after {
@@ -98,14 +102,15 @@ img {
     }
   }
 }
-a{
-  color: #16a286;
+a {
   text-decoration: none;
-  &:hover{
-    color: #3ae4c2;
-    text-decoration: underline;
+  padding: 0 0.3em;
+  color: hsl(168, 75%, 21%);
+  &:hover {
+    color: hsl(168, 75%, 11%);
   }
 }
+
 h1,h2,h3,h4,h5{
   letter-spacing: .2em;
 }
@@ -143,13 +148,6 @@ h1,h2,h3,h4,h5{
         &:hover {
           color: hsl(168, 76%, 46%);
         }
-      }
-    }
-    a {
-      padding: 0 0.3em;
-      color: hsl(168, 75%, 21%);
-      &:hover {
-        color: hsl(168, 75%, 11%);
       }
     }
     .content {
