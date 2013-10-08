@@ -3,6 +3,7 @@ Youxin::Application.routes.draw do
   get 'privacy' => 'home#privacy'
   get 'terms' => 'home#terms'
   get 'welcome' => 'home#welcome'
+  get 'hi', to: redirect('/welcome')
   # For mobile
   get 'app' => 'home#app'
 

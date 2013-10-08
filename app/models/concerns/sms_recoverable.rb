@@ -27,7 +27,7 @@ module SmsRecoverable
   protected
 
   def send_sms_notification
-    content = "Combee 验证码为：#{reset_sms_token}（请在#{Youxin.config.devise.reset_sms_token_within}分钟内完成验证，如已成功启用，请忽略此短信）【Combee.co】"
+    content = "Combee 验证码为：#{reset_sms_token}（请在#{Youxin.config.devise.reset_sms_token_within}分钟内完成验证，如已成功启用，请忽略此短信）【Combee】"
     ChinaSMS.to(phone, content)
   end
 
