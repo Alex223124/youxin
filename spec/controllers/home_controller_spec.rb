@@ -9,7 +9,7 @@ describe HomeController do
     end
     it "should redirect to sign_in page" do
       get :index
-      response.should redirect_to(new_user_session_path)
+      response.should redirect_to(introduction_path)
     end
   end
   describe "GET privacy" do

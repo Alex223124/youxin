@@ -3,19 +3,15 @@
     .header-wrapper
       .inner-wrap.clearfix.tal
         .logo.dib
-          img src="#{image_path('features/index-logo.png')}"
+          = link_to root_path do
+            img src="#{image_path('features/index-logo.png')}"
         .dib.btn-container.pull-right
-          .btn 注&nbsp;册
-          .btn.btn-primary 登&nbsp;录
+          = link_to '登 录', new_user_session_path, class: 'btn btn-primary'
         ul.dib.pull-right
           li.dib.active
-            a href="javascript:;" 首页
+            = link_to '详细', introduction_path
           li.dib
-            a href="javascript:;" 详细
-          li.dib
-            a href="javascript:;" 价格
-          li.dib
-            a href="javascript:;" 移动版
+            = link_to '移动版', app_path, target: '_blank'
     .details-wrapper
       .details
         .tac.center
@@ -38,6 +34,8 @@
               .feature.pr.unread-list data-img="#{image_path('introduction/unread_list.png')}" data-title="未读反馈" data-content="实时的未读统计，掌握消息的阅读情况。" data-dir="west"
                 .img-inner
                   img src="#{image_path('introduction/ring.png')}"
+        .center.tac
+          h3 组织管理者发给成员的通知消息（优信）
         .dividing-line
         .detail
           .tags
@@ -45,26 +43,26 @@
               .img
                 img src="#{image_path('introduction/notification.png')}"
               .description
-                h2.title 实时的全局通知
+                .title 实时的全局通知
                 p.content 不论你多久不在线，都会在这里提醒你未读优信的数量。
             .tag.right.clearfix
               .description
-                h2.title 即时的桌面通知
-                p.content 如果您开启了浏览器桌面通知，当有新优信、私信、评论等消息时，都会在桌面收到浏览器的提醒通知。
+                .title 即时的桌面通知
+                p.content 如果你开启了浏览器桌面通知，当有新优信、私信、评论等消息时，都会在桌面收到浏览器的提醒通知。
               .img
                 img src="#{image_path('introduction/desktop.png')}"
             .tag.left.clearfix
               .img
                 img src="#{image_path('introduction/device_notification.png')}"
               .description
-                h2.title 随时随地的客户端推送
+                .title 随时随地的客户端推送
                 p.content 你可以在iPhone和Android客户端上面使用Combee，随时随地接收和查看收到的优信。
         .dividing-line
         .detail
           .tags
             .tag.first.left.clearfix
               .description
-                h2.title 离线的短信提醒
+                .title 离线的短信提醒
                 p.content 即使你不在电脑前，也没有安装客户端，Combee仍然可以通过短信通知的方式提醒你新的优信和详情地址。
               .img
                 img src="#{image_path('introduction/sms_notification.png')}"
@@ -72,7 +70,7 @@
               .img
                 img src="#{image_path('introduction/phone_notification.png')}"
               .description
-                h2.title 紧急的电话提醒
+                .title 紧急的电话提醒
                 p.content 如果优信内容特别重要，必须要成员按时查看，可通过自动网络电话通知的方式提醒成员。
         .dividing-line
         .center.tac
@@ -81,22 +79,18 @@
             .mask-hide
             .app-features.pa
               / data-dir目前仅支持east 和west
-              .feature.pr.organization data-img="#{image_path('introduction/organization.png')}" data-title="树型结构" data-content="树形结构的组织关系，根组织和子组织，每个组织都有独立的主页和通讯录。" data-dir="east"
+              .feature.pr.organization data-img="#{image_path('introduction/organization.png')}" data-title="树型结构" data-content="树形结构的组织关系，方便管理，每个组织都有独立的主页和通讯录。" data-dir="east"
                 .img-inner
                   img src="#{image_path('introduction/ring.png')}"
-              .feature.pr.contacts data-img="#{image_path('introduction/contacts.png')}" data-title="通讯录" data-content="资料在线更新，永不丢失的组织成员通讯录。" data-dir="west"
+              .feature.pr.contacts data-img="#{image_path('introduction/contacts.png')}" data-title="通讯录" data-content="资料在线更新，永不丢失的组织成员通讯录，手机使用更方便。" data-dir="west"
                 .img-inner
                   img src="#{image_path('introduction/ring.png')}"
-          h2 在线的组织主页和成员通信录
+          h3 在线的组织主页和成员通信录
         .dividing-line
         .center.tac
           p 你还在用QQ、飞信、邮件给成员发通知消息吗？是时候用Combee提高消息通知的效率了。
-    / .footer-wrapper
-    /   .inner-wrap
-    /     a href="javascript:;" 服务条款
-    /     a href="javascript:;" 隐私政策
-    /     a href="javascript:;" 常见问题
-    /     a href="javascript:;" 联系我们
+        .center.tac
+          = link_to '联系客服试用 Combee', "mailto:#{Youxin.config.help.contact_email}?subject=申请试用 Combee&body=请留下您的姓名，联系电话，学校或公司名称。我们将尽快联系您，为您开通服务。感谢您的支持！", class: 'btn btn-primary', target: '_blank'
 = content_for :scripts do
   = javascript_include_tag "jquery"
   = javascript_include_tag "features"

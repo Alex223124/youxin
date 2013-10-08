@@ -69,7 +69,7 @@ module Youxin
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
-    config.assets.precompile += %w(login.css)
+    config.assets.precompile += %w(login.css features.css features.js mobile.js)
     config.assets.paths << Rails.root.join('vendor', 'assets').to_s
 
     config.generators do |g|

@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
-  skip_before_filter :authenticate_user!, except: [:index]
+  skip_before_filter :authenticate_user!
 
   def index
+    redirect_to introduction_path unless signed_in?
   end
   def privacy
     render layout: 'features'
