@@ -1,6 +1,7 @@
 .wrapper
   .logo
-    = image_tag current_logo
+    = link_to introduction_path do
+      = image_tag current_logo
   = form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: 'login-box form' }) do |f|
     .control-group
       label.control-label for='user_login' 手机号或邮箱
