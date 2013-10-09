@@ -12,7 +12,7 @@ body ng-app="youxin"
         a href='#/organizations'
           i.icon-sitemap
           span 组织展示
-      - unless current_user.authorized_organizations.count.zero?
+      - unless current_user.authorized_organizations([:edit_organization]).count.zero?
         li ng-class="isActive('/admin/organizations')"
           a href='#/admin/organizations'
             i.icon-cogs
@@ -29,7 +29,7 @@ body ng-app="youxin"
     .navbar.navbar-inverse
       .navbar-inner
         ul.nav.pull-right
-          - unless current_user.authorized_organizations.count.zero?
+          - unless current_user.authorized_organizations([:create_youxin]).count.zero?
             a.btn.btn-primary.pull-left ng-href="#/posts/new"
               i.icon-edit
               | 发优信
@@ -42,7 +42,7 @@ body ng-app="youxin"
                 a ng-href='#/account/profile' tabindex='-1' 我的主页
               li
                 a ng-href='#/settings/account/profile' tabindex='-1' 个人设置
-              - unless current_user.authorized_organizations.count.zero?
+              - unless current_user.authorized_organizations([:create_youxin]).count.zero?
                 li
                   a ng-href='#/billing/sms' tabindex='-1' 账单
                 li
