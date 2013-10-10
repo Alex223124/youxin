@@ -64,6 +64,7 @@ class ApplicationController < ActionController::Base
     abilities << Attachment::Base
     abilities << Conversation
     abilities << Form
+    abilities << Namespace
     abilities
   end
 

@@ -99,6 +99,8 @@ module Youxin
                        abilities << Post
                        abilities << Attachment::Base
                        abilities << Conversation
+                       abilities << Form
+                       abilities << Namespace
                        abilities
                      end
     end

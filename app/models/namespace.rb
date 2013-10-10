@@ -19,4 +19,14 @@ class Namespace
   has_many :users, dependent: :destroy
   has_many :positions, dependent: :destroy
   has_many :roles, dependent: :destroy
+
+  def self.allowed(object, subject)
+    return [] unless object.instance_of?(User)
+    return [] unless subject.instance_of?(Namespace)
+    subject.organizations.where(parent_id: nil).each do |organization|
+      return [:manage_namespace] if object.user_actions_organization_relationships.where(organization_id: organization.id).first.actions.include?(:edit_organization)
+    end
+    []
+  end
+
 end

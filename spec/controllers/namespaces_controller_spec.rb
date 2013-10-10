@@ -17,9 +17,23 @@ describe NamespacesController do
   end
   describe 'PUT update' do
     before(:each) do
-      login_user admin
+      @parent = create :organization, namespace: namespace
+      actions_organization = Action.options_array_for(:organization)
+      @parent.authorize_cover_offspring(admin, actions_organization)
+    end
+    it "should fail if not authorized" do
+      attrs = {
+        name: 'new-name'
+      }
+      expect do
+        put :update, namespace: attrs
+        namespace.reload
+      end.not_to change { namespace.name }
     end
     context 'name' do
+      before(:each) do
+        login_user admin
+      end
       it 'should update the name' do
         attrs = {
           name: 'new-name'
@@ -31,6 +45,9 @@ describe NamespacesController do
       end
     end
     context 'logo' do
+      before(:each) do
+        login_user admin
+      end
       it 'should update logo' do
         logo_path = Rails.root.join("spec/factories/images/logo.png")
         attrs = {
