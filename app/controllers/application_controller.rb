@@ -3,6 +3,7 @@
 require_dependency 'youxin'
 class ApplicationController < ActionController::Base
   include ApplicationHelper
+  include MobileDetect
 
   protect_from_forgery
 

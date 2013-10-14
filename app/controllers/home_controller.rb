@@ -2,7 +2,13 @@ class HomeController < ApplicationController
   skip_before_filter :authenticate_user!
 
   def index
-    redirect_to introduction_path unless signed_in?
+    unless signed_in?
+      if is_mobile_device?
+        redirect_to app_path
+      else
+        redirect_to introduction_path
+      end
+    end
   end
   def privacy
     render layout: 'features'

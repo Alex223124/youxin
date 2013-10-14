@@ -23,7 +23,7 @@ module Youxin
 
     # Custom directories with classes and modules you want to be autoloadable.
     # config.autoload_paths += %W(#{config.root}/extras)
-    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/models/concerns)
+    config.autoload_paths += %W(#{config.root}/lib #{config.root}/app/models/concerns #{config.root}/app/controllers/concerns)
     # For api files
     config.paths.add "app/api", glob: "**/*.rb"
     config.autoload_paths += Dir["#{Rails.root}/app/api/*"]

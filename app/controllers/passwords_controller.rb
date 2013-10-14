@@ -81,4 +81,13 @@ class PasswordsController < Devise::PasswordsController
     end
   end
 
+  def after_sign_in_path_for(resource)
+     if is_mobile_device?
+       app_path
+     else
+       super(resource)
+     end
+  end
+
+
 end

@@ -13,7 +13,7 @@
     .control-group
       label.control-label for='user_login' 确认密码
       .controls
-        = f.password_field :password_confirmation, autofocus: true, placeholder: '请再次输入密码', class: 'input-block-level'
+        = f.password_field :password_confirmation, placeholder: '请再次输入密码', class: 'input-block-level'
     .control-group
       = f.button '修改密码', class: 'btn btn-primary btn-block submit', disable_with: '请稍后 ...'
     .tips

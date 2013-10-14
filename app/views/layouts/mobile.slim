@@ -14,6 +14,12 @@ html
     = yield :styles
     = yield :scripts
   body
+    .notice-container
+      - if flash[:notice]
+        .notice #{flash[:notice]}
+      - if flash[:error]
+        .notice #{flash[:error]}
+
     = yield
 
     .footer

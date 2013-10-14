@@ -13,10 +13,43 @@ img {
   border: 0;
 }
 
+.notice-container {
+  width: 100%;
+  background: hsl(0, 0%, 80%);
+  font-size: 0.9em;
+
+  .notice, .error {
+    max-width: 600px;
+    padding: 10px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .notice {
+    color: hsl(210, 29%, 29%);
+  }
+  .error {
+    color: hsl(3, 42%, 52%);
+  }
+}
+
 .wrapper {
   margin: 0 auto;
+  position: relative;
   max-width: 600px;
   text-align: center;
+  .close {
+    font-size: 1.2em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-top: -2em;
+    padding: 0.3em 0.7em;
+    color: hsl(168, 76%, 36%);
+    &:hover {
+      color: hsl(168, 76%, 16%);
+    }
+  }
+
   .logo {
     margin: 3em;
     margin-bottom: 2em;

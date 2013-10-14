@@ -1,6 +1,8 @@
 .wrapper
+  = link_to "首页→", new_user_session_path, class: 'close'
   .logo
-    = image_tag('icon/download-logo.png')
+    = link_to root_path do
+      = image_tag('icon/download-logo.png')
   h1 Combee
   h3 #{Youxin.config.slogan}
 
