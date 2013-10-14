@@ -44,7 +44,7 @@ body ng-app="youxin"
                 a ng-href='#/settings/account/profile' tabindex='-1' 个人设置
               - unless current_user.authorized_organizations([:create_youxin]).count.zero?
                 li
-                  a ng-href='#/billing/sms' tabindex='-1' 账单
+                  a ng-href='#/billing/sms' tabindex='-1' 提醒记录
               - unless current_user.authorized_organizations([:edit_organization]).count.zero?
                 li
                   a ng-href='#/settings/system/logo' tabindex='-1' 系统设置

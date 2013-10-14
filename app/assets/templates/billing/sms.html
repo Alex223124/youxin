@@ -5,9 +5,7 @@
       <span>
         当月已成功发送短信
         <span class="count">{{bill_summary.sms}}</span>
-        条,总计产生费用
-        <span class="count">{{(bill_summary.sms * 0.1).toFixed(2)}}</span>
-        元
+        条
       </span>
       <span class="pull-right input-daterange form-horizontal" style="margin-bottom: 10px">
         <input type="text" class="input-small" name="start" value="{{date_range.start_date}}" ng-model="date_range.start_date">

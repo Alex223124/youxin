@@ -1,23 +1,23 @@
 @BillingController = ["$scope", ($scope)->
   $scope.breadcrumbs = [
     {
-      name: '账单'
+      name: '提醒记录'
       url: '/billing/sms'
     }
     {
-      name: '短信账单'
+      name: '短信提醒'
       url: '/billing/sms'
     }
   ]
   $scope.navs = [
     {
       name: 'sms',
-      title: '短信账单',
+      title: '短信提醒',
       url: '/billing/sms'
     },
     {
       name: 'call',
-      title: '电话账单',
+      title: '电话提醒',
       url: '/billing/call'
     }
   ]
@@ -51,7 +51,7 @@ getDateString = (picker)->
   $scope.prepare_breadcrumbs(1)
   $scope.setActive($scope.navs, 'sms')
   $scope.breadcrumbs = $scope.breadcrumbs.push
-    name: '短信账单'
+    name: '短信提醒'
     url: '/billing/sms'
 
   $scope.date_range =
@@ -95,7 +95,7 @@ getDateString = (picker)->
   $scope.prepare_breadcrumbs(1)
   $scope.setActive($scope.navs, 'call')
   $scope.breadcrumbs = $scope.breadcrumbs.push
-    name: '电话账单'
+    name: '电话提醒'
     url: '/billing/call'
 
   $scope.date_range =
