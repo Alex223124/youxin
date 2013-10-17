@@ -33,8 +33,8 @@ defaults: &defaults
     ios_tips_and_tricks: '/help/ios_tips_and_tricks'
     contact_email: support@combee.co
     android:
-      version: 2.0.0
-      url: '/downloads/combee.2.0.0.apk'
+      version: 2.0.2
+      url: '/downloads/Combee.2.0.2.apk'
     ios:
       version: 2.0.0
       url: 'javascript:;'
