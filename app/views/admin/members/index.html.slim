@@ -1,9 +1,0 @@
-h3 #{@organization.name}
-= form_tag(members_admin_organization_path(@organization), method: :put, class: 'form-horizontal') do
-  .control-group
-    - User.each do |user|
-      label.checkbox
-        = check_box_tag 'member_ids[]', user.id, @organization.members.include?(user)
-        = user.name
-  .control-group
-    = submit_tag 'submit', class: 'btn btn-primary'

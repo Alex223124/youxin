@@ -100,6 +100,16 @@ Youxin::Application.routes.draw do
   get '/uploads/header/*path' => 'gridfs#serve'
   get '/uploads/logo/*path' => 'gridfs#serve'
 
+  #
+  # Admin Area
+  #
+  namespace :admin do
+    resources :namespaces, only: [:index, :show] do
+      resources :users, only: [:show]
+    end
+  end
+
+
   require 'api'
   mount Youxin::API => '/'
 

@@ -1,0 +1,46 @@
+= link_to 'back', admin_namespaces_path, class: 'btn btn-primary pull-right'
+h2 #{@namespace.name}
+h3 用户
+p
+  label.label.label-success #{@namespace.users.where(:sign_in_count.gt => 0).desc(:sign_in_count).count}
+  | 人登录
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th 姓名
+      th 手机
+      th 登录次数
+      th 最后一次登录
+      th 发送优信数
+      th 优信数
+      th 未读优信数
+  tbody
+    - @namespace.users.where(:sign_in_count.gt => 0).desc(:sign_in_count).each do |user|
+      tr
+        td
+          = link_to user.name, admin_namespace_user_path(@namespace, user)
+        td #{user.phone}
+        td #{user.sign_in_count}
+        td #{user.last_sign_in_at}
+        td #{user.posts.count}
+        td #{user.receipts.all.count}
+        td #{user.receipts.unread.count}
+
+h3 组织
+p
+  label.label.label-success #{@namespace.organizations.count}
+  | 个组织
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th 姓名
+      th 用户数
+      th 登录用户数
+      th 优信数
+  tbody
+    - @namespace.organizations.each do |organization|
+      tr
+        td #{organization.name}
+        td #{organization.members.count}
+        td #{organization.members.where(:sign_in_count.gt => 0).count}
+        td #{Post.where(organization_ids: organization.id).count}

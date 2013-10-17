@@ -7,6 +7,8 @@ defaults: &defaults
   slogan: 让消息通知更有效率
   admin_emails:
     - admin@y.x
+  admin_phones:
+    - '18600000007'
   smtp_settings:
     address: smtp.gmail.com
     port: 587

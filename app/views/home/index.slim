@@ -38,6 +38,9 @@ body ng-app="youxin"
               | #{current_user.name}
               b.caret
             ul.dropdown-menu
+              - if Youxin.config.admin_phones.include?(current_user.phone)
+                li
+                  = link_to '后台管理', admin_namespaces_path
               li
                 a ng-href='#/account/profile' tabindex='-1' 我的主页
               li

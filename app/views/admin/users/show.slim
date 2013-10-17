@@ -1,0 +1,28 @@
+= link_to 'back', admin_namespace_path(@namespace), class: 'btn btn-primary pull-right'
+
+h3 #{@user.name}
+p
+  | 共发送
+  label.label.label-success #{@user.posts.count}
+  | 条优信
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th 标题
+      th 接收人数
+      th 未读人数
+      th 附件
+      th 表格
+      th 发送时间
+  tbody
+    - @posts.each do |post|
+      tr
+        td
+          = link_to post.title, 'javascript:;', class: 'admin-tooltip', data: { toggle: 'tooltip', html: true, title: post.body_html.html_safe }
+        td #{post.receipts.all.count}
+        td #{post.receipts.unread.count}
+        td #{post.attachments?}
+        td #{post.forms?}
+        td #{post.created_at}
+
+

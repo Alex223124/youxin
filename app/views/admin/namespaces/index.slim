@@ -1,0 +1,21 @@
+h3 概览
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th 名字
+      th 总人数
+      th 登录人数
+      th 组织总数
+      th 子域名
+      th 子域名开启
+  tbody
+    - @namespaces.each do |namespace|
+      tr
+        td
+          = link_to namespace.name, admin_namespace_path(namespace)
+        td #{namespace.users.count}
+        td #{namespace.users.where(:sign_in_count.gt => 0).count}
+        td #{namespace.organizations.count}
+        td #{namespace.subdomain}
+        td #{namespace.subdomain_enabled}
+
