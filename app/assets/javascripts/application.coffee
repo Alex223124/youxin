@@ -6,10 +6,10 @@
 #= require bootstrap-collapse
 #= require bootstrap-tab
 #= require bootstrap-tooltip
+#= require tool
 #= require angularjs
 #= require popuper
 #= require notifications
-#= require tool
 #= require bootstrap-wysihtml5
 #= require bootstrap-wysihtml5/locales/zh-CN
 #= require bootstrap-notify

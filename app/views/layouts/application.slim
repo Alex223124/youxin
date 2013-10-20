@@ -1,6 +1,9 @@
 doctype html
-html
+html id="ng-app" ng-app="youxin"
+  base href="/"
   head
+    /[if lte IE 8]
+      script src="http://bestiejs.github.io/json3/lib/json3.js"
     title Combee | 组织消息通知中心
     meta name="viewport" content="width=device-width, initial-scale=1.0"
     meta name="keywords" content="combee，优信，组织，消息推送，消息反馈"

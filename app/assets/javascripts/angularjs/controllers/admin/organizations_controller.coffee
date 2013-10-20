@@ -7,11 +7,12 @@
       App.alert("获取我所在的组织失败", 'error')
 
   getAllOrganizations = (callback, callbackerror)->
-    Organization.all = []
     $http.get('/account/authorized_organizations.json?actions[]=create_organization&actions[]=delete_organization&actions[]=edit_organization').success (_data)->
+      Organization.all = []
       for organization in _data.authorized_organizations
         new Organization(organization)
       Organization.setIndex(false)
+      Organization.setExpandFlag(true)
       callback(Organization.all)
     .error (_data, _status)->
       callbackerror(_data, _status)
@@ -27,8 +28,6 @@
   unless $scope.orgs
     getAllOrganizations((data)->
       $scope.orgs = data
-      for _i in $scope.orgs
-        _i.expandFlag = true
       if $location.path() is "/admin/organizations"
         $location.path("/admin/organizations/#{$scope.orgs[0].id}")
         $scope.activeEle = $scope.orgs[0]

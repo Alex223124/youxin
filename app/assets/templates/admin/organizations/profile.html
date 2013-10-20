@@ -1,12 +1,12 @@
 <div class="base-info">
-  <div class="pull-left info-pic pr">
+  <div class="info-pic pr">
     <img ng-src="{{defaultActiveEle.avatar | avatar_version:'big'}}" alt="org">
     <form id="avatarUploader" enctype="multipart/form-data">
-      <label class="inline fileinput-button">
+      <div class="fileinput-button">
         <div class="opacity-half"></div>
         <input type="file" accept="image/*" name='organization[avatar]' class="vh" onchange="angular.element(this).scope().uploadAvatar(this);">
-        <span>修改头像</span>
-      </label>
+        <span class="pr" onclick="$(this).prev().click()">修改头像</span>
+      </div>
     </form>
   </div>
   <div class="info-font">

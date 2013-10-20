@@ -10,7 +10,8 @@ window.fixed_alert = (msg)->
     position: "fixed"
     top: "40px"
     padding: "5px 10px"
-    display: "none"
+    opacity: "0"
+    filter: "alpha(opacity=0)"
     MsBorderRadius: "4px 4px 4px 4px"
     OBorderRadius: "4px 4px 4px 4px"
     MozBorderRadius: "4px 4px 4px 4px"
@@ -19,4 +20,14 @@ window.fixed_alert = (msg)->
     backgroundColor: "rgb(0,0,0)"
     color: "white"
     zIndex: 100000
-  container.fadeTo(400,0.7).delay(4000).fadeOut(1000)
+  hideStatus =
+    opacity: "0"
+    filter: "alpha(opacity=0)"
+  showStatus =
+    opacity: "0.7"
+    filter: "alpha(opacity=70)"
+  container.stop(true,true)
+  .css(hideStatus)
+  .animate(showStatus, 400)
+  .animate(showStatus, 4000)
+  .animate(hideStatus, 700)

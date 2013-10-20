@@ -24,7 +24,7 @@
     transclude: true
     scope:
       options: "=options"
-      callback: "&"
+      callback: "&callback"
       model: "=ngModel"
       member: "=member"
     template: """

@@ -1,6 +1,6 @@
 @app.directive "angulartree",["$http",($http)->
   directivecache = 
-    restrict: "E"
+    restrict: "A"
     scope: 
       datas: "=datas"
       options: "=options"
@@ -21,7 +21,7 @@
     """
     link: (scope,element,attrs)->
       getActive = ()->
-        _cache = if scope.activeele is undefined then scope.datas[0] else scope.activeele
+        _cache = if (scope.activeele is undefined) then scope.datas.first() else scope.activeele
         return _cache
 
       scope._cache = 
@@ -29,15 +29,27 @@
         true: "check"
         false: "check-empty"
 
-      scope.initialize = ($event)->
+      scope.initialize = ($event, expandlevel)->
         _children = element.children()
         scope.activeele = getActive()
         scope.bindActive(scope.activeele,$event)
+        expandlevel = if expandlevel then expandlevel else 1
         for _i,i in scope.datas
-          if _i.level isnt 0
+          if _i.level > expandlevel
             _children.eq(i).hide()
-        element.closest(".pr").prev().unbind("click",scope.initialize)
+          else if _i.level < expandlevel
+            _i.expandFlag = true
+        if expandlevel is 1
+          element.closest(".pr").prev().unbind("click",scope.initialize)
+      
       element.closest(".pr").prev().bind("click", scope.initialize)
+
+      window.setTimeout ()->
+        if scope.datas
+          scope.initialize(undefined, 1)
+        else
+          window.setTimeout arguments.callee, 30        
+      , 30
 
       scope.bindExpand = (data, $event)->
         $event.stopPropagation()

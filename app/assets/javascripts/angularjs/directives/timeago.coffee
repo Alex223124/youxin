@@ -32,7 +32,9 @@
         else return timeline.onesecond
 
       getHtmlStr = (datenumber)->
-        if datenumber < timeline.oneminute
+        if datenumber <= 0
+          return "刚刚"
+        else if datenumber < timeline.oneminute
           return "#{parseInt(datenumber / timeline.onesecond)}秒前"
         else if datenumber < timeline.anhour
           return "#{parseInt(datenumber / timeline.oneminute)}分钟前"
@@ -53,7 +55,7 @@
         resultStr = getHtmlStr(timeAgo)
         element.text(resultStr)
         if timeoutStep
-          $timeout(main,timeoutStep)
+          $timeout(main, timeoutStep)
 
       main()
   return directiveCache

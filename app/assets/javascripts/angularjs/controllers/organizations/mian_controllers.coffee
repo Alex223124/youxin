@@ -19,8 +19,8 @@
       App.alert("获取我所在的组织失败", 'error')
 
   getAllOrganizations = (callback, callbackerror)->
-    Organization.all = []
     $http.get('/organizations.json').success (_data)->
+      Organization.all = []
       for organization in _data.organizations
         new Organization(organization)
       Organization.setIndex(false)
@@ -90,8 +90,8 @@
       App.alert("获取我所在的组织失败", 'error')
 
   getAllOrganizations = (callback, callbackerror)->
-    Organization.all = []
     $http.get('/organizations.json').success (_data)->
+      Organization.all = []
       for organization in _data.organizations
         new Organization(organization)
       Organization.setIndex(false)
@@ -164,9 +164,8 @@
     for organization in data.organizations
       new Organization(organization)
     Organization.setIndex(false)
+    Organization.setExpandFlag(true)
     $scope.organizations = Organization.all
-    for _i in $scope.organizations
-      _i.expandFlag = true
     $scope.activeElement = $scope.organizations.first()
     $scope.current_organization = $scope.organizations.objOfProperty("id", organization_id)
     $scope.breadcrumbs = $scope.breadcrumbs.concat [
@@ -205,26 +204,26 @@
     $scope.position_options = []
 
   $scope.callback = (newOption, member, oldOption)->
+    _result = true
     if oldOption is null or (newOption.id isnt oldOption.id)
       if newOption.id is ''
         params = 
           'member_ids[]': [member.id]
         $http.delete("/organizations/#{organization_id}/members/role.json", { params: params }).success ()->
           member.role = newOption
-          return true
+          _result = true
         .error ()->
           App.alert("由于网络原因，您需要重新操作！", 'error')
-          return false
+          _result = false
       else
         data = getData(member.id, newOption.id)
         $http.put("/organizations/#{organization_id}/members/role.json", data).success ()->
           member.role = newOption
-          return true
+          _result = true
         .error ()->
           App.alert("由于网络原因，您需要重新操作！", 'error')
-          return false
-    else
-      return true
+          _result = false
+    _result
 
   $scope.org_tree_options = 
     expand: true
@@ -279,18 +278,60 @@
     .error (_data)->
       App.alert("修改失败!", 'error')
 
-  $scope.removeAll = ()->
-    ids = while $scope.members.last() 
-      $scope.members.pop().id
-    params =
-      'member_ids[]': ids
-    $http.delete("/organizations/#{organization_id}/members.json", { params: params }).success ()->
-      App.alert("成功删除所有用户", 'success')
-    .error ()->
-      App.alert("删除失败", 'error')
 
-    $scope.members = []
-    $scope.hasOrgMember = false
+  removeAllMembers = ()->
+    tpl = """
+      <div class="modal">
+        <div class="modal-header">
+          <button type="button" class="close cancel" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4>确认删除所有成员?</h4>
+        </div>
+        <div class="modal-footer">
+          <a href="javascript:;" class="btn cancel">取消</a>
+          <a href="javascript:;" class="btn btn-primary submit">删除</a>
+        </div>
+      </div>
+    """
+    confirm = $("<div class='confirm'>")
+    mask = $("<div class='mask cancel'>")
+    content = $("<div class='content'>")
+    content.append(tpl)
+    confirm.append(mask).append(content)
+    $(document.body).append(confirm)
+    content = confirm.find(".content")
+    cancelele = confirm.find(".cancel")
+    confirmele = confirm.find(".submit")
+    content.css
+      left: ($(document.body).width() - content.width())/2
+      top: (window.innerHeight - content.height())/2
+
+    hideConfirm = ()->
+      cancelele.unbind "click", cancelfn
+      confirmele.unbind "click", confirmfn
+      confirm.remove()
+
+    cancelfn = ()->
+      hideConfirm()
+
+    confirmfn = ()->
+      ids = while $scope.members.last() 
+        $scope.members.pop().id
+      params =
+        'member_ids[]': ids
+      $http.delete("/organizations/#{organization_id}/members.json", { params: params }).success ()->
+        App.alert("成功删除所有用户", 'success')
+      .error ()->
+        App.alert("删除失败", 'error')
+
+      $scope.members = []
+      $scope.hasOrgMember = false
+      hideConfirm()
+
+    cancelele.bind "click", cancelfn
+    confirmele.bind "click", confirmfn
+
+  $scope.removeAll = ()->
+    removeAllMembers()
 
   $scope.addNewOrgMember = ()->
     objCache =
@@ -325,6 +366,7 @@
     fileInfo = form.find("input").val()
     $scope.$apply ->
       $scope.fileName = fileInfo.split("\\").last()
+
   $scope.importUsers = (event) ->
     unless ///\.xls///.test $scope.fileName
       App.alert("文件类型错误，请选择 Excel(2003) 文件", 'error')
