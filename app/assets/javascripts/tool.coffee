@@ -265,7 +265,7 @@ class Organization
         if organization.children
           arguments.callee(organization.children)
       true
-    _order_main(@getRoots())
+    _order_main(Organization.getAncestors())
     _cache
 
  
