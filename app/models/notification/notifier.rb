@@ -75,7 +75,7 @@ class Notification::Notifier
       receipt = Receipt.find(receipt) unless receipt.is_a? Receipt
       if receipt && receipt.user.phone?
         post = receipt.post
-        content = "#{post.author.name}: 您有一条新优信[#{post.title}]。详情点击： #{receipt.short_url} 【Combee】"
+        content = "#{post.author.name}: #{post.title}，详情点击： #{receipt.short_url} 【Combee】"
         res = message(receipt.user.phone, content)
         CommunicationRecord::Sms.create receipt: receipt, status: res[:code]
       end
