@@ -49,17 +49,17 @@ class Posts < Grape::API
       end
       get 'receipts' do
         authorize! :manage, @post
-        receipts = paginate @post.receipts.all
+        receipts = @post.receipts.all
         present receipts, with: Youxin::Entities::ReceiptAdmin
       end
       get 'unread_receipts' do
         authorize! :manage, @post
-        unread_receipts = paginate @post.receipts.unread
+        unread_receipts = @post.receipts.unread
         present unread_receipts, with: Youxin::Entities::ReceiptAdmin
       end
       get 'read_receipts' do
         authorize! :manage, @post
-        read_receipts = paginate @post.receipts.read
+        read_receipts = @post.receipts.read
         present read_receipts, with: Youxin::Entities::ReceiptAdmin
       end
       get 'comments' do
