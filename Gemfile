@@ -70,6 +70,7 @@ gem 'font-awesome-sass-rails', github: 'pduersteler/font-awesome-sass-rails', br
 # gem 'font-awesome-sass-rails'
 gem 'bootstrap-wysihtml5-rails'
 gem 'bootstrap-datepicker-rails'
+gem 'china_city'
 
 # Youxin settings
 gem 'settingslogic', '~> 2.0.9'

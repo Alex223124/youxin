@@ -1,6 +1,7 @@
 class NamespaceSerializer < ActiveModel::Serializer
   attributes :name,
-             :logo
+             :logo,
+             :detailable
 
   def logo
     object.logo.url

@@ -66,6 +66,7 @@ Youxin::Application.routes.draw do
     get 'recent_authorized_organizations' => 'accounts#recent_authorized_organizations'
     get 'created_receipts' => 'accounts#created_receipts'
     get 'favorited_receipts' => 'accounts#favorited_receipts'
+    get 'detail_options' => 'accounts#detail_options'
   end
   devise_for :users, path: 'account', skip: [:sessions], controllers: { passwords: :passwords }
   as :user do
@@ -109,6 +110,7 @@ Youxin::Application.routes.draw do
     end
   end
 
+  mount ChinaCity::Engine => '/china_city'
 
   require 'api'
   mount Youxin::API => '/'

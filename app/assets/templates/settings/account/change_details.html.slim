@@ -1,0 +1,69 @@
+p.lead 用户详细信息修改
+form.form-horizontal name='form'
+  .control-group
+    label.control-label 生源所在地
+    .controls
+      .district-selector district-selector='true' region='account.enrollment_region'
+
+  .control-group
+    label.control-label 政治面貌
+    .controls
+      select ng-model='account.political_status' ng-options='political_status for political_status in political_status_options'
+        option value='' --政治面貌--
+
+  .control-group
+    label.control-label 民族
+    .controls
+      input.input-mini type='text' ng-model='account.ethnic' placeholder='汉族'
+
+  .control-group
+    label.control-label 出生日期
+    .controls
+      input.input-small.birthday-input type='text' ng-model='account.birthday'
+
+  .control-group
+    label.control-label 身份证号码
+    .controls
+      input type='text' ng-model='account.id_number'
+
+  .control-group
+    label.control-label 家长联系方式
+    .controls
+      input type='text' ng-model='account.parental_tel'
+
+  .control-group
+    label.control-label 中国银行卡号
+    .controls
+      input type='text' ng-model='account.boc_number'
+
+  .control-group
+    label.control-label 社保卡号
+    .controls
+      input type='text' ng-model='account.social_security_number'
+
+  .control-group
+    label.control-label 是否低保
+    .controls
+      label.radio
+        input type='radio' ng-model='account.poor' value='1' 是
+      label.radio
+        input type='radio' ng-model='account.poor' value='0' 否
+
+  .control-group
+    label.control-label 家庭户口
+    .controls
+      label.radio
+        input type='radio' ng-model='account.type_of_household' value='城镇' 城镇
+      label.radio
+        input type='radio' ng-model='account.type_of_household' value='农村' 农村
+
+  .control-group
+    label.control-label 家庭住址
+    .controls
+      input type='text' ng-model='account.residential_address'
+
+  .control-group
+    label.control-label 邮政编码
+    .controls
+      input.input-small type='text' ng-model='account.zip'
+  button.btn.btn-primary ng-click='update(account)' ng-disabled='form.$invalid || form.waiting' 保存

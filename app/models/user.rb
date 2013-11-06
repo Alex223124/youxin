@@ -5,6 +5,7 @@ class User
   include Mongoid::Paranoia # Soft delete
   include Mongoid::Timestamps # Add created_at and updated_at fields
   include SmsRecoverable
+  include Detailable
 
   IOS_DEVICE_TONKEN_REGEXP = %r(\A[a-z0-9]{64}\z)
 

@@ -25,4 +25,7 @@ describe AccountsController do
   it "to #favorited_receipts" do
     get('/account/favorited_receipts').should route_to('accounts#favorited_receipts')
   end
+  it "to #detail_options" do
+    get('/account/detail_options').should route_to('accounts#detail_options')
+  end
 end

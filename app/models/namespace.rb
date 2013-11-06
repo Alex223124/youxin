@@ -7,13 +7,15 @@ class Namespace
   field :name, type: String
   field :subdomain, type: String
   field :subdomain_enabled, type: Boolean, default: false
+  field :detailable, type: Boolean, default: false
 
   mount_uploader :logo, LogoUploader
 
   validates :subdomain, uniqueness: true, format: { with: SUBDOMAIN_REGEXP }, length: { maximum: 20 }, if: ->(namespace) { namespace.subdomain.present? or namespace.subdomain_enabled? }
 
   attr_accessible :name,
-                  :logo, :logo_cache, :remove_logo
+                  :logo, :logo_cache, :remove_logo,
+                  :detailable
 
   has_many :organizations, dependent: :destroy
   has_many :users, dependent: :destroy

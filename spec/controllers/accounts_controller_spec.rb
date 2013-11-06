@@ -164,4 +164,16 @@ describe AccountsController do
       }.as_json
     end
   end
+  describe 'GET detail_options' do
+    before(:each) do
+      login_user current_user
+    end
+    it 'should return the options' do
+      get :detail_options
+      json_response.should == {
+        political_status_options: User::POLITICAL_STATUS_OPTIONS,
+        type_of_household_options: User::TYPE_OF_HOUSEHOLD_OPTIONS
+      }.as_json
+    end
+  end
 end

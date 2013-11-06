@@ -35,6 +35,14 @@ class AccountsController < ApplicationController
     end
   end
 
+  def detail_options
+    options = {
+      political_status_options: User::POLITICAL_STATUS_OPTIONS,
+      type_of_household_options: User::TYPE_OF_HOUSEHOLD_OPTIONS
+    }
+    render json: options
+  end
+
   def show
     render json: current_user, serializer: UserSerializer, root: :user
   end

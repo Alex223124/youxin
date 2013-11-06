@@ -4,7 +4,7 @@
   $stateProvider
     .state 'home',
       url: "/"
-      views: 
+      views:
         "mainView":
           templateUrl: "<%= asset_path('receipts.html') %>"
           controller: ReceiptsController
@@ -109,6 +109,12 @@
         "detail":
           templateUrl: "<%= asset_path('settings/account/change_profile.html') %>"
           controller: ChangeProfileController
+    .state 'settings.account.details',
+      url: "/details"
+      views:
+        "detail":
+          templateUrl: "<%= asset_path('settings/account/change_details.html') %>"
+          controller: ChangeDetailsController
     .state 'settings.system',
       url: '/system'
       views:
