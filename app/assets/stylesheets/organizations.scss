@@ -365,6 +365,10 @@
         height: 100%;
       }
     }
+    .info-font {
+      display: inline-block;
+      *display: inline-block;
+    }
     li{
       display: inline;
     }
