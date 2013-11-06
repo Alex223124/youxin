@@ -310,8 +310,8 @@
   .base-info{ 
     margin: 20px 0 20px 0; 
     &>div{
-      display: inline;
-      *display: inline;
+      display: inline-block;
+      *display: inline-block;
       *zoom: 1;
       vertical-align: top;
     }

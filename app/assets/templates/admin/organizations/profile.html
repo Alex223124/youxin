@@ -1,5 +1,5 @@
-<div class="base-info">
-  <div class="info-pic pr">
+<div class="base-info row-fuild">
+  <div class="info-pic pr span3">
     <img ng-src="{{defaultActiveEle.avatar | avatar_version:'big'}}" alt="org">
     <form id="avatarUploader" enctype="multipart/form-data">
       <div class="fileinput-button">
@@ -9,7 +9,7 @@
       </div>
     </form>
   </div>
-  <div class="info-font">
+  <div class="info-font span9">
     <div class="parentorg">
       <li ng-repeat="parent in defaultActiveEle.parents">
         <a href="#/admin/organizations/{{parent.id}}">{{parent.name}}</a>&gt;&gt;
@@ -18,13 +18,13 @@
     <h4 class="name" contenteditable="true" ng-blur="put_info({name: defaultActiveEle.name})" ng-model="defaultActiveEle.name">{{defaultActiveEle.name}}</h4>
     <a href="#/organizations/{{defaultActiveEle.id}}/members">管理成员</a>
     <label>
-      <span class="line-tips">管理员</span>
-      <span>
+      <span class="line-tips">管理员:</span>
+      <div>
         <span class="manager" ng-repeat="manager in defaultActiveEle.managers">{{manager.name}}</span>
-      </span>
+      </div>
     </label>
     <label>
-      <span class="line-tips">人数</span>
+      <span class="line-tips">人数:</span>
       <span>{{defaultActiveEle.members_count}}</span>
     </label>
   </div>
