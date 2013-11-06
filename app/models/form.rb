@@ -103,7 +103,7 @@ class Form
   def archive
     file = Tempfile.new('/tmp/excels', Rails.root)
     book = WriteExcel.new file.path
-    sheet = book.add_worksheet(self.title || '未命名表单')
+    sheet = book.add_worksheet(self.title[0...10] || '未命名表单')
     format_bold = book.add_format
     format_bold.set_bold
 
