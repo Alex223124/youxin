@@ -57,6 +57,8 @@ module Detailable
       case option.to_sym
       when :enrollment_region
         result << ChinaCity.get(self.send(option))
+      when :poor
+        result << (self.send(option) ? '是' : '否')
       else
         result << self.send(option)
       end
