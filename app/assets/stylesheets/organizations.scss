@@ -310,8 +310,8 @@
   .base-info{ 
     margin: 20px 0 20px 0; 
     &>div{
-      display: inline-block;
-      *display: inline-block;
+      display: block;
+      *display: block;
       *zoom: 1;
       vertical-align: top;
     }
@@ -366,8 +366,8 @@
       }
     }
     .info-font {
-      display: inline-block;
-      *display: inline-block;
+      display: block;
+      *display: block;
     }
     li{
       display: inline;
