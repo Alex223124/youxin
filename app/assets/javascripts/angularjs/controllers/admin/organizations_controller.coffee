@@ -49,7 +49,7 @@
 ]
 
 
-@AdminOrganizationsProfileController = ['$scope', '$http', '$location', '$stateParams', ($scope, $http, $location, $stateParams) ->
+@AdminOrganizationsProfileController = ['$scope', '$http', '$location', '$stateParams', 'Account', ($scope, $http, $location, $stateParams, Account) ->
   organization_id = $stateParams['id']
   getOrganizationManagers = (org_id, callback, callbackerror)->
     $http.get("/organizations/#{org_id}/authorized_users.json").success (data)->
@@ -60,7 +60,7 @@
 
   parents = (org)->
     _result = []
-    if typeof org.getAncestors isnt "Function" 
+    if typeof org.getAncestors isnt "Function"
       org = $scope.orgs.objOfProperty("id", org.id)
     ((org)->
       if org.parent
@@ -114,4 +114,132 @@
         form.removeClass('active').find('span').html('修改头像')
         $scope.$apply ->
           $scope.defaultActiveEle.avatar = responseText.organization.avatar
+
+
+  $scope.openExportContainer = () ->
+    $('#exportor_container').show()
+  $scope.closeExportContainer = () ->
+    $('#exportor_container').hide()
+
+  $scope.exportorOptions = [
+    {
+      label: '姓名'
+      value: 'name'
+      selected: false
+    },
+    {
+      label: '学号'
+      value: 'uid'
+      selected: false
+    },
+    {
+      label: '性别'
+      value: 'gender'
+      selected: false
+    },
+    {
+      label: '联系电话'
+      value: 'phone'
+      selected: false
+    },
+    {
+      label: '电子邮箱'
+      value: 'email'
+      selected: false
+    },
+    {
+      label: 'QQ号'
+      value: 'qq'
+      selected: false
+    }
+  ]
+
+  Account.get (data) ->
+    if data.user.namespace.detailable
+      $scope.exportorOptions = $scope.exportorOptions.concat [
+        {
+          label: '班级'
+          value: 'grade'
+          selected: false
+        },
+        {
+          label: '政治面貌'
+          value: 'political_status'
+          selected: false
+        },
+        {
+          label: '民族'
+          value: 'ethnic'
+          selected: false
+        },
+        {
+          label: '出生日期'
+          value: 'birthday'
+          selected: false
+        },
+        {
+          label: '生源所在地'
+          value: 'enrollment_region'
+          selected: false
+        },
+        {
+          label: '身份证号码'
+          value: 'id_number'
+          selected: false
+        },
+        {
+          label: '家长联系方式'
+          value: 'parental_tel'
+          selected: false
+        },
+        {
+          label: '中国银行卡号'
+          value: 'boc_number'
+          selected: false
+        },
+        {
+          label: '社保卡号'
+          value: 'social_security_number'
+          selected: false
+        },
+        {
+          label: '是否低保'
+          value: 'poor'
+          selected: false
+        },
+        {
+          label: '家庭户口'
+          value: 'type_of_household'
+          selected: false
+        },
+        {
+          label: '家庭住址'
+          value: 'residential_address'
+          selected: false
+        },
+        {
+          label: '邮政编码'
+          value: 'zip'
+          selected: false
+        }
+      ]
+
+  $scope.downloadLink = "/organizations/#{organization_id}/export_users"
+
+  generateDownloadLink = () ->
+    params = []
+    for option in $scope.exportorOptions
+      if option.selected
+        params.push "selected_options[]=#{option.value}"
+    params.push "offspring_selected=#{$scope.offspringSelected}"
+    base_url = "/organizations/#{organization_id}/export_users"
+    $scope.downloadLink = "#{base_url}?#{params.join("&")}"
+
+  $scope.$watch 'exportorOptions', (val) ->
+    generateDownloadLink()
+  , true
+  $scope.$watch 'offspringSelected', (val) ->
+    generateDownloadLink()
+  , true
+
 ]

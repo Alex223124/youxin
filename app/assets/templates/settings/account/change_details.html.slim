@@ -17,6 +17,11 @@ form.form-horizontal name='form'
       input.input-mini type='text' ng-model='account.ethnic' placeholder='汉族'
 
   .control-group
+    label.control-label 班级
+    .controls
+      input type='text' ng-model='account.grade'
+
+  .control-group
     label.control-label 出生日期
     .controls
       input.input-small.birthday-input type='text' ng-model='account.birthday'

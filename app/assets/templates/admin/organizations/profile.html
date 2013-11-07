@@ -17,6 +17,7 @@
     </div>
     <h4 class="name" contenteditable="true" ng-blur="put_info({name: defaultActiveEle.name})" ng-model="defaultActiveEle.name">{{defaultActiveEle.name}}</h4>
     <a href="#/organizations/{{defaultActiveEle.id}}/members">管理成员</a>
+    <a ng-click='openExportContainer();'>导出成员</a>
     <label>
       <span class="line-tips">管理员:</span>
       <div>
@@ -33,4 +34,19 @@
   <label>简介</label>
   <textarea id="info-textarea" ng-model="defaultActiveEle.bio" ng-blur="put_info({bio: defaultActiveEle.bio})" placeholder="Enter text ...">
   </textarea>
+</div>
+
+<div id="exportor_container">
+  <div class='wrap'>
+    <label class='checkbox inline' ng-repeat='option in exportorOptions'>
+      <input type="checkbox" ng-model='option.selected'> {{option.label}}
+    </label>
+
+    <label class='checkbox inline'>
+      <input type="checkbox" ng-model='offspringSelected'> 包括所有下级组织
+    </label>
+    <a class='btn btn-default' ng-click='closeExportContainer()'>关闭</a>
+    <a class='btn btn-primary' target='_blank' ng-href="{{downloadLink}}">导出成Excel表格</a>
+  </div>
+
 </div>

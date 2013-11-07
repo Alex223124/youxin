@@ -25,6 +25,7 @@ Youxin::Application.routes.draw do
       post 'children' => 'organizations#create_children'
       get 'authorized_users' => 'organizations#authorized_users'
       get 'receipts' => 'organizations#receipts'
+      get 'export_users' => 'organizations#export_users'
     end
     resources :members, only: [:index, :create] do
       collection do

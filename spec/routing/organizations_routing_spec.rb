@@ -19,4 +19,7 @@ describe OrganizationsController do
   it "to #members" do
     get('/organizations/members').should route_to('organizations#members')
   end
+  it "to #export_users" do
+    get('/organizations/123/export_users').should route_to('organizations#export_users', id: '123')
+  end
 end
