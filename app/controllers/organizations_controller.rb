@@ -51,9 +51,9 @@ class OrganizationsController < ApplicationController
     options = params[:selected_options] || []
     offspring = params[:offspring_selected] || false
     users = if offspring
-               ([@organization] + @organization.offspring).map(&:members).flatten
+               ([@organization] + @organization.offspring).map(&:members).flatten.uniq
             else
-              users = @organization.members
+              users = @organization.members.uniq
             end
     valid_options = []
     options.each do |option|
