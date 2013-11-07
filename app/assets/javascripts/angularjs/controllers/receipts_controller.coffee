@@ -233,16 +233,13 @@
     receipt.expanded = !receipt.expanded
 
   $scope.read_receipt = (receipt) ->
-    if !receipt.read and receipt.forms_filled
+    if !receipt.read
       $http.put("/receipts/#{receipt.id}/read.json").success (data) ->
         receipt.read = true
         UnreadBubble.setBubble(UnreadBubble.getCurrentCount() - 1)
 
   $scope.mark_receipt_as_read = (receipt) ->
-    if receipt.forms_filled
-      $scope.read_receipt(receipt)
-    else
-      App.alert('请先填写表单', 'error')
+    $scope.read_receipt(receipt)
 
   $scope.showTooltip = (event) ->
     $(event.target).tooltip('show')
