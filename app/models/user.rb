@@ -129,7 +129,7 @@ class User
   belongs_to :namespace
   belongs_to :creator, class_name: 'User'
 
-  before_save :ensure_authentication_token!
+  before_save :ensure_authentication_token
   before_save :ensure_notification_channel!
   alias_attribute :private_token, :authentication_token
 
