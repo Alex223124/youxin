@@ -118,7 +118,11 @@ class Users < Grape::API
         @user = current_namespace.users.find(params[:id])
       end
       get do
-        present @user, with: Youxin::Entities::UserProfile
+        if current_user_can? :read_profile, @user
+          present @user, with: Youxin::Entities::UserProfile
+        else
+          present @user, with: Youxin::Entities::OtherUserProfile
+        end
       end
       get 'organizations' do
         organizations = @user.organizations

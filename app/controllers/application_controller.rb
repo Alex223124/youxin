@@ -66,6 +66,7 @@ class ApplicationController < ActionController::Base
     abilities << Conversation
     abilities << Form
     abilities << Namespace
+    abilities << User
     abilities
   end
 

@@ -30,6 +30,12 @@ module Youxin
         forbidden!
       end
     end
+    def can?(object, action, subject)
+      abilities.allowed?(object, action, subject)
+    end
+    def current_user_can?(action, subject)
+      abilities.allowed?(current_user, action, subject)
+    end
 
     def paginate(objects)
       per_page = (params[:per_page] || Kaminari.config.default_per_page).to_i
@@ -101,6 +107,7 @@ module Youxin
                        abilities << Conversation
                        abilities << Form
                        abilities << Namespace
+                       abilities << User
                        abilities
                      end
     end

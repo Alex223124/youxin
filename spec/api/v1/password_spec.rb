@@ -28,6 +28,8 @@ describe Youxin::API, 'password' do
         json_response.should == {
           id: user.id,
           name: user.name,
+          email: user.email,
+          created_at: user.created_at,
           avatar: user.avatar.url
         }.as_json
       end
@@ -51,6 +53,8 @@ describe Youxin::API, 'password' do
         json_response.should == {
           id: user.id,
           name: user.name,
+          email: user.email,
+          created_at: user.created_at,
           avatar: user.avatar.url
         }.as_json
       end
@@ -68,6 +72,8 @@ describe Youxin::API, 'password' do
       json_response.should == {
         id: user.id,
         name: user.name,
+        email: user.email,
+        created_at: user.created_at,
         avatar: user.avatar.url
       }.as_json
     end

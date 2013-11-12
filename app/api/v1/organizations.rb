@@ -24,7 +24,11 @@ class Organizations < Grape::API
       end
       get 'members' do
         members = @organization.members
-        present members, with: Youxin::Entities::UserBasic
+        if members.include?(current_user) || current_user.authorized_organizations.include?(@organization)
+          present members, with: Youxin::Entities::UserBasic
+        else
+          present members, with: Youxin::Entities::UserSimple
+        end
       end
       get 'receipts' do
         receipts = paginate current_user.receipts.from_organization(@organization)

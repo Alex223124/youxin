@@ -1024,8 +1024,8 @@ describe Youxin::API, 'users' do
               name: @user_one.name,
               avatar: @user_one.avatar.url,
               email: @user_one.email,
-              created_at: @user_one.created_at,
-              phone: @user_one.phone
+              phone: @user_one.phone,
+              created_at: @user_one.created_at
             }
           }
         }
@@ -1043,6 +1043,7 @@ describe Youxin::API, 'users' do
     context "/" do
       before(:each) do
         @user = create :user, namespace: namespace
+        @another_user = create :user, namespace: namespace
       end
       it "should return the info of a single user" do
         get api("/users/#{@user.id}", @user)
@@ -1051,16 +1052,21 @@ describe Youxin::API, 'users' do
           id: @user.id,
           email: @user.email,
           name: @user.name,
+          phone: @user.phone,
           created_at: @user.created_at,
           avatar: @user.avatar.url,
           header: @user.header.url,
-          phone: @user.phone,
           bio: @user.bio,
           gender: @user.gender,
           qq: @user.qq,
           blog: @user.blog,
           uid: @user.uid
         }.as_json
+      end
+      it "should not return phone" do
+        get api("/users/#{@another_user.id}", @user)
+        response.status.should == 200
+        json_response['phone'].should be_nil
       end
     end
 

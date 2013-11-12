@@ -1,21 +1,25 @@
 module Youxin
   module Entities
     class UserSimple < Grape::Entity
-      expose :id, :name
+      expose :id, :name, :email, :created_at
       expose :avatar do |user|
         user.avatar.url
       end
     end
 
     class UserBasic < UserSimple
-      expose :email, :created_at, :phone
+      expose :phone
     end
 
-    class UserProfile < UserBasic
-      expose :bio, :gender, :qq, :blog, :uid
+    class OtherUserProfile < UserSimple
+      expose :bio, :gender, :qq, :blog, :uid, :created_at
       expose :header do |user|
         user.header.url
       end
+    end
+
+    class UserProfile < OtherUserProfile
+      expose :phone
     end
 
     class User < UserBasic

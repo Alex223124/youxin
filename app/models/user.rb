@@ -307,6 +307,23 @@ class User
   alias_method :add_ios_device_token, :push_ios_device_token
   alias_method :remove_ios_device_token, :pull_ios_device_token
 
+  def self.allowed(object, subject)
+    return [] unless object.is_a?(User)
+    return [] unless subject.is_a?(User)
+    abilities = []
+    if subject == object
+      abilities |= [:read_profile]
+    else
+      if (object.organization_ids & subject.organization_ids).length > 0
+        abilities |= [:read_profile]
+      end
+      if (object.authorized_organizations([:edit_member]).map(&:id) & subject.organization_ids).length > 0
+        abilities |= [:read_profile]
+      end
+    end
+    abilities
+  end
+
   protected
   def email_required?
     false
