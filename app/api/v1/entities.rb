@@ -167,7 +167,7 @@ module Youxin
     end
     class Comment < Grape::Entity
       expose :id, :body, :created_at
-      expose :user, using: Entities::UserBasic
+      expose :user, using: Entities::UserSimple
     end
     class CommentWithCommentable < Comment
       expose :commentable_type
