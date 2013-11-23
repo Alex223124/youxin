@@ -9,6 +9,7 @@ class Organizations < Grape::API
     route_param :id do
       before do
         @organization = current_namespace.organizations.find(params[:id])
+        not_found! unless @organization
       end
       get do
         present @organization, with: Youxin::Entities::OrganizationWithProfile, current_user: current_user

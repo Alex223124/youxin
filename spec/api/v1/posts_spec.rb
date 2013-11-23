@@ -393,8 +393,7 @@ describe Youxin::API, 'posts' do
               email: @comment.user.email,
               name: @comment.user.name,
               created_at: @comment.user.created_at,
-              avatar: @comment.user.avatar.url,
-              phone: @comment.user.phone
+              avatar: @comment.user.avatar.url
             }
           }
         ].as_json
@@ -412,8 +411,7 @@ describe Youxin::API, 'posts' do
               email: @comment.user.email,
               name: @comment.user.name,
               created_at: @comment.user.created_at,
-              avatar: @comment.user.avatar.url,
-              phone: @comment.user.phone
+              avatar: @comment.user.avatar.url
             }
           }
         ].as_json
@@ -458,8 +456,7 @@ describe Youxin::API, 'posts' do
           email: @admin.email,
           name: @admin.name,
           created_at: @admin.created_at,
-          avatar: @admin.avatar.url,
-          phone: @admin.phone
+          avatar: @admin.avatar.url
         }.as_json
       end
       it "should return 400 when bad attributes" do

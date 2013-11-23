@@ -116,6 +116,7 @@ class Users < Grape::API
     route_param :id do
       before do
         @user = current_namespace.users.find(params[:id])
+        not_found! unless @user
       end
       get do
         if current_user_can? :read_profile, @user

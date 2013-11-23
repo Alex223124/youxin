@@ -652,8 +652,7 @@ describe Youxin::API, 'users' do
               name: @another_user.name,
               avatar: @another_user.avatar.url,
               email: @another_user.email,
-              created_at: @another_user.created_at,
-              phone: @another_user.phone
+              created_at: @another_user.created_at
             },
             commentable_type: @comment.commentable_type,
             commentable: {
@@ -739,7 +738,6 @@ describe Youxin::API, 'users' do
               avatar: @another_user.avatar.url,
               email: @another_user.email,
               created_at: @another_user.created_at,
-              phone: @another_user.phone
             },
             commentable_type: @comment.commentable_type,
             commentable: {
@@ -802,7 +800,6 @@ describe Youxin::API, 'users' do
               name: @user.name,
               created_at: @user.created_at,
               avatar: @user.avatar.url,
-              phone: @user.phone
             },
             commentable_type: @comment.commentable_type,
             commentable: {
@@ -931,8 +928,7 @@ describe Youxin::API, 'users' do
               email: @user.email,
               name: @user.name,
               created_at: @user.created_at,
-              avatar: @user.avatar.url,
-              phone: @user.phone
+              avatar: @user.avatar.url
             },
             commentable_type: @comment_another.commentable_type,
             commentable: {
