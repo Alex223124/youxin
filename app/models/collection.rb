@@ -44,7 +44,10 @@ class Collection
     post = form.post
     return unless post
     receipt = post.receipts.where(user_id: user_id).first
-    receipt.update_attributes(forms_filled: true)
+    if receipt
+      receipt.update_attributes(forms_filled: true)
+      receipt.read!
+    end
   end
 
 end
