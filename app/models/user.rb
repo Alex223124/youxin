@@ -295,6 +295,9 @@ class User
   # iOS APNs
   def push_ios_device_token(token)
     if validate_ios_device_token(token)
+      User.where(ios_device_tokens: token).each do |user|
+        user.pull_ios_device_token(token)
+      end
       self.add_to_set(:ios_device_tokens, token)
     end
   end

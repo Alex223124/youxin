@@ -407,6 +407,8 @@ describe User do
         user.should have(0).errors_on(:qq)
       end
       it 'should be valid if blank' do
+        user.qq = '123456789'
+        user.save
         user.qq = ''
         user.should be_valid
       end
@@ -733,6 +735,15 @@ describe User do
       token = @valid_token * 2
       user.push_ios_device_token token
       user.should have(1).error
+    end
+    it 'should unique the ios_device_token' do
+      user_another = create :user
+      user.push_ios_device_token @valid_token
+      user_another.push_ios_device_token @valid_token
+      user.reload
+      user_another.reload
+      user.ios_device_tokens.should_not include(@valid_token)
+      user_another.ios_device_tokens.should include(@valid_token)
     end
   end
   describe '#pull_ios_device_token' do
