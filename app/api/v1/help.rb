@@ -19,6 +19,7 @@ class Help < Grape::API
     get :last_android_version do
       {
         version: Youxin.config.help.android.version,
+        version_code: Youxin.config.help.android.version_code,
         url: Youxin.config.help.android.url
       }
     end

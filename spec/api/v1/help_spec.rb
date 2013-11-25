@@ -36,6 +36,7 @@ describe Youxin::API, 'help' do
       response.status.should == 200
       json_response.should == {
         version: Youxin.config.help.android.version,
+        version_code: Youxin.config.help.android.version_code,
         url: Youxin.config.help.android.url
       }.as_json
     end
