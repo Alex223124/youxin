@@ -93,12 +93,14 @@
         .accordion-group.recipients-box
           .collapse id="{{receipt.id}}-{{flag}}-recipients"
             .recipients
-              span.muted ng-show="!receipt.post.unread_receipts.length" 所有用户已阅读
-              .recipient ng-repeat="unread_receipt in receipt.post.unread_receipts" ng-animate=" 'animate' "
-                .piece
-                  i.icon-ok.pull-right ng-show="unread_receipt.read"
-                  span.name {{unread_receipt.user.name}}
-                  / i.icon-envelope
+              .unread-receipt-list-container
+                span.muted ng-show="!receipt.post.unread_receipts.length" 所有用户已阅读
+                .recipient ng-repeat="unread_receipt in receipt.post.showing_unread_receipts" ng-animate=" 'animate' "
+                  .piece
+                    i.icon-ok.pull-right ng-show="unread_receipt.read"
+                    span.name {{unread_receipt.user.name}}
+                    / i.icon-envelope
+              .loadmore.tac.btn.btn-block.btn-info.btn-link ng-show="receipt.post.unread_receipts.length > 12" ng-click="ctrl.toggleAllUnread_receipts(receipt, $event);" 查看全部名单
             .scheduler-btn.text-right ng-show="!!receipt.post.unread_receipts.length"
               span.btn.btn-primary data-toggle="tooltip" title="电话提醒{{receipt.post.unread_receipts.length}}个未读用户" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_call_notifications(receipt,$event)" 电话提醒
               span.btn.btn-primary data-toggle="tooltip" title="短信提醒{{receipt.post.unread_receipts.length}}个未读用户" ng-mouseenter="ctrl.showTooltip($event);" ng-mouseleave="ctrl.hideTooltip($event);" ng-click="ctrl.send_sms_notifications(receipt,$event)" 短信提醒

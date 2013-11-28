@@ -170,6 +170,13 @@
     .recipients-box {
       .recipients {
         padding: 5px;
+        .unread-receipt-list-container{        
+          max-height: 430px;
+          overflow: auto;
+        }
+        .loadmore{
+          margin: 0;
+        }
       }
       .recipient {
         display: inline-block;

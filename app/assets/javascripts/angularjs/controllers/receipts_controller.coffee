@@ -84,6 +84,10 @@
     post = receipt.post
     receiptService.getUnreadNameList post.id, (data)->
       post.unread_receipts = data.unread_receipts
+      if post.unread_receipts.length > 12
+        post.showing_unread_receipts = post.unread_receipts.slice(0,12)
+      else
+        post.showing_unread_receipts = data.unread_receipts
     receiptService.getSmsScheduler post.id, (data)->
       post.sms_scheduler = data.sms_scheduler
     $http.get("/posts/#{post.id}/last_call_scheduler.json").success (data) ->
@@ -245,6 +249,14 @@
     $(event.target).tooltip('show')
   $scope.hideTooltip = (event) ->
     $(event.target).tooltip('hide')
+
+  $scope.toggleAllUnread_receipts = (receipt,$event)->
+    if receipt.post.showing_unread_receipts is receipt.post.unread_receipts
+      receipt.post.showing_unread_receipts = receipt.post.unread_receipts.slice(0, 12)
+      $($event.target).text("查看全部名单")
+    else
+      receipt.post.showing_unread_receipts = receipt.post.unread_receipts
+      $($event.target).text("收起全部名单")
 
   $scope
 ]
