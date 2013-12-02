@@ -32,7 +32,7 @@
           a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-recipients" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.origin" ng-click="ctrl.fetch_unread_receipts(receipt);"
             i.icon-eye-open
             | 未读名单
-          a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-comments" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-click="ctrl.fetch_comments(receipt);"
+          a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-comments" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-click="ctrl.fetch_comments(receipt,$event);"
             i.icon-comments
             | 评论
           a.favorite-btn.btn.btn-link.pull-right href='javascript:;' ng-click="ctrl.favoriteable(receipt);" ng-show="receipt.favorited"
@@ -112,12 +112,13 @@
 
         .accordion-group.comments-box
           .collapse id="{{receipt.id}}-{{flag}}-comments"
+            input type="text" style="opacity: 0; height: 1px; margin: 0; padding: 0;border: none; position: absolute;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=0)' filter: alpha(opacity=0);"
             .reply-box
               textarea.input-block-level placeholder="回复 ..." rows="1" ng-model="receipt.post.commentBody"
               .tools
                 a.btn.btn-link.btn-small.btn-cancel 取消
                 a.btn.btn-success.btn-small ng-click="ctrl.createComments(receipt, $event);" 回复
-            .comment ng-repeat="comment in receipt.post.comments" id="{{comment.id}}-{{flag}}-comment" ng-animate=" 'animate' "
+            .comment ng-repeat="comment in receipt.post.showing_comments" id="{{comment.id}}-{{flag}}-comment" ng-animate=" 'animate' "
               .avatar
                 img.pull-left height="32px" width="32px" ng-src="{{comment.user.avatar | avatar_version:'small'}}"
               .content
@@ -130,3 +131,4 @@
                   small.timeago.muted timeago="comment.created_at"
                 .body {{comment.body}}
               textarea.hidden
+            .loadmorecomments.tac.btn.btn-block.btn-info.btn-link ng-show="receipt.post.comments.length > 5" ng-click="ctrl.toggleAllcomments(receipt, $event)" 查看更久以前的评论

@@ -11,11 +11,15 @@
 
 
   receiptService.getReceipts {params: {status: "read" }}, (data)->
+    for receipt in data.receipts
+      receipt.comments_open_status = false
     $scope.read_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
 
 
   receiptService.getReceipts {params: {status: "unread"}}, (data)->
+    for receipt in data.receipts
+      receipt.comments_open_status = false
     $scope.unread_receipts = data.receipts
     set_receipt_range_for_array(data.receipts)
 
@@ -93,12 +97,17 @@
     $http.get("/posts/#{post.id}/last_call_scheduler.json").success (data) ->
       post.call_scheduler = data.call_scheduler
 
-  $scope.fetch_comments = (receipt) ->
+  $scope.fetch_comments = (receipt,$event) ->
     $scope.read_receipt(receipt)
     post = receipt.post
-    unless post.comments
+    receipt.comments_open_status = not receipt.comments_open_status
+    if receipt.comments_open_status    
       receiptService.getComments post.id, (data)->
         post.comments = data.comments
+        if post.comments.length > 5
+          post.showing_comments = data.comments.slice(0, 5)
+        else
+          post.showing_comments = data.comments
 
   $scope.createComments = (receipt, e) ->
     post = receipt.post
@@ -106,7 +115,13 @@
       body: post.commentBody
     receiptService.createComment post.id, {comment: comment}, (data)->
       angular.element(e.target).prev().click()
+      console.log(data.comment)
       post.comments.unshift data.comment
+      console.log(post.comments.slice(0,1))
+      if post.comments.length > 5
+        post.showing_comments = post.comments.slice(0, 5)
+      else
+        post.showing_comments = post.comments
     , (data, status)->
       App.alert('评论失败', 'error')
 
@@ -257,6 +272,15 @@
     else
       receipt.post.showing_unread_receipts = receipt.post.unread_receipts
       $($event.target).text("收起全部名单")
+
+  $scope.toggleAllcomments = (receipt, $event)->
+    if receipt.post.showing_comments is receipt.post.comments
+      receipt.post.showing_comments = receipt.post.comments.slice(0, 5)
+      $($event.target).text("查看更久以前的评论")
+      $($event.target).siblings("input").focus()
+    else
+      receipt.post.showing_comments = receipt.post.comments
+      $($event.target).text("收起更久以前的评论")
 
   $scope
 ]

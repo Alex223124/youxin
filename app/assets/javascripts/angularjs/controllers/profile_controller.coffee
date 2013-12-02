@@ -85,9 +85,14 @@
   $scope.fetch_comments = (receipt) ->
     read_receipt(receipt)
     post = receipt.post
-    unless post.comments
+    receipt.comments_open_status = not receipt.comments_open_status
+    if receipt.comments_open_status
       $http.get("/posts/#{post.id}/comments.json").success((data) ->
         post.comments = data.comments
+        if post.comments.length > 5
+          post.showing_comments = data.comments.slice(0, 5)
+        else
+          post.showing_comments = data.comments
       )
 
   $scope.createComments = (receipt, e) ->
@@ -98,6 +103,10 @@
     .success (data) ->
       angular.element(e.target).prev().click()
       post.comments.unshift data.comment
+      if post.comments.length > 5
+        post.showing_comments = post.comments.slice(0, 5)
+      else
+        post.showing_comments = post.comments
     .error (data) ->
       App.alert('评论失败', 'error')
 
@@ -251,5 +260,14 @@
     else
       receipt.post.showing_unread_receipts = receipt.post.unread_receipts
       $($event.target).text("收起全部名单")
+
+  $scope.toggleAllcomments = (receipt, $event)->
+    if receipt.post.showing_comments is receipt.post.comments
+      receipt.post.showing_comments = receipt.post.comments.slice(0, 5)
+      $($event.target).text("查看更久以前的评论")
+      $($event.target).siblings("input").focus()
+    else
+      receipt.post.showing_comments = receipt.post.comments
+      $($event.target).text("收起更久以前的评论")
   $scope
 ]
