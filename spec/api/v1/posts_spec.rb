@@ -47,9 +47,9 @@ describe Youxin::API, 'posts' do
           attachment_ids: attachment_ids
         })
         post api('/posts', @admin), attrs
-        json_response['attachments'].should be_kind_of Array
-        json_response['attachments'].first['id'].should == attachment_ids.last
-        json_response['attachments'].last['id'].should == attachment_ids.first
+        json_response['post']['attachments'].should be_kind_of Array
+        json_response['post']['attachments'].first['id'].should == attachment_ids.last
+        json_response['post']['attachments'].last['id'].should == attachment_ids.first
       end
 
       it "should not append attachments if attachments belongs to another post" do

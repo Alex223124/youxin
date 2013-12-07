@@ -28,7 +28,8 @@ class Posts < Grape::API
       if post.save
         attachments.map { |attachment| post.attachments << attachment } if attachments.present?
         post.sms_schedulers.create delayed_at: Time.at(delayed_sms_at) unless delayed_sms_at.zero?
-        present post, with: Youxin::Entities::Post
+        receipt = post.receipts.find_by(origin: true)
+        present receipt, with: Youxin::Entities::Receipt
       else
         fail!(post.errors)
       end
