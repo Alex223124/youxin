@@ -1,4 +1,4 @@
-@app.directive "receipts", ["$document",($document)->
+@app.directive "receipts", ["$document", "receiptService",($document, receiptService)->
   directiveCache = 
     restrict: "A"
     scope:
@@ -7,6 +7,213 @@
     require: "^ngController"
     link: (scope, element, attrs, ctrl)->
       scope.ctrl = ctrl
+      read_receipt = (receipt)->
+        if !receipt.read
+          receiptService.readReceipt receipt.id, (data)->
+            receipt.read = true
+            UnreadBubble.setBubble(UnreadBubble.getCurrentCount() - 1)
+
+      scope.fetch_attachments = (receipt)->
+        read_receipt(receipt)
+        post = receipt.post
+        unless receipt.attachments
+          receipt.attachments_loading = true
+          receiptService.getAttachments post.id, (data)->
+            receipt.attachments_loading = false
+            post.attachments = data.attachments
+
+      scope.fetch_unread_receipts = (receipt) ->
+        post = receipt.post
+        receiptService.getUnreadNameList post.id, (data)->
+          post.unread_receipts = data.unread_receipts
+          if post.unread_receipts.length > 12
+            post.showing_unread_receipts = post.unread_receipts.slice(0,12)
+          else
+            post.showing_unread_receipts = data.unread_receipts
+        receiptService.getSmsScheduler post.id, (data)->
+          post.sms_scheduler = data.sms_scheduler
+        receiptService.getCallScheduler post.id, (data)->
+           post.call_scheduler = data.call_scheduler
+
+      scope.fetch_forms = (receipt) ->
+        read_receipt(receipt)
+        post = receipt.post
+        if receipt.origin or not post.forms
+          receiptService.getForms post.id, (data)->
+            post.forms = data.forms
+            form = post.forms.first()
+            form.collectioned = false
+            receiptService.getFormCollection form.id, (data)->
+              form.collectioned = true
+              collection = data.collection
+              for entity in collection.entities
+                scope.update_form(form, entity.key, entity.value)            
+        this.ctrl.init_form_height(receipt)
+
+      scope.fetch_comments = (receipt) ->
+        read_receipt(receipt)
+        post = receipt.post
+        receipt.comments_open_status = not receipt.comments_open_status
+        if receipt.comments_open_status    
+          receiptService.getComments post.id, (data)->
+            post.comments = data.comments
+            if post.comments.length > 5
+              post.showing_comments = data.comments.slice(0, 5)
+            else
+              post.showing_comments = data.comments
+
+      scope.createComments = (receipt, e) ->
+        post = receipt.post
+        comment =
+          body: post.commentBody
+        receiptService.createComment post.id, {comment: comment}, (data)->
+          angular.element(e.target).prev().click()
+          post.comments.unshift data.comment
+          if post.comments.length > 5
+            post.showing_comments = post.comments.slice(0, 5)
+          else
+            post.showing_comments = post.comments
+        , (data, status)->
+          App.alert('评论失败', 'error')
+
+      scope.form = {}
+
+      scope.getValueInObj = (input,collection)->
+        switch input.type
+          when "Field::TextField","Field::NumberField","Field::TextArea"
+            return collection.objOfProperty("key",input.identifier).value
+          when "Field::RadioButton"
+            option_id = collection.objOfProperty("key",input.identifier).value
+            return '' unless option_id?
+            input.options.objOfProperty("id", option_id).value
+          when "Field::CheckBox"
+            _result = []
+            option_ids = collection.objOfProperty("key",input.identifier).value
+            return '' unless option_ids?
+            for _i in option_ids
+              _result.push(input.options.objOfProperty("id", _i).value)
+            return _result.join(",")
+
+      scope.set_form_collections = (receipt)->
+        form = receipt.post.forms.first()
+        if receipt.origin
+          receiptService.getFormCollections form.id, (data)->
+            form.collections = data.collections
+        this.form = form
+        $("#form_collections").show()
+
+      scope.send_sms_notifications = (receipt,e)->
+        post = receipt.post
+        self = $(e.target)
+        unless self.attr("disabled")
+          receiptService.runNotificationNow post.id, ()->
+            App.alert("系统已发送短信提醒")
+            self.html("系统已发送短信提醒")
+            self.attr("disabled","disabled")
+          , ()->
+            App.alert("发送失败", 'error')
+
+      scope.send_call_notifications = (receipt,e)->
+        post = receipt.post
+        self = $(e.target)
+        unless self.attr("disabled")
+          $http.post("/posts/#{post.id}/run_call_notifications_now.json").success () ->
+            App.alert("系统已发送电话提醒")
+            self.html("系统已发送电话提醒")
+            self.attr("disabled","disabled")
+          .error () ->
+            App.alert("发送失败", 'error')
+
+      scope.send_sms_notifications_to_unfilleds = (receipt,e)->
+        post = receipt.post
+        self = $(e.target)
+        unless self.attr("disabled")
+          $http.post("/posts/#{post.id}/run_sms_notifications_to_unfilleds_now.json").success () ->
+            App.alert("系统已发送短信提醒")
+            self.html("已发送短信提醒")
+            self.attr("disabled","disabled")
+          .error () ->
+            App.alert("发送失败", 'error')
+
+      scope.send_call_notifications_to_unfilleds = (receipt,e)->
+        post = receipt.post
+        self = $(e.target)
+        unless self.attr("disabled")
+          $http.post("/posts/#{post.id}/run_call_notifications_to_unfilleds_now.json").success () ->
+            App.alert("系统已发送电话提醒")
+            self.html("已发送电话提醒")
+            self.attr("disabled","disabled")
+          .error () ->
+            App.alert("发送失败", 'error')
+
+      scope.update_form = (form, key, value) ->
+        for input in form.inputs
+          if input.identifier is key
+            key_input = input
+            break
+        return unless key_input
+        switch key_input.type
+          when "Field::TextField", "Field::TextArea", "Field::NumberField"
+            key_input.default_value = value
+          when "Field::RadioButton"
+            for option in key_input.options
+              if option.id is value
+                key_input.default_value = option.value
+                break
+          when "Field::CheckBox"
+            for option in key_input.options
+              if value.getIndex(option.id) >= 0
+                option.default_selected = true
+              else
+                option.default_selected = false
+
+      scope.favoriteable = (receipt) ->
+        read_receipt(receipt)
+        if receipt.favorited
+          receiptService.cancelFavorite receipt.id, (data)->
+            receipt.favorited = false
+        else
+          receiptService.favorite receipt.id, (data)->
+            receipt.favorited = true
+
+      scope.expandable = (receipt, e) ->
+        read_receipt(receipt)
+        body_ele = $(e.target).closest(".tools").prev().find(".body") 
+        if receipt.expanded
+          body_ele.html(receipt.post.body)
+        else
+          body_ele.html(receipt.post.body_html)
+        receipt.expanded = !receipt.expanded
+
+      # scope.$watch "receipt"
+
+      scope.mark_receipt_as_read = (receipt)->
+        read_receipt(receipt)
+
+      scope.showTooltip = (e)->
+        $(e.target).tooltip("show")
+
+      scope.hideTooltip = (e)->
+        $(e.target).tooltip("hide")
+
+      scope.toggleAllUnread_receipts = (receipt,e)->
+        if receipt.post.showing_unread_receipts is receipt.post.unread_receipts
+          receipt.post.showing_unread_receipts = receipt.post.unread_receipts.slice(0, 12)
+          $(e.target).text("查看全部名单")
+        else
+          receipt.post.showing_unread_receipts = receipt.post.unread_receipts
+          $(e.target).text("收起全部名单")
+
+      scope.toggleAllcomments = (receipt, e)->
+        if receipt.post.showing_comments is receipt.post.comments
+          receipt.post.showing_comments = receipt.post.comments.slice(0, 5)
+          $(e.target).text("查看更久以前的评论")
+          $(e.target).siblings("input").focus()
+        else
+          receipt.post.showing_comments = receipt.post.comments
+          $(e.target).text("收起更久以前的评论")
+
+
     replace: false
     templateUrl: "<%= asset_path('receipt.html') %>"
   directiveCache

@@ -10,6 +10,10 @@
 
   #public
   serviceCache =
+    #标记某条消息为已读
+    readReceipt: (id, success, error)->
+      initial("put", "/receipts/#{id}/read.json", false, success, error)
+
     #根据消息id获取完整的消息
     getFullPost: (id, success, error)->
       initial("get", "/receipts/#{id}.json", false, success, error)
@@ -37,6 +41,10 @@
     #
     getSmsScheduler: (id, success, error)->
       initial("get", "/posts/#{id}/last_sms_scheduler.json", false, success, error)
+
+    #
+    getCallScheduler: (id, success, error)->
+      initial("get", "/posts/#{id}/last_call_scheduler.json", false, success, error)
 
     #标记为收藏
     favorite: (id, success, error)->
