@@ -380,6 +380,8 @@
     date: '4'
     full_msg: false
 
+  $scope.disabled_submit_btn = false
+
   $scope.collectData = ()->
     this.msg_push.date = this.msg_push.date.replace(///\s///,"")
     if this.msg_push.active
@@ -388,6 +390,7 @@
     if this.call_push.active
       $scope.youxindata.delayed_call_at = new Date().getTime()/1000 + parseFloat(this.call_push.date) * 60 * 60
     $scope.submit()
+    $scope.disabled_submit_btn = true
     self = $("#send-msg").find(".third-step")
     if (self.find(".nextStep").attr("disabled") is undefined)
       targetele = self.closest(".write-steps").find(".first-step")
@@ -395,6 +398,7 @@
       targetele.fadeIn(200)
 
   $scope.$on "clearData",()->
+    $scope.disabled_submit_btn = false
     $scope.msg_push =
       active: true
       date: '5'
