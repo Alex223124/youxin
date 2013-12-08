@@ -62,6 +62,18 @@
     runNotificationNow: (id, success, error)->
       initial("post", "/posts/#{id}/run_sms_notifications_now.json", false, success, error)
 
+    #
+    runCallNotificationNow: (id, success, error)->
+      initial("post", "/posts/#{id}/run_call_notifications_now.json", false, success, error)
+
+    #
+    runSmsNotificatinosTo: (id, success, error)->
+      initial("post", "/posts/#{id}/run_sms_notifications_to_unfilleds_now.josn", false, success, error)
+
+    #
+    runCallNotificationTo: (id, success, error)->
+      initial("post", "/posts/#{id}/run_call_notifications_to_unfilleds_now.json", false, success, error)
+
     #提交表格
     submitForms: (id, data, success, error)->
       initial("post", "/forms/#{id}/collections.json", data, success, error)

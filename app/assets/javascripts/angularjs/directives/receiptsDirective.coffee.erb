@@ -47,7 +47,10 @@
               form.collectioned = true
               collection = data.collection
               for entity in collection.entities
-                scope.update_form(form, entity.key, entity.value)            
+                scope.update_form(form, entity.key, entity.value)
+            , (data, status)->            
+              console.log data
+              console.log status
         this.ctrl.init_form_height(receipt)
 
       scope.fetch_comments = (receipt) ->
@@ -94,12 +97,14 @@
               _result.push(input.options.objOfProperty("id", _i).value)
             return _result.join(",")
 
+      scope.ctrl.getValueInObj = scope.getValueInObj
+
       scope.set_form_collections = (receipt)->
         form = receipt.post.forms.first()
         if receipt.origin
           receiptService.getFormCollections form.id, (data)->
             form.collections = data.collections
-        this.form = form
+        this.ctrl.form = form
         $("#form_collections").show()
 
       scope.send_sms_notifications = (receipt,e)->
@@ -117,33 +122,33 @@
         post = receipt.post
         self = $(e.target)
         unless self.attr("disabled")
-          $http.post("/posts/#{post.id}/run_call_notifications_now.json").success () ->
+          receiptService.runCallNotificationNow post.id, ()->
             App.alert("系统已发送电话提醒")
             self.html("系统已发送电话提醒")
             self.attr("disabled","disabled")
-          .error () ->
+          ,() ->
             App.alert("发送失败", 'error')
 
       scope.send_sms_notifications_to_unfilleds = (receipt,e)->
         post = receipt.post
         self = $(e.target)
         unless self.attr("disabled")
-          $http.post("/posts/#{post.id}/run_sms_notifications_to_unfilleds_now.json").success () ->
+          receiptService.runSmsNotificationTo post.id, ()->
             App.alert("系统已发送短信提醒")
             self.html("已发送短信提醒")
             self.attr("disabled","disabled")
-          .error () ->
+          , () ->
             App.alert("发送失败", 'error')
 
       scope.send_call_notifications_to_unfilleds = (receipt,e)->
         post = receipt.post
         self = $(e.target)
         unless self.attr("disabled")
-          $http.post("/posts/#{post.id}/run_call_notifications_to_unfilleds_now.json").success () ->
+          receiptService.runCallNotificationTo post.id, ()->
             App.alert("系统已发送电话提醒")
             self.html("已发送电话提醒")
             self.attr("disabled","disabled")
-          .error () ->
+          , () ->
             App.alert("发送失败", 'error')
 
       scope.update_form = (form, key, value) ->

@@ -83,6 +83,7 @@
     read_form_collapse_ele.css("height", read_height)
     unread_form_collapse_ele.css("height", unread_height)
 
+  $scope.form = []
 
   $scope
 ]
