@@ -213,11 +213,24 @@
 @firststepCtrl = ["$scope",($scope)->
   $scope.msgtitle = ""
   $scope.content = ""
-  timeInterval = undefined
   $scope.form_valid = true
-  $scope.valid = ()->
+  $scope.$watch "msgtitle", (newvalue, oldvalue)->
+    this.msgtitle = newvalue
+    setFromValid()
+
+  $scope.$watch "content", (newvalue, oldvalue)->
+    this.content = newvalue
+    setFromValid()
+
+  setFromValid = ()->
+    if not not $scope.msgtitle and not not $scope.content
+      $scope.form_valid = false
+    else
+      $scope.form_valid = true
+
+  $scope.getContent = ()->
     $scope.content = $("#wysihtml5-textarea").val()
-    $scope.form_valid = not $scope.content
+
   $scope.collectData = ()->
     $scope.youxindata.title = this.msgtitle
     $scope.youxindata.body_html = $("#wysihtml5-textarea").val()
