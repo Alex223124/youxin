@@ -12,6 +12,10 @@ module Youxin
       end
     end
 
+    def warden
+      env['warden']
+    end
+
     def authenticate!
       unauthorized! unless current_user
     end

@@ -50,5 +50,14 @@ describe Youxin::API, 'session' do
       end
     end
 
+    context 'trackable' do
+      it 'should track user session' do
+        expect do
+          post api('/session'), login: user.email, password: user.password
+          user.reload
+        end.to change{ user.sign_in_count }.by(1)
+      end
+    end
+
   end
 end

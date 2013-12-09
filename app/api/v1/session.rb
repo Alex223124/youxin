@@ -10,6 +10,7 @@ class Session < Grape::API
     return unauthorized! unless resource
 
     if resource.valid_password?(params[:password])
+      resource.update_tracked_fields!(warden.request)
       present resource, with: Youxin::Entities::UserLogin
     else
       unauthorized!
