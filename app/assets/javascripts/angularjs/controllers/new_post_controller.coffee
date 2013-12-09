@@ -204,6 +204,9 @@
       App.alert("消息已成功发送")
       $location.url("/")
       Organization.all = []
+    ).error(()->
+      $scope.$broadcast("errorToPublic")
+      App.alert("发送失败，请重试")
     )
 ]
 
@@ -346,14 +349,8 @@
   $document.bind("click",()->
     $("#select-org-container").children(".pr").hide()
   )
-
-  ###scope.msgtitle = ""
-  scope.valid = ()->
-    return (not this.msgtitle)###
   scope.collectData = ()->
-    #for _id in scope.selected_organization_ids
     scope.youxindata.organization_ids = scope.selected_organization_ids
-      #= scope.youxindata.organization_ids.concat($(org).attr("targetid").split(","))
     self = $("#send-msg").find(".second-step")
     if (self.find(".nextStep").attr("disabled") is undefined)
       targetele = self.closest(".write-steps").find(".third-step")
@@ -383,24 +380,31 @@
   $scope.disabled_submit_btn = false
 
   $scope.collectData = ()->
-    this.msg_push.date = this.msg_push.date.replace(///\s///,"")
-    if this.msg_push.active
-      $scope.youxindata.delayed_sms_at = new Date().getTime()/1000 + parseFloat(this.msg_push.date) * 60 * 60
-    this.call_push.date = this.call_push.date.replace(///\s///,"")
-    if this.call_push.active
-      $scope.youxindata.delayed_call_at = new Date().getTime()/1000 + parseFloat(this.call_push.date) * 60 * 60
-    $scope.submit()
-    $scope.disabled_submit_btn = true
     self = $("#send-msg").find(".third-step")
-    if (self.find(".nextStep").attr("disabled") is undefined)
-      targetele = self.closest(".write-steps").find(".first-step")
-      self.closest(".js-steps").hide()
-      targetele.fadeIn(200)
+    if not this.disabled_submit_btn
+      $scope.disabled_submit_btn = true
+      this.msg_push.date = this.msg_push.date.replace(///\s///,"")
+      if this.msg_push.active
+        $scope.youxindata.delayed_sms_at = new Date().getTime()/1000 + parseFloat(this.msg_push.date) * 60 * 60
+      this.call_push.date = this.call_push.date.replace(///\s///,"")
+      if this.call_push.active
+        $scope.youxindata.delayed_call_at = new Date().getTime()/1000 + parseFloat(this.call_push.date) * 60 * 60
+      self.find(".submit").text("发布中")
+      $scope.submit()
 
   $scope.$on "clearData",()->
     $scope.disabled_submit_btn = false
+    self = $("#send-msg").find(".third-step")
+    self.find(".submit").text("发  布")
+    targetele = self.closest(".write-steps").find(".first-step")
+    self.closest(".js-steps").hide()
+    targetele.fadeIn(200)
     $scope.msg_push =
       active: true
       date: '5'
       full_msg: false
+
+  $scope.$on "errorToPublic", ()->
+    $scope.disabled_submit_btn = false
+    $("#send-msg").find(".submit").text("发  布")
 ]
