@@ -106,9 +106,9 @@ Youxin::Application.routes.draw do
   # Admin Area
   #
   namespace :admin do
-    resources :namespaces, only: [:index, :show] do
-      resources :users, only: [:show]
-    end
+    resources :namespaces, only: [:index, :show]
+    resources :users, only: [:show]
+    resources :organizations, only: [:show]
   end
 
   mount ChinaCity::Engine => '/china_city'

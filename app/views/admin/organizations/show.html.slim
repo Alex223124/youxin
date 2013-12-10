@@ -1,0 +1,49 @@
+= link_to 'Home', root_path, class: 'btn btn-primary pull-right'
+= link_to 'Namespaces', admin_namespaces_path, class: 'btn btn-primary pull-right'
+h2 #{@organization.name}
+
+blockquote
+  span 共计
+  span
+    label.label.label-success #{@organization.children.count}
+    | 个下级组织，
+  span
+    label.label.label-success #{@organization.members.count}
+    | 个用户。
+
+h3 组织
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th 名称
+      th 用户数
+      th 登录用户数
+      th 优信数
+  tbody
+    - @organization.children.each do |organization|
+      tr
+        td
+          = link_to organization.name, admin_organization_path(organization)
+        td #{organization.members.count}
+        td #{organization.members.where(:sign_in_count.gt => 0).count}
+        td #{Post.where(organization_ids: organization.id).count}
+
+h3 成员
+table.table.table-bordered.table-hover
+  thead
+    tr
+      th 姓名
+      th 电话号码
+      th 登录次数
+      th 发送优信数
+      th 未读优信数
+  tbody
+    - @organization.members.each do |member|
+      tr class="#{member.sign_in_count.zero? ? 'error' : ''}"
+        td
+          = link_to member.name, admin_user_path(member)
+        td #{member.phone}
+        td #{member.sign_in_count}
+        td #{member.posts.count}
+        td #{member.receipts.unread.count}/#{member.receipts.count}
+

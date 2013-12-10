@@ -11,6 +11,12 @@ end
 
 describe Admin::UsersController, 'routing' do
   it 'to #show' do
-    get('/admin/namespaces/1/users/1').should route_to('admin/users#show', namespace_id: '1', id: '1')
+    get('/admin/users/1').should route_to('admin/users#show', id: '1')
+  end
+end
+
+describe Admin::OrganizationsController, 'routing' do
+  it 'to #show' do
+    get('/admin/organizations/1').should route_to('admin/organizations#show', id: '1')
   end
 end

@@ -1,10 +1,11 @@
 require 'spec_helper'
 
-describe Admin::UsersController do
+describe Admin::OrganizationsController do
   include JsonParser
 
   let(:namespace) { create :namespace }
   let(:current_user) { create :user, phone: Youxin.config.admin_phones.first, namespace: namespace }
+  let(:organization) { create :organization }
 
   before(:each) do
     login_user current_user
@@ -12,9 +13,9 @@ describe Admin::UsersController do
 
   describe "GET show" do
     it "should return http success" do
-      get :show, id: current_user.id
+      get :show, id: organization.id
       response.should be_success
-      assigns(:user).should == current_user
+      assigns(:organization).should == organization
     end
   end
 

@@ -1,10 +1,17 @@
-= link_to 'back', admin_namespace_path(@namespace), class: 'btn btn-primary pull-right'
+= link_to 'back', admin_namespace_path(@user.namespace), class: 'btn btn-primary pull-right'
 
 h3 #{@user.name}
-p
-  | 共发送
-  label.label.label-success #{@user.posts.count}
-  | 条优信
+blockquote
+  p
+    | 共发送
+    label.label.label-success #{@user.posts.count}
+    | 条优信
+blockquote
+  p
+    | 所在组织
+    - @user.organizations.each do |organization|
+      = link_to organization.name, admin_organization_path(organization), class: 'btn btn-link'
+
 table.table.table-bordered.table-hover
   thead
     tr
