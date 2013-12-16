@@ -1,7 +1,9 @@
 require 'spec_helper'
 
 describe Bind do
-  let(:bind) { build :bind }
+  let(:namespace) { create :namespace }
+  let(:user) { create :user }
+  let(:bind) { build :bind, user_id: user.id }
   subject { bind }
 
   describe 'Association' do

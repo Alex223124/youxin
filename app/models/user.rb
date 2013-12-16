@@ -6,6 +6,7 @@ class User
   include Mongoid::Timestamps # Add created_at and updated_at fields
   include SmsRecoverable
   include Detailable
+  include Youxin::Util
 
   IOS_DEVICE_TONKEN_REGEXP = %r(\A[a-z0-9]{64}\z)
 
@@ -315,10 +316,20 @@ class User
 
 
   def push_tag(tag)
-    self.add_to_set(:tags, tag) if tag
+    if tag
+      self.add_to_set(:tags, tag)
+      self.binds.each do |bind|
+        set_tag_to_server(tag, bind)
+      end
+    end
   end
   def pull_tag(tag)
-    self.pull(:tags, tag) if tag
+    if tag
+      self.pull(:tags, tag)
+      self.binds.each do |bind|
+        delete_tag_from_server(tag, bind)
+      end
+    end
   end
   def set_up_tags
     self.organizations.each do |organization|
@@ -326,6 +337,22 @@ class User
     end
     self.conversations.each do |conversation|
       self.push_tag(conversation.tag)
+    end
+  end
+  def set_tag_to_server(tag, bind)
+    baidu_push_client.set_tag(tag, user_id: bind.baidu_user_id)
+  end
+  def delete_tag_from_server(tag, bind)
+    baidu_push_client.delete_tag(tag, user_id: bind.baidu_user_id)
+  end
+  def bind_to_server(bind)
+    self.tags.each do |tag|
+      set_tag_to_server(tag, bind)
+    end
+  end
+  def unbind_from_server(bind)
+    self.tags.each do |tag|
+      delete_tag_from_server(tag, bind)
     end
   end
   alias_method :add_tag, :push_tag

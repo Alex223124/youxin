@@ -50,6 +50,9 @@ defaults: &defaults
     app_id: app_id
   shorten_server: http://76.lc
   welcome_post_id: 5243b043734576ad8a00000d
+  baidu_push:
+    api_key: api_key
+    secret_key: secret_key
 
 development:
   <<: *defaults

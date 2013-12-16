@@ -59,6 +59,8 @@ GEM
     angularjs-rails (1.2.0.rc2)
     arel (3.0.2)
     backports (2.6.7)
+    baidu_push (0.0.2)
+      httparty (>= 0.11.0)
     bcrypt-ruby (3.0.1)
     better_errors (0.7.0)
       coderay (>= 1.0.0)
@@ -372,6 +374,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.8.0)
   angularjs-rails (~> 1.2.0.rc2)
+  baidu_push (~> 0.0.2)
   better_errors
   binding_of_caller
   bootstrap-datepicker-rails
