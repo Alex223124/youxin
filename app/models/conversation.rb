@@ -1,6 +1,7 @@
 class Conversation
   include Mongoid::Document
   include Mongoid::Timestamps
+  include BaiduTaggable
 
   field :originator_id
   field :last_message_id

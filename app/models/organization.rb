@@ -2,6 +2,7 @@ class Organization
   include Mongoid::Document
   include Mongoid::Paranoia # Soft delete
   include Mongoid::Timestamps # Add created_at and updated_at fields
+  include BaiduTaggable
 
   field :name, type: String
   field :parent_id
