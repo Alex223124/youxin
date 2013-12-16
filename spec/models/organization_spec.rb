@@ -55,8 +55,8 @@ describe Organization do
     it "should return children" do
       organization.save
       parent = organization
-      organization1 = create :organization, parent: parent 
-      organization2 = create :organization, parent: parent 
+      organization1 = create :organization, parent: parent
+      organization2 = create :organization, parent: parent
       (parent.child_ids - [organization1.id, organization2.id]).should be_blank
     end
   end
@@ -98,6 +98,10 @@ describe Organization do
         @organization.push_member('not_exist')
         @organization.members.count.should == 0
       end
+      it 'should add tag to uesr' do
+        @organization.push_member(@user)
+        @user.tags.should include(@organization.tag)
+      end
     end
 
     context "#push_member with position" do
@@ -128,6 +132,12 @@ describe Organization do
         @organization.push_member(@user)
         @organization.pull_member(@user.id)
         @organization.members.should_not include(@user)
+      end
+
+      it 'should remove tag to uesr' do
+        @organization.push_member(@user)
+        @organization.pull_member(@user)
+        @user.tags.should_not include(@organization.tag)
       end
     end
 
@@ -324,7 +334,7 @@ describe Organization do
         @organization.push_member(@user)
         @organization.push_member(@user)
         @organization.user_organization_position_relationships.where(user_id: @user.id).count.should == 1
-      end      
+      end
     end
 
     context "remove" do

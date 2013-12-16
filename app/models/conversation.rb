@@ -34,10 +34,12 @@ class Conversation
     return false unless user
     user.pull(:conversation_ids, self.id)
     self.pull(:participant_ids, user.id)
+    user.remove_tag(self.tag)
   end
   def add_user(user)
     user = User.where(id: user).first unless user.is_a? User
     return false unless user
     self.participants.push(user)
+    user.add_tag(self.tag)
   end
 end

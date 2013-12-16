@@ -16,9 +16,18 @@ class UserOrganizationPositionRelationship
 
   after_create do
     self.user.organization_notifications._in.create(organization_id: self.organization_id)
+    add_tag_to_user
   end
   after_destroy do
     self.user.organization_notifications._out.create(organization_id: self.organization_id)
+    remove_tag_to_user
   end
 
+  private
+  def add_tag_to_user
+    self.user.add_tag(self.organization.tag)
+  end
+  def remove_tag_to_user
+    self.user.remove_tag(self.organization.tag)
+  end
 end

@@ -61,6 +61,7 @@ describe User do
     it { should respond_to(:add_ios_device_token) }
     it { should respond_to(:pull_ios_device_token) }
     it { should respond_to(:remove_ios_device_token) }
+    it { should respond_to(:tags) }
   end
 
   it "should create a new instance given a valid attributes" do
@@ -801,6 +802,75 @@ describe User do
       user.send_welcome_receipt
       user.receipts.unread.count.should == 1
       user.receipts.first.post.should == @post
+    end
+  end
+
+  describe '#push_tag' do
+    before(:each) do
+      @namespace = create :namespace
+      @user = create :user, namespace: @namespace
+      @tag = 'tag'
+    end
+
+    it 'should add tag' do
+      @user.push_tag(@tag)
+
+      @user.tags.count.should == 1
+      @user.tags.should include(@tag)
+    end
+
+    it 'should not add the same tag' do
+      @user.push_tag(@tag)
+      @user.push_tag(@tag)
+
+      @user.tags.count.should == 1
+    end
+  end
+  describe '#pull_tag' do
+    before(:each) do
+      @namespace = create :namespace
+      @user = create :user, namespace: @namespace
+      @tag = 'tag'
+
+      @user.push_tag(@tag)
+    end
+    it 'should add tag' do
+      @user.pull_tag(@tag)
+      @user.tags.count.should == 0
+    end
+    it 'should do nothing' do
+      @user.pull_tag(@tag)
+      @user.pull_tag(@tag)
+    end
+
+  end
+  describe '#set_up_tags' do
+    before(:each) do
+      @namespace = create :namespace
+      @user = create :user, namespace: @namespace
+
+      @organization = create :organization, namespace: @namespace
+      @organization.push_member @user
+
+      @user_another = create :user, namespace: @namespace
+      @user.send_message_to([@user_another], 'body')
+      @user.reload
+      @conversation = @user.conversations.first
+
+      @user.tags = []
+      @user.save
+    end
+    it 'should set tags' do
+      @user.set_up_tags
+      @user.tags.count.should == 2
+    end
+    it 'should set organization tags' do
+      @user.set_up_tags
+      @user.tags.should include(@organization.tag)
+    end
+    it 'should set conversation tags' do
+      @user.set_up_tags
+      @user.tags.should include(@conversation.tag)
     end
   end
 end

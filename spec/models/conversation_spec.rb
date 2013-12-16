@@ -47,6 +47,11 @@ describe Conversation do
       @user_one.conversations.count.should == 0
       @conversation.participants.should_not include(@user_one)
     end
+    it "should remove tag from user" do
+      @conversation.remove_user(@user_one.id)
+      @user_one.reload
+      @user_one.tags.should_not include(@conversation.tag)
+    end
   end
 
   describe "#add_user" do
@@ -71,6 +76,11 @@ describe Conversation do
         @user_three.reload
       end.to change { @user_three.conversations.count }.by(1)
       @conversation.participants.should include(@user_three)
+    end
+    it "should add tag to user" do
+      @conversation.add_user(@user_one.id)
+      @user_one.reload
+      @user_one.tags.should include(@conversation.tag)
     end
   end
 end

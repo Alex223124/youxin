@@ -35,4 +35,39 @@ describe UserOrganizationPositionRelationship do
       end
     end
   end
+
+  describe '#add_tag_to_user' do
+    before(:each) do
+      @namespace = create :namespace
+      @organization = create :organization, namespace: @namespace
+      @user = create :user, namespace: @namespace
+      @position = create :position, namespace: @namespace
+      @relationship = UserOrganizationPositionRelationship.create(
+        organization_id: @organization.id,
+        position_id: @position.id,
+        user_id: @user.id
+      )
+    end
+    it 'should add tag to user' do
+      @user.tags.should include(@organization.tag)
+    end
+  end
+
+  describe '#add_tag_to_user' do
+    before(:each) do
+      @namespace = create :namespace
+      @organization = create :organization, namespace: @namespace
+      @user = create :user, namespace: @namespace
+      @position = create :position, namespace: @namespace
+      @relationship = UserOrganizationPositionRelationship.create(
+        organization_id: @organization.id,
+        position_id: @position.id,
+        user_id: @user.id
+      )
+    end
+    it 'should add tag to user' do
+      @relationship.destroy
+      @user.tags.should_not include(@organization.tag)
+    end
+  end
 end

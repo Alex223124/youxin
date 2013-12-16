@@ -68,6 +68,8 @@ class User
 
   field :creator_id
 
+  field :tags, type: Array, default: []
+
   validates :name, presence: true, length: 2..10
   validates :phone, format: { with: /\A1\d+\Z/ }, length: { is: 11 }, uniqueness: true, presence: true
   validates :gender, inclusion: %w(男 女), allow_blank: true
@@ -257,7 +259,7 @@ class User
       unless conversation
         conversation = Conversation.create(originator_id: self.id) unless conversation
         [self, obj].each do |participant|
-          conversation.participants.push participant
+          conversation.add_user participant
         end
       end
     elsif obj.is_a? Conversation
@@ -267,7 +269,7 @@ class User
       participants = obj | [self]
       return false if participants.size < 2
       participants.each do |participant|
-        conversation.participants.push participant
+        conversation.add_user participant
       end
     else
       return false
@@ -310,6 +312,24 @@ class User
 
   alias_method :add_ios_device_token, :push_ios_device_token
   alias_method :remove_ios_device_token, :pull_ios_device_token
+
+
+  def push_tag(tag)
+    self.add_to_set(:tags, tag) if tag
+  end
+  def pull_tag(tag)
+    self.pull(:tags, tag) if tag
+  end
+  def set_up_tags
+    self.organizations.each do |organization|
+      self.push_tag(organization.tag)
+    end
+    self.conversations.each do |conversation|
+      self.push_tag(conversation.tag)
+    end
+  end
+  alias_method :add_tag, :push_tag
+  alias_method :remove_tag, :pull_tag
 
   def self.allowed(object, subject)
     return [] unless object.is_a?(User)
