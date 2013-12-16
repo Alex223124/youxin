@@ -33,6 +33,7 @@ describe User do
     it { should have_many(:user_role_organization_relationships) }
     it { should belong_to(:namespace) }
     it { should belong_to(:creator) }
+    it { should have_many(:binds) }
   end
 
   describe "Respond to" do
