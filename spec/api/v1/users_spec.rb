@@ -1035,6 +1035,74 @@ describe Youxin::API, 'users' do
     end
   end
 
+  describe 'POST /user/binds' do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @bind_attrs = attributes_for(:bind)
+    end
+    context 'success' do
+      it 'should return 201' do
+        post api('/user/binds', @user), @bind_attrs
+        response.status.should == 201
+      end
+      it 'should create a bind' do
+        expect do
+          post api('/user/binds', @user), @bind_attrs
+        end.to change { @user.binds.count }.by(1)
+      end
+    end
+    context 'fails' do
+      it 'without baidu_channel_id' do
+        @bind_attrs.delete(:baidu_channel_id)
+        post api('/user/binds', @user), @bind_attrs
+        response.status.should == 400
+        json_response['message'].should include('baidu_channel_id')
+      end
+      it 'without baidu_user_id' do
+        @bind_attrs.delete(:baidu_user_id)
+        post api('/user/binds', @user), @bind_attrs
+        response.status.should == 400
+        json_response['message'].should include('baidu_user_id')
+      end
+    end
+  end
+
+  describe 'DELETE /user/binds' do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @bind_attrs = attributes_for(:bind)
+      @bind = @user.binds.create @bind_attrs
+    end
+    context 'success' do
+      it 'should return 204' do
+        delete api('/user/binds', @user), @bind_attrs
+        response.status.should == 204
+      end
+      it 'should delet one bind of user' do
+        expect do
+          delete api('/user/binds', @user), @bind_attrs
+        end.to change { @user.binds.count }.by(-1)
+      end
+    end
+    context 'fail' do
+      it 'without baidu_channel_id' do
+        @bind_attrs.delete(:baidu_channel_id)
+        delete api('/user/binds', @user), @bind_attrs
+        response.status.should == 404
+      end
+      it 'without baidu_user_id' do
+        @bind_attrs.delete(:baidu_user_id)
+        delete api('/user/binds', @user), @bind_attrs
+        response.status.should == 404
+      end
+      it 'baidu_user_id and baidu_channel_id not matched' do
+        @bind_attrs[:baidu_user_id] = 'not_matched'
+        delete api('/user/binds', @user), @bind_attrs
+        response.status.should == 404
+      end
+    end
+  end
+
   describe "GET /users/:id" do
     context "/" do
       before(:each) do

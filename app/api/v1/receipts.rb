@@ -6,6 +6,14 @@ class Receipts < Grape::API
       receipts = paginate current_user.receipts
       present receipts, with: Youxin::Entities::Receipt
     end
+    get ':post_id/by_post_id' do
+      @receipt = current_user.receipts.where(post_id: params[:post_id]).first
+      if @receipt
+        present @receipt, with: Youxin::Entities::Receipt
+      else
+        not_found!("receipt")
+      end
+    end
     route_param :id do
       before do
         @receipt = current_user.receipts.find(params[:id])

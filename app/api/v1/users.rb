@@ -110,6 +110,30 @@ class Users < Grape::API
         present notifications, with: Youxin::Entities::Notification
       end
     end
+
+    post :binds do
+      required_attributes! [:baidu_user_id, :baidu_channel_id]
+      attrs = attributes_for_keys [:baidu_user_id, :baidu_channel_id]
+
+      bind = current_user.binds.new attrs
+      if bind.save
+        present bind, with: Youxin::Entities::Bind
+      else
+        fail!(bind.errors)
+      end
+    end
+    delete :binds do
+      attrs = attributes_for_keys [:baidu_user_id, :baidu_channel_id]
+
+      bind = current_user.binds.where(baidu_user_id: attrs[:baidu_user_id],
+                                      baidu_channel_id: attrs[:baidu_channel_id]).first
+      if bind
+        bind.destroy
+        status(204)
+      else
+        not_found!('bind')
+      end
+    end
   end
 
   resource :users do

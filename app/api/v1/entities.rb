@@ -1,5 +1,9 @@
 module Youxin
   module Entities
+    class Bind < Grape::Entity
+      expose :id, :baidu_user_id, :baidu_channel_id
+    end
+
     class UserSimple < Grape::Entity
       expose :id, :name, :email, :created_at
       expose :avatar do |user|

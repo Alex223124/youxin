@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :bind do
-    baidu_channel_id 'baidu_channel_id'
-    baidu_user_id 'baidu_user_id'
+    sequence(:baidu_channel_id) { |n| "baidu_channel_id-#{n}" }
+    sequence(:baidu_user_id) { |n| "baidu_user_id-#{n}" }
   end
 end
