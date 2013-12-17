@@ -12,5 +12,9 @@ describe Youxin::Util do
     it 'should not raise error' do
       Youxin::Util.baidu_push_client
     end
+    it 'should not create a new object' do
+      client = Youxin::Util.baidu_push_client
+      Youxin::Util.baidu_push_client.should == client
+    end
   end
 end

@@ -7,7 +7,7 @@ module Youxin
     end
 
     def baidu_push_client
-      BaiduPush::Client.new(Youxin.config.baidu_push.api_key, Youxin.config.baidu_push.secret_key)
+      @baidu_push_client ||= BaiduPush::Client.new(Youxin.config.baidu_push.api_key, Youxin.config.baidu_push.secret_key)
     end
   end
 end
