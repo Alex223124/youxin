@@ -89,6 +89,9 @@ describe OrganizationsController do
     before(:each) do
       actions_organization = Action.options_array_for(:organization)
       @parent.authorize_cover_offspring(current_user, actions_organization)
+
+      stub_request(:any, /.*channel\.api\.duapp\.com.*/)
+        .to_return(status: 200, body: 'aa', headers: { 'Content-Type' => 'application/json;charset=utf-8' })
     end
     it "should return 204" do
       delete :destroy, id: @parent.id

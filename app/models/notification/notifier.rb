@@ -100,6 +100,23 @@ class Notification::Notifier
       cloopen_account.calls.landing_calls.create params.merge(to: phone)
     end
 
+    # Baidu Push
+    def push_messages_to_android_with_tags(tags, payload, msg_keys)
+      tags.each do |tag|
+        Youxin::Util.baidu_push_client.push_msg(2, payload, msg_keys,
+                                                tag: tag,
+                                                device_type: 3)
+      end
+    end
+    def push_messages_to_android_with_user_id_and_channel_id(user, payload, msg_keys)
+      user.binds.each do |bind|
+        Youxin::Util.baidu_push_client.push_msg(1, payload, msg_keys,
+                                                device_type: 3,
+                                                user_id: bind.baidu_user_id,
+                                                channel_id: bind.baidu_channel_id)
+      end
+    end
+
     private
     def pusher
       certificate_file = File.join(Rails.root, 'push_server', 'grocer', 'certs', Youxin.config.apn.cert_file)

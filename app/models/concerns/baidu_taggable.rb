@@ -10,6 +10,14 @@ module BaiduTaggable
     before_create do
       ensure_tag
     end
+
+    after_destroy do
+      baidu_push_client.delete_tag self.tag
+    end
+  end
+
+  def baidu_push_users
+    []
   end
 
   def reset_tag
@@ -19,8 +27,16 @@ module BaiduTaggable
   end
 
   def reset_tag!
+    baidu_push_client.delete_tag self.tag
+    self.baidu_push_users.each do |user|
+      user.pull_tag(self.tag)
+    end
     reset_tag
     save(:validate => false)
+
+    self.baidu_push_users.each do |user|
+      user.push_tag(self.tag)
+    end
   end
 
   def ensure_tag

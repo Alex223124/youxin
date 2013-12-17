@@ -358,6 +358,9 @@ describe Organization do
       @organization = create :organization
       @user = create :user
       @organization.push_member(@user)
+
+      stub_request(:any, /.*channel\.api\.duapp\.com.*/)
+        .to_return(status: 200, body: 'aa', headers: { 'Content-Type' => 'application/json;charset=utf-8' })
     end
 
     it "should remove users" do

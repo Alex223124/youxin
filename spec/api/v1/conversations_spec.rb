@@ -259,6 +259,9 @@ describe Youxin::API, 'conversations' do
       @user_another = create :user, namespace: namespace
       body = 'body'
       @conversation = @user.send_message_to([@user_one, @user_another], body)
+
+      stub_request(:any, /.*channel\.api\.duapp\.com.*/)
+        .to_return(status: 200, body: 'aa', headers: { 'Content-Type' => 'application/json;charset=utf-8' })
     end
     it "should delete the conversation" do
       delete api("/conversations/#{@conversation.id}", @user)

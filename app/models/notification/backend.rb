@@ -28,6 +28,15 @@ module Notification
       def send_welcome_message_async(user_id)
         ::Resque.enqueue(SendWelcomeMessageJob, user_id)
       end
+      def baidu_push_post_to_android_async(post_id)
+        ::Resque.enqueue(BaiduPushPostToAndroidJob, post_id)
+      end
+      def baidu_push_message_to_android_async(message_id)
+        ::Resque.enqueue(BaiduPushMessageToAndroidJob, message_id)
+      end
+      def baidu_push_comment_to_android_async(comment_notification_id)
+        ::Resque.enqueue(BaiduPushCommentToAndroidJob, comment_notification_id)
+      end
     end
 
     def self.included(receiver)

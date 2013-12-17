@@ -83,4 +83,38 @@ describe Conversation do
       @user_one.tags.should include(@conversation.tag)
     end
   end
+
+  describe 'hooks' do
+    before(:each) do
+      @user = create :user
+      @user_one = create :user
+      @user_another = create :user
+
+      stub_request(:any, /.*channel\.api\.duapp\.com.*/)
+        .to_return(status: 200, body: 'aa', headers: { 'Content-Type' => 'application/json;charset=utf-8' })
+    end
+    context 'after_create' do
+      before(:each) do
+        @body = 'body'
+      end
+      it 'should add tag to participants' do
+        conversation = @user.send_message_to([@user_one, @user_another], @body)
+        @user.tags.should include(conversation.tag)
+        @user_one.tags.should include(conversation.tag)
+        @user_another.tags.should include(conversation.tag)
+      end
+    end
+    context 'after_destroy' do
+      before(:each) do
+        @body = 'body'
+        @conversation = @user.send_message_to([@user_one, @user_another], @body)
+      end
+      it 'should remove tag from participants' do
+        @conversation.destroy
+        @user.tags.should_not include(@conversation.tag)
+        @user_one.tags.should_not include(@conversation.tag)
+        @user_another.tags.should_not include(@conversation.tag)
+      end
+    end
+  end
 end

@@ -332,11 +332,14 @@ class User
     end
   end
   def set_up_tags
-    self.organizations.each do |organization|
-      self.push_tag(organization.tag)
+    tags_was = self.tags
+    tags_will_be = self.organizations.map(&:tag) + self.conversations.map(&:tag)
+
+    (tags_was - tags_will_be).each do |tag|
+      self.pull_tag(tag)
     end
-    self.conversations.each do |conversation|
-      self.push_tag(conversation.tag)
+    (tags_will_be - tags_was).each do |tag|
+      self.push_tag(tag)
     end
   end
   def set_tag_to_server(tag, bind)

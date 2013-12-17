@@ -125,6 +125,10 @@ class Organization
   end
   # Authorize
 
+  def baidu_push_users
+    self.members
+  end
+
   private
   def parent_exists
     if Organization.where(id: self.parent_id).blank?

@@ -859,6 +859,10 @@ describe User do
 
       @user.tags = []
       @user.save
+
+
+      stub_request(:any, /.*channel\.api\.duapp\.com.*/)
+        .to_return(status: 200, body: 'aa', headers: { 'Content-Type' => 'application/json;charset=utf-8' })
     end
     it 'should set tags' do
       @user.set_up_tags
@@ -870,6 +874,13 @@ describe User do
     end
     it 'should set conversation tags' do
       @user.set_up_tags
+      @user.tags.should include(@conversation.tag)
+    end
+    it 'should remove and add tags' do
+      old_tag = @conversation.tag
+      @conversation.reset_tag!
+      @user.set_up_tags
+      @user.tags.should_not include(old_tag)
       @user.tags.should include(@conversation.tag)
     end
   end

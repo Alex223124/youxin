@@ -7,10 +7,23 @@ class Notification::Comment < Notification::Base
 
   after_create :send_comment_notifications
 
+  def baidu_push_payload
+    content = "#{self.comment.body}"[0...25]
+    {
+      type: :comment_notification,
+      id: self.id.to_s,
+      title: "#{self.comment.user.name}评论了你的优信",
+      content: content,
+      user_id: self.comment.user_id.to_s
+    }
+  end
+
+
   private
   def send_comment_notifications
     Notification::Notifier.publish_to_ios_device_async([user.id], ios_payload)
     Notification::Notifier.publish_to_faye_client_async([user_id], faye_payload)
+    Notification::Notifier.baidu_push_comment_to_android_async(self.id)
   end
   def ios_payload
     {

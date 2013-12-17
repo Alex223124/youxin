@@ -12,6 +12,7 @@ class Post
   field :recipient_ids, type: Array, default: []
   field :organization_ids, type: Array, default: []
   field :organization_clan_ids, type: Array, default: []
+  field :tags, type: Array, default: []
 
   validates :author_id, presence: true
   validates :organization_ids, presence: true
@@ -77,6 +78,17 @@ class Post
                   })
   end
 
+  def baidu_push_payload
+    content = "#{self.title}"[0...25]
+    {
+      type: :post,
+      id: self.id.to_s,
+      title: "#{self.author.name}发来一条优信",
+      content: content,
+      user_id: self.author_id.to_s
+    }
+  end
+
   private
   def parse_body
     self.body = truncate(Nokogiri::HTML(body_html).text, length: 50)
@@ -91,6 +103,7 @@ class Post
     org_id = org_ids.shift
     until org_id.nil?
       organization = Organization.find(org_id)
+      self.tags.push organization.tag
       if organization.offspring.count != 0 && organization.offspring.map(&:id) - org_ids == []
         self.organization_clan_ids |= [org_id]
         org_ids -= organization.offspring.map(&:id)
@@ -134,6 +147,7 @@ class Post
   def send_notifications
     Notification::Notifier.publish_post_to_ios_device_async(self.id)
     Notification::Notifier.publish_post_to_faye_client_async(self.id)
+    Notification::Notifier.baidu_push_post_to_android_async(self.id)
   end
 
   def mark_receipt_read(comment)

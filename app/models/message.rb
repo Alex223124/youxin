@@ -19,6 +19,17 @@ class Message
     send_message_notifications
   end
 
+  def baidu_push_payload
+    content = "#{self.body}"[0...25]
+    {
+      type: :conversation,
+      id: self.conversation.id.to_s,
+      title: "#{self.user.name}发来一条私信",
+      content: content,
+      user_id: self.user_id.to_s
+    }
+  end
+
   private
   def update_conversation
     self.conversation.last_message_id = self.id
@@ -32,6 +43,7 @@ class Message
       participant.message_notifications.create(message_id: self.id)
     end
     Notification::Notifier.publish_message_to_ios_device_async(self.id)
+    Notification::Notifier.baidu_push_message_to_android_async(self.id)
   end
   def faye_payload
     self.as_json(only: [:created_at, :body], methods: [:id], root: true,
