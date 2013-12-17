@@ -10,7 +10,14 @@ class Posts < Grape::API
       attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at]
       attachment_ids = attrs.delete(:attachment_ids)
       delayed_sms_at = attrs.delete(:delayed_sms_at).to_i
+
+      last_post = current_user.posts.first
+
       post = current_user.posts.new attrs
+
+      if last_post && post.body_html == last_post.body_html
+        render_api_error!('Duplicated request', 422)
+      end
 
       attachments = []
       attachment_ids.each do |attachment_id|

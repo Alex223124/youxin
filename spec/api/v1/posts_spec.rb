@@ -31,6 +31,23 @@ describe Youxin::API, 'posts' do
         post api('/posts', @admin), attrs
       }.to change { Post.count }.by(1)
     end
+    context 'title' do
+      before(:each) do
+        @attrs = attributes_for(:post).merge!({
+          organization_ids: [@organization].map(&:id)
+        })
+        post api('/posts', @admin), @attrs
+      end
+      it 'should not create post if duplicated with last post' do
+        expect {
+          post api('/posts', @admin), @attrs
+        }.to change { Post.count }.by(0)
+      end
+      it 'should return 422' do
+        post api('/posts', @admin), @attrs
+        response.status.should == 422
+      end
+    end
 
     context "attachments" do
       it "should append attachments to post" do
@@ -65,9 +82,13 @@ describe Youxin::API, 'posts' do
         attrs = attrs.merge({
           attachment_ids: attachment_ids
         })
+        new_attrs = attributes_for(:post).merge!({
+          organization_ids: [@organization].map(&:id),
+          attachment_ids: attachment_ids
+        })
         post api('/posts', @admin), attrs
         response.status.should == 201
-        post api('/posts', @admin), attrs
+        post api('/posts', @admin), new_attrs
         response.status.should == 400
         json_response['attachment_ids'].should_not be_nil
       end
