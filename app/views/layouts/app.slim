@@ -10,7 +10,7 @@ html
 
     link rel="shortcut icon" href="#{image_path('favicon.png')}"
     link rel="apple-touch-icon-precomposed" href="#{image_path('apple-touch-icon.png')}"
-    = stylesheet_link_tag 'mobile', media: 'all'
+    = stylesheet_link_tag 'app', media: 'all'
     = yield :styles
     = yield :scripts
   body
@@ -27,7 +27,7 @@ html
       | Copyright © 2013&nbsp;&nbsp;❤&nbsp;&nbsp;
       = link_to 'Combee', root_path
 
-    = javascript_include_tag "mobile"
+    = javascript_include_tag "app"
 
     javascript:
       var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
