@@ -30,6 +30,17 @@ describe Youxin::API, 'notifications' do
     end
   end
 
+  describe 'GET /notifications/:id' do
+    it 'should retrun 404' do
+      get api('/notifications/not_exitst', @user)
+      response.status.should == 404
+    end
+    it 'should return the notification' do
+      get api("/notifications/#{@notification.id}", @user)
+      json_response['id'].should == @notification.id.to_s
+    end
+  end
+
   describe "PUT /notifications/read" do
     it "should mark the notifications as read" do
       put api('/notifications/read', @user), notification_ids: [@notification, @notification_one].map(&:id)

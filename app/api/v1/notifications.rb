@@ -13,6 +13,11 @@ class Notifications < Grape::API
         @notification = current_user.notifications.where(id: params[:id]).first
         not_found!("notification with id #{params[:id]}") unless @notification
       end
+
+      get do
+        present @notification, with: Youxin::Entities::Notification
+      end
+
       put :read do
         @notification.read!
         status(204)
