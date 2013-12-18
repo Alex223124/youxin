@@ -282,6 +282,25 @@ describe Youxin::API, 'posts' do
     end
   end
 
+  describe "GET /posts/:id/receipt" do
+    before(:each) do
+      @post = create :post, author: @admin, organization_ids: [@organization].map(&:id)
+    end
+    it "should return 200" do
+      get api("/posts/#{@post.id}/receipt", @user)
+      response.status.should == 200
+    end
+    it "should return the receipt" do
+      receipt = @user.receipts.where(post_id: @post.id).first
+      get api("/posts/#{@post.id}/receipt", @user)
+      json_response['id'].should == receipt.id.to_s
+    end
+    it "should return 404" do
+      get api("/posts/not_exist/receipt", @user)
+      response.status.should == 404
+    end
+  end
+
   describe "/posts/:id" do
     before(:each) do
       @admin = create :user, namespace: namespace

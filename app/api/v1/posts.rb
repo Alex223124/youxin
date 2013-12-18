@@ -51,6 +51,14 @@ class Posts < Grape::API
       get do
         present @post, with: Youxin::Entities::Post
       end
+      get 'receipt' do
+        @receipt = current_user.receipts.where(post_id: @post.id).first
+        if @receipt
+          present @receipt, with: Youxin::Entities::Receipt
+        else
+          not_found!("receipt")
+        end
+      end
       get 'forms' do
         @forms = @post.forms
         present @forms, with: Youxin::Entities::Form

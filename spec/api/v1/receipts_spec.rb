@@ -102,23 +102,6 @@ describe Youxin::API, 'receipts' do
       response.status.should == 404
     end
   end
-  describe "GET /receipts/:post_id/by_post_id" do
-    before(:each) do
-      @receipt = @user.receipts.first
-    end
-    it "should return 200" do
-      get api("/receipts/#{@post.id}/by_post_id", @user)
-      response.status.should == 200
-    end
-    it "should return the receipt" do
-      get api("/receipts/#{@post.id}/by_post_id", @user)
-      json_response['id'].should == @receipt.id.to_s
-    end
-    it "should return 404" do
-      get api("/receipts/not_exist/by_post_id", @user)
-      response.status.should == 404
-    end
-  end
 
   describe "POST /receipts/:id/favorite" do
     it "should create favorite to receipt" do
