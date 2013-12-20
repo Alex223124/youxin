@@ -1050,6 +1050,11 @@ describe Youxin::API, 'users' do
           post api('/user/binds', @user), @bind_attrs
         end.to change { @user.binds.count }.by(1)
       end
+      it 'should success' do
+        post api('/user/binds', @user), @bind_attrs
+        post api('/user/binds', @user), @bind_attrs
+        response.status.should == 201
+      end
     end
     context 'fails' do
       it 'without baidu_channel_id' do
