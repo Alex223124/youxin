@@ -1,0 +1,30 @@
+<div class="pure-u-1 tac">
+  <div class="pure-u-4-5 m0a">
+    <div class="header tac pure-u-4-5">
+      <%= image_tag('logo_mobile.png') %>
+    </div>
+    <div class="tal error-message-container">
+      <% flash.each do |type, message| %>
+        <span class="border-circle tac">!</span>
+        <span id="error_message"><%= message %></span>
+      <% end %>
+    </div>
+    <%= form_for(resource, as: resource_name, url: mobile_new_user_session_path, html: { class: 'pure-g-r' }) do |f| %>
+      <label class="pure-u-1 for-placeholder">
+        <%= f.text_field :login, class: 'pure-u-1', placeholder: '邮箱/电话', autofocus: true %>
+      </label>
+      <label class="pure-u-1 for-placeholder">
+        <%= f.password_field :password, class: 'pure-u-1', placeholder: '密码'%>
+      </label>
+      <%= f.submit '登   录', class: 'pure-u-1 submit', id: 'login_submit', disable_with: '登   录   中...' %>
+      <div class="options pure-u-1">
+        <label for="<%= resource_name %>_remember_me">
+          <%= f.check_box :remember_me, class: 'pure-checkbox' %>
+          <span class="linkstyle">记住密码</span>
+        </label>
+        <a href="/welcome" class="first-login">第一次登录？</a>
+        <a href="/password/new" class="emphasize">忘记密码</a>
+      </div>
+    <% end %>
+  </div>
+</div>

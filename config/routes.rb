@@ -1,4 +1,16 @@
 Youxin::Application.routes.draw do
+  constraints subdomain: 'm' do
+    namespace(:mobile, path: '/') do
+      root to: 'receipts#index'
+      devise_for :users, path: 'account', skip: [:sessions], controllers: { passwords: :passwords }
+      as :user do
+        get 'sign_in' => 'sessions#new', as: :new_user_session
+        post 'sign_in' => 'sessions#create', as: :user_session
+      end
+    end
+  end
+
+  require 'api'
   root to: 'home#index'
   get 'privacy' => 'home#privacy'
   get 'terms' => 'home#terms'
@@ -113,7 +125,6 @@ Youxin::Application.routes.draw do
 
   mount ChinaCity::Engine => '/china_city'
 
-  require 'api'
   mount Youxin::API => '/'
 
 end

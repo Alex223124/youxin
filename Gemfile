@@ -65,7 +65,10 @@ end
 gem 'slim-rails' # html template
 gem 'bootstrap-sass', '~> 2.3.1.0' # bootstrap
 gem 'angularjs-rails', '~> 1.2.0.rc2' # angularjs
+gem 'zepto_rails'
+gem 'purecss-rails'
 gem 'simple_form'
+gem 'rails-behaviors', '~> 0.4.1'
 gem 'font-awesome-sass-rails', github: 'pduersteler/font-awesome-sass-rails', branch: :master
 # gem 'font-awesome-sass-rails'
 gem 'bootstrap-wysihtml5-rails'

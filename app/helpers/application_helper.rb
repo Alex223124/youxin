@@ -28,7 +28,7 @@ module ApplicationHelper
   end
   def subdomain_request?
     case request.subdomain
-    when 'www', '', nil
+    when 'www', 'm', '', nil
       false
     else
       true

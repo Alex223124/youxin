@@ -226,6 +226,8 @@ GEM
     pry-remote (0.1.7)
       pry (~> 0.9)
       slop (~> 3.0)
+    purecss-rails (0.3.0)
+      railties (>= 3.2.6, < 5)
     quiet_assets (1.0.2)
       railties (>= 3.1, < 5.0)
     rack (1.4.5)
@@ -247,6 +249,9 @@ GEM
       activesupport (= 3.2.13)
       bundler (~> 1.0)
       railties (= 3.2.13)
+    rails-behaviors (0.4.1)
+      coffee-script-source (~> 1.1)
+      sprockets (~> 2.0)
     railties (3.2.13)
       actionpack (= 3.2.13)
       activesupport (= 3.2.13)
@@ -367,6 +372,8 @@ GEM
     writeexcel (1.0.1)
     xpath (2.0.0)
       nokogiri (~> 1.3)
+    zepto_rails (1.0)
+      rails (>= 3.1.0)
 
 PLATFORMS
   ruby
@@ -412,9 +419,11 @@ DEPENDENCIES
   pry-nav
   pry-rails
   pry-remote
+  purecss-rails
   quiet_assets (~> 1.0.2)
   rack-test!
   rails (= 3.2.13)
+  rails-behaviors (~> 0.4.1)
   rb-fsevent
   rb-inotify
   resque-scheduler
@@ -432,3 +441,4 @@ DEPENDENCIES
   webmock
   workflow_on_mongoid
   writeexcel
+  zepto_rails
