@@ -5,7 +5,7 @@ describe ReceiptsController do
 
   before(:each) do
     @user = create :user
-    sign_in @user
+    login_user @user
 
     @admin = create :user
     @organization = create :organization

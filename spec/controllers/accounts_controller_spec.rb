@@ -11,16 +11,20 @@ describe AccountsController do
       organization_another = create :organization
       organization_one.add_member current_user
       organization_another.add_member current_user
-      login_user current_user
     end
-    it "should return the array of organizations" do
-      get :organizations
-      json_response.should have_key('organizations')
-      json_response['organizations'].should be_a_kind_of(Array)
-    end
-    it "should return organizations which current user is in" do
-      get :organizations
-      json_response['organizations'].size.should == 2
+    context "autheticated" do
+      before(:each) do
+        login_user current_user
+      end
+      it "should return the array of organizations" do
+        get :organizations
+        json_response.should have_key('organizations')
+        json_response['organizations'].should be_a_kind_of(Array)
+      end
+      it "should return organizations which current user is in" do
+        get :organizations
+        json_response['organizations'].size.should == 2
+      end
     end
     it "should return 401" do
       sign_out current_user

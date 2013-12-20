@@ -3,7 +3,10 @@ require 'spec_helper'
 describe HomeController do
   describe "GET index" do
     it "should return http success" do
-      login_user
+      pending
+      namespace = create :namespace
+      user = create :user, namespace: namespace
+      login_user user
       get :index
       response.should be_success
     end

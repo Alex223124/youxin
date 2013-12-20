@@ -13,16 +13,20 @@ describe UsersController do
       organization_another = create :organization, namespace: namespace
       organization_one.add_member user
       organization_another.add_member user
-      login_user current_user
     end
-    it "should return the array of organizations" do
-      get :organizations, id: user.id
-      json_response.should have_key('organizations')
-      json_response['organizations'].should be_a_kind_of(Array)
-    end
-    it "should return organizations which current user is in" do
-      get :organizations, id: user.id
-      json_response['organizations'].size.should == 2
+    context 'authenticated' do
+      before(:each) do
+        login_user current_user
+      end
+      it "should return the array of organizations" do
+        get :organizations, id: user.id
+        json_response.should have_key('organizations')
+        json_response['organizations'].should be_a_kind_of(Array)
+      end
+      it "should return organizations which current user is in" do
+        get :organizations, id: user.id
+        json_response['organizations'].size.should == 2
+      end
     end
     it "should return 401" do
       sign_out current_user
