@@ -52,6 +52,9 @@ describe Post do
     it "should create a new instance given a valid attributes" do
       expect(build :post, author: @author, organization_ids: [@a.id]).to be_valid
     end
+    it "should create a new instance given a valid attributes" do
+      expect(build :post, author: @author, organization_ids: [@c, @d, @e].map(&:id)).to be_valid
+    end
     it "should create receipts to members" do
       @a.push_member(@user)
       post = create :post, author: @author, organization_ids: [@a.id]
@@ -282,8 +285,9 @@ describe Post do
       @c.push_member(@user)
       @g.push_member(@user)
       @post = create :post, author: @author, organization_ids: [@f.id, @g.id, @h.id, @i.id]
+      @post.reload
     end
-    it 'should generate three tags' do
+    it 'should generate four tags' do
       @post.tags.count.should == 4
     end
     it 'should generate tags' do

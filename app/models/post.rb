@@ -15,7 +15,7 @@ class Post
   field :tags, type: Array, default: []
 
   validates :author_id, presence: true
-  validates :organization_ids, presence: true
+  validates :organization_ids, presence: true, unless: :organization_clan_ids?
   validates :title, length: { maximum: 20 }
   validates :body_html, presence: true
 
