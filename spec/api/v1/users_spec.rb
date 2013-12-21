@@ -1038,6 +1038,7 @@ describe Youxin::API, 'users' do
   describe 'POST /user/binds' do
     before(:each) do
       @user = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
       @bind_attrs = attributes_for(:bind)
     end
     context 'success' do
@@ -1054,6 +1055,12 @@ describe Youxin::API, 'users' do
         post api('/user/binds', @user), @bind_attrs
         post api('/user/binds', @user), @bind_attrs
         response.status.should == 201
+      end
+      it 'should success if token by other' do
+        @user_another.binds.create(@bind_attrs)
+        post api('/user/binds', @user), @bind_attrs
+        response.status.should == 201
+        @user_another.binds.count.should == 0
       end
     end
     context 'fails' do
@@ -1106,6 +1113,27 @@ describe Youxin::API, 'users' do
         response.status.should == 404
       end
     end
+  end
+
+  describe 'DELETE /user/binds/:bind_id' do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @bind_attrs = attributes_for(:bind)
+      @bind = @user.binds.create @bind_attrs
+    end
+    context 'success' do
+      it 'should create bind' do
+        delete api("/user/binds/#{@bind.id}", @user)
+        response.status.should == 204
+      end
+    end
+    context 'fails' do
+      it 'should not found' do
+        delete api("/user/binds/not_exist", @user)
+        response.status.should == 404
+      end
+    end
+
   end
 
   describe "GET /users/:id" do

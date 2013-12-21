@@ -115,11 +115,14 @@ class Users < Grape::API
       required_attributes! [:baidu_user_id, :baidu_channel_id]
       attrs = attributes_for_keys [:baidu_user_id, :baidu_channel_id]
 
-      bind = current_user.binds.where(baidu_user_id: attrs[:baidu_user_id],
-                                      baidu_channel_id: attrs[:baidu_channel_id]).first
-      if bind
-          present bind, with: Youxin::Entities::Bind
+      bind = Bind.where(baidu_user_id: attrs[:baidu_user_id],
+                        baidu_channel_id: attrs[:baidu_channel_id]).first
+
+      if bind && bind.user == current_user
+        present bind, with: Youxin::Entities::Bind
       else
+        bind.destroy if bind
+
         bind = current_user.binds.new attrs
         if bind.save
           present bind, with: Youxin::Entities::Bind
@@ -133,6 +136,17 @@ class Users < Grape::API
 
       bind = current_user.binds.where(baidu_user_id: attrs[:baidu_user_id],
                                       baidu_channel_id: attrs[:baidu_channel_id]).first
+      if bind
+        bind.destroy
+        status(204)
+      else
+        not_found!('bind')
+      end
+    end
+    delete 'binds/:bind_id' do
+      required_attributes! [:bind_id]
+
+      bind = current_user.binds.where(id: params[:bind_id]).first
       if bind
         bind.destroy
         status(204)
