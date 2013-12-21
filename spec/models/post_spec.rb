@@ -26,6 +26,7 @@ describe Post do
     it { should respond_to(:organizations) }
     it { should respond_to(:organization_clans) }
     it { should respond_to(:organization_clan_ids) }
+    it { should respond_to(:tags) }
   end
 
   describe "#create" do
@@ -34,7 +35,7 @@ describe Post do
     #  A(*)---B---F---G(*)
     #              \
     #               H---I
-    # 
+    #
     before(:each) do
       @a = create :organization
       @b = create :organization, parent: @a
@@ -99,7 +100,7 @@ describe Post do
         post = create :post, author: @author, organization_ids: organization_ids
         @user.receipts.first.organization_ids.delete_if do |id|
           organization_ids.include?(id)
-        end.should be_blank        
+        end.should be_blank
         post.organization_ids.delete_if do |id|
           [@a, @c, @g].map(&:id).include?(id)
         end.should be_blank
@@ -142,7 +143,7 @@ describe Post do
     it "should add organization_ids to the receipt of author" do
       @a.push_member(@user)
       post = create :post, author: @author, organization_ids: [@a].map(&:id)
-      @author.receipts.first.organization_ids.should == [@a].map(&:id)            
+      @author.receipts.first.organization_ids.should == [@a].map(&:id)
     end
   end
 
@@ -182,7 +183,7 @@ describe Post do
     context "unread" do
       it "should not include author" do
         @post.receipts.unread.should_not include(@author.receipts.first)
-      end      
+      end
     end
   end
 
@@ -255,6 +256,41 @@ describe Post do
       post = create :post, author: @author, organization_ids: [@organization.id]
       post.attachments << @author.file_attachments.create(storage: @file)
       post.attachments.count.should == 1
+    end
+  end
+
+  describe 'tags' do
+    #           C(*)---D---E
+    #          /
+    #  A(*)---B---F---G(*)
+    #              \
+    #               H---I
+    #
+    before(:each) do
+      @a = create :organization
+      @b = create :organization, parent: @a
+      @c = create :organization, parent: @b
+      @d = create :organization, parent: @c
+      @e = create :organization, parent: @d
+      @f = create :organization, parent: @b
+      @g = create :organization, parent: @f
+      @h = create :organization, parent: @f
+      @i = create :organization, parent: @h
+      @author = create :user
+      @user = create :user
+      @a.push_member(@user)
+      @c.push_member(@user)
+      @g.push_member(@user)
+      @post = create :post, author: @author, organization_ids: [@f.id, @g.id, @h.id, @i.id]
+    end
+    it 'should generate three tags' do
+      @post.tags.count.should == 4
+    end
+    it 'should generate tags' do
+      @post.tags.should include(@f.tag)
+      @post.tags.should include(@g.tag)
+      @post.tags.should include(@h.tag)
+      @post.tags.should include(@i.tag)
     end
   end
 

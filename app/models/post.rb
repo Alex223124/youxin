@@ -20,7 +20,8 @@ class Post
   validates :body_html, presence: true
 
   attr_accessible :title, :body, :body_html, :organization_ids,
-                  :author_id, :organization_clan_ids
+                  :author_id, :organization_clan_ids,
+                  :tags
   attr_accessor :attachment_ids
   before_create do
     parse_body
@@ -98,12 +99,14 @@ class Post
                 Organization.find(organization_id).offspring.size
               end.reverse
     org_ids = org_ids.map { |org_id| Moped::BSON::ObjectId.from_string(org_id) }
+
+    self.tags = Organization.where(:id.in => org_ids).map(&:tag)
+
     self.organization_ids = []
     self.organization_clan_ids = []
     org_id = org_ids.shift
     until org_id.nil?
       organization = Organization.find(org_id)
-      self.tags.push organization.tag
       if organization.offspring.count != 0 && organization.offspring.map(&:id) - org_ids == []
         self.organization_clan_ids |= [org_id]
         org_ids -= organization.offspring.map(&:id)
