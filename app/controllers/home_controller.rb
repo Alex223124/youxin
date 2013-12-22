@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   skip_before_filter :authenticate_user!
 
   def index
-    unless signed_in?
+    unless current_user
       if is_mobile_device?
         redirect_to app_path
       else

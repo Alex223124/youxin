@@ -1,7 +1,5 @@
-class Mobile::ApplicationController < ActionController::Base
-  protect_from_forgery
-
-  before_filter :authenticate_user!
+class Mobile::ApplicationController < ApplicationController
+  include Mobile::ApplicationHelper
 
   layout 'mobile'
 end
