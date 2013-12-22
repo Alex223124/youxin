@@ -7,9 +7,10 @@ class Posts < Grape::API
       bulk_authorize! :create_youxin, current_namespace.organizations.where(:id.in => params[:organization_ids])
       required_attributes! [:body_html, :organization_ids]
 
-      attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at]
+      attrs = attributes_for_keys [:title, :body_html, :organization_ids, :attachment_ids, :delayed_sms_at, :delayed_call_at]
       attachment_ids = attrs.delete(:attachment_ids)
       delayed_sms_at = attrs.delete(:delayed_sms_at).to_i
+      delayed_call_at = attrs.delete(:delayed_call_at).to_i
 
       last_post = current_user.posts.first
 
@@ -35,6 +36,7 @@ class Posts < Grape::API
       if post.save
         attachments.map { |attachment| post.attachments << attachment } if attachments.present?
         post.sms_schedulers.create delayed_at: Time.at(delayed_sms_at) unless delayed_sms_at.zero?
+        post.call_schedulers.create delayed_at: Time.at(delayed_call_at) unless delayed_call_at.zero?
         receipt = post.receipts.find_by(origin: true)
         present receipt, with: Youxin::Entities::Receipt
       else
