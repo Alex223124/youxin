@@ -2,10 +2,10 @@ class HomeController < ApplicationController
   skip_before_filter :authenticate_user!
 
   def index
-    unless current_user
-      if is_mobile_device?
-        redirect_to app_path
-      else
+    if is_mobile_device? && request.subdomain != 'm'
+      redirect_to lite_root_url(subdomain: :m)
+    else
+      unless current_user
         redirect_to introduction_path
       end
     end

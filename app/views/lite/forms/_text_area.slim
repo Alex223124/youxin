@@ -1,0 +1,8 @@
+.field.field-textarea
+  - if input.required?
+    span.required-flag *
+  - if input.help_text?
+    .help-text
+      small.help_text #{input.help_text}
+  = label_tag("collection[#{input.identifier}]", input.label)
+  = text_area_tag "collection[#{input.identifier}]", input.default_value, class: 'pure-input-1', required: input.required?

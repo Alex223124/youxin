@@ -1,12 +1,15 @@
+- if flash[:notice]
+  .notice-container
+    .notice #{flash[:notice]}
 #single_post.pure-u-1.tal
   .top-title.tac
-    span.fl return
-    span.fr 收&nbsp;藏
+    = link_to lite_root_path do
+      span.fl 首页
     |
       #{@post.title}
   .author-info-container.tal.clearfix
     .user-pic
-      = image_tag(@post.author.avatar)
+      = image_tag(@post.author.avatar.normal)
     .info-font
       p
         strong #{@post.author.name}
@@ -16,26 +19,31 @@
         span #{@post.organizations.map(&:name).join(', ')}#{@post.organization_clans.map(&:name).join(', ')}
   .post-container
     .post-content.tal #{@post.body_html.html_safe}
-    .post-attachments
-      - @post.attachments.each do |attachment|
-        span.attachment
-          = link_to attachment.file_name, attachment.url, class: 'attachment-name'
-    .post-forms
-      = render partial: "lite/receipts/inputs/form", locals: { forms: @post.forms }
-    .post-comments
-      .comments-list
-        .comment.tac
-          .pure-u-7-8.tal
-            .user-pic.pure-u-1-12
-              img src="images/user_pic.png" alt="user-pic"
-            .comment-content.pure-u-5-6
-              span.comment-author 魏蕾
-              | :
-              span.comment-body 卫生值日统计表卫生值日统计表卫生值日统计表 卫生值日统计表
-        .comment.tac
-          .pure-u-7-8
-            span.linkstyle.emphasize load more
-      form.pure-form
-        fieldset
-          textarea.comment-input.pure-u-1
-          button type="submit" class="submit fr" 评论
+    - if @post.attachments?
+      .post-attachments
+        - @post.attachments.each do |attachment|
+          span.attachment
+            = link_to attachment.file_name, attachment.url, class: 'attachment-name'
+    - if @post.forms?
+      .post-forms
+        - if @receipt.forms_filled?
+          div 表单已提交
+        - else
+          = render @post.forms
+    / .post-comments
+    /   .comments-list
+    /     .comment.tac
+    /       .pure-u-7-8.tal
+    /         .user-pic.pure-u-1-12
+    /           img src="images/user_pic.png" alt="user-pic"
+    /         .comment-content.pure-u-5-6
+    /           span.comment-author 魏蕾
+    /           | :
+    /           span.comment-body 卫生值日统计表卫生值日统计表卫生值日统计表 卫生值日统计表
+    /     .comment.tac
+    /       .pure-u-7-8
+    /         span.linkstyle.emphasize load more
+    /   form.pure-form
+    /     fieldset
+    /       textarea.comment-input.pure-u-1
+    /       button type="submit" class="submit fr" 评论

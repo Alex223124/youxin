@@ -7,9 +7,16 @@ Youxin::Application.routes.draw do
       devise_scope :user do
         get 'sign_in' => 'sessions#new', as: :new_user_session
         post 'sign_in' => 'sessions#create', as: :user_session
+        get 'sign_out' => 'sessions#destroy', as: :destroy_user_session
       end
 
-      resources :receipts, only: [:index, :show]
+      resources :receipts, only: [:index, :show] do
+        get 'page/:page', action: :index, on: :collection
+      end
+
+      resources :forms, only: [:show] do
+        resources :collections, only: [:create]
+      end
     end
   end
 

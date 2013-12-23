@@ -6,6 +6,34 @@
   */
 
 // for all pages
+
+.pure-button-success,
+.pure-button-error,
+.pure-button-warning,
+.pure-button-secondary {
+  color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.pure-button-success {
+  background: rgb(28, 184, 65);
+}
+
+.pure-button-error {
+  background: rgb(202, 60, 60);
+}
+
+.pure-button-warning {
+  background: rgb(223, 117, 20);
+}
+
+.pure-button-secondary {
+  background: rgb(66, 184, 221);
+}
+
+
+
 *{
   box-sizing: border-box;
   font-family: "Microsoft YaHei", Arial, sans-serif;
@@ -179,6 +207,25 @@ label.for-placeholder{
     top: 2em;
     left: .8em;
     letter-spacing: .1em;
+  }
+}
+.notice-container {
+  width: 100%;
+  background: hsl(0, 0%, 80%);
+  font-size: 0.9em;
+  padding: 0;
+
+  .notice, .error {
+    max-width: 600px;
+    padding: 10px;
+    text-align: center;
+    margin: 0 auto;
+  }
+  .notice {
+    color: hsl(210, 29%, 29%);
+  }
+  .error {
+    color: hsl(3, 42%, 52%);
   }
 }
 

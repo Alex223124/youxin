@@ -5,7 +5,7 @@ class Lite::SessionsController < Devise::SessionsController
 
   protected
   def after_sign_in_path_for(resource)
-    mobile_root_path
+    lite_root_path
   end
 
 end

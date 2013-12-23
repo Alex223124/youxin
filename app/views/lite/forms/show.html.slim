@@ -1,0 +1,15 @@
+- if flash[:error]
+  .notice-container
+    .error 表单有错，请检查后再次提交
+
+#single_post.pure-u-1.tal
+  .post-container
+    .post-forms
+      = form_tag lite_form_collections_path(@form), class: 'form pure-form pure-form-stacked' do
+        fieldset
+          legend #{@form.title}
+          .form-fields
+            - @form.inputs.each do |input|
+              = render partial: "lite/forms/#{input.class.to_s.split('::').last.underscore}", locals: { input: input }
+
+          = submit_tag '提交', class: 'submit fr'

@@ -1,0 +1,11 @@
+.field.field-radio
+  - if input.required?
+    span.required-flag *
+  - if input.help_text?
+    .help-text
+      small.help_text #{input.help_text}
+  = label_tag(nil, input.label)
+  - input.options.each do |option|
+    = label_tag "collection_#{input.identifier}_#{option.id}", option.value do
+      = check_box_tag "collection[#{input.identifier}][]", option.id, option.default_selected?, id: "collection_#{input.identifier}_#{option.id}"
+      | #{option.value}

@@ -4,5 +4,3 @@
 #= require zepto/form
 
 #= require rails/disable
-
-#= require lite/placeholder
