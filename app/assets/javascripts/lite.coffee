@@ -5,3 +5,4 @@
 
 #= require rails/disable
 
+#= require lite/placeholder

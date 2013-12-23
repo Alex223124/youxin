@@ -1,6 +1,6 @@
 Youxin::Application.routes.draw do
   constraints subdomain: 'm' do
-    namespace(:mobile, path: '/') do
+    namespace(:lite, path: '/') do
       root to: 'receipts#index'
 
       devise_for :users, path: 'account', skip: [:sessions], controllers: { passwords: :passwords }

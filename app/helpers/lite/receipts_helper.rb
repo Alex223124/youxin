@@ -1,0 +1,2 @@
+module Lite::ReceiptsHelper
+end

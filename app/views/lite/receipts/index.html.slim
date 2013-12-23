@@ -1,0 +1,21 @@
+#posts_list.pure-u-1
+  .top-title.tac 优&nbsp;&nbsp;&nbsp;&nbsp;信
+  .posts-container
+    - @receipts.each do |receipt|
+      = link_to lite_receipt_path(receipt), class: 'post' do
+        .post-container
+          - unless receipt.read
+            span.unread-flag
+          .post-content
+            .title
+              strong.post-title #{receipt.post.title}
+              span.attachment-options
+                i.table
+                i.attachment
+            .post-body #{receipt.post.body}
+            .post-options
+              = image_tag(receipt.post.author.avatar)
+              strong.post-user-name #{receipt.post.author.name}
+              span.post-create_at #{time_ago_in_words(receipt.created_at)}
+  .load-more-posts.tac
+    span#load_more_posts.linkstyle.emphasize 加载更多...
