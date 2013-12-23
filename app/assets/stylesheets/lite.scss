@@ -184,21 +184,6 @@ textarea.nostyle:focus{
     max-width: 100%;
   }
 }
-i{
-  width: 0;
-  height: 0;
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-  padding: 1.2em;
-  margin: 0;
-  background: url('../images/icons.png');
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  &.favorite-true{
-    background-position: -120px -20px;
-  }
-}
 label.for-placeholder{
   position: relative;
   span.placeholder{
