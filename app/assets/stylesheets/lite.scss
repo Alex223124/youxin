@@ -304,7 +304,7 @@ form{
   .posts-container{
     .post{
       border-top: 1px solid #dcdcdc;
-      padding: .6em 1em .6em 2.5em;
+      padding: .6em 2em .6em 2.5em;
       display: block;
       text-decoration: none;
       .post-container{
@@ -337,6 +337,7 @@ form{
         left: -1.6em;
       }
       .post-body{
+        word-break: break-all;
         margin: .5em 0;
         color: #666666;
         font-size: 1.1em;
@@ -447,6 +448,9 @@ form{
       }
     }
     .post-content{
+      &>* {
+        word-break: break-all;
+      }
       border-top: none;
       font-size: 1.1em;
       margin-top: -0.3em;

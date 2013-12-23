@@ -4,7 +4,7 @@ class Lite::ReceiptsController < Lite::ApplicationController
   before_filter :ensure_receipt, only: [:show]
 
   def index
-    @receipts = paginate current_user.receipts.unscoped.asc(:read)
+    @receipts = paginate current_user.receipts.unscoped.asc(:read).desc(:_id)
   end
 
   def show
