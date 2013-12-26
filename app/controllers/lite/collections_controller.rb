@@ -28,7 +28,7 @@ class Lite::CollectionsController < ApplicationController
     @receipt = post.receipts.where(user_id: current_user.id).first
     raise Youxin::NotFound.new('优信') unless @receipt
 
-    # raise Youxin::InvalidParameters. new('表单已经提交过了') if @receipt.forms_filled?
+    raise Youxin::InvalidParameters. new('表单已经提交过了') if @receipt.forms_filled?
   end
 
 end
