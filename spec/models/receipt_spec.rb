@@ -19,6 +19,8 @@ describe Receipt do
     it { should respond_to(:short_key) }
     it { should respond_to(:forms_filled) }
     it { should respond_to(:short_url) }
+    it { should respond_to(:archived) }
+    it { should respond_to(:archive!) }
   end
 
   describe "#author" do
@@ -111,6 +113,32 @@ describe Receipt do
     end
     it 'should return the short_url' do
       @receipt.short_url.should == "#{Youxin.config.shorten_server}/#{@receipt.short_key}"
+    end
+  end
+
+  describe '#archived' do
+    before(:each) do
+      @author = create :user
+      @user = create :user
+      @organization = create :organization
+      @organization.add_member(@user)
+      @post = create :post, author: @author, organization_ids: [@organization].map(&:id)
+      @receipt = @user.receipts.first
+    end
+    it 'should return archived status' do
+      @receipt.archived.should == false
+    end
+    context '#archive!' do
+      it 'should archive the receipt' do
+        expect {
+          @receipt.archive!
+        }.to change { @receipt.archived }
+      end
+      it 'should not display the archived receipts' do
+        @receipt.archive!
+        @user.reload
+        @user.receipts.unarchived.should_not include(@receipt)
+      end
     end
   end
 

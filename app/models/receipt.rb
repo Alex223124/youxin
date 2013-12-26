@@ -11,6 +11,7 @@ class Receipt
   field :author_id
   field :short_key, type: String
   field :forms_filled, type: Boolean, default: true
+  field :archived, type: Boolean, default: false
 
   before_save do
     self.author = self.post.author
@@ -29,6 +30,8 @@ class Receipt
   scope :unread, where(read: false)
   scope :unfilled, where(forms_filled: false, origin: false)
   scope :filled, where(forms_filled: true, origin: false)
+  scope :archived, where(archived: true)
+  scope :unarchived, where(archived: false)
   default_scope desc(:_id)
 
   def organizations
@@ -39,6 +42,13 @@ class Receipt
     self.read_at = Time.now
     self.read = true
     self.save
+  end
+
+  def archive!
+    unless self.archived
+      self.archived = true
+      self.save
+    end
   end
 
   def ios_payload
