@@ -1,5 +1,5 @@
 class ReceiptsController < ApplicationController
-  before_filter :ensure_receipt, only: [:read, :favorite, :unfavorite, :show]
+  before_filter :ensure_receipt, only: [:read, :archive, :favorite, :unfavorite, :show]
   skip_before_filter :authenticate_user!, only: [:mobile_show, :mobile_collection_create]
   before_filter :ensure_receipt_by_short_key, only: [:mobile_show, :mobile_collection_create]
   before_filter :ensure_form, only: [:mobile_collection_create]
@@ -37,6 +37,11 @@ class ReceiptsController < ApplicationController
     head(204)
   end
 
+  def archive
+    @receipt.archive!
+    head(204)
+  end
+
   def favorite
     favorite = @receipt.favorites.first_or_create user_id: current_user.id
     head(201)
@@ -53,9 +58,9 @@ class ReceiptsController < ApplicationController
   end
   def filtered_receipts
     case params[:status]
-    when 'read' then paginate current_user.receipts.read
-    when 'unread' then range current_user.receipts.unread
-    else paginate current_user.receipts
+    when 'read' then paginate current_user.receipts.read.unarchived
+    when 'unread' then range current_user.receipts.unread.unarchived
+    else paginate current_user.receipts.unarchived
     end
   end
   def ensure_receipt_by_short_key

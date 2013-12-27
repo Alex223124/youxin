@@ -239,5 +239,41 @@ describe ReceiptsController do
       @receipt.forms_filled.should == true
     end
   end
+
+  describe "POST archive" do
+    before(:each) do
+      3.times do
+        create :post, author: @admin, organization_ids: [@organization].map(&:id)
+      end
+      @receipt = @user.receipts.first
+    end
+    it 'should return 204' do
+      post :archive, id: @receipt.id
+      response.status.should == 204
+    end
+    it 'should archive the receipt' do
+      receipt = @user.receipts.first
+      expect {
+        post :archive, id: @receipt.id
+      }.to change { @user.receipts.unarchived.count }.by(-1)
+    end
+  end
+  describe 'DELETE archive' do
+    before(:each) do
+      3.times do
+        create :post, author: @admin, organization_ids: [@organization].map(&:id)
+      end
+      @receipt = @user.receipts.first
+    end
+    it 'should return 204' do
+      delete :archive, id: @receipt.id
+      response.status.should == 204
+    end
+    it 'should archive the receipt' do
+      expect {
+        delete :archive, id: @receipt.id
+      }.to change { @user.receipts.archived.count }.by(1)
+    end
+  end
 end
 
