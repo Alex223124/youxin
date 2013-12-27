@@ -55,6 +55,20 @@ describe Youxin::API, 'receipts' do
     end
   end
 
+  describe 'PUT :read' do
+    before(:each) do
+      3.times do
+        create :post, author: @admin, organization_ids: [@organization].map(&:id)
+      end
+      @receipt_ids = @user.receipts.unread.map(&:id)
+    end
+    it 'it should read the receipts' do
+      expect {
+        put api('/receipts/read', @user), receipt_ids: @receipt_ids
+      }.to change { @user.receipts.unread.count }.by(0 - @receipt_ids.size)
+    end
+  end
+
   describe "GET /receipts/:id" do
     it "should return the receipt" do
       @receipt = @user.receipts.first
