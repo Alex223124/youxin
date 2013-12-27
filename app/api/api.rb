@@ -25,5 +25,6 @@ module Youxin
     mount Conversations
     mount Notifications
     mount Help
+    mount Feedbacks
   end
 end

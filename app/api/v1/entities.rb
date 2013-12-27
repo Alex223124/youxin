@@ -220,5 +220,10 @@ module Youxin
     class Scheduler < Grape::Entity
       expose :delayed_at, :ran_at
     end
+
+    class Feedback < Grape::Entity
+      expose :category, :body, :contact, :devise, :version_code, :version_name
+      expose :user, using: Entities::UserSimple
+    end
   end
 end

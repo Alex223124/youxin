@@ -34,6 +34,7 @@ describe User do
     it { should belong_to(:namespace) }
     it { should belong_to(:creator) }
     it { should have_many(:binds) }
+    it { should have_many(:feedbacks) }
   end
 
   describe "Respond to" do

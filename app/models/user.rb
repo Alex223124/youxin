@@ -132,6 +132,7 @@ class User
   belongs_to :namespace
   belongs_to :creator, class_name: 'User'
   has_many :binds, dependent: :destroy
+  has_many :feedbacks
 
   before_save :ensure_authentication_token
   before_save :ensure_notification_channel!
