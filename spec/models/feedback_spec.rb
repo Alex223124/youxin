@@ -15,4 +15,17 @@ describe Feedback do
     it { should respond_to(:version_name) }
   end
 
+  describe 'Attributes' do
+    before(:each) do
+      @valid_attrs = attributes_for(:feedback)
+    end
+    context '#body' do
+      it 'should raise error on body' do
+        @valid_attrs.delete(:body)
+        feedback = Feedback.create @valid_attrs
+        feedback.should have(1).error_on(:body)
+      end
+    end
+  end
+
 end

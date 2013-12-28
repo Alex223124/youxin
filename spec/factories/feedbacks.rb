@@ -5,6 +5,6 @@ FactoryGirl.define do
     sequence(:contact) { |n| "contact-#{n}" }
     sequence(:devise) { |n| "devise-#{n}" }
     sequence(:version_code) { |n| n }
-    version_name "version #{version_code}"
+    sequence(:version_name) { |n| "version #{n}" }
   end
 end

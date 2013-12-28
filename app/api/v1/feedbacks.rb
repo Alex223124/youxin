@@ -3,6 +3,8 @@ class Feedbacks < Grape::API
 
   resource :feedbacks do
     post do
+      required_attributes! [:body]
+
       attrs = attributes_for_keys [:category, :body, :contact, :devise, :version_code, :version_name]
       feedback = current_user.feedbacks.new attrs
 

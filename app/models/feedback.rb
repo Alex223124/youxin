@@ -13,6 +13,8 @@ class Feedback
   attr_accessor :category, :body, :contact, :devise,
     :version_code, :version_name
 
+  validates :body, presence: true
+
   belongs_to :user
 
 end
