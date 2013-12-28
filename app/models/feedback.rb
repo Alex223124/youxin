@@ -6,7 +6,7 @@ class Feedback
   field :body, type: String
   field :contact, type: String
   field :user_id
-  field :devise, type: String
+  field :device, type: String
   field :version_code, type: Integer
   field :version_name, type: String
 
