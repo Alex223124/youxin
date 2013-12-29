@@ -5,7 +5,7 @@ class Feedbacks < Grape::API
     post do
       required_attributes! [:body]
 
-      attrs = attributes_for_keys [:category, :body, :contact, :devise, :version_code, :version_name]
+      attrs = attributes_for_keys [:category, :body, :contact, :device, :version_code, :version_name]
       feedback = current_user.feedbacks.new attrs
 
       if feedback.save
