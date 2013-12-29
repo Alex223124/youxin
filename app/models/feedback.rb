@@ -10,7 +10,7 @@ class Feedback
   field :version_code, type: Integer
   field :version_name, type: String
 
-  attr_accessor :category, :body, :contact, :devise,
+  attr_accessible  :category, :body, :contact, :devise,
     :version_code, :version_name
 
   validates :body, presence: true

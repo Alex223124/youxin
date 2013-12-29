@@ -28,5 +28,10 @@ describe Youxin::API, 'help' do
       post api('/feedbacks', user), @valid_attrs
       response.status.should == 400
     end
+    it 'should return the corretct body' do
+      post api('/feedbacks', user), @valid_attrs
+      json_response['body'].should == @valid_attrs[:body]
+
+    end
   end
 end
