@@ -120,6 +120,7 @@ class User
   has_many :comment_notifications, class_name: 'Notification::Comment', dependent: :destroy
   has_many :organization_notifications, class_name: 'Notification::Organization', dependent: :destroy
   has_many :message_notifications, class_name: 'Notification::Message', dependent: :destroy
+  has_many :mention_notifications, class_name: 'Notification::Mention', dependent: :destroy
   has_many :communication_records, class_name: 'CommunicationRecord::Base'
   has_many :sms_communication_records, class_name: 'CommunicationRecord::Sms'
   has_many :call_communication_records, class_name: 'CommunicationRecord::Call'

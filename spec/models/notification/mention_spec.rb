@@ -1,5 +1,11 @@
 require 'spec_helper'
 
 describe Notification::Mention do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe "Association" do
+    it { should belong_to(:mentionable) }
+  end
+  describe "Validation" do
+    it { should validate_presence_of(:mentionable_id) }
+    it { should validate_presence_of(:mentionable_type) }
+  end
 end

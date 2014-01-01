@@ -37,6 +37,9 @@ module Notification
       def baidu_push_comment_to_android_async(comment_notification_id)
         ::Resque.enqueue(BaiduPushCommentToAndroidJob, comment_notification_id)
       end
+      def baidu_push_mention_to_android_async(mention_notification_id)
+        ::Resque.enqueue(BaiduPushMentionToAndroidJob, mention_notification_id)
+      end
     end
 
     def self.included(receiver)

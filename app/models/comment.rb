@@ -2,6 +2,7 @@ class Comment
   include Mongoid::Document
   include Mongoid::Paranoia # Soft delete
   include Mongoid::Timestamps # Add created_at and updated_at fields
+  include Mentionable
 
   field :body, type: String
 
