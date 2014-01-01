@@ -28,4 +28,8 @@ class Comment
   def send_comment_notifications
     self.commentable.author.comment_notifications.create(comment_id: self.id) unless self.commentable.author == self.user
   end
+
+  def no_mention_users
+    super << commentable.author
+  end
 end

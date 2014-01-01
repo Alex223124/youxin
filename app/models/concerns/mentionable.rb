@@ -16,7 +16,7 @@ module Mentionable
     names = body.scan(MENTION_REGX).flatten
     if names.any?
       self.mentioned_user_ids = User.where(:name => /^(#{names.join('|')})$/i,
-                                           :_id.ne => user.id).limit(3).only(:_id).map(&:_id).to_a
+                                           :_id.nin => no_mention_users.map(&:_id)).limit(3).only(:_id).map(&:_id).to_a
     end
   end
 
@@ -28,6 +28,11 @@ module Mentionable
     mentioned_users.each do |mentioned_user|
       mentioned_user.mention_notifications.create mentionable: self
     end
+  end
+
+  private
+  def no_mention_users
+    [user]
   end
 
 end

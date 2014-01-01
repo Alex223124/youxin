@@ -10,6 +10,10 @@ describe Mentionable do
     field :body, type: String
 
     belongs_to :user
+
+    def no_mention_users
+      super + [commentable.author]
+    end
   end
 
   let(:namespace) { create :namespace }
@@ -17,6 +21,10 @@ describe Mentionable do
   let(:monkey_doc) { MonkeyDoc.create user_id: user.id, body: 'body' }
 
   subject { monkey_doc }
+
+  before(:each) do
+    MonkeyDoc.any_instance.stub_chain(:commentable, :author).and_return(user)
+  end
 
   describe 'Respond to' do
     it { should respond_to(:mentioned_user_ids) }
@@ -40,6 +48,11 @@ describe Mentionable do
       5.times { body << " @#{FactoryGirl.create(:user).name}" }
       doc = MonkeyDoc.create user_id: user.id, body: body
       doc.mentioned_user_ids.count.should == 3
+    end
+    it 'should except the author of post' do
+      another_user = create :user, namespace: namespace
+      doc = MonkeyDoc.create user_id: another_user.id, body: "@#{user.name}"
+      doc.mentioned_user_ids.should == []
     end
   end
 
