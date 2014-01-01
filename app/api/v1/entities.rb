@@ -215,6 +215,8 @@ module Youxin
       expose :message, as: :notificationable, using: Entities::MessageWithConversation
       # organization
       expose :organization, as: :notificationable, using: Entities::OrganizationBasic
+      # mentionable
+      expose :mentionable, as: :notificationable, using: Entities::CommentWithCommentable
       expose :status
     end
     class Scheduler < Grape::Entity
