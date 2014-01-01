@@ -50,6 +50,37 @@ describe Comment do
         @comment.should have(1).error_on(:commentable_type)
       end
     end
+
+    context '#can_mention_user' do
+      it 'should add user_id to can_mention_user_ids of commentable' do
+        expect {
+          @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
+        }.to change { @post.can_mention_user_ids.count }.by(1)
+      end
+      it 'should not add the id of author to can_mention_user_ids of commentable' do
+        expect {
+          @post.comments.create attributes_for(:comment).merge({ user_id: @author.id })
+        }.to change { @post.can_mention_user_ids.count }.by(0)
+      end
+    end
+  end
+
+  describe '#destroy' do
+    before(:each) do
+      @organization = create :organization
+      @user = create :user
+      @author = create :user
+      @organization.push_member(@user)
+      @post = create :post, author: @author, organization_ids: [@organization.id]
+      @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
+    end
+    context '#can_mention_user' do
+      it 'should add user_id to can_mention_user_ids of commentable' do
+        expect {
+          @comment.destroy
+        }.to change { @post.can_mention_user_ids.count }.by(-1)
+      end
+    end
   end
 
   describe "#commentable" do
@@ -65,7 +96,6 @@ describe Comment do
       @comment = @post.comments.create attributes_for(:comment).merge({ user_id: @user.id })
       @comment.commentable.should == @post
     end
-
   end
 
 end

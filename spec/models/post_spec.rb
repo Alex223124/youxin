@@ -27,6 +27,12 @@ describe Post do
     it { should respond_to(:organization_clans) }
     it { should respond_to(:organization_clan_ids) }
     it { should respond_to(:tags) }
+    it { should respond_to(:can_mention_user_ids) }
+    it { should respond_to(:can_mention_users) }
+    it { should respond_to(:push_can_mention_users) }
+    it { should respond_to(:add_can_mention_users) }
+    it { should respond_to(:pull_can_mention_users) }
+    it { should respond_to(:remove_can_mention_users) }
   end
 
   describe "#create" do

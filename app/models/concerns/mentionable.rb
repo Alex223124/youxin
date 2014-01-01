@@ -16,7 +16,7 @@ module Mentionable
     names = body.scan(MENTION_REGX).flatten
     if names.any?
       self.mentioned_user_ids = User.where(:name => /^(#{names.join('|')})$/i,
-                                           :_id.nin => no_mention_users.map(&:_id)).limit(3).only(:_id).map(&:_id).to_a
+                                           :_id.in => allow_mention_users.map(&:_id)).limit(3).only(:_id).map(&:_id).to_a
     end
   end
 
@@ -31,8 +31,8 @@ module Mentionable
   end
 
   private
-  def no_mention_users
-    [user]
+  def allow_mention_users
+    []
   end
 
 end

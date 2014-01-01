@@ -13,6 +13,7 @@ class Post
   field :organization_ids, type: Array, default: []
   field :organization_clan_ids, type: Array, default: []
   field :tags, type: Array, default: []
+  field :can_mention_user_ids, type: Array, default: []
 
   validates :author_id, presence: true
   validates :organization_ids, presence: true, unless: :organization_clan_ids?
@@ -89,6 +90,20 @@ class Post
       user_id: self.author_id.to_s
     }
   end
+
+  def can_mention_users
+    User.where(:_id.in => can_mention_user_ids)
+  end
+  def push_can_mention_users(user)
+    user = User.where(id: user).first unless user.is_a?(User)
+    self.add_to_set(:can_mention_user_ids, user.id) if user
+  end
+  def pull_can_mention_users(user)
+    user = User.where(id: user).first unless user.is_a?(User)
+    self.pull(:can_mention_user_ids, user.id) if user
+  end
+  alias_method :add_can_mention_users, :push_can_mention_users
+  alias_method :remove_can_mention_users, :pull_can_mention_users
 
   private
   def parse_body
