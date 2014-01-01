@@ -22,7 +22,7 @@ class Notification::Mention < Notification::Base
       alert: "#{mentionable.user.name} 在评论里提到了你\n#{mentionable.body[0...20]}...",
       custom: {
         type: :comment,
-        id: self.id.to_s
+        id: mentionable.id.to_s
       }
     }
   end
