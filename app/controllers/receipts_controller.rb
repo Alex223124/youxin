@@ -1,5 +1,5 @@
 class ReceiptsController < ApplicationController
-  before_filter :ensure_receipt, only: [:read, :archive, :favorite, :unfavorite, :show]
+  before_filter :ensure_receipt, only: [:read, :archive, :unarchive, :favorite, :unfavorite, :show]
   skip_before_filter :authenticate_user!, only: [:mobile_show, :mobile_collection_create]
   before_filter :ensure_receipt_by_short_key, only: [:mobile_show, :mobile_collection_create]
   before_filter :ensure_form, only: [:mobile_collection_create]
@@ -41,6 +41,10 @@ class ReceiptsController < ApplicationController
     @receipt.archive!
     head(204)
   end
+  def unarchive
+    @receipt.unarchive!
+    head(204)
+  end
 
   def favorite
     favorite = @receipt.favorites.first_or_create user_id: current_user.id
@@ -77,3 +81,5 @@ class ReceiptsController < ApplicationController
     raise Youxin::InvalidParameters.new('表单已经提交过了') if @receipt.forms_filled?
   end
 end
+
+

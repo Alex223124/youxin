@@ -39,14 +39,23 @@ class Receipt
   end
 
   def read!
-    self.read_at = Time.now
-    self.read = true
-    self.save
+    unless self.read
+      self.read_at = Time.now
+      self.read = true
+      self.save
+    end
   end
 
   def archive!
     unless self.archived
+      self.read!
       self.archived = true
+      self.save
+    end
+  end
+  def unarchive!
+    if self.archived
+      self.archived = false
       self.save
     end
   end

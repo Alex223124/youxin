@@ -35,8 +35,8 @@ Youxin::Application.routes.draw do
       put 'read' => 'receipts#read'
       post 'favorite' =>  'receipts#favorite'
       delete 'favorite' => 'receipts#unfavorite'
-      post 'archive' =>  'receipts#archive'
-      delete 'archive' => 'receipts#unarchive'
+      put 'archived' =>  'receipts#archive'
+      delete 'archived' => 'receipts#unarchive'
     end
   end
   get 'r/:short_key' => 'receipts#mobile_show', as: :mobile_receipt

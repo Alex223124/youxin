@@ -14,10 +14,10 @@ describe ReceiptsController do
     delete('/receipts/123/favorite').should route_to('receipts#unfavorite', id: '123')
   end
   it "to #archive" do
-    post('/receipts/123/archive').should route_to('receipts#archive', id: '123')
+    put('/receipts/123/archived').should route_to('receipts#archive', id: '123')
   end
   it "to #unarchive" do
-    delete('/receipts/123/archive').should route_to('receipts#unarchive', id: '123')
+    delete('/receipts/123/archived').should route_to('receipts#unarchive', id: '123')
   end
   it "to #mobile_show" do
     get('/r/123').should route_to('receipts#mobile_show', short_key: '123')

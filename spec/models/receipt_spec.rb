@@ -21,6 +21,7 @@ describe Receipt do
     it { should respond_to(:short_url) }
     it { should respond_to(:archived) }
     it { should respond_to(:archive!) }
+    it { should respond_to(:unarchive!) }
   end
 
   describe "#author" do
@@ -138,6 +139,19 @@ describe Receipt do
         @receipt.archive!
         @user.reload
         @user.receipts.unarchived.should_not include(@receipt)
+      end
+      it 'should read the receipt' do
+        @receipt.archive!
+        @receipt.read.should be_true
+      end
+    end
+    context '#unarchive!' do
+      before(:each) do
+        @receipt.archive!
+      end
+      it 'should unarchive the receipt' do
+        @receipt.unarchive!
+        @receipt.archived.should be_false
       end
     end
   end
