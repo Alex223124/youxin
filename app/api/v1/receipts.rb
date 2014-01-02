@@ -37,7 +37,14 @@ class Receipts < Grape::API
         @receipt.read!
         status(204)
       end
+      put :archived do
+        @receipt.archive!
+        status(204)
+      end
+      delete :archived do
+        @receipt.unarchive!
+        status(204)
+      end
     end
-    # unread
   end
 end

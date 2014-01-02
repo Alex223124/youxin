@@ -212,4 +212,48 @@ describe Youxin::API, 'receipts' do
     end
   end
 
+  describe 'PUT /receipts/:id/archived' do
+    before(:each) do
+      @receipt = @user.receipts.first
+    end
+    it 'should return 204' do
+      put api("/receipts/#{@receipt.id}/archived", @user)
+      response.status.should == 204
+    end
+    it 'should archive the receipt' do
+      put api("/receipts/#{@receipt.id}/archived", @user)
+      @receipt.archived.should be_true
+    end
+    it 'should return 404 when not belongs to' do
+      put api("/receipts/#{@receipt.id}/archived", @user_another)
+      response.status.should == 404
+    end
+    it 'should return 404 when not exist' do
+      put api('/receipts/not_exist/archived', @user_another)
+      response.status.should == 404
+    end
+  end
+
+  describe 'DELETE /receipts/:id/archived' do
+    before(:each) do
+      @receipt = @user.receipts.first
+      @receipt.archive!
+    end
+    it 'should return 204' do
+      delete api("/receipts/#{@receipt.id}/archived", @user)
+      response.status.should == 204
+    end
+    it 'should archive the receipt' do
+      delete api("/receipts/#{@receipt.id}/archived", @user)
+      @receipt.archived.should be_false
+    end
+    it 'should return 404 when not belongs to' do
+      delete api("/receipts/#{@receipt.id}/archived", @user_another)
+      response.status.should == 404
+    end
+    it 'should return 404 when not exist' do
+      delete api('/receipts/not_exist/archived', @user_another)
+      response.status.should == 404
+    end
+  end
 end
