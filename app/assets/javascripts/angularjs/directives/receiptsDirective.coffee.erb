@@ -187,7 +187,7 @@
         if receipt.expanded
           body_ele.html(receipt.post.body)
         else
-          body_ele.html(receipt.post.body_html)
+          body_ele.html("<div style='margin: 0.5em 0;'>#{receipt.post.body_html}</div>")
         receipt.expanded = !receipt.expanded
 
       # scope.$watch "receipt"
