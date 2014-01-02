@@ -47,12 +47,12 @@ class Users < Grape::API
 
     desc 'Get all the receipts.'
     get 'receipts' do
-      receipts = paginate current_user.receipts
+      receipts = paginate current_user.receipts.unarchived
       present receipts, with: Youxin::Entities::Receipt
     end
     desc 'Get all the unread receipts.'
     get 'unread_receipts' do
-      receipts = paginate current_user.receipts.unread
+      receipts = paginate current_user.receipts.unread.unarchived
       present receipts, with: Youxin::Entities::Receipt
     end
 

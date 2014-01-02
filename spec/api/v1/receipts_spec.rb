@@ -53,6 +53,12 @@ describe Youxin::API, 'receipts' do
         }
       ].as_json
     end
+    it 'should not exclude the archived receipts' do
+      receipt = @user.receipts.first
+      receipt.archive!
+      get api('/receipts', @user)
+      json_response.map(&:id).should_not include(receipt.id.to_s)
+    end
   end
 
   describe 'PUT :read' do
