@@ -79,6 +79,12 @@
         , (data, status)->
           App.alert('评论失败', 'error')
 
+      scope.setCommentBodyToReply = (comment, receipt, e)->
+        reply_textarea = angular.element(e.target).closest(".comment").siblings(".reply-box").find("textarea")
+        reply_textarea.focus()
+        reply_textarea.val("@#{comment.user.name} ")
+        receipt.post.commentBody = "@#{comment.user.name} "
+
       scope.form = {}
 
       scope.getValueInObj = (input,collection)->
