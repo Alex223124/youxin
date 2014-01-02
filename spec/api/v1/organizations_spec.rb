@@ -145,6 +145,7 @@ describe Youxin::API, 'organizations' do
             id: @receipt.id,
             read: @receipt.read,
             favorited: false,
+            archived: @receipt.archived,
             origin: @receipt.origin,
             organizations: [
               {
@@ -189,6 +190,7 @@ describe Youxin::API, 'organizations' do
           id: @receipt_2.id,
           read: @receipt_2.read,
           favorited: false,
+          archived: @receipt_2.archived,
           origin: @receipt_2.origin,
           organizations: [
             {

@@ -215,6 +215,7 @@ describe Youxin::API, 'users' do
             id: @receipt.id,
             read: @receipt.read,
             favorited: false,
+            archived: @receipt.archived,
             origin: @receipt.origin,
             post: {
               id: @receipt.post.id,
@@ -249,6 +250,7 @@ describe Youxin::API, 'users' do
             id: @receipt_1.id,
             read: @receipt_1.read,
             favorited: false,
+            archived: @receipt_1.archived,
             origin: @receipt_1.origin,
             post: {
               id: @receipt_1.post.id,
@@ -271,6 +273,7 @@ describe Youxin::API, 'users' do
           last_receipt: {
             id: @receipt_2.id,
             read: @receipt_2.read,
+            archived: @receipt_2.archived,
             favorited: false,
             origin: @receipt_2.origin,
             post: {
@@ -295,6 +298,7 @@ describe Youxin::API, 'users' do
             id: @receipt_3.id,
             read: @receipt_3.read,
             favorited: false,
+            archived: @receipt_3.archived,
             origin: @receipt_3.origin,
             post: {
               id: @receipt_3.post.id,
@@ -348,6 +352,7 @@ describe Youxin::API, 'users' do
             id: @receipt.id,
             read: @receipt.read,
             favorited: false,
+            archived: @receipt.archived,
             origin: @receipt.origin,
             post: {
               id: @receipt.post.id,
@@ -392,6 +397,7 @@ describe Youxin::API, 'users' do
           id: @receipt.id,
           read: @receipt.read,
           favorited: false,
+          archived: @receipt.archived,
           origin: @receipt.origin,
           organizations: [
             {
@@ -450,6 +456,7 @@ describe Youxin::API, 'users' do
           id: @receipt.id,
           read: @receipt.read,
           favorited: false,
+          archived: @receipt.archived,
           origin: @receipt.origin,
           organizations: [
             {
@@ -509,6 +516,7 @@ describe Youxin::API, 'users' do
           id: @receipt.id,
           read: @receipt.read,
           favorited: true,
+          archived: @receipt.archived,
           origin: @receipt.origin,
           organizations: [
             {
@@ -1211,6 +1219,7 @@ describe Youxin::API, 'users' do
             id: @receipt.id,
             read: @receipt.read,
             favorited: false,
+            archived: @receipt.archived,
             origin: @receipt.origin,
             organizations: [
               {
@@ -1264,6 +1273,7 @@ describe Youxin::API, 'users' do
             id: @receipt.id,
             read: @receipt.read,
             favorited: false,
+            archived: @receipt.archived,
             origin: @receipt.origin,
             organizations: [
               {

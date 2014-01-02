@@ -23,6 +23,7 @@ describe Youxin::API, 'receipts' do
         {
           id: @receipt.id,
           read: @receipt.read,
+          archived: @receipt.archived,
           favorited: false,
           origin: @receipt.origin,
           organizations: [
@@ -83,6 +84,7 @@ describe Youxin::API, 'receipts' do
       json_response.should == {
         id: @receipt.id,
         read: @receipt.read,
+        archived: @receipt.archived,
         favorited: false,
         origin: @receipt.origin,
         organizations: [
@@ -133,6 +135,7 @@ describe Youxin::API, 'receipts' do
         id: @receipt.id,
         read: true,
         favorited: true,
+        archived: @receipt.archived,
         origin: @receipt.origin,
         organizations: [
           {

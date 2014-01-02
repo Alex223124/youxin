@@ -122,7 +122,7 @@ module Youxin
     end
 
     class ReceiptBasic < Grape::Entity
-      expose :id, :read
+      expose :id, :read, :archived
       expose :favorited do |receipt, options|
         receipt.user.favorites.where(favoriteable_type: 'Receipt',
                                      favoriteable_id: receipt.id).exists? ? true : false

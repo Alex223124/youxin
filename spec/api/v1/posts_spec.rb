@@ -326,6 +326,7 @@ describe Youxin::API, 'posts' do
             id: receipt_2.id,
             read: receipt_2.read,
             favorited: false,
+            archived: receipt_2.archived,
             read_at: receipt_2.read_at,
             user: {
               id: receipt_2.user.id,
@@ -340,6 +341,7 @@ describe Youxin::API, 'posts' do
             id: receipt_1.id,
             read: receipt_1.read,
             favorited: false,
+            archived: receipt_1.archived,
             read_at: receipt_1.read_at,
             user: {
               id: receipt_1.user.id,
@@ -369,6 +371,7 @@ describe Youxin::API, 'posts' do
             id: receipt_2.id,
             read: receipt_2.read,
             favorited: false,
+            archived: receipt_2.archived,
             read_at: receipt_2.read_at,
             user: {
               id: receipt_2.user.id,
@@ -398,6 +401,7 @@ describe Youxin::API, 'posts' do
             id: receipt_1.id,
             read: receipt_1.read,
             favorited: false,
+            archived: receipt_1.archived,
             read_at: receipt_1.read_at,
             user: {
               id: receipt_1.user.id,
