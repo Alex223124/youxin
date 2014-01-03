@@ -58,7 +58,7 @@ class Users < Grape::API
 
     desc 'Get all the favorite receipts'
     # TODO: need remove
-    get 'favorited_receipts' do
+    get 'favorite_receipts' do
       receipts = paginate(current_user.favorites.receipts).map(&:favoriteable)
       present receipts, with: Youxin::Entities::Receipt
     end
