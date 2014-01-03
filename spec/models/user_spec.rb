@@ -544,19 +544,26 @@ describe User do
 
   describe "#favorites" do
     before(:each) do
-      @organization = create :organization
-      @user = create :user
-      @author = create :user
+      namespace = create :namespace
+      @organization = create :organization, namespace: namespace
+      @user = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
+      @author = create :user, namespace: namespace
       @organization.push_member(@user)
       @post = create(:post, author: @author,
                            organization_ids: [@organization.id],
                            body_html: '<div>test</div>')
       @receipt = @user.receipts.first
     end
-    it "should create favorite" do
+    it "should create favorite receipt" do
       @receipt.favorites.create user_id: @user.id
       @user.favorites.count.should == 1
       @user.favorites.receipts.pluck(:favoriteable_id).should include(@receipt.id)
+    end
+    it "should create favorite user" do
+      @user.favorites.create favoriteable: @user_another
+      @user.favorites.count.should == 1
+      @user.favorites.users.pluck(:favoriteable_id).should include(@user_another.id)
     end
   end
 

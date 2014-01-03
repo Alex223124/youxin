@@ -52,18 +52,16 @@ describe Favorite do
     end
   end
 
-  # describe "#commentable" do
-  #   before(:each) do
-  #     @organization = create :organization
-  #     @author = create :user
-  #     @post = create :post, author: @author, organization_ids: [@organization.id]
-  #   end
-
-  #   it "should return correct commentable" do
-  #     @comment = @post.comments.create attributes_for(:comment)
-  #     @comment.commentable.should == @post
-  #   end
-
-  # end
-
+  describe 'favorited users' do
+    before(:each) do
+      namespace = create :namespace
+      @user = create :user
+      @another_user = create :user
+    end
+    it 'should create favorited user' do
+      expect {
+        @user.favorites.create favoriteable: @another_user
+      }.to change { @user.favorites.users.count }.by(1)
+    end
+  end
 end

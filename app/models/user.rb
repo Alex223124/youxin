@@ -113,6 +113,9 @@ class User
     def receipts
       where(favoriteable_type: 'Receipt')
     end
+    def users
+      where(favoriteable_type: 'User')
+    end
   end
   has_many :file_attachments, class_name: 'Attachment::File', dependent: :destroy
   has_many :image_attachments, class_name: 'Attachment::Image', dependent: :destroy
