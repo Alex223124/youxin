@@ -61,6 +61,10 @@ class Users < Grape::API
       receipts = paginate(current_user.favorites.receipts).map(&:favoriteable)
       present receipts, with: Youxin::Entities::Receipt
     end
+    get 'favorite_users' do
+      receipts = paginate(current_user.favorites.users).map(&:favoriteable)
+      present receipts, with: Youxin::Entities::OtherUserProfile
+    end
 
     desc 'Create ios_device_token to user'
     post 'ios_device_token' do
@@ -180,6 +184,22 @@ class Users < Grape::API
       get 'unread_receipts' do
         unread_receipts = paginate current_user.receipts.from_user(@user).unread
         present unread_receipts, with: Youxin::Entities::Receipt
+      end
+      put 'favorited' do
+        favorite = current_user.favorites.first_or_initialize favoriteable: @user
+        if favorite.save
+          if current_user_can?(:read_profile, @user)
+            present favorite.favoriteable, with: Youxin::Entities::UserProfile
+          else
+            present favorite.favoriteable, with: Youxin::Entities::OtherUserProfile
+          end
+        else
+          fail!(favorite.errors)
+        end
+      end
+      delete 'favorited' do
+        current_user.favorites.where(favoriteable: @user).destroy_all
+        status(204)
       end
     end
   end

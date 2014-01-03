@@ -548,6 +548,32 @@ describe Youxin::API, 'users' do
     end
   end
 
+  describe 'GET /user/favorite_users' do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
+      @user.favorites.create favoriteable: @user_another
+    end
+    it 'should return the favorited users' do
+      get api('/user/favorite_users', @user)
+      json_response.should == [
+        {
+          id: @user_another.id,
+          name: @user_another.name,
+          email: @user_another.email,
+          created_at: @user_another.created_at,
+          avatar: @user_another.avatar.url,
+          bio: @user_another.bio,
+          gender: @user_another.gender,
+          qq: @user_another.qq,
+          blog: @user_another.blog,
+          uid: @user_another.uid,
+          header: @user_another.header.url
+        }
+      ].as_json
+    end
+  end
+
   describe "POST /user/ios_device_token" do
     before(:each) do
       @user = create :user, namespace: namespace
@@ -1144,8 +1170,8 @@ describe Youxin::API, 'users' do
 
   end
 
-  describe "GET /users/:id" do
-    context "/" do
+  describe "/users/:id" do
+    context "GET /" do
       before(:each) do
         @user = create :user, namespace: namespace
         @another_user = create :user, namespace: namespace
@@ -1175,7 +1201,7 @@ describe Youxin::API, 'users' do
       end
     end
 
-    context "/organizations" do
+    context "GET /organizations" do
       before(:each) do
         @user = create :user, namespace: namespace
         @organization = create :organization, namespace: namespace
@@ -1197,7 +1223,7 @@ describe Youxin::API, 'users' do
       end
     end
 
-    context "/receipts" do
+    context "GET /receipts" do
       before(:each) do
         @admin = create :user, namespace: namespace
         @user = create :user, namespace: namespace
@@ -1251,7 +1277,7 @@ describe Youxin::API, 'users' do
       end
     end
 
-    context "/unread_receipts" do
+    context "GET /unread_receipts" do
       before(:each) do
         @admin = create :user, namespace: namespace
         @user = create :user, namespace: namespace
@@ -1302,6 +1328,128 @@ describe Youxin::API, 'users' do
             }
           }
         ].as_json
+      end
+    end
+
+    context 'PUT /favorited' do
+      before(:each) do
+        namespace_another = create :namespace
+        @admin = create :user, namespace: namespace
+        @user = create :user, namespace: namespace
+        @user_another = create :user, namespace: namespace
+        @user_three = create :user, namespace: namespace_another
+        @user_four = create :user, namespace: namespace
+
+        @organization = create :organization, namespace: namespace
+        @actions_youxin = Action.options_array_for(:youxin)
+        @actions_organization = Action.options_array_for(:organization)
+
+        @organization.authorize_cover_offspring(@admin, @actions_youxin)
+        @organization.push_members([@user, @user_anoter])
+      end
+      it 'should create a fovarite' do
+        expect {
+          put api("/users/#{@user_another.id}/favorited", @user)
+        }.to change { @user.favorites.users.count }.by(1)
+      end
+      it 'should return 201' do
+        put api("/users/#{@user_another.id}/favorited", @user)
+        response.status.should == 200
+      end
+      it 'should return favorited user' do
+        put api("/users/#{@user_another.id}/favorited", @user)
+        json_response.should == {
+          id: @user_another.id,
+          name: @user_another.name,
+          email: @user_another.email,
+          created_at: @user_another.created_at,
+          avatar: @user_another.avatar.url,
+          bio: @user_another.bio,
+          gender: @user_another.gender,
+          qq: @user_another.qq,
+          blog: @user_another.blog,
+          uid: @user_another.uid,
+          header: @user_another.header.url
+        }.as_json
+      end
+      it 'should return 404' do
+        put api('/users/not_match/favorited', @user)
+        response.status.should == 404
+      end
+      it 'should return 201 when the favorite exists' do
+        @user.favorites.create favoriteable: @another_user
+        put api("/users/#{@user_another.id}/favorited", @user)
+        response.status.should == 200
+      end
+      it 'should return the phone of the favorited user if the requestor is in the same organization with the favorited user' do
+        put api("/users/#{@user_another.id}/favorited", @user)
+        json_response.should == {
+          id: @user_another.id,
+          name: @user_another.name,
+          email: @user_another.email,
+          created_at: @user_another.created_at,
+          avatar: @user_another.avatar.url,
+          bio: @user_another.bio,
+          gender: @user_another.gender,
+          qq: @user_another.qq,
+          blog: @user_another.blog,
+          uid: @user_another.uid,
+          header: @user_another.header.url
+        }.as_json
+      end
+      it 'should return the phone of the favorited user if the requestor is the admin of which the favorited user is in' do
+        put api("/users/#{@user_another.id}/favorited", @user)
+        json_response.should == {
+          id: @user_another.id,
+          name: @user_another.name,
+          email: @user_another.email,
+          created_at: @user_another.created_at,
+          avatar: @user_another.avatar.url,
+          bio: @user_another.bio,
+          gender: @user_another.gender,
+          qq: @user_another.qq,
+          blog: @user_another.blog,
+          uid: @user_another.uid,
+          header: @user_another.header.url
+        }.as_json
+      end
+      it 'should not return the phone of the favorited user if the requestor is not in the same organization with the favorited user' do
+        put api("/users/#{@user_four.id}/favorited", @user)
+        json_response.should == {
+          id: @user_four.id,
+          name: @user_four.name,
+          email: @user_four.email,
+          created_at: @user_four.created_at,
+          avatar: @user_four.avatar.url,
+          bio: @user_four.bio,
+          gender: @user_four.gender,
+          qq: @user_four.qq,
+          blog: @user_four.blog,
+          uid: @user_four.uid,
+          header: @user_four.header.url
+        }.as_json
+      end
+    end
+
+    context 'DELETE /favoridet' do
+      before(:each) do
+        namespace_another = create :namespace
+        @user = create :user, namespace: namespace
+        @user_another = create :user, namespace: namespace
+        @favorite = @user.favorites.create favoriteable: @user_another
+      end
+      it 'should return 204' do
+        delete api("/users/#{@user_another.id}/favorited", @user)
+        response.status.should == 204
+      end
+      it 'should remove the favorite' do
+        expect {
+          delete api("/users/#{@user_another.id}/favorited", @user)
+        }.to change { @user.favorites.users.count }.by(-1)
+      end
+      it 'should return 404' do
+        delete api('/users/not_exist/favorited', @user)
+        response.status.should == 404
       end
     end
   end
