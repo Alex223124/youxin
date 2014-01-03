@@ -125,7 +125,7 @@
                 span.created_at style="padding-left: 7px;"
                   small.timeago.muted timeago="comment.created_at"
                 span.reply-btn.pull-right ng-click="setCommentBodyToReply(comment, receipt, $event);"
-                  a href="javascript: void(0);" reply
+                  a href="javascript: void(0);" 回复
                 .body {{comment.body}}
               textarea.hidden
             .loadmorecomments.tac.btn.btn-block.btn-info.btn-link ng-show="receipt.post.comments.length > 5" ng-click="toggleAllcomments(receipt, $event)" 查看更久以前的评论
