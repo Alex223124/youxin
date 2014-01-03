@@ -554,7 +554,7 @@ describe Youxin::API, 'users' do
       @user_another = create :user, namespace: namespace
       @user.favorites.create favoriteable: @user_another
     end
-    it 'should return the favorited users' do
+    it 'should return the favorited users without phone' do
       get api('/user/favorite_users', @user)
       json_response.should == [
         {
@@ -568,7 +568,29 @@ describe Youxin::API, 'users' do
           qq: @user_another.qq,
           blog: @user_another.blog,
           uid: @user_another.uid,
-          header: @user_another.header.url
+          header: @user_another.header.url,
+          phone: nil
+        }
+      ].as_json
+    end
+    it 'should return the favorited users with phone' do
+      organization = create :organization, namespace: namespace
+      organization.push_members([@user, @user_another])
+      get api('/user/favorite_users', @user)
+      json_response.should == [
+        {
+          id: @user_another.id,
+          name: @user_another.name,
+          email: @user_another.email,
+          created_at: @user_another.created_at,
+          avatar: @user_another.avatar.url,
+          bio: @user_another.bio,
+          gender: @user_another.gender,
+          qq: @user_another.qq,
+          blog: @user_another.blog,
+          uid: @user_another.uid,
+          header: @user_another.header.url,
+          phone: @user_another.phone
         }
       ].as_json
     end
@@ -1183,7 +1205,6 @@ describe Youxin::API, 'users' do
           id: @user.id,
           email: @user.email,
           name: @user.name,
-          phone: @user.phone,
           created_at: @user.created_at,
           avatar: @user.avatar.url,
           header: @user.header.url,
@@ -1191,13 +1212,14 @@ describe Youxin::API, 'users' do
           gender: @user.gender,
           qq: @user.qq,
           blog: @user.blog,
-          uid: @user.uid
+          uid: @user.uid,
+          phone: @user.phone
         }.as_json
       end
       it "should not return phone" do
         get api("/users/#{@another_user.id}", @user)
         response.status.should == 200
-        json_response['phone'].should be_nil
+        json_response['phone'].should be_blank
       end
     end
 
@@ -1345,7 +1367,7 @@ describe Youxin::API, 'users' do
         @actions_organization = Action.options_array_for(:organization)
 
         @organization.authorize_cover_offspring(@admin, @actions_youxin)
-        @organization.push_members([@user, @user_anoter])
+        @organization.push_members([@user, @user_another])
       end
       it 'should create a fovarite' do
         expect {
@@ -1369,7 +1391,8 @@ describe Youxin::API, 'users' do
           qq: @user_another.qq,
           blog: @user_another.blog,
           uid: @user_another.uid,
-          header: @user_another.header.url
+          header: @user_another.header.url,
+          phone: @user_another.phone
         }.as_json
       end
       it 'should return 404' do
@@ -1383,51 +1406,15 @@ describe Youxin::API, 'users' do
       end
       it 'should return the phone of the favorited user if the requestor is in the same organization with the favorited user' do
         put api("/users/#{@user_another.id}/favorited", @user)
-        json_response.should == {
-          id: @user_another.id,
-          name: @user_another.name,
-          email: @user_another.email,
-          created_at: @user_another.created_at,
-          avatar: @user_another.avatar.url,
-          bio: @user_another.bio,
-          gender: @user_another.gender,
-          qq: @user_another.qq,
-          blog: @user_another.blog,
-          uid: @user_another.uid,
-          header: @user_another.header.url
-        }.as_json
+        json_response['phone'].should_not be_blank
       end
       it 'should return the phone of the favorited user if the requestor is the admin of which the favorited user is in' do
         put api("/users/#{@user_another.id}/favorited", @user)
-        json_response.should == {
-          id: @user_another.id,
-          name: @user_another.name,
-          email: @user_another.email,
-          created_at: @user_another.created_at,
-          avatar: @user_another.avatar.url,
-          bio: @user_another.bio,
-          gender: @user_another.gender,
-          qq: @user_another.qq,
-          blog: @user_another.blog,
-          uid: @user_another.uid,
-          header: @user_another.header.url
-        }.as_json
+        json_response['phone'].should_not be_blank
       end
       it 'should not return the phone of the favorited user if the requestor is not in the same organization with the favorited user' do
         put api("/users/#{@user_four.id}/favorited", @user)
-        json_response.should == {
-          id: @user_four.id,
-          name: @user_four.name,
-          email: @user_four.email,
-          created_at: @user_four.created_at,
-          avatar: @user_four.avatar.url,
-          bio: @user_four.bio,
-          gender: @user_four.gender,
-          qq: @user_four.qq,
-          blog: @user_four.blog,
-          uid: @user_four.uid,
-          header: @user_four.header.url
-        }.as_json
+        json_response['phone'].should be_blank
       end
     end
 

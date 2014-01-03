@@ -1,10 +1,31 @@
 module Youxin
   module Entities
-    class Bind < Grape::Entity
+    class YouxinEntity < Grape::Entity
+      class << self
+        def abilities
+          @abilities ||= begin
+                           abilities = Six.new
+                           abilities << ::UserActionsOrganizationRelationship
+                           abilities << ::Post
+                           abilities << ::Attachment::Base
+                           abilities << ::Conversation
+                           abilities << ::Form
+                           abilities << ::Namespace
+                           abilities << ::User
+                           abilities
+                         end
+        end
+        def can?(object, action, subject)
+          abilities.allowed?(object, action, subject)
+        end
+      end
+    end
+
+    class Bind < YouxinEntity
       expose :id, :baidu_user_id, :baidu_channel_id
     end
 
-    class UserSimple < Grape::Entity
+    class UserSimple < YouxinEntity
       expose :id, :name, :email, :created_at
       expose :avatar do |user|
         user.avatar.url
@@ -15,22 +36,21 @@ module Youxin
       expose :phone
     end
 
-    class OtherUserProfile < UserSimple
+    class UserProfile < UserSimple
       expose :bio, :gender, :qq, :blog, :uid, :created_at
       expose :header do |user|
         user.header.url
       end
-    end
-
-    class UserProfile < OtherUserProfile
-      expose :phone
+      expose :phone do |user, options|
+        can?(options[:current_user], :read_profile, user) ? user.phone : nil
+      end
     end
 
     class User < UserBasic
       expose :bio, :gender, :qq, :blog, :uid
     end
 
-    class UserWithNotifications < Grape::Entity
+    class UserWithNotifications < YouxinEntity
       expose :notification_channel
       expose :notifications do |user|
         {
@@ -51,15 +71,15 @@ module Youxin
       end
     end
 
-    class Attachment < Grape::Entity
+    class Attachment < YouxinEntity
       expose :id, :file_name, :file_size, :file_type, :image, :url
     end
 
-    class Option < Grape::Entity
+    class Option < YouxinEntity
       expose :id, :default_selected, :value
     end
 
-    class Input < Grape::Entity
+    class Input < YouxinEntity
       expose :id, :_type, :label, :help_text, :required, :identifier, :position
       # text_field
       # text_area
@@ -71,23 +91,23 @@ module Youxin
       # all
     end
 
-    class Entity < Grape::Entity
+    class Entity < YouxinEntity
       expose :key, :value
     end
 
-    class Collection < Grape::Entity
+    class Collection < YouxinEntity
       expose :created_at
       expose :entities, using: Entities::Entity
     end
 
-    class FormBasic < Grape::Entity
+    class FormBasic < YouxinEntity
       expose :id, :title, :created_at
     end
     class Form < FormBasic
       expose :inputs, using: Entities::Input
     end
 
-    class PostSimple < Grape::Entity
+    class PostSimple < YouxinEntity
       expose :id, :title, :body, :body_html, :created_at
     end
     class PostBasic < PostSimple
@@ -98,7 +118,7 @@ module Youxin
       expose :author, using: Entities::UserBasic
     end
 
-    class OrganizationBasic < Grape::Entity
+    class OrganizationBasic < YouxinEntity
       expose :id, :name, :created_at
       expose :avatar do |organization|
         organization.avatar.url
@@ -121,7 +141,7 @@ module Youxin
       end
     end
 
-    class ReceiptBasic < Grape::Entity
+    class ReceiptBasic < YouxinEntity
       expose :id, :read, :archived
       expose :favorited do |receipt, options|
         receipt.user.favorites.where(favoriteable_type: 'Receipt',
@@ -166,10 +186,10 @@ module Youxin
       end
     end
 
-    class Commentable < Grape::Entity
+    class Commentable < YouxinEntity
       expose :id, :title, :body, :body_html, :created_at
     end
-    class Comment < Grape::Entity
+    class Comment < YouxinEntity
       expose :id, :body, :created_at
       expose :user, using: Entities::UserSimple
     end
@@ -178,34 +198,34 @@ module Youxin
       expose :commentable, using: Entities::Commentable
     end
 
-    class Favorite < Grape::Entity
+    class Favorite < YouxinEntity
       expose :id, :created_at, :favoriteable_type, :favoriteable_id
       expose :user, using: Entities::UserBasic
     end
 
-    class Message <  Grape::Entity
+    class Message <  Entity
       expose :id, :created_at, :body, :conversation_id
       expose :user, using: Entities::UserBasic
     end
 
-    class ConversationBasic < Grape::Entity
+    class ConversationBasic < YouxinEntity
       expose :id, :created_at, :updated_at
     end
 
-    class MessageWithConversation < Grape::Entity
+    class MessageWithConversation < YouxinEntity
       expose :id, :created_at, :body
       expose :conversation, using: Entities::ConversationBasic
       expose :user, using: Entities::UserBasic
     end
 
-    class Conversation < Grape::Entity
+    class Conversation < YouxinEntity
       expose :id, :created_at, :updated_at
       expose :last_message, using: Entities::Message
       expose :originator, using: Entities::UserBasic
       expose :participants, using: Entities::UserBasic
     end
 
-    class Notification < Grape::Entity
+    class Notification < YouxinEntity
       # common
       expose :id, :created_at, :read
       expose :_type, as: :notificationable_type
@@ -219,11 +239,11 @@ module Youxin
       expose :mentionable, as: :notificationable, using: Entities::CommentWithCommentable
       expose :status
     end
-    class Scheduler < Grape::Entity
+    class Scheduler < YouxinEntity
       expose :delayed_at, :ran_at
     end
 
-    class Feedback < Grape::Entity
+    class Feedback < YouxinEntity
       expose :category, :body, :contact, :devise, :version_code, :version_name
       expose :user, using: Entities::UserSimple
     end
