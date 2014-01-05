@@ -108,7 +108,7 @@ class User
   has_many :attachments, class_name: 'Attachment::Base', dependent: :destroy
   has_many :forms, dependent: :destroy, inverse_of: :author, foreign_key: :author_id
   has_many :collections, dependent: :destroy
-  has_many :comments, as: :commentable, dependent: :destroy
+  has_many :comments, dependent: :destroy
   has_many :favorites, dependent: :destroy do
     def receipts
       where(favoriteable_type: 'Receipt')
