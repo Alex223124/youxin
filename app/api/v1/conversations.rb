@@ -17,6 +17,11 @@ class Conversations < Grape::API
         fail!
       end
     end
+    get do
+      updated_at = Time.at (params[:updated_at] || 0).to_i
+      conversations = current_user.conversations.where(:updated_at.gt => updated_at)
+      present conversations, with: Youxin::Entities::Conversation
+    end
     route_param :id do
       before do
         @conversation = current_user.conversations.where(id: params[:id]).first

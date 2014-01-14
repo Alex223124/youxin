@@ -180,6 +180,20 @@ describe Youxin::API, 'conversations' do
       response.status.should == 404
     end
   end
+  describe 'GET /conversations' do
+    before(:each) do
+      @user = create :user, namespace: namespace
+      @user_one = create :user, namespace: namespace
+      @user_another = create :user, namespace: namespace
+      body = 'body'
+      @conversation = @user.send_message_to([@user_one, @user_another], body)
+      @message = @conversation.messages.first
+    end
+    it 'returns empty conversation' do
+      get api('/conversations', @user), updated_at: (Time.now + 1.second).to_i
+      json_response.size.should == 0
+    end
+  end
   describe "POST /conversations/:id/participants" do
     before(:each) do
       @user = create :user, namespace: namespace

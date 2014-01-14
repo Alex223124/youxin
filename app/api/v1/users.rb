@@ -92,7 +92,9 @@ class Users < Grape::API
     end
 
     get 'conversations' do
-      present current_user.conversations, with: Youxin::Entities::Conversation
+      updated_at = Time.at (params[:updated_at] || 0).to_i
+      conversations = current_user.conversations.where(:updated_at.gt => updated_at)
+      present conversations, with: Youxin::Entities::Conversation
     end
 
     get 'notifications' do
