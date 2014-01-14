@@ -11,6 +11,11 @@ class Receipts < Grape::API
       receipts.map { |receipt| receipt.read! }
       status(204)
     end
+    put :archived do
+      receipts = current_user.receipts.where(:id.in => params[:receipt_ids])
+      receipts.map { |receipt| receipt.archive! }
+      status(204)
+    end
     route_param :id do
       before do
         @receipt = current_user.receipts.find(params[:id])

@@ -555,7 +555,7 @@ describe Youxin::API, 'users' do
       @user.favorites.create favoriteable: @user_another
     end
     it 'should return the favorited users without phone' do
-      get api('/user/favorite_users', @user)
+      get api('/user/favorited_users', @user)
       json_response.should == [
         {
           id: @user_another.id,
@@ -576,7 +576,7 @@ describe Youxin::API, 'users' do
     it 'should return the favorited users with phone' do
       organization = create :organization, namespace: namespace
       organization.push_members([@user, @user_another])
-      get api('/user/favorite_users', @user)
+      get api('/user/favorited_users', @user)
       json_response.should == [
         {
           id: @user_another.id,
