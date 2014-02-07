@@ -5,7 +5,7 @@
     .content-wrap.pull-left.span10
       .content
         .read-dot data-toggle="tooltip" title="标记为已读" ng-mouseenter="showTooltip($event);" ng-mouseleave="hideTooltip($event);" ng-click="mark_receipt_as_read(receipt);" ng-show="!receipt.read"
-          i.icon-circle
+          i.fa.fa-circle
         .created_at.pull-right
           small.timeago.muted timeago="receipt.created_at"
         .name
@@ -20,25 +20,25 @@
           a.btn.btn-link ng-click="expandable(receipt, $event);"
             | {{receipt.expanded ? '收起' : '展开'}}
           a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-attachments" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.attachmentted" ng-click="fetch_attachments(receipt);"
-            i.icon-file-alt
+            i.fa.fa-file-alt
             | 附件
           a.forms-btn.btn.btn-link.red title='表单未填写' data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-forms" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.formed && (receipt.read && !receipt.forms_filled)" ng-click="fetch_forms(receipt);"
-            i.icon-table
+            i.fa.fa-table
             | 表单
           a.forms-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-forms" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.post.formed && !(receipt.read && !receipt.forms_filled)" ng-click="fetch_forms(receipt);"
-            i.icon-table
+            i.fa.fa-table
             | 表单
           a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-recipients" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-show="receipt.origin" ng-click="fetch_unread_receipts(receipt);"
-            i.icon-eye-open
+            i.fa.fa-eye
             | 未读名单
           a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="\#{{receipt.id}}-{{flag}}-comments" data-parent="\#{{receipt.id}}-{{flag}}-additions" ng-click="fetch_comments(receipt,$event);"
-            i.icon-comments
+            i.fa.fa-comments
             | 评论
           a.favorite-btn.btn.btn-link.pull-right href='javascript:;' ng-click="favoriteable(receipt);" ng-show="receipt.favorited"
-            i.icon-bookmark
+            i.fa.fa-bookmark
             | 取消收藏
           a.favorite-btn.btn.btn-link.pull-right href='javascript:;' ng-click="favoriteable(receipt);" ng-show="!receipt.favorited"
-            i.icon-bookmark-empty
+            i.fa.fa-bookmark-o
             | 收藏
       .additions id="{{receipt.id}}-{{flag}}-additions"
         .accordion-group.attachments-box
@@ -96,7 +96,7 @@
                 span.muted ng-show="!receipt.post.unread_receipts.length" 所有用户已阅读
                 .recipient ng-repeat="unread_receipt in receipt.post.showing_unread_receipts" ng-animate=" 'animate' "
                   .piece
-                    i.icon-ok.pull-right ng-show="unread_receipt.read"
+                    i.fa.fa-ok.pull-right ng-show="unread_receipt.read"
                     span.name {{unread_receipt.user.name}}
               .loadmore.tac.btn.btn-block.btn-info.btn-link ng-show="receipt.post.unread_receipts.length > 12" ng-click="toggleAllUnread_receipts(receipt, $event);" 查看全部名单
             .scheduler-btn.text-right ng-show="!!receipt.post.unread_receipts.length"

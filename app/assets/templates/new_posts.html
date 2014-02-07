@@ -1,7 +1,7 @@
 <div id="send-msg" ng-controller="NewPostsController" style="display: inline-block;">
   <div class="write-steps pull-left">
     <label>
-      <i class="icon icon-write"></i>发优信
+      <i class="icon fa fa-write"></i>发优信
       <span class="close open" data-open="#news-container">
         <a onclick="history.back()">×</a>
       </span>
@@ -28,12 +28,12 @@
             <form enctype="multipart/form-data">
               <div uploader="true" action="/attachments">
                 <label for="uploader" class="inline">
-                  <i class="icon-paper-clip" title="添加附件"></i>
+                  <i class="fa fa-paperclip" title="添加附件"></i>
                 </label>
-                <i class="icon icon-table" style="cursor: pointer;" ng-click="toggleTableEdit()"  title="创建表单"></i>
+                <i class="icon fa fa-table" style="cursor: pointer;" ng-click="toggleTableEdit()"  title="创建表单"></i>
                 <div class="form inline" ng-hide="formData.id.length == 0">
                   <span>{{formData.name}}</span>
-                  <i class="icon-remove" ng-click="remove_form()"></i>
+                  <i class="fa fa-remove" ng-click="remove_form()"></i>
                 </div>
               </div>
             </form>
@@ -52,7 +52,7 @@
             <div ng-repeat="organization in present_organizations" class="selected-org-item">
               <span>{{organization.name}}</span>
               (<span>{{organization.members_count}}</span>)
-              <i class="icon-remove" ng-click="authorized_organizations.changeSelectFlag(organization,$event)"></i>
+              <i class="fa fa-remove" ng-click="authorized_organizations.changeSelectFlag(organization,$event)"></i>
             </div>
           </div>
           <div class="pr">
@@ -81,7 +81,7 @@
         <div>
           <span class="push-method">
             <input type="checkbox" ng-model="msg_push.active">
-            <i class="icon-envelope active-{{msg_push.active}}" ng-click="msg_push.active=!msg_push.active"></i>
+            <i class="fa fa-envelope active-{{msg_push.active}}" ng-click="msg_push.active=!msg_push.active"></i>
           </span>
           <div class="inline-block pull-right msg-push active-{{msg_push.active}}">
             <span>
@@ -97,7 +97,7 @@
         <div>
           <span class="push-method">
             <input type="checkbox" ng-model="call_push.active">
-            <i class="icon-phone-sign active-{{call_push.active}}" ng-click="call_push.active=!call_push.active"></i>
+            <i class="fa fa-phone-square active-{{call_push.active}}" ng-click="call_push.active=!call_push.active"></i>
           </span>
           <div class="inline-block pull-right call-push active-{{call_push.active}}">
             <span>
@@ -118,7 +118,7 @@
   </div>
   <div id="table-edit" class="table-edit pull-left" ng-controller="formcreateCtrl">
     <label>
-      <i class="icon icon-write"></i>编辑表单
+      <i class="icon fa fa-write"></i>编辑表单
       <span scope="#table-edit" class="close">×</span>
     </label>
     <ul class="table-edit-scope" scroll-with-scroll-bar>
@@ -162,20 +162,20 @@
             <li ng-show="hasOptions(editfield)">
               <label>
                 选项
-                <i class="icon icon-plus" title="添加选项" ng-click="addNewOption(editfield)"></i>
+                <i class="icon fa fa-plus" title="添加选项" ng-click="addNewOption(editfield)"></i>
               </label>
               <div ng-show="isCheckbox(editfield)">
                 <div class="options" ng-repeat="option in editfield.options">
                   <input type="checkbox" ng-model="option.selected">
                   <input class="input-small" type="text" ng-model="option.value" ng-keyup="check_uniq(option.value);">
-                  <i class="icon icon-remove" ng-click="removeOption(option)"></i>
+                  <i class="icon fa fa-remove" ng-click="removeOption(option)"></i>
                 </div>
               </div>
               <div ng-show="isRadio(editfield)">
                 <div class="options" ng-repeat="option in editfield.options">
                   <input type="radio" name="editRadio_{{editfield.index}}" ng-model="editfield.default_value" value="{{option.value}}">
                   <input class="input-small" type="text" ng-model="option.value" ng-keyup="check_uniq(option.value);">
-                  <i class="icon icon-remove" ng-click="removeOption(option)"></i>
+                  <i class="icon fa fa-remove" ng-click="removeOption(option)"></i>
                 </div>
               </div>
             </li>
@@ -207,31 +207,31 @@
           <ul>
             <li ng-click="addNewFiled('text')">
               <a href="javascript:;">
-                <i class="icon icon-email"></i>
+                <i class="icon fa fa-email"></i>
                 单行文本
               </a>
             </li>
             <li ng-click="addNewFiled('textarea')">
               <a href="javascript:;">
-                <i class="icon icon-email"></i>
+                <i class="icon fa fa-email"></i>
                 多行文本
               </a>
             </li>
             <li ng-click="addNewFiled('radio')">
               <a href="javascript:;">
-                <i class="icon icon-email"></i>
+                <i class="icon fa fa-email"></i>
                 单项选择
               </a>
             </li>
             <li ng-click="addNewFiled('checkbox')">
               <a href="javascript:;">
-                <i class="icon icon-email"></i>
+                <i class="icon fa fa-email"></i>
                 多项选择
               </a>
             </li>
             <li ng-click="addNewFiled('number')">
               <a href="javascript:;">
-                <i class="icon icon-email"></i>
+                <i class="icon fa fa-email"></i>
                 数字
               </a>
             </li>

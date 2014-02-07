@@ -15,20 +15,20 @@
         = receipt.post.body
     .tools
       a.comments-btn.btn.btn-link.pull-right data-toggle="collapse" data-target="##{receipt.id}-comments" data-parent="##{receipt.id}-additions"
-        i.icon-comments
+        i.fa.fa-comments
         | 评论
       a.favorite-btn.btn.btn-link.pull-right href='#'
-        i.icon-heart
+        i.fa.fa-heart
         | 收藏
 
       a.attachments-btn.btn.btn-link data-toggle="collapse" data-target="##{receipt.id}-attachments" data-parent="##{receipt.id}-additions"
-        i.icon-file-alt
+        i.fa.fa-file-alt
         | 附件
       a.forms-btn.btn.btn-link data-toggle="collapse" data-target="##{receipt.id}-forms" data-parent="##{receipt.id}-additions"
-        i.icon-table
+        i.fa.fa-table
         | 表格
       a.recipients-btn.btn.btn-link data-toggle="collapse" data-target="##{receipt.id}-recipients" data-parent="##{receipt.id}-additions"
-        i.icon-eye-open
+        i.fa.fa-eye-open
         | 未读名单
   .additions id="#{receipt.id}-additions"
     .accordion-group.attachments-box
@@ -91,42 +91,42 @@
           .recipient
             .piece
               span.name 张三
-              i.icon-envelope
+              i.fa.fa-envelope
           .recipient
             .piece
-              i.icon-ok.pull-right
+              i.fa.fa-ok.pull-right
               span.name 张三三
-              i.icon-envelope
+              i.fa.fa-envelope
           .recipient
             .piece
-              i.icon-ok.pull-right
+              i.fa.fa-ok.pull-right
               span.name 张三三
           .recipient
             .piece
               span.name 张三三
-              i.icon-envelope
+              i.fa.fa-envelope
           .recipient
             .piece
-              i.icon-ok.pull-right
+              i.fa.fa-ok.pull-right
               span.name 张三三
-              i.icon-envelope
+              i.fa.fa-envelope
           .recipient
             .piece
-              i.icon-ok.pull-right
+              i.fa.fa-ok.pull-right
               span.name 张三三张三三
           .recipient
             .piece
-              i.icon-ok.pull-right
+              i.fa.fa-ok.pull-right
               span.name 张三三
           .recipient
             .piece
               span.name 张三三
-              i.icon-envelope
+              i.fa.fa-envelope
           .recipient
             .piece
-              i.icon-ok.pull-right
+              i.fa.fa-ok.pull-right
               span.name 张三三
-              i.icon-envelope
+              i.fa.fa-envelope
 
 
     .accordion-group.comments-box
@@ -142,7 +142,7 @@
           .content
             a.reply-btn.pull-right
               | 回复
-              i.icon-reply
+              i.fa.fa-reply
             span.name
               = link_to '张三', '#'
             span.created_at
@@ -155,7 +155,7 @@
           .content
             a.reply-btn.pull-right
               | 回复
-              i.icon-reply
+              i.fa.fa-reply
             span.name
               = link_to '张三', '#'
             span.created_at
@@ -168,7 +168,7 @@
           .content
             a.reply-btn.pull-right
               | 回复
-              i.icon-reply
+              i.fa.fa-reply
             span.name
               = link_to '张三', '#'
             span.created_at
@@ -181,7 +181,7 @@
           .content
             a.reply-btn.pull-right
               | 回复
-              i.icon-reply
+              i.fa.fa-reply
             span.name
               = link_to '张三', '#'
             span.created_at
@@ -194,7 +194,7 @@
           .content
             a.reply-btn.pull-right
               | 回复
-              i.icon-reply
+              i.fa.fa-reply
             span.name
               = link_to '张三', '#'
             span.created_at

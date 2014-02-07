@@ -5,21 +5,21 @@ body
     ul.nav.nav-pills.nav-stacked ng-controller="navController"
       li ng-class="isActive('/')"
         a ng-href='#/'
-          i.icon-location-arrow
+          i.fa.fa-location-arrow
           span  优信
           span.label.label-important.pull-right.js-unread-bubble
       li ng-class="isActive('/organizations')"
         a href='#/organizations'
-          i.icon-sitemap
+          i.fa.fa-sitemap
           span 组织展示
       - unless current_user.authorized_organizations([:edit_organization]).count.zero?
         li ng-class="isActive('/admin/organizations')"
           a href='#/admin/organizations'
-            i.icon-cogs
+            i.fa.fa-cogs
             span 组织管理
         li ng-class="isActive('/organization_members')"
           a ng-href='#/organizations/#{current_user.authorized_organizations.first.id}/members'
-            i.icon-group
+            i.fa.fa-group
             span 成员管理
     .others
       = link_to image_tag("iOS.png", class: "youxin-tooltip", "data-toggle" => "tooltip", title: "点击下载"), Youxin.config.help.ios.url, target: 'itunes_store'
@@ -31,7 +31,7 @@ body
         ul.nav.pull-right
           - unless current_user.authorized_organizations([:create_youxin]).count.zero?
             a.btn.btn-primary.pull-left ng-href="#/posts/new"
-              i.icon-edit
+              i.fa.fa-edit
               | 发优信
           li.dropdown
             a.dropdown-toggle href='javascript:;' data-toggle='dropdown'

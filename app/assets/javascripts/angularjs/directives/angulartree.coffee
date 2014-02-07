@@ -1,7 +1,7 @@
 @app.directive "angulartree",["$http",($http)->
-  directivecache = 
+  directivecache =
     restrict: "A"
-    scope: 
+    scope:
       datas: "=datas"
       options: "=options"
       selectresult: "=selectresult"
@@ -12,11 +12,11 @@
       showmembercount: "@"
     template: """
       <div ng-repeat="data in datas" ng-animate="animate" node-level="{{data.level}}" class="{{$index == activeele.index ? 'active' : ''}}" ng-click="bindActive(data, $event)" ng-style="{paddingLeft: data.level + \'em\'}">
-        <i class="icon-{{_cache[data.selectFlag]}}" ng-show="options.select" ng-click="datas.changeSelectFlag(data, $event)"></i>
+        <i class="fa fa-{{_cache[data.selectFlag]}}" ng-show="options.select" ng-click="datas.changeSelectFlag(data, $event)"></i>
         <i class="expand-{{data.expandFlag}} visible-{{!data.isLeafNode}}" ng-show="options.expand" ng-click="bindExpand(data, $event)"></i>
         <span ng-click="bindActive(data, $event)">{{data.name}}<span ng-show="showmembercount">({{data.members_count}})</span></span>
-        <i class="icon-plus-sign pull-right" ng-show="options.insert" ng-click="bindInsert(data, $event)"></i>
-        <i class="icon-remove-sign pull-right" ng-show="options.remove && data.level" ng-click="bindRemove(data, $event)"></i>
+        <i class="fa fa-plus-circle pull-right" ng-show="options.insert" ng-click="bindInsert(data, $event)"></i>
+        <i class="fa fa-minus-circle pull-right" ng-show="options.remove && data.level" ng-click="bindRemove(data, $event)"></i>
       </div>
     """
     link: (scope,element,attrs)->
@@ -24,10 +24,10 @@
         _cache = if (scope.activeele is undefined) then scope.datas.first() else scope.activeele
         return _cache
 
-      scope._cache = 
-        half: "check-minus"
-        true: "check"
-        false: "check-empty"
+      scope._cache =
+        half: "minus-square-o"
+        true: "check-square-o"
+        false: "square-o"
 
       scope.initialize = ($event, expandlevel)->
         _children = element.children()
@@ -41,14 +41,14 @@
             _i.expandFlag = true
         if expandlevel is 1
           element.closest(".pr").prev().unbind("click",scope.initialize)
-      
+
       element.closest(".pr").prev().bind("click", scope.initialize)
 
       window.setTimeout ()->
         if scope.datas
           scope.initialize(undefined, 1)
         else
-          window.setTimeout arguments.callee, 30        
+          window.setTimeout arguments.callee, 30
       , 30
 
       scope.bindExpand = (data, $event)->
@@ -81,8 +81,8 @@
             i += 1
             )() while i < scope.datas.length
           currentEle.nextUntil(element.children().eq(index + subnodeLength + 1)).hide()
-      
-      # TODO :待处理  
+
+      # TODO :待处理
       scope.bindInsert = (data, $event)->
         $event.stopPropagation()
         if not scope.options.insert
@@ -112,7 +112,7 @@
         popwindow.append(mask).append(content)
         $(document.body).append(popwindow)
 
-        content = popwindow.find(".content") 
+        content = popwindow.find(".content")
         content.css
           left: ($(document.body).width() - content.width())/2
           top: (window.innerHeight - content.height())/2
@@ -121,7 +121,7 @@
           popwindow.find(".cancel").unbind "click", popwindowhide
           popwindow.find('input').unbind "keydown", keybind
           popwindow.remove()
- 
+
         submit = ()->
           _data =
             organization:
@@ -152,7 +152,7 @@
 
       scope.bindRemove = (data, $event)->
         $event.stopPropagation()
-        if not scope.options.remove 
+        if not scope.options.remove
           return false
 
         tpl = """

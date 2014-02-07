@@ -20,10 +20,10 @@
         <span radioselect="true" class="position" ng-model="member.role" member="member" callback="callback(newOption, member, oldOption)" options="role_options">
           {{member.role.name || '普通用户'}}
         </span>
-        <i class="remove icon-remove-sign" ng-click="removeMember(member.id)"></i>
+        <i class="remove fa fa-minus-circle" ng-click="removeMember(member.id)"></i>
         <li class="remove-all" ng-show="hasOrgMember">
           <span ng-click="removeAll()">移除全部</span>
-          <i class="remove icon-remove-sign" ng-click="removeAll()"></i>
+          <i class="remove fa fa-minus-circle" ng-click="removeAll()"></i>
         </li>
       </li>
     </ul>
@@ -56,7 +56,7 @@
                       <span class="name">{{member.name}}</span>
                     </span>
                     <span class="tel">{{member.phone}}</span>
-                    <i class="add pull-right icon-plus-sign"></i>
+                    <i class="add pull-right fa fa-plus-circle"></i>
                   </li>
                 </ul>
               </div>
@@ -70,7 +70,7 @@
                 <input class="input-medium" type="text" ng-model="user_tel" placeholder="手机号码(必填)">
                 <input class="input-medium" type="text" ng-model="user_email" placeholder="邮箱">
                 <span ng-click="addNewOrgMember()">
-                  <i class="icon icon-plus-sign"></i>
+                  <i class="fa fa-plus-circle"></i>
                 </span>
                 <label>
                   系统将会邮件提醒该用户加入该组织

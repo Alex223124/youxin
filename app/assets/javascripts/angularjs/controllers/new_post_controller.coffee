@@ -142,27 +142,27 @@
     false
   $scope.inputtypelist = [
     {
-      iconname: "icon-email"
+      iconname: "fa-email"
       name: "text"
       type: "text"
     }
     {
-      iconname: "icon-email"
+      iconname: "fa-email"
       name: "textarea"
       type: "textarea"
     }
     {
-      iconname: "icon-email"
+      iconname: "fa-email"
       name: "number"
       type: "text"
     }
     {
-      iconname: "icon-email"
+      iconname: "fa-email"
       name: "checkbox"
       type: "checkbox"
     }
     {
-      iconname: "icon-email"
+      iconname: "fa-email"
       name: "radio"
       type: "radio"
     }
